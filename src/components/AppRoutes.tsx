@@ -30,6 +30,7 @@ import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
 import Pricing from "../pages/Pricing";
 import PitchPracticeSession from "../pages/Sessions/PitchPractice";
+import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import UserPlan from "./layouts/userAuth";
 import { Button } from "./ui/button";
 import Help from "@/pages/Dashboard/User/help/help";
@@ -41,15 +42,12 @@ import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import Contact from "@/pages/Contact";
 
 function RequireAuth({ children }: { children: ReactNode }) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const isAuthenticated = useSelector(
-    (state: any) => state.auth.isAuthenticated
-  );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const isUser = useSelector((state: any) => state.auth.user);
-  console.log("is user:", isUser);
-
-  const location = useLocation();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const isUser = useSelector((state: any) => state.auth.user);
+    
+    const location = useLocation();
 
   if (!isAuthenticated && !tokenManager.getToken()) {
     return <Navigate replace to="/auth/login" state={{ from: location }} />;
@@ -113,12 +111,13 @@ function AdminDashboardRoutes() {
 }
 
 function SessionRoutes() {
-  return (
-    <Routes>
-      <Route path="pitch-practice-session" element={<PitchPracticeSession />} />
-      <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route path="pitch-practice-session" element={<PitchPracticeSession />} />
+            <Route path="public-speaking-session" element={<PublicSpeakingSession />} />
+            <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
+        </Routes>
+    );
 }
 
 function AuthRoutes() {
