@@ -19,7 +19,7 @@ function Pricing({ subtext }: { subtext?: string }) {
       sessions: 6,
       contents: [
         "Great for short-term skill improvement and specific goals.",
-        "BTargeted at mid-level professionals and managers.",
+        "Targeted at mid-level professionals and managers.",
       ],
       button_text: "Choose Growth Plan",
       highlight: true,
@@ -49,7 +49,7 @@ function Pricing({ subtext }: { subtext?: string }) {
     },
   ];
   return (
-    <section className=" px-10 lg:px-20 py-28 font-montserrat border-2 gap-y-24 relative flex flex-col justify-center items-center">
+    <section className=" px-10 lg:px-20 py-28 font-montserrat gap-y-24 relative flex flex-col justify-center items-center">
       <div className="space-y-10 flex flex-col items-center">
         <div className="px-3 py-3 flex gap-2 items-center w-max border rounded-lg bg-white border-[#E1E5E7] mx-auto">
           <svg
