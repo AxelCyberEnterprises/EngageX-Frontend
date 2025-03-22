@@ -62,7 +62,7 @@ const initialState: AuthState = {
     signupFlow: "signup",
     routeFromLogin: false,
     signupData: null, // Stores signup details
-    user: localStorage.getItem("user") ? true : null,
+    user: localStorage.getItem("user") ? true : false,
     isAuthenticated: false,
     hasCheckedAuth: false,
     emailForPasswordReset: "jnr@gmail.com",

@@ -5,7 +5,7 @@ import audience from "../../assets/images/pngs/audience.png";
 import { ReactMediaRecorder } from "react-media-recorder";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
 import LiveAudienceReaction from "@/components/session/LiveAudienceReaction";
-import EngagementMetrics from "@/components/session/EngagementMetrics";
+import EngagementMetrics from "@/components/session/VoiceAnalytics";
 import CountdownTimer from "@/components/session/CountdownTimer";
 import TimerProgressBar from "@/components/session/TimerProgressBar";
 
@@ -62,7 +62,6 @@ const RecordView = () => {
 };
 
 const PitchPractice: React.FC = () => {
-
     return (
         <div className="text-primary-blue">
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">

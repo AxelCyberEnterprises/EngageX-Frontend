@@ -23,6 +23,7 @@ import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
 import Pricing from "../pages/Pricing";
 import PitchPracticeSession from "../pages/Sessions/PitchPractice";
+import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import UserPlan from "./layouts/userAuth";
 import { Button } from "./ui/button";
 import Help from "@/pages/Dashboard/User/help/help";
@@ -37,7 +38,6 @@ function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const isUser = useSelector((state: any) => state.auth.user);
-    console.log('is user:', isUser);
     
     const location = useLocation();
 
@@ -101,6 +101,7 @@ function SessionRoutes() {
     return (
         <Routes>
             <Route path="pitch-practice-session" element={<PitchPracticeSession />} />
+            <Route path="public-speaking-session" element={<PublicSpeakingSession />} />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
