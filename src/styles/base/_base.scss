@@ -56,6 +56,20 @@ p {
             font-size: calc($vw / 500px * 30px);
         }
     }
+
+  &.xs {
+    $vw: 100vw;
+    font-size: calc($vw / 1440px * 12px);
+  
+    @include media('<phone') {
+      font-size: calc($vw / 750px * 12px);
+    }
+  
+    @include media('<small') {
+      font-size: calc($vw / 500px * 11px);
+    }
+  }
+  
 }
 
 small {
@@ -70,6 +84,7 @@ small {
         font-size: calc($vw / 500px * 13px);
     }
 }
+
 
 h1 {
     line-height: 1.2;
@@ -228,6 +243,7 @@ button {
         background-color: $color-green-sheen;
     }
 }
+
 
 .desktop {
     display: auto !important;

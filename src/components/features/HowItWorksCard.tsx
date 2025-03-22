@@ -14,7 +14,7 @@ function HowItWorksCard({ className, item }: Params) {
   return (
     <div
       className={clsx(
-        "flex flex-col lg:flex-col px-10 lg:px-20 lg:space-x-22 items-center py-22 w-full justify-between",
+        "flex flex-col lg:flex-row px-10 lg:px-20 lg:space-x-22 items-center py-22 w-full justify-between",
         className
       )}
     >
