@@ -17,7 +17,6 @@ export type IUserSessionHistory = {
     sessionType: "Pitch Practice" | "Client Meeting" | "Team Sync" | "Workshop" | "Demo Day";
     date: string;
     duration: string;
-    note: string;
 };
 
 export const columns: ColumnDef<IUserSessionHistory>[] = [
@@ -57,14 +56,6 @@ export const columns: ColumnDef<IUserSessionHistory>[] = [
     {
         accessorKey: "duration",
         header: ({ column }) => <BaseTableColumnHeader column={column} title="Duration" />,
-    },
-    {
-        accessorKey: "note",
-        header: () => <span className="text-primary-base">Note</span>,
-        cell: ({ cell }) => {
-            return <span className="md:whitespace-normal">{cell.getValue() as string}</span>;
-        },
-        maxSize: 1,
     },
     {
         id: "actions",
