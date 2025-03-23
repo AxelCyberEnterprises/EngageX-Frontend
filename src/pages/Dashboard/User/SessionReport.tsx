@@ -1,13 +1,22 @@
 import { ArrowLeft, Download, Heart, UserRound } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ShadLinearLineChart from '@/components/dashboard/ShadLinearLineChart';
 import SemiCircleProgress from '@/components/dashboard/SemiCircleProgress';
 import FullCircleProgress from '@/components/dashboard/FullCircleProgress';
 import SegmentedProgressBar from '@/components/dashboard/SegmentedProgressBar';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from "@/components/ui/dialog";
+import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 import { useNavigate } from 'react-router-dom';
 
 const PitchSessionReport: React.FC = () => {
+    const [isDialogOneOpen, setDialogOneOpen] = useState(false);
 
     const chartData = [
         { minute: 0, Curiosity: 0, Empathy: 0, Convictions: 0 },
@@ -38,12 +47,6 @@ const PitchSessionReport: React.FC = () => {
             rating: "Excellent",
         },
         {
-            bg: "bg-sunray/15",
-            title: "Speech Rate",
-            percent: 80,
-            rating: "Excellent",
-        },
-        {
             bg: "bg-grey/15",
             title: "Pauses",
             percent: 80,
@@ -51,19 +54,13 @@ const PitchSessionReport: React.FC = () => {
         },
         {
             bg: "bg-sunray/15",
-            title: "Tone",
+            title: "Impact",
             percent: 80,
             rating: "Excellent",
         },
         {
             bg: "bg-seashell",
-            title: "Pronunciation",
-            percent: 80,
-            rating: "Excellent",
-        },
-        {
-            bg: "bg-grey/15",
-            title: "Emotional Expression",
+            title: "Pace",
             percent: 80,
             rating: "Excellent",
         },
@@ -113,17 +110,33 @@ const PitchSessionReport: React.FC = () => {
                             <Heart />
                             <span className="hidden lg:block">Save to Archive</span>
                         </Button>
-                        <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">
+                        <Button
+                            onClick={() => setDialogOneOpen(true)}
+                            className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
+                        >
                             <UserRound />
                             <span className="hidden lg:block">Speak With a Coach</span>
                         </Button>
+
+                        <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <img src={speakWithCoach} alt="green image of users" className="w-16 h-16 mb-4" />
+                                    <DialogTitle className='text-primary-blue'>Speak with a Coach</DialogTitle>
+                                    <DialogDescription className="text-auro-metal-saurus">
+                                        Click the button below to schedule a session with any of our coaches
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <Button className='bg-primary-blue hover:bg-primary-blue/90' onClick={() => setDialogOneOpen(false)}>Speak with a Coach</Button>
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 </div>
 
                 <div className="py-4">
-                    <h5 className="mb-3">Pitch Mastery Session</h5>
+                    <h5 className="mb-3">Public Speaking Session</h5>
                     <div className="flex gap-3 text-primary-blue/70">
-                        <p>Pitch Practice</p>
+                        <p>Public Speaking Practice</p>
                         <div className="border-l-1"></div>
                         <p>Feb 15, 2025</p>
                         <div className="border-l-1"></div>
@@ -225,30 +238,22 @@ const PitchSessionReport: React.FC = () => {
                         <div className="flex flex-col gap-3 w-full">
                             <div className="w-full mb-3">
                                 <div className="border-1 border-bright-gray rounded-xl py-5 px-3 w-full">
-                                    <p className="mb-4">Total Time Saved/Overshot</p>
+                                    <p className="mb-4">Total Time Allocated</p>
                                     <div className="flex gap-4 items-center">
-                                        <h5>-2:15</h5>
-
-                                        <div className="flex justify-center items-center text-crimson-red bg-crimson-red/20 p-2 rounded-4xl">
-                                            <small>Overshot</small>
-                                        </div>
+                                        <h5>30 minutes</h5>
                                     </div>
                                 </div>
                             </div>
                             <div className="w-full">
                                 <div className="border-1 border-bright-gray rounded-xl py-5 px-3 w-full">
-                                    <p className="mb-4">Slide Specific Timing</p>
+                                    <p className="mb-4">Total Time Used</p>
                                     <div className="flex gap-4 items-center">
-                                        <h5>Slide 3</h5>
-
-                                        <div className="flex justify-center items-center bg-alice-blue p-2 rounded-4xl">
-                                            <small>Need Adjustment</small>
-                                        </div>
+                                        <h5>30 minutes</h5>
                                     </div>
                                 </div>
                             </div>
 
-                            <h6 className="py-4 mt-2">Suggestions for Optimized Pacing</h6>
+                            <h6 className="py-4 mt-2">Areas to improve to perform within allocated time</h6>
                             <ul className="list-disc text-primary-blue/80">
                                 <li className="mb-2">Reduce time on introduction by 30 seconds</li>
                                 <li className="mb-2">Spend more time explaining key benefits</li>
