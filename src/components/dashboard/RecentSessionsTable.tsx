@@ -144,7 +144,7 @@ export const columns: ColumnDef<Session>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <Link to="/dashboard/user/session-history/1">
+                        <Link to="/dashboard/admin/session-history/1">
                             <DropdownMenuItem>
                                 {" "}
                                 <ChartLine className="text-black" /> View Report

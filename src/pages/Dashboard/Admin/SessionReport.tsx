@@ -1,4 +1,4 @@
-import { ArrowLeft, Download, Heart, UserRound } from 'lucide-react';
+import { ArrowLeft, Download, Heart } from 'lucide-react';
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import ShadLinearLineChart from '@/components/dashboard/ShadLinearLineChart';
@@ -111,10 +111,10 @@ const PitchSessionReport: React.FC = () => {
                             <Heart />
                             <span className="hidden lg:block">Save to Archive</span>
                         </Button>
-                        <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">
+                        {/* <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">
                             <UserRound />
                             <span className="hidden lg:block">Speak With a Coach</span>
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
 
