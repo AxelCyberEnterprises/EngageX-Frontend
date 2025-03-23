@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -10,7 +9,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Label } from "@/components/ui/label";
 import SessionConfirmationDialog from "./SessionConfirmationDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";

@@ -1,5 +1,3 @@
-import React from "react";
-
 function DraftCard() {
   return (
     <div className="w-[20rem] h-[12rem]">

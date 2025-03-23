@@ -6,9 +6,9 @@ function PrivacyPolicy() {
     <main className="">
       <Navbar />
       <div className="space-y-20 py-36 font-montserrat px-10 lg:px-20">
-        <h1 className="text-center font-montreal">Privacy Policy</h1>
+        <h1 className="text-center font-montreal">Privacy policy</h1>
         <div className="space-y-16 text-[#475467]">
-          <p>Effective Date: 03/27/2025</p>
+          <p className="big">Effective Date: 03/27/2025</p>
           <div className="space-y-6">
             <h4 className="text-black font-montreal">Introduction</h4>
             <p className="big">

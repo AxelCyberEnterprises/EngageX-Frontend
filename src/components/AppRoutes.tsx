@@ -42,6 +42,7 @@ import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import Contact from "@/pages/Contact";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import CookiePolicy from "../pages/CookiePolicy";
+import TermsOfService from "../pages/TermsOfService";
 
 function RequireAuth({ children }: { children: ReactNode }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -179,10 +180,11 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="features" element={<Features />} />
-        <Route path="pricing" element={<Pricing />} />
-        <Route path="contact" element={<Contact />} />
         <Route path="privacy-policy" element={<PrivacyPolicy />} />
         <Route path="cookie-policy" element={<CookiePolicy />} />
+        <Route path="pricing" element={<Pricing />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="terms-of-service" element={<TermsOfService />} />
         <Route
           path="auth/*"
           element={

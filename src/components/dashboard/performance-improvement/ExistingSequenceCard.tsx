@@ -4,7 +4,6 @@ import {
   updateActiveExistingSession,
 } from "@/store/slices/performance_improvement_slice";
 import clsx from "clsx";
-import { format } from "date-fns";
 import { useDispatch } from "react-redux";
 
 function ExistingSequenceCard({

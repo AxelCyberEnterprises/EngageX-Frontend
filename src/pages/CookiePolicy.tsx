@@ -6,128 +6,91 @@ function CookiePolicy() {
     <main className="">
       <Navbar />
       <div className="space-y-20 py-36 font-montserrat px-10 lg:px-20">
-        <h1 className="text-center font-montreal">Privacy Policy</h1>
+        <h1 className="text-center font-montreal">Our cookie policy</h1>
         <div className="space-y-16 text-[#475467]">
-          <p>Effective Date: 03/27/2025</p>
-          <div className="space-y-6">
-            <h4 className="text-black font-montreal">Introduction</h4>
+          <div className="space-y-5">
+            <p className="big">EngageX™ Cookie Policy</p>
+            <p className="big">Effective Date: 03/27/2025</p>
             <p className="big">
-              Welcome to EngageX™. Your privacy is important to us. This Privacy
-              Policy explains how we collect, use, and protect your personal
-              information when you use our AI-powered public speaking and
-              presentation training platform.
+              EngageX™ ("we," "us," or "our") is committed to protecting your
+              privacy and ensuring transparency regarding how we use cookies and
+              similar technologies. This Cookie Policy explains what cookies
+              are, how we use them, and your choices regarding their use.
+            </p>
+          </div>
+          <div className="space-y-6">
+            <h4 className="text-black font-montreal">1. What Are Cookies?</h4>
+            <p className="big">
+              Cookies are small text files stored on your device when you visit
+              a website. They help us enhance your user experience by
+              remembering preferences, analyzing website traffic, and enabling
+              platform functionalities.
             </p>
           </div>
           <div className="space-y-6">
             <h4 className="text-black font-montreal">Information we Collect</h4>
-            <p className="big">
-              <p>When using EngageX™, we may collect:</p>
-              <p className="mt-5 font-medium">Personal Information:</p>
-              <p className="big mt-1">
-                Name, email address, and account details.
-              </p>
-              <p className="big font-medium mt-2">Session Data:</p>{" "}
-              <p className="big mt-1">
-                Audio analysis for AI-driven feedback (not stored beyond 24
-                hours).
-              </p>
-              <p className="big font-medium mt-2">Usage Information: </p>
-              <p className="big mt-1">
-                Browser type, device information, and interaction data for
-                improving user experience.
-              </p>
-            </p>
-          </div>
-          <div className="space-y-6">
-            <h4 className="text-black font-montreal">
-              How We Use Your Information
-            </h4>
-            <div className="big">
-              <p className="big">EngageX™ processes collected data to:</p>
-              <p className="mt-5 big">
-                Provide AI-generated feedback on speech performance.
-              </p>
-              <p className="flex big items-center gap-x-3 pl-4 mt-3">
-                <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                Improve platform accuracy and user experience.
-              </p>{" "}
-              <p className="flex big items-center gap-x-3 pl-4">
-                <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                Enable users to download session recordings for personal review.
-              </p>
-              <p className="flex big items-center gap-x-3 pl-4">
-                <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                Ensure compliance with security and legal obligations.
-              </p>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <h4 className="text-black font-montreal">
-              Data Storage & Security
-            </h4>
-            <div className="big">
-              <p className="big">EngageX™ processes collected data to:</p>
-              <p className="flex big items-center gap-x-3 pl-4 mt-3">
-                <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                EngageX™ does not permanently store your session recordings.
-              </p>
-              <p className="flex big items-center gap-x-3 pl-4">
-                <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                All session recordings are deleted after 24 hours unless
-                downloaded.
-              </p>
-              <p className="flex big items-center gap-x-3 pl-4">
-                <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                We use encryption and security measures to protect your data.
-              </p>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <h4 className="text-black font-montreal">
-              Sharing & Third-Party Access
-            </h4>
-            <div className="big">
+            <p className="big space-y-6">
               <p className="big">
-                EngageX™ does not sell or share personal data with third parties
-                except:
+                EngageX™ uses cookies for the following purposes:
               </p>
-              <p className="flex big items-center gap-x-3 pl-4 mt-3">
-                <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                When legally required (e.g., government or law enforcement
-                requests).
+              <p className="big">
+                Essential Cookies: These are necessary for the platform to
+                function properly, including user authentication, security, and
+                accessibility.
               </p>
-              <p className="flex big items-center gap-x-3 pl-4">
-                <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                To comply with fraud prevention and security monitoring
+              <p className="big">
+                Analytical Cookies: We use these to track user behavior, measure
+                platform performance, and improve our services.
               </p>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <h4 className="text-black font-montreal">Your Rights & Control</h4>
-            <div className="big">
-              <p className="font-medium">Access & Deletion:</p>
-              <p>
-                You can request access to your stored personal data or its
-                deletion.
+              <p className="big">
+                Functional Cookies: These enable personalized settings such as
+                language preferences and saved presentations.
               </p>
-              <p className="font-medium mt-2">Session Recordings:</p>
-              <p>
-                Once downloaded, EngageX™ is not responsible for security
-                breaches or misuse.
+              <p className="big">
+                Advertising Cookies: We may use third-party cookies to deliver
+                relevant advertisements based on your interactions with
+                EngageX™.
               </p>
-            </div>
-          </div>
-          <div className="space-y-6">
-            <h4 className="text-black font-montreal">
-              Updates to Privacy Policy
-            </h4>
-            <p className="big">
-              We may update this Privacy Policy from time to time. Continued use
-              of EngageX™ signifies acceptance of any revisions.
             </p>
           </div>
           <div className="space-y-6">
-            <h4 className="text-black font-montreal">Contact Us</h4>
+            <h4 className="text-black font-montreal">3. Third-Party Cookies</h4>
+            <p className="big">
+              We may allow third-party services (e.g., analytics providers,
+              advertising networks) to place cookies on your device to help us
+              improve our services and marketing strategies. These third parties
+              have their own privacy policies governing their use of cookies.
+            </p>
+          </div>
+          <div className="space-y-6">
+            <h4 className="text-black font-montreal">4. Managing Cookies</h4>
+            <div className="big space-y-6">
+              <p className="big">
+                You can control and manage cookies through your browser
+                settings. Most browsers allow you to:
+              </p>
+              <p className="big">Accept or reject cookies</p>
+              <p className="big">Delete stored cookies</p>
+              <p className="big">Set preferences for certain websites</p>
+              <p className="big">
+                Please note that disabling certain cookies may affect the
+                functionality of EngageX™.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <h4 className="text-black font-montreal">
+              5. Changes to This Policy
+            </h4>
+            <p className="big">
+              We may update this Cookie Policy from time to time to reflect
+              changes in our practices or applicable regulations. Please review
+              this policy periodically.
+            </p>
+          </div>
+          <div className="space-y-6">
+            <h4 className="text-black font-montreal">6. Contact Us</h4>
             <p className="big">
               For any privacy-related concerns, please contact
               <span className="font-medium ml-2">support@engagex.com</span>
