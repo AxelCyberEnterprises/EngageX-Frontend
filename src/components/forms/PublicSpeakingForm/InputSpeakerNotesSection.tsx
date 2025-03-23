@@ -13,7 +13,7 @@ const InputSpeakerNotesSection = ({ form }: IInputSpeakerNotesSectionProps) => {
         <section className="space-y-6">
             <div className="space-y-2">
                 <h6>Speaker Notes</h6>
-                <p className="text-independence">Add speaker note for this session.</p>
+                <p className="text-independence">Add speaker note for this session (Feel free to copy and paste).</p>
             </div>
             <ControlledFieldWrapper
                 control={form.control}

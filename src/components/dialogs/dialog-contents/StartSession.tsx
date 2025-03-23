@@ -1,9 +1,17 @@
+import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { PlayCircle } from "lucide-react";
+import { HTMLAttributes } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-const StartSession = () => {
+interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
+    form?: UseFormReturn<FormType>;
+    handlePublicSpeakingFormSubmit?: (values: FormType) => void;
+}
+
+const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionProps) => {
     const dispatch = useDispatch();
 
     return (
@@ -28,7 +36,13 @@ const StartSession = () => {
                 >
                     Cancel
                 </Button>
-                <Button className="bg-gunmetal font-normal w-full h-11">Proceed</Button>
+                <Button
+                    type="submit"
+                    className="bg-gunmetal font-normal w-full h-11"
+                    onClick={form?.handleSubmit(handlePublicSpeakingFormSubmit!)}
+                >
+                    Proceed
+                </Button>
             </div>
         </div>
     );
