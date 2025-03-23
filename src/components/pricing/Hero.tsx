@@ -24,9 +24,9 @@ function Hero() {
               width="1459"
               height="1062"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feBlend
                 mode="normal"
                 in="SourceGraphic"
@@ -77,7 +77,7 @@ function Hero() {
               />
             </div>
             <p className="">
-              Over <span className="font-semibold">+2k</span> Careers Impacted
+              Over <span className="font-semibold">+2k</span> careers impacted
             </p>
           </div>
         </div>

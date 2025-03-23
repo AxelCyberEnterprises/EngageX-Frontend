@@ -9,7 +9,7 @@ function FeatureCardOneSVG() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_di_1214_9438)">
-        <g clip-path="url(#clip0_1214_9438)">
+        <g clipPath="url(#clip0_1214_9438)">
           <rect
             x="18"
             y="21.0161"
@@ -17,15 +17,15 @@ function FeatureCardOneSVG() {
             height="41.9679"
             rx="8.47836"
             fill="white"
-            fill-opacity="0.12"
-            shape-rendering="crispEdges"
+            fillOpacity="0.12"
+            shapeRendering="crispEdges"
           />
           <rect
             width="105.19"
             height="59.8406"
             transform="matrix(1.01397 -0.0941632 0.0941632 0.977479 3.70215 12.0615)"
             fill="#79A2FF"
-            fill-opacity="0.1"
+            fillOpacity="0.1"
           />
           <rect
             x="34.5099"
@@ -34,7 +34,7 @@ function FeatureCardOneSVG() {
             height="15.108"
             rx="7.55398"
             stroke="url(#paint0_linear_1214_9438)"
-            stroke-width="0.847835"
+            strokeWidth="0.847835"
           />
           <path
             d="M42.3229 43.9897H41.5675L41.1326 42.7918H38.7289L38.294 43.9897H37.5386L39.5301 38.6484H40.3314L42.3229 43.9897ZM39.9269 39.4954L38.9731 42.1279H40.8884L39.9269 39.4954ZM47.9129 41.2199C48.1621 41.342 48.358 41.5124 48.5004 41.7311C48.6429 41.9499 48.7141 42.1991 48.7141 42.4789C48.7141 42.9062 48.564 43.2648 48.2639 43.5548C47.9637 43.8448 47.5975 43.9897 47.1651 43.9897H44.8607V38.6484H46.9972C47.4194 38.6484 47.773 38.7883 48.0579 39.0681C48.3478 39.3478 48.4928 39.6938 48.4928 40.1058C48.4928 40.584 48.2995 40.9553 47.9129 41.2199ZM46.9972 39.3122H45.5703V40.9452H46.9972C47.221 40.9452 47.4093 40.8663 47.5619 40.7086C47.7145 40.5509 47.7908 40.3576 47.7908 40.1287C47.7908 39.9049 47.7119 39.7141 47.5542 39.5564C47.4016 39.3936 47.216 39.3122 46.9972 39.3122ZM45.5703 43.3259H47.1651C47.4042 43.3259 47.6051 43.242 47.7679 43.0741C47.9307 42.9062 48.0121 42.7002 48.0121 42.456C48.0121 42.2169 47.9281 42.0134 47.7603 41.8456C47.6026 41.6777 47.4042 41.5938 47.1651 41.5938H45.5703V43.3259ZM53.9733 44.0889C53.1594 44.0889 52.4904 43.8219 51.9665 43.2877C51.4425 42.7587 51.1805 42.1025 51.1805 41.3191C51.1805 40.5357 51.4425 39.8794 51.9665 39.3504C52.4904 38.8163 53.1594 38.5492 53.9733 38.5492C54.4566 38.5492 54.9042 38.6662 55.3163 38.9002C55.7283 39.1342 56.0488 39.4496 56.2777 39.8464L55.6596 40.205C55.507 39.91 55.2781 39.676 54.9729 39.503C54.6728 39.325 54.3396 39.2359 53.9733 39.2359C53.3527 39.2359 52.8491 39.4343 52.4624 39.8311C52.0758 40.2228 51.8825 40.7188 51.8825 41.3191C51.8825 41.9142 52.0758 42.4077 52.4624 42.7994C52.8491 43.1962 53.3527 43.3946 53.9733 43.3946C54.3396 43.3946 54.6728 43.3081 54.9729 43.1351C55.2781 42.9571 55.507 42.7231 55.6596 42.4331L56.2777 42.7841C56.0539 43.1809 55.7359 43.4988 55.3239 43.7379C54.9169 43.9719 54.4667 44.0889 53.9733 44.0889ZM59.0114 38.6484H61.0945C61.8169 38.6484 62.4197 38.9078 62.903 39.4267C63.3862 39.9405 63.6279 40.5713 63.6279 41.3191C63.6279 42.0618 63.3862 42.6951 62.903 43.2191C62.4197 43.7329 61.8169 43.9897 61.0945 43.9897H59.0114V38.6484ZM59.721 43.3183H61.0945C61.6388 43.3183 62.084 43.1275 62.4299 42.746C62.7758 42.3594 62.9488 41.8837 62.9488 41.3191C62.9488 40.7544 62.7758 40.2788 62.4299 39.8922C62.084 39.5106 61.6388 39.3199 61.0945 39.3199H59.721V43.3183ZM67.1057 41.6243V43.3183H69.5856V43.9897H66.396V38.6484H69.5474V39.3199H67.1057V40.9604H69.3567V41.6243H67.1057ZM75.425 38.6484V39.3199H73.0595V41.052H75.3258V41.7235H73.0595V43.9897H72.3499V38.6484H75.425Z"
@@ -48,8 +48,8 @@ function FeatureCardOneSVG() {
           height="40.2722"
           rx="7.63052"
           stroke="url(#paint2_linear_1214_9438)"
-          stroke-width="1.69567"
-          shape-rendering="crispEdges"
+          strokeWidth="1.69567"
+          shapeRendering="crispEdges"
         />
       </g>
       <g filter="url(#filter1_d_1214_9438)">
@@ -59,7 +59,7 @@ function FeatureCardOneSVG() {
         />
       </g>
       <g filter="url(#filter2_di_1214_9438)">
-        <g clip-path="url(#clip1_1214_9438)">
+        <g clipPath="url(#clip1_1214_9438)">
           <rect
             x="186.946"
             y="19.9258"
@@ -67,18 +67,18 @@ function FeatureCardOneSVG() {
             height="44.1486"
             rx="7.89236"
             fill="white"
-            fill-opacity="0.12"
-            shape-rendering="crispEdges"
+            fillOpacity="0.12"
+            shapeRendering="crispEdges"
           />
           <rect
             width="97.9196"
             height="55.7046"
             transform="matrix(-0.987453 -0.0933465 -0.368843 0.962517 284.908 17.229)"
             fill="#79A2FF"
-            fill-opacity="0.1"
+            fillOpacity="0.1"
           />
           <g filter="url(#filter3_dddii_1214_9438)">
-            <g clip-path="url(#clip2_1214_9438)">
+            <g clipPath="url(#clip2_1214_9438)">
               <rect
                 x="215.61"
                 y="25.7681"
@@ -152,9 +152,9 @@ function FeatureCardOneSVG() {
           height="45.727"
           rx="8.68159"
           stroke="#79A2FF"
-          stroke-opacity="0.5"
-          stroke-width="1.57847"
-          shape-rendering="crispEdges"
+          strokeOpacity="0.5"
+          strokeWidth="1.57847"
+          shapeRendering="crispEdges"
         />
       </g>
       <defs>
@@ -165,9 +165,9 @@ function FeatureCardOneSVG() {
           width="113.181"
           height="77.0967"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -230,9 +230,9 @@ function FeatureCardOneSVG() {
           width="95.5839"
           height="20.9628"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -265,9 +265,9 @@ function FeatureCardOneSVG() {
           width="116.339"
           height="82.4345"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -330,9 +330,9 @@ function FeatureCardOneSVG() {
           width="56.6839"
           height="56.6156"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -436,9 +436,9 @@ function FeatureCardOneSVG() {
           width="19.8608"
           height="21.9538"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -490,8 +490,8 @@ function FeatureCardOneSVG() {
           y2="40.3101"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#79A2FF" />
-          <stop offset="1" stop-color="white" stop-opacity="0.01" />
+          <stop stopColor="#79A2FF" />
+          <stop offset="1" stopColor="white" stopOpacity="0.01" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_1214_9438"
@@ -501,8 +501,8 @@ function FeatureCardOneSVG() {
           y2="31.5362"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#79A2FF" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#79A2FF" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_1214_9438"
@@ -512,8 +512,8 @@ function FeatureCardOneSVG() {
           y2="83.056"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#79A2FF" />
-          <stop offset="1" stop-color="#79A2FF" stop-opacity="0" />
+          <stop stopColor="#79A2FF" />
+          <stop offset="1" stopColor="#79A2FF" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_1214_9438"
@@ -523,8 +523,8 @@ function FeatureCardOneSVG() {
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#79A2FF" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#79A2FF" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_1214_9438"
@@ -534,8 +534,8 @@ function FeatureCardOneSVG() {
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#79A2FF" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#79A2FF" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_1214_9438"
@@ -545,8 +545,8 @@ function FeatureCardOneSVG() {
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#79A2FF" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#79A2FF" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_1214_9438"
@@ -556,8 +556,8 @@ function FeatureCardOneSVG() {
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#79A2FF" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#79A2FF" />
         </linearGradient>
         <linearGradient
           id="paint7_linear_1214_9438"
@@ -567,8 +567,8 @@ function FeatureCardOneSVG() {
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#79A2FF" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#79A2FF" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_1214_9438"
@@ -578,8 +578,8 @@ function FeatureCardOneSVG() {
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#79A2FF" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#79A2FF" />
         </linearGradient>
         <linearGradient
           id="paint9_linear_1214_9438"
@@ -589,8 +589,8 @@ function FeatureCardOneSVG() {
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#79A2FF" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#79A2FF" />
         </linearGradient>
         <clipPath id="clip0_1214_9438">
           <rect

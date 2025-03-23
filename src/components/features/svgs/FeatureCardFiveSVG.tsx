@@ -17,7 +17,7 @@ function FeatureCardFiveSVG() {
             d="M102.979 61.1957C100.831 61.1957 99.0709 59.4504 99.2722 57.3119C100.172 47.75 104.375 38.7511 111.223 31.903C118.992 24.1341 129.529 19.7695 140.516 19.7695C151.503 19.7695 162.04 24.1341 169.809 31.903C176.657 38.7511 180.86 47.75 181.76 57.3119C181.961 59.4504 180.201 61.1957 178.053 61.1957C175.905 61.1957 174.187 59.4485 173.939 57.3149C173.069 49.8198 169.697 42.7917 164.309 37.4032C157.998 31.093 149.44 27.548 140.516 27.548C131.592 27.548 123.034 31.093 116.723 37.4032C111.335 42.7917 107.963 49.8198 107.093 57.3149C106.845 59.4485 105.127 61.1957 102.979 61.1957Z"
             fill="#EFF6FC"
             stroke="#D4D6DF"
-            stroke-width="0.654098"
+            strokeWidth="0.654098"
             mask="url(#path-2-inside-1_1468_5715)"
           />
           <path
@@ -97,9 +97,9 @@ function FeatureCardFiveSVG() {
           width="281.8"
           height="126.853"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -132,9 +132,9 @@ function FeatureCardFiveSVG() {
           width="248.2"
           height="75.2"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -166,9 +166,9 @@ function FeatureCardFiveSVG() {
           width="242.903"
           height="18.9559"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

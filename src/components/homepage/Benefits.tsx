@@ -23,7 +23,7 @@ function Benefits() {
 
         <div className="lg:w-[55%] text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
-            What's in It for You?
+            What's in it for you?
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             Track progress, receive actionable feedback, and captivate your
@@ -43,13 +43,13 @@ function Benefits() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_401_744)">
+              <g clipPath="url(#clip0_401_744)">
                 <path
                   d="M10.334 5V3.125L12.209 1.25L12.834 2.5L14.084 3.125L12.209 5H10.334ZM10.334 5L7.83397 7.49997M14.084 7.5C14.084 10.9518 11.2858 13.75 7.83398 13.75C4.3822 13.75 1.58398 10.9518 1.58398 7.5C1.58398 4.04822 4.3822 1.25 7.83398 1.25M10.959 7.5C10.959 9.22589 9.55987 10.625 7.83398 10.625C6.10809 10.625 4.70898 9.22589 4.70898 7.5C4.70898 5.77411 6.10809 4.375 7.83398 4.375"
                   stroke="white"
-                  stroke-width="1.25"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </g>
               <defs>
@@ -65,7 +65,7 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Confidence & Mastery</h6>
+            <h6 className=" font-montreal">Confidence & mastery</h6>
             <p className="text-dark-electric-blue">
               Perfect your tone, pace, and delivery through personalized
               feedback.
@@ -85,14 +85,14 @@ function Benefits() {
               <path
                 d="M13.459 13.125H3.20898C2.85895 13.125 2.68394 13.125 2.55024 13.0569C2.43264 12.997 2.33703 12.9013 2.27711 12.7837C2.20898 12.65 2.20898 12.475 2.20898 12.125V1.875M13.459 4.375L10.0625 7.77145C9.93878 7.8952 9.8769 7.95708 9.80555 7.98026C9.74279 8.00066 9.67518 8.00066 9.61242 7.98026C9.54106 7.95708 9.47919 7.8952 9.35543 7.77145L8.18754 6.60355C8.06378 6.4798 8.0019 6.41792 7.93055 6.39474C7.86779 6.37434 7.80018 6.37434 7.73742 6.39474C7.66606 6.41792 7.60419 6.4798 7.48043 6.60355L4.70898 9.375M13.459 4.375H10.959M13.459 4.375V6.875"
                 stroke="white"
-                stroke-width="1.25"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.25"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Real-Time Insights</h6>
+            <h6 className=" font-montreal">Real-time insights</h6>
             <p className="text-dark-electric-blue">
               Get immediate feedback on audience engagement and sentiment.
             </p>
@@ -108,13 +108,13 @@ function Benefits() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_577_1405)">
+              <g clipPath="url(#clip0_577_1405)">
                 <path
                   d="M7.83398 1.25V1.875M2.20898 7.5H1.58398M3.77148 3.4375L3.39642 3.06244M11.8965 3.4375L12.2716 3.06244M14.084 7.5H13.459M6.58398 8.4375H9.08398M7.83398 8.4375V11.5625M10.0215 10.5462C10.9678 9.86548 11.584 8.7547 11.584 7.5C11.584 5.42893 9.90505 3.75 7.83398 3.75C5.76292 3.75 4.08398 5.42893 4.08398 7.5C4.08398 8.7547 4.70019 9.86548 5.64648 10.5462V11.75C5.64648 12.4501 5.64648 12.8001 5.78273 13.0675C5.90257 13.3027 6.09379 13.4939 6.329 13.6138C6.59639 13.75 6.94642 13.75 7.64648 13.75H8.02148C8.72155 13.75 9.07158 13.75 9.33897 13.6138C9.57418 13.4939 9.7654 13.3027 9.88524 13.0675C10.0215 12.8001 10.0215 12.4501 10.0215 11.75V10.5462Z"
                   stroke="white"
-                  stroke-width="1.25"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </g>
               <defs>
@@ -130,7 +130,7 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Comprehensive Analytics</h6>
+            <h6 className=" font-montreal">Comprehensive analytics</h6>
             <p className="text-dark-electric-blue">
               Track your progress with detailed session reports and playback
               features.
@@ -147,13 +147,13 @@ function Benefits() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_577_1411)">
+              <g clipPath="url(#clip0_577_1411)">
                 <path
                   d="M10.334 3.125L11.584 4.375L14.084 1.875M14.084 7.5V10.75C14.084 11.8001 14.084 12.3251 13.8796 12.7262C13.6999 13.079 13.413 13.3659 13.0602 13.5456C12.6591 13.75 12.1341 13.75 11.084 13.75H4.58398C3.53389 13.75 3.00884 13.75 2.60775 13.5456C2.25495 13.3659 1.96811 13.079 1.78835 12.7262C1.58398 12.3251 1.58398 11.8001 1.58398 10.75V4.25C1.58398 3.1999 1.58398 2.67485 1.78835 2.27377C1.96811 1.92096 2.25495 1.63413 2.60775 1.45436C3.00884 1.25 3.53389 1.25 4.58398 1.25H7.83398M1.67493 12.4539C1.96814 11.3991 2.93559 10.625 4.08384 10.625H8.45884C9.03966 10.625 9.33007 10.625 9.57157 10.673C10.5633 10.8703 11.3385 11.6455 11.5358 12.6373C11.5838 12.8788 11.5838 13.1692 11.5838 13.75M9.08398 5.9375C9.08398 7.31821 7.9647 8.4375 6.58398 8.4375C5.20327 8.4375 4.08398 7.31821 4.08398 5.9375C4.08398 4.55679 5.20327 3.4375 6.58398 3.4375C7.9647 3.4375 9.08398 4.55679 9.08398 5.9375Z"
                   stroke="white"
-                  stroke-width="1.25"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.25"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </g>
               <defs>
@@ -169,7 +169,7 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Goal-Oriented Practice</h6>
+            <h6 className=" font-montreal">Goal-oriented practice</h6>
             <p className="text-dark-electric-blue">
               Set milestones, achieve badges, and grow your speaking skills
               systematically.
@@ -181,7 +181,7 @@ function Benefits() {
       <div className="relative flex justify-center w-full">
         <Link to="/features">
           <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl">
-            <p>Unlock Your Potential</p>
+            <p>Unlock your potential</p>
             <svg
               width="15"
               height="18"

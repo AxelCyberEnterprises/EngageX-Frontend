@@ -11,39 +11,39 @@ function FeaturesSection() {
   let features = [
     {
       svg: <FeatureCardOneSVG />,
-      title: "Prompt and Cue Card System",
+      title: "Prompt and cue card system",
       content:
         "Get a heads up on your next speaking point and be better prepared to deliver the best way possible",
     },
     {
       svg: <FeatureCardTwoSVG />,
-      title: "Speaker Analytics and Self-Assessment Tools",
+      title: "Speaker analytics and self-assessment tools",
       content:
-        "Live Analysis and feedback to your speech powered by unparalleled AI Technology",
+        "Live analysis and feedback to your speech powered by unparalleled AI Technology",
     },
     {
       svg: <FeatureCardThreeSVG />,
-      title: "Realistic Environment Enhancements",
+      title: "Realistic environment enhancements",
       content:
-        "Immersive Speaking Rooms that give you a taste of the real thing even including reactions from your Audience and Listeners",
+        "Immersive speaking rooms that give you a taste of the real thing even including reactions from your Audience and Listeners",
     },
     {
       svg: <FeatureCardFourSVG />,
-      title: "Post-Speech Feedback Summary",
+      title: "Post-speech feedback summary",
       content:
         "We enable you to be aware of your Progress and stay goal oriented while you train",
     },
     {
       svg: <FeatureCardFiveSVG />,
-      title: "Prompt and Cue Card System",
+      title: "Prompt and cue card system",
       content:
         "In-depth Analysis ensuring you can give your best the next time by understanding what you need to do better in detail",
     },
     {
       svg: <FeatureCardSixSVG />,
-      title: "Speech Progress & Phase Indicators",
+      title: "Speech progress & phase indicators",
       content:
-        "Know where you are in the Journey of your  delivery so you can flow with an awareness of how much time you take, every time you train",
+        "Know where you are in the journey of your  delivery so you can flow with an awareness of how much time you take, every time you train",
     },
   ];
   return (
@@ -83,7 +83,7 @@ function FeaturesSection() {
       <div className="relative w-full flex justify-center">
         <Link to="/dashboard/user/">
           <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative">
-            <p>Start Practicing Today</p>
+            <p>Start practicing today</p>
             <svg
               width="15"
               height="18"
