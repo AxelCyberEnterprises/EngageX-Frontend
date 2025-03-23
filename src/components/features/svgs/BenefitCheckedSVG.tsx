@@ -12,9 +12,9 @@ function BenefitCheckedSVG() {
       <path
         d="M23.3032 13.1245L17.0723 21.8754L12.6973 17.5004"
         stroke="white"
-        stroke-width="1.75"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

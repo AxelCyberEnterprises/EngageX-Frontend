@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
 
 function Navbar() {
-  const [showMenu, setShowMenu] = useState(false);
+  const [showMenu] = useState(false);
+  const location = useLocation();
+
   return (
     <div className="flex justify-between bg-gunmetal h-[5rem] px-10 overflow-clip lg:px-20 text-white font-montserrat items-center">
       <img src="./assets/logo.png" alt="brand logo" className="h-8" />
@@ -15,21 +17,26 @@ function Navbar() {
             : "hidden"
         )}
       >
-        <ul className="flex flex-col lg:flex-row justify-between gap-6 lg:gap-20 font-light rounded-3xl lg:rounded-full lg:items-center px-4 py-2 lg:py-4 lg:px-8 border border-dark-electric-blue/20">
-          <Link to="/">
-            <li className="py-4 lg:py-0">Home</li>
-          </Link>
-          <Link to="/features">
-            <li className="py-4 lg:py-0">Features</li>
-          </Link>
-          <Link to="/pricing">
-            <li className="py-4 lg:py-0">Pricing</li>
-          </Link>
-          <Link to="/contact">
-            <li className="py-4 lg:py-0">Contact</li>
-          </Link>
+        <ul className="flex flex-col lg:flex-row justify-between gap-6 lg:gap-20 font-light rounded-3xl lg:rounded-2xl lg:items-center px-4 py-2 lg:py-4 lg:px-8 border border-dark-electric-blue/20">
+          {[
+            { path: "/", label: "Home" },
+            { path: "/features", label: "Features" },
+            { path: "/pricing", label: "Pricing" },
+            { path: "/contact", label: "Contact" },
+          ].map(({ path, label }) => (
+            <Link key={path} to={path}>
+              <li
+                className={clsx(
+                  "py-4 lg:py-0",
+                  location.pathname === path ? "text-[#64BA9F]" : ""
+                )}
+              >
+                {label}
+              </li>
+            </Link>
+          ))}
         </ul>
-        <button className="h-[3rem] lg:hidden space-x-4 border rounded-full border-dark-electric-blue/20">
+        <button className="h-[3rem] lg:hidden space-x-4 border rounded-2xl border-dark-electric-blue/20">
           <p>Login</p>
           <svg
             width="26"
@@ -47,7 +54,7 @@ function Navbar() {
         </button>
       </div>
       <Link to="/auth/login">
-        <button className="h-[3rem] pl-8 pr-6 space-x-4 hidden lg:flex border rounded-full border-dark-electric-blue/20">
+        <button className="h-[3rem] pl-8 pr-6 space-x-4 hidden lg:flex border rounded-2xl border-dark-electric-blue/20">
           <p>Login</p>
           <svg
             width="26"
@@ -64,26 +71,6 @@ function Navbar() {
           </svg>
         </button>
       </Link>
-      <button
-        onClick={() => setShowMenu(!showMenu)}
-        className="h-[3rem] px-8 space-x-[8px] lg:hidden border rounded-full border-dark-electric-blue/20"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M3 12H21M3 6H21M3 18H21"
-            stroke="white"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
     </div>
   );
 }

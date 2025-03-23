@@ -2,9 +2,10 @@ import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { PlayCircle } from "lucide-react";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
     form?: UseFormReturn<FormType>;
@@ -13,6 +14,16 @@ interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
 
 const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionProps) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleProceed = useCallback(() => {
+        if (form && handlePublicSpeakingFormSubmit) {
+            form.handleSubmit(handlePublicSpeakingFormSubmit)();
+        }
+
+        dispatch(closeDialog());
+        navigate("/sessions/public-speaking-session");
+    }, [dispatch, form, handlePublicSpeakingFormSubmit, navigate]);
 
     return (
         <div className="flex flex-col justify-between">
@@ -36,11 +47,7 @@ const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionPro
                 >
                     Cancel
                 </Button>
-                <Button
-                    type="submit"
-                    className="bg-gunmetal font-normal w-full h-11"
-                    onClick={form?.handleSubmit(handlePublicSpeakingFormSubmit!)}
-                >
+                <Button className="bg-gunmetal font-normal w-full h-11" onClick={handleProceed}>
                     Proceed
                 </Button>
             </div>

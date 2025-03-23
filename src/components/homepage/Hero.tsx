@@ -28,8 +28,8 @@ function Hero() {
           </p>
         </div>
         <h1 className="font-montreal text-center lg:text-left ">
-          Elevate Your Speaking Skills with Our Immersive Virtual Practice
-          Platform
+          Elevate your speaking skills with our immersive virtual practice
+          platform
         </h1>
         <p className="big text-dark-electric-blue font-light text-center lg:text-left">
           Prepare, perfect, and present with confidence in a realistic,
@@ -40,7 +40,7 @@ function Hero() {
         </p>
         <Link to="/dashboard/user/">
           <button className="flex gap-4 mt-10 mx-auto lg:mx-0 w-full lg:w-max py-3 px-8 items-center justify-center rounded-2xl">
-            <p>Launch App</p>
+            <p>Get started</p>
             <svg
               width="15"
               height="18"

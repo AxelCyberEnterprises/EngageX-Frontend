@@ -24,8 +24,8 @@ function Benefits() {
 
         <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
-            Why Choose Us <br />
-            Over Traditional Practice Methods
+            Why choose us <br />
+            over traditional practice methods
           </h4>
         </div>
       </div>
@@ -34,18 +34,18 @@ function Benefits() {
         <div className="flex w-full gap-x-10">
           <div className="w-1/3 py-4">
             <p className="big border-b border-b-white/10 h-10">
-              Realistic Audience Reactions
+              Realistic audience reactions
             </p>
             <p className="big border-b border-b-white/10 h-16 flex items-end pb-2">
-              Real-Time Feedback
+              Real-time feedback
             </p>
             <p className="big border-b border-b-white/10 h-16 flex items-end pb-2">
-              Engagement Analytics
+              Engagement analytics
             </p>
             <p className="big h-16 border-b border-b-white/10 flex items-end pb-2">
-              Flexible Virtual Environments
+              Flexible virtual environments
             </p>
-            <p className="big h-16 flex items-end pb-2">Progress Tracking</p>
+            <p className="big h-16 flex items-end pb-2">Progress tracking</p>
           </div>
           <div className="w-2/3 bg-white h-full divide-x py-4 flex rounded-2xl">
             <div className="flex-1 w-full flex flex-col items-center">
@@ -88,7 +88,7 @@ function Benefits() {
 
       <div className="w-full flex items-center justify-center">
         <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative">
-          <p>Sign Up Now</p>
+          <p>Sign up now</p>
           <svg
             width="15"
             height="18"

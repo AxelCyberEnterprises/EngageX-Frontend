@@ -56,7 +56,7 @@ function Testiomonial() {
 
         <div className="lg:w-[32rem] text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
-            Loved by Aspiring Speakers and Industry Leaders Alike
+            Loved by aspiring speakers and industry leaders alike
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             Track progress, receive actionable feedback, and captivate your

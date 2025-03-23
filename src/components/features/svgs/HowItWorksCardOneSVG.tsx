@@ -10,7 +10,7 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <g filter="url(#filter0_d_1151_4670)">
-        <g clip-path="url(#clip0_1151_4670)">
+        <g clipPath="url(#clip0_1151_4670)">
           <rect
             x="2.5"
             y="2"
@@ -32,70 +32,70 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
             cy="149.078"
             r="66.032"
             stroke="url(#paint0_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="313.246"
             cy="149.078"
             r="90.1808"
             stroke="url(#paint1_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="313.999"
             cy="148.324"
             r="112.066"
             stroke="url(#paint2_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="313.244"
             cy="146.06"
             r="141.497"
             stroke="url(#paint3_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="313.998"
             cy="146.814"
             r="170.928"
             stroke="url(#paint4_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="314.001"
             cy="146.814"
             r="201.115"
             stroke="url(#paint5_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="313.247"
             cy="146.06"
             r="227.527"
             stroke="url(#paint6_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="313.246"
             cy="146.06"
             r="259.223"
             stroke="url(#paint7_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="313.245"
             cy="146.06"
             r="295.446"
             stroke="url(#paint8_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <circle
             cx="314"
             cy="145.305"
             r="324.877"
             stroke="url(#paint9_linear_1151_4670)"
-            stroke-width="0.754651"
+            strokeWidth="0.754651"
           />
           <g filter="url(#filter1_dddii_1151_4670)">
             <rect
@@ -105,7 +105,7 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
               height="52.8256"
               rx="26.4128"
               fill="#79A2FF"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <g opacity="0.72" filter="url(#filter2_dd_1151_4670)">
               <path
@@ -120,22 +120,22 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
               cy="149.833"
               r="37.7326"
               fill="#A5B8C3"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <circle
               cx="314.182"
               cy="149.833"
               r="37.7326"
               fill="url(#pattern0_1151_4670)"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <circle
               cx="314.182"
               cy="149.833"
               r="39.3497"
               stroke="url(#paint10_linear_1151_4670)"
-              stroke-width="3.23422"
-              shape-rendering="crispEdges"
+              strokeWidth="3.23422"
+              shapeRendering="crispEdges"
             />
           </g>
           <g filter="url(#filter4_dddii_1151_4670)">
@@ -146,7 +146,7 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
               height="52.8256"
               rx="26.4128"
               fill="#79A2FF"
-              shape-rendering="crispEdges"
+              shapeRendering="crispEdges"
             />
             <g filter="url(#filter5_d_1151_4670)">
               <path
@@ -163,7 +163,7 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           height="335.717"
           rx="20.7167"
           stroke="#E1E5E7"
-          stroke-width="1.06239"
+          strokeWidth="1.06239"
         />
       </g>
       <defs>
@@ -174,9 +174,9 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           width="634.25"
           height="341.029"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -208,9 +208,9 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           width="91.9332"
           height="91.9337"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -314,9 +314,9 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           width="31.5248"
           height="31.099"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -367,9 +367,9 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           width="130.231"
           height="130.231"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -419,9 +419,9 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           width="91.9332"
           height="91.9337"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -525,9 +525,9 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           width="33.2043"
           height="40.7512"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -561,8 +561,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="214.733"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_1151_4670"
@@ -572,8 +572,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="238.882"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_1151_4670"
@@ -583,8 +583,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="260.012"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_1151_4670"
@@ -594,8 +594,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="287.179"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_1151_4670"
@@ -605,8 +605,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="317.366"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_1151_4670"
@@ -616,8 +616,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="347.552"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_1151_4670"
@@ -627,8 +627,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="373.21"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint7_linear_1151_4670"
@@ -638,8 +638,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="404.906"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_1151_4670"
@@ -649,8 +649,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="441.128"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint9_linear_1151_4670"
@@ -660,8 +660,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="469.805"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#575757" />
-          <stop offset="0.776667" stop-color="#BDBDBD" stop-opacity="0" />
+          <stop stopColor="#575757" />
+          <stop offset="0.776667" stopColor="#BDBDBD" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint10_linear_1151_4670"
@@ -671,8 +671,8 @@ function HowItWorksCardOneSVG({ className }: { className?: string }) {
           y2="160.803"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" stop-opacity="0.8" />
-          <stop offset="1" stop-color="#AEAEAE" stop-opacity="0.3" />
+          <stop stopColor="white" stopOpacity="0.8" />
+          <stop offset="1" stopColor="#AEAEAE" stopOpacity="0.3" />
         </linearGradient>
         <clipPath id="clip0_1151_4670">
           <rect

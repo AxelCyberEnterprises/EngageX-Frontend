@@ -1,15 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Footer() {
+  const location = useLocation(); // Get the current route
+
+  const getActiveClass = (path: string) =>
+    location.pathname === path ? "text-[#64BA9F]" : "text-white";
+
   return (
     <section className="px-10 lg:px-20 bg-gunmetal text-white pt-16 space-y-20">
-      <div className="p-20  flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:justify-between text-black lg:items-center bg-alice-blue rounded-2xl">
-        <h4 className=" font-montreal lg:w-[17rem] font-medium leading-relaxed">
-          Ready to Speak with Confidence?
+      <div className="p-20 flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:justify-between text-black lg:items-center bg-alice-blue rounded-2xl">
+        <h4 className="font-montreal lg:w-[17rem] font-medium leading-relaxed">
+          Ready to speak with confidence?
         </h4>
         <Link to="/auth/login">
           <button className="px-6 py-3 space-x-10 rounded-2xl">
-            <p className="">Get Started</p>
+            <p className="">Get started</p>
             <svg
               width="28"
               height="28"
@@ -44,65 +49,67 @@ function Footer() {
         <div className="flex flex-col lg:flex-row space-y-16 lg:w-3/4 justify-between lg:pl-[10rem]">
           <div className="space-y-8">
             <p className="text-[#737373]">Pages</p>
-            <ul className="space-y-6 text-white">
+            <ul className="space-y-6">
               <li>
-                <Link to="/">
-                  <p className="small">Home</p>
+                <Link to="/" className={getActiveClass("/")}>
+                  Home
                 </Link>
               </li>
               <li>
-                <Link to="/features">
-                  <p className="small">Features</p>
+                <Link to="/features" className={getActiveClass("/features")}>
+                  Features
                 </Link>
               </li>
               <li>
-                <Link to="/pricing">
-                  <p className="small">Pricing</p>
+                <Link to="/pricing" className={getActiveClass("/pricing")}>
+                  Pricing
                 </Link>
               </li>
             </ul>
           </div>
           <div className="space-y-8">
             <p className="text-[#737373]">Support</p>
-            <ul className="space-y-6 text-white">
+            <ul className="space-y-6">
               <li>
-                <Link to="">
-                  <p className="small">Help Center</p>
+                <Link
+                  to="/help-center"
+                  className={getActiveClass("/help-center")}
+                >
+                  Help center
                 </Link>
               </li>
               <li>
-                <Link to="">
-                  <p className="small">Live Chat</p>
-                </Link>
-              </li>
-              <li>
-                <Link to="">
-                  <p className="small">How It Works</p>
-                </Link>
-              </li>
-              <li>
-                <Link to="">
-                  <p className="small">User Guides</p>
+                <Link to="/live-chat" className={getActiveClass("/live-chat")}>
+                  Live chat
                 </Link>
               </li>
             </ul>
           </div>
           <div className="space-y-8">
             <p className="text-[#737373]">Legal</p>
-            <ul className="space-y-6 text-white">
+            <ul className="space-y-6">
               <li>
-                <Link to="">
-                  <p className="small">Privacy Policy</p>
+                <Link
+                  to="/privacy-policy"
+                  className={getActiveClass("/privacy-policy")}
+                >
+                  Privacy policy
                 </Link>
               </li>
               <li>
-                <Link to="">
-                  <p className="small">Terms of Service</p>
+                <Link
+                  to="/terms-of-service"
+                  className={getActiveClass("/terms-of-service")}
+                >
+                  Terms of service
                 </Link>
               </li>
               <li>
-                <Link to="">
-                  <p className="small">Cookie Policy</p>
+                <Link
+                  to="/cookie-policy"
+                  className={getActiveClass("/cookie-policy")}
+                >
+                  Cookie policy
                 </Link>
               </li>
             </ul>
@@ -112,13 +119,23 @@ function Footer() {
 
       <div className="border-t border-t-alice-blue flex flex-col lg:flex-row space-y-4 lg:space-y-0 py-6 justify-between text-white">
         <p>
-          © Career Doctor, LLC All Rights Reserved Engineered by Axel Cyber,
+          © Career Doctor, LLC all rights reserved. Engineered by Axel Cyber,
           LLC.
         </p>
         <div className="flex items-center gap-4">
-          <p>Terms & Condition</p>
+          <Link
+            to="/terms-of-service"
+            className={getActiveClass("/terms-of-service")}
+          >
+            Terms & conditions
+          </Link>
           <div className="h-2 w-2 rounded-full bg-white" />
-          <p>Privacy Policy</p>
+          <Link
+            to="/privacy-policy"
+            className={getActiveClass("/privacy-policy")}
+          >
+            Privacy policy
+          </Link>
         </div>
       </div>
     </section>
