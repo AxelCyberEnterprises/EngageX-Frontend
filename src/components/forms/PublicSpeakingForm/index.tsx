@@ -70,6 +70,14 @@ const PublicSpeakingForm = () => {
                         <Button
                             type="button"
                             className="bg-green-sheen hover:bg-green-sheen/80 font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            onClick={() =>
+                                dispatch(
+                                    openDialog({
+                                        key: "start-session",
+                                        children: <StartSession />,
+                                    }),
+                                )
+                            }
                         >
                             Skip Setup
                         </Button>
