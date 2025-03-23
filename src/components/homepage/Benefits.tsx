@@ -23,7 +23,7 @@ function Benefits() {
 
         <div className="lg:w-[55%] text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
-            What's in It for You?
+            What's in it for you?
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             Track progress, receive actionable feedback, and captivate your
@@ -65,7 +65,7 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Confidence & Mastery</h6>
+            <h6 className=" font-montreal">Confidence & mastery</h6>
             <p className="text-dark-electric-blue">
               Perfect your tone, pace, and delivery through personalized
               feedback.
@@ -92,7 +92,7 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Real-Time Insights</h6>
+            <h6 className=" font-montreal">Real-time insights</h6>
             <p className="text-dark-electric-blue">
               Get immediate feedback on audience engagement and sentiment.
             </p>
@@ -130,7 +130,7 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Comprehensive Analytics</h6>
+            <h6 className=" font-montreal">Comprehensive analytics</h6>
             <p className="text-dark-electric-blue">
               Track your progress with detailed session reports and playback
               features.
@@ -169,7 +169,7 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Goal-Oriented Practice</h6>
+            <h6 className=" font-montreal">Goal-oriented practice</h6>
             <p className="text-dark-electric-blue">
               Set milestones, achieve badges, and grow your speaking skills
               systematically.
@@ -181,7 +181,7 @@ function Benefits() {
       <div className="relative flex justify-center w-full">
         <Link to="/features">
           <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl">
-            <p>Unlock Your Potential</p>
+            <p>Unlock your potential</p>
             <svg
               width="15"
               height="18"

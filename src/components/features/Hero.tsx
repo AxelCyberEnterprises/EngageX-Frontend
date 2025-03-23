@@ -11,7 +11,7 @@ function Hero() {
           <p className="text-dark-orange">Provide tailored pitch to users</p>
           <div className="space-y-8">
             <h2 className="font-montreal leading-snug">
-              Transform Your Speaking Skills with EngageX
+              Transform your speaking skills with EngageX
             </h2>
             <p className="big">
               Step into the future of public speaking, pitching, and
@@ -22,7 +22,7 @@ function Hero() {
           </div>
           <Link to="/dashboard/user/">
             <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative top-10">
-              <p>Launch App</p>
+              <p>Get started</p>
               <svg
                 width="15"
                 height="18"

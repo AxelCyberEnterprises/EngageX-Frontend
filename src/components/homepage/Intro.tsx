@@ -24,7 +24,7 @@ function Intro() {
 
           <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
             <h4 className="h-max font-montreal leading-snug">
-              Why Settle for Ordinary When You Can Practice Extraordinary
+              Why settle for ordinary when You can practice extraordinary
             </h4>
             <p className="text-dark-electric-blue leading-normal">
               Our platform offers a groundbreaking solution for anyone aiming to
@@ -71,7 +71,7 @@ function Intro() {
             </div>
             <div className="space-y-4">
               <h6 className="font-montreal">
-                Realistic Environment Enhancements
+                Realistic environment enhancements
               </h6>
               <p className="">
                 Realistic virtual environments tailored to your needs.
@@ -113,7 +113,7 @@ function Intro() {
               </svg>
             </div>
             <div className="space-y-4">
-              <h6 className="font-montreal">Interactive Audience Feedback</h6>
+              <h6 className="font-montreal">Interactive audience feedback</h6>
               <p className="">
                 AI-powered audience simulations that react in real time.
               </p>
@@ -154,7 +154,7 @@ function Intro() {
               </svg>
             </div>
             <div className="space-y-4">
-              <h6 className="font-montreal">Feedback Score Dashboard</h6>
+              <h6 className="font-montreal">Feedback score dashboard</h6>
               <p className="">
                 Comprehensive feedback on your speaking style and engagement.
               </p>
@@ -164,7 +164,7 @@ function Intro() {
 
         <Link to="/auth/login">
           <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative lg:top-7">
-            <p>Start Practicing Today</p>
+            <p>Start practicing today</p>
             <svg
               width="15"
               height="18"

@@ -24,7 +24,7 @@ function PricingCard({ plan }: Params) {
         <div className="space-y-8 relative border-b pb-8">
           {plan.highlight && (
             <div className="px-5 py-3 absolute -top-[3rem] -right-14 rotate-12 bg-alice-blue w-max text-black small rounded-full">
-              🔥 Most Popular
+              🔥 Most popular
             </div>
           )}
           <div className="py-3 font-medium px-4 small rounded-lg bg-[#B5B5B529] w-max">

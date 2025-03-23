@@ -4,12 +4,12 @@ function Footer() {
   return (
     <section className="px-10 lg:px-20 bg-gunmetal text-white pt-16 space-y-20">
       <div className="p-20  flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:justify-between text-black lg:items-center bg-alice-blue rounded-2xl">
-        <h4 className=" font-montreal lg:w-[17rem] font-medium leading-relaxed">
-          Ready to Speak with Confidence?
+        <h4 className="font-montreal lg:w-[17rem] font-medium leading-relaxed">
+          Ready to speak with confidence?
         </h4>
         <Link to="/auth/login">
           <button className="px-6 py-3 space-x-10 rounded-2xl">
-            <p className="">Get Started</p>
+            <p className="">Get started</p>
             <svg
               width="28"
               height="28"
@@ -75,16 +75,6 @@ function Footer() {
                   <p className="small">Live Chat</p>
                 </Link>
               </li>
-              <li>
-                <Link to="">
-                  <p className="small">How It Works</p>
-                </Link>
-              </li>
-              <li>
-                <Link to="">
-                  <p className="small">User Guides</p>
-                </Link>
-              </li>
             </ul>
           </div>
           <div className="space-y-8">
@@ -112,13 +102,13 @@ function Footer() {
 
       <div className="border-t border-t-alice-blue flex flex-col lg:flex-row space-y-4 lg:space-y-0 py-6 justify-between text-white">
         <p>
-          © Career Doctor, LLC All Rights Reserved Engineered by Axel Cyber,
+          © Career Doctor, LLC all rights reserved rengineered by Axel Cyber,
           LLC.
         </p>
         <div className="flex items-center gap-4">
-          <p>Terms & Condition</p>
+          <p>Terms & condition</p>
           <div className="h-2 w-2 rounded-full bg-white" />
-          <p>Privacy Policy</p>
+          <p>Privacy policy</p>
         </div>
       </div>
     </section>
