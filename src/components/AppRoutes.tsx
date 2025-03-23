@@ -1,17 +1,24 @@
 import { tokenManager } from "@/lib/utils";
+import Contact from "@/pages/Contact";
+import HelpPage from "@/pages/Dashboard/User/help";
+import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
+import Help from "@/pages/Dashboard/User/help/help";
+import SafetyPrivacy from "@/pages/Dashboard/User/help/SafetyPrivacy";
 import PitchPractice from "@/pages/Dashboard/User/PitchPractice";
 import PresentationPractice from "@/pages/Dashboard/User/PresentationPractice";
+import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
+import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import { ReactNode } from "react";
+import { useSelector } from "react-redux";
 import {
   Link,
   Navigate,
   Route,
+  BrowserRouter as Router,
   Routes,
   useLocation,
-  BrowserRouter as Router,
 } from "react-router";
-import { useSelector } from "react-redux";
 import DashboardLayout from "../components/layouts/DashboardLayout";
 import SessionsLayout from "../components/layouts/SessionsLayout";
 import AuthPage from "../pages/auth";
@@ -30,13 +37,8 @@ import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
 import Pricing from "../pages/Pricing";
 import PitchPracticeSession from "../pages/Sessions/PitchPractice";
-import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import UserPlan from "./layouts/userAuth";
 import { Button } from "./ui/button";
-import Help from "@/pages/Dashboard/User/help/help";
-import SafetyPrivacy from "@/pages/Dashboard/User/help/SafetyPrivacy";
-import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
-import HelpPage from "@/pages/Dashboard/User/help";
 import { Separator } from "./ui/separator";
 import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import Contact from "@/pages/Contact";
