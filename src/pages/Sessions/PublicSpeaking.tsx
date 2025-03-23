@@ -7,10 +7,19 @@ import PublicSpeakingTimer from "@/components/session/PublicSpeakingTimer";
 import VideoStreamer from "@/components/session/RecordView";
 import EngagementMetrics from "@/components/session/EngagementMetrics";
 import { useNavigate } from "react-router-dom";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from "@/components/ui/dialog";
+import alert from "../../assets/images/svgs/alert.svg";
 
 const PublicSpeaking: React.FC = () => {
     const [stop, setStop] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
+    const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const navigate = useNavigate();
 
     const StopStreaming = () => {
@@ -32,23 +41,59 @@ const PublicSpeaking: React.FC = () => {
             <section className="flex flex-wrap">
                 {/* left side  */}
                 <div className="w-full md:w-9/12 lg:w-3/12 md:px-8 lg:pe-4 py-4">
-                    <EngagementMetrics percent1={32} percent2={42} percent3={35} />
-
                     <VoiceAnalytics percent1={72} percent2={62} percent3={85} />
+                    
+                    <EngagementMetrics percent1={32} percent2={42} percent3={35} />
                 </div>
 
                 {/* middle side  */}
                 <div className="w-full md:w-9/12 lg:w-6/12 md:px-8 lg:pe-4 py-4">
                     <div className="">
                         <div className="rounded-xl w-full h-120">
+                            <Button
+                                className="bg-jelly-bean hover:bg-jelly-bean/90 flex my-4 md:hidden"
+                                onClick={() => setDialogOneOpen(true)}
+                            >
+                                <SquareArrowUpRight className="me-1" /> End Session
+                            </Button>
+
                             <h6 className="mb-3">Live Audience</h6>
                             <img src={audience} alt="audience" className="w-full h-full object-cover rounded-xl" />
                         </div>
 
                         <div className="w-full flex justify-end mt-16 px-4 md:px-0">
-                            <Button className="bg-jelly-bean hover:bg-jelly-bean/90 flex" onClick={StopStreaming}>
+                            <Button
+                                className="bg-jelly-bean hover:bg-jelly-bean/90 flex"
+                                onClick={() => setDialogOneOpen(true)}
+                            >
                                 <SquareArrowUpRight className="me-1" /> End Session
                             </Button>
+                            <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
+                                        <DialogTitle className="text-primary-blue">End a session</DialogTitle>
+                                        <DialogDescription className="text-auro-metal-saurus">
+                                            You are about to End a Session, you will be sent to the Session Analysis
+                                            Report page and you will no longer be able to continue this session
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <div className="flex gap-2 w-full">
+                                        <Button
+                                            className="bg-white hover:bg-white/90 border border-gray w-full text-primary-blue"
+                                            onClick={() => setDialogOneOpen(false)}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            className="bg-jelly-bean hover:bg-jelly-bean/90 w-full"
+                                            onClick={() => StopStreaming()}
+                                        >
+                                            End
+                                        </Button>
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
                         </div>
                     </div>
                 </div>
