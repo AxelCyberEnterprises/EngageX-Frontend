@@ -57,7 +57,7 @@ export default function BaseTableColumnHeader<TData, TValue>({
                         )}
                     </SelectIcon>
                 </SelectTrigger>
-                <SelectContent align="start" className="[&_.select-viewport]:p-0">
+                <SelectContent align="start" className="[&_.select-viewport]:p-0 border-bright-gray">
                     {column.getCanSort() && (
                         <>
                             <SelectItem value={ascValue} className="px-4 py-2">
