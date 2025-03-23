@@ -14,14 +14,14 @@ function BenefitCancelSVG() {
         height="35"
         rx="17.5"
         fill="#FF0000"
-        fill-opacity="0.1"
+        fillOpacity="0.1"
       />
       <path
         d="M23 12.5L13 22.5M13 12.5L23 22.5"
         stroke="#FF0000"
-        stroke-width="1.66667"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

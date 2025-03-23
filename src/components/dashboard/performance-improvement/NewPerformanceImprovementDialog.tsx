@@ -141,9 +141,9 @@ function NewPerformanceImprovementDialog() {
                 <path
                   d="M12.7578 23.2438L18.0008 18.0008L23.2438 23.2438M23.2438 12.7578L17.9998 18.0008L12.7578 12.7578"
                   stroke="#262B3A"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </AlertDialogTitle>

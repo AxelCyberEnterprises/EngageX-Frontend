@@ -52,7 +52,7 @@ function HowItWorks() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M0.5 0V130" stroke="black" stroke-dasharray="10 10" />
+              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
             </svg>
           </div>
           <div className="flex gap-x-8 items-center">
@@ -75,7 +75,7 @@ function HowItWorks() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M0.5 0V130" stroke="black" stroke-dasharray="10 10" />
+              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
             </svg>
           </div>
           <div className="flex gap-x-8 items-center">
@@ -99,7 +99,7 @@ function HowItWorks() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M0.5 0V130" stroke="black" stroke-dasharray="10 10" />
+              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
             </svg>
           </div>
           <div className="flex gap-x-8 items-center">
