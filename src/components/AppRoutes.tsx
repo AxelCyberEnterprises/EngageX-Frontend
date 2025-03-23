@@ -33,8 +33,6 @@ import PitchPracticeSession from "../pages/Sessions/PitchPractice";
 import UserPlan from "./layouts/userAuth";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
-import Contact from "@/pages/Contact";
 import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
 
 function RequireAuth({ children }: { children: ReactNode }) {
