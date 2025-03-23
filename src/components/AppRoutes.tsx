@@ -40,14 +40,18 @@ import HelpPage from "@/pages/Dashboard/User/help";
 import { Separator } from "./ui/separator";
 import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import Contact from "@/pages/Contact";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import CookiePolicy from "../pages/CookiePolicy";
 
 function RequireAuth({ children }: { children: ReactNode }) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const isUser = useSelector((state: any) => state.auth.user);
-    
-    const location = useLocation();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated
+  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isUser = useSelector((state: any) => state.auth.user);
+
+  const location = useLocation();
 
   if (!isAuthenticated && !tokenManager.getToken()) {
     return <Navigate replace to="/auth/login" state={{ from: location }} />;
@@ -111,13 +115,16 @@ function AdminDashboardRoutes() {
 }
 
 function SessionRoutes() {
-    return (
-        <Routes>
-            <Route path="pitch-practice-session" element={<PitchPracticeSession />} />
-            <Route path="public-speaking-session" element={<PublicSpeakingSession />} />
-            <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
-        </Routes>
-    );
+  return (
+    <Routes>
+      <Route path="pitch-practice-session" element={<PitchPracticeSession />} />
+      <Route
+        path="public-speaking-session"
+        element={<PublicSpeakingSession />}
+      />
+      <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
+    </Routes>
+  );
 }
 
 function AuthRoutes() {
@@ -174,6 +181,8 @@ export default function AppRoutes() {
         <Route path="features" element={<Features />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="cookie-policy" element={<CookiePolicy />} />
         <Route
           path="auth/*"
           element={
