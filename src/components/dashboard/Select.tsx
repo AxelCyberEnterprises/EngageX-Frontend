@@ -63,7 +63,7 @@ const ShadSelect: React.FC<SelectProps> = ({
         )}
       >
         <div className="flex items-center gap-2">
-          {showIcon && <img src={icon} alt='calendar' className="h-5 w-5 text-gray-500" />}
+          {showIcon && <img src={icon} alt='calendar' className="sm:h-5 sm:w-5 h-3 w-3 text-gray-500" />}
           <div className={cn("line-clamp-1 text-[#252A39] flex", placeholderClassname)}>
             {selectedLabel || <span>{placeholder}</span>}
           </div>

@@ -40,6 +40,7 @@ import HelpPage from "@/pages/Dashboard/User/help";
 import { Separator } from "./ui/separator";
 import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import Contact from "@/pages/Contact";
+import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,25 +51,25 @@ function RequireAuth({ children }: { children: ReactNode }) {
     const location = useLocation();
 
   if (!isAuthenticated && !tokenManager.getToken()) {
-    return <Navigate replace to="/auth/login" state={{ from: location }} />;
+    // return <Navigate replace to="/auth/login" state={{ from: location }} />;
   }
 
   // Redirect users trying to access the wrong dashboard
   if (location.pathname.startsWith("/dashboard")) {
-    if (isUser && location.pathname.startsWith("/dashboard/admin")) {
-      return <Navigate replace to="/dashboard/user" />;
-    }
-    if (!isUser && location.pathname.startsWith("/dashboard/user")) {
-      return <Navigate replace to="/dashboard/admin" />;
-    }
-    if (location.pathname === "/dashboard") {
-      return (
-        <Navigate
-          replace
-          to={isUser ? "/dashboard/user" : "/dashboard/admin"}
-        />
-      );
-    }
+    // if (isUser && location.pathname.startsWith("/dashboard/admin")) {
+    //   return <Navigate replace to="/dashboard/user" />;
+    // }
+    // if (!isUser && location.pathname.startsWith("/dashboard/user")) {
+    //   return <Navigate replace to="/dashboard/admin" />;
+    // }
+    // if (location.pathname === "/dashboard") {
+    //   return (
+    //     <Navigate
+    //       replace
+    //       to={isUser ? "/dashboard/user" : "/dashboard/admin"}
+    //     />
+    //   );
+    // }
   }
 
   return children;
@@ -84,6 +85,7 @@ function UserDashboardRoutes() {
       <Route path="progress-tracking" element={<ProgressTracking />} />
       <Route path="session-history" element={<UserSessionHistory />} />
       <Route path="session-history/:id" element={<UserPitchSessionReport />} />
+      <Route path="session-comparison" element={<SessionComparison />} />
       <Route path="analytics" element={<UserAnalytics />} />
       <Route path="settings" element={<UserSettings />} />
       <Route path="help" element={<HelpPage />}>

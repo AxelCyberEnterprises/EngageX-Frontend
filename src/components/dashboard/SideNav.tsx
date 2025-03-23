@@ -216,7 +216,7 @@ const SideNav: React.FC = () => {
                     />
                 </svg>
             ),
-            path: "#",
+            path: "/dashboard/user/session-comparison",
         },
     ];
 
