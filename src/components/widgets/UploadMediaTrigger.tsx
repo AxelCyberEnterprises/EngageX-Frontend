@@ -1,4 +1,4 @@
-import { cn, isFileWithPreview } from "@/lib/utils";
+import { cn, convertFileToDataUrl, isFileWithPreview } from "@/lib/utils";
 import { HTMLAttributes, useCallback, useEffect } from "react";
 import Dropzone, { DropzoneProps, FileRejection } from "react-dropzone";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
@@ -21,15 +21,6 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
 }: IUploadMediaTriggerProps<T, K>) => {
     const { register, unregister, setValue, watch } = useFormContext();
     const files = watch(name) as IFilesWithPreview | undefined;
-
-    const convertFileToDataUrl = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result as string);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    };
 
     const handleDrop = useCallback(
         async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {

@@ -24,7 +24,7 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
         <section className={cn("flex flex-col gap-y-4", className)}>
             {slidePreviews.length > 0 && (
                 <>
-                    <SlidePreviewSection activeSlide={activeSlide} />
+                    <SlidePreviewSection {...{ activeSlide, activeSlideIndex }} />
                     <Separator className="bg-bright-gray" />
                     <div className="space-y-4">
                         <h6 className="text-lg">Slide Settings</h6>

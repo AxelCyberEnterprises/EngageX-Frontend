@@ -45,8 +45,9 @@ const PitchPracticeForm = () => {
                 (slide): slide is { file: File; preview: string } =>
                     slide !== undefined && slide.file !== undefined && slide.preview !== undefined,
             );
+            const slidePreviews = slides.map((slide) => slide.preview);
 
-            dispatch(setslidePreviews(slides));
+            dispatch(setslidePreviews(slidePreviews));
         });
 
         return () => subscription.unsubscribe();

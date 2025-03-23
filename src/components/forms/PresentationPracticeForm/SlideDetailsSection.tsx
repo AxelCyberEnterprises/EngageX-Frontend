@@ -4,7 +4,7 @@ import SessionNameSection from "@/components/form-sections/SessionNameSection";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import PDFViewer from "@/components/widgets/pdf-viewer";
-import { cn, isPdf } from "@/lib/utils";
+import { cn, convertDataUrlToFile, isDataUrlPdf } from "@/lib/utils";
 import { RootState } from "@/store";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -17,12 +17,11 @@ interface ISlideDetatilsSectionProps extends HTMLAttributes<HTMLElement> {
 
 const SlideDetailsSection = ({ className, form }: ISlideDetatilsSectionProps) => {
     const { activeSlideIndex, slidePreviews } = useSelector((state: RootState) => state.presentationPractice);
-    console.log("Slide previews: ", slidePreviews);
 
     return (
         <section className={cn("flex flex-col gap-y-6", className)}>
             {slidePreviews.length > 0 &&
-                slidePreviews.map(({ file, preview }, index) => (
+                slidePreviews.map((preview, index) => (
                     <div
                         key={preview + index}
                         className={cn("hidden space-y-5", {
@@ -39,8 +38,8 @@ const SlideDetailsSection = ({ className, form }: ISlideDetatilsSectionProps) =>
                         </div>
                         <h6 className="text-lg">Slide {activeSlideIndex + 1}</h6>
                         <div className="w-auto h-90 rounded-lg overflow-hidden">
-                            {isPdf(file) ? (
-                                <PDFViewer file={file} />
+                            {isDataUrlPdf(preview) ? (
+                                <PDFViewer file={convertDataUrlToFile(preview, `Slide-${index + 1}`)} />
                             ) : (
                                 <img src={preview} alt="" className="object-cover size-full rounded-lg" />
                             )}
