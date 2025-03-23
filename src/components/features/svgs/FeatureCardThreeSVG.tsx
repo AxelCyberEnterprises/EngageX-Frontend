@@ -17,7 +17,7 @@ function FeatureCardThreeSVG() {
           height="35"
           rx="17.5"
           fill="#79A2FF"
-          shape-rendering="crispEdges"
+          shapeRendering="crispEdges"
         />
         <g opacity="0.72" filter="url(#filter1_dd_1214_9643)">
           <path
@@ -32,22 +32,22 @@ function FeatureCardThreeSVG() {
           cy="44"
           r="25"
           fill="#A5B8C3"
-          shape-rendering="crispEdges"
+          shapeRendering="crispEdges"
         />
         <circle
           cx="123"
           cy="44"
           r="25"
           fill="url(#pattern0_1214_9643)"
-          shape-rendering="crispEdges"
+          shapeRendering="crispEdges"
         />
         <circle
           cx="123"
           cy="44"
           r="26.0714"
           stroke="url(#paint0_linear_1214_9643)"
-          stroke-width="2.14286"
-          shape-rendering="crispEdges"
+          strokeWidth="2.14286"
+          shapeRendering="crispEdges"
         />
       </g>
       <g filter="url(#filter3_dddii_1214_9643)">
@@ -58,7 +58,7 @@ function FeatureCardThreeSVG() {
           height="35"
           rx="17.5"
           fill="#79A2FF"
-          shape-rendering="crispEdges"
+          shapeRendering="crispEdges"
         />
         <g filter="url(#filter4_d_1214_9643)">
           <path
@@ -75,9 +75,9 @@ function FeatureCardThreeSVG() {
           width="60.9113"
           height="60.9113"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -181,9 +181,9 @@ function FeatureCardThreeSVG() {
           width="20.887"
           height="20.6048"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -234,9 +234,9 @@ function FeatureCardThreeSVG() {
           width="86.2852"
           height="86.2861"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -286,9 +286,9 @@ function FeatureCardThreeSVG() {
           width="60.9113"
           height="60.9113"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -392,9 +392,9 @@ function FeatureCardThreeSVG() {
           width="22"
           height="27"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -428,8 +428,8 @@ function FeatureCardThreeSVG() {
           y2="51.2679"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" stop-opacity="0.8" />
-          <stop offset="1" stop-color="#AEAEAE" stop-opacity="0.3" />
+          <stop stopColor="white" stopOpacity="0.8" />
+          <stop offset="1" stopColor="#AEAEAE" stopOpacity="0.3" />
         </linearGradient>
         <image
           id="image0_1214_9643"

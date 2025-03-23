@@ -21,7 +21,7 @@ function HowItWorks() {
 
         <div className="text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
-            Simple Steps to Speaking <br />
+            Simple steps to speaking <br />
             Success
           </h4>
           <p className="text-dark-electric-blue leading-normal">
@@ -37,7 +37,7 @@ function HowItWorks() {
               <p>1</p>
             </div>
             <div className="space-y-4">
-              <h6 className="font-montreal">Sign Up</h6>
+              <h6 className="font-montreal">Sign up</h6>
               <p className="small text-dark-electric-blue">
                 Create your profile and select your focus: public speaking or
                 presentation.
@@ -52,7 +52,7 @@ function HowItWorks() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M0.5 0V130" stroke="black" stroke-dasharray="10 10" />
+              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
             </svg>
           </div>
           <div className="flex gap-x-8 items-center">
@@ -60,7 +60,7 @@ function HowItWorks() {
               <p>2</p>
             </div>
             <div className="space-y-4">
-              <h6 className="font-montreal">Set Up Your Session</h6>
+              <h6 className="font-montreal">Set up your session</h6>
               <p className="small text-dark-electric-blue">
                 Upload slides, outline your phases, or choose from our
                 templates.
@@ -75,7 +75,7 @@ function HowItWorks() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M0.5 0V130" stroke="black" stroke-dasharray="10 10" />
+              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
             </svg>
           </div>
           <div className="flex gap-x-8 items-center">
@@ -84,7 +84,7 @@ function HowItWorks() {
             </div>
             <div className="space-y-4">
               <h6 className="font-montreal">
-                Practice in a Realistic Virtual Room
+                Practice in a realistic virtual room
               </h6>
               <p className="small text-dark-electric-blue">
                 Engage with dynamic AI-powered audience reactions.
@@ -99,7 +99,7 @@ function HowItWorks() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M0.5 0V130" stroke="black" stroke-dasharray="10 10" />
+              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
             </svg>
           </div>
           <div className="flex gap-x-8 items-center">
@@ -109,7 +109,7 @@ function HowItWorks() {
               </div>
             </div>
             <div className="space-y-4">
-              <h6 className="font-montreal">Review & Improve</h6>
+              <h6 className="font-montreal">Review & improve</h6>
               <p className="small text-dark-electric-blue">
                 Analyze detailed feedback and rewatch key moments to refine your
                 skills.

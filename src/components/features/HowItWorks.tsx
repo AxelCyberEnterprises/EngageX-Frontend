@@ -7,23 +7,23 @@ import HowItWorksCardTwoSVG from "./svgs/HowItWorksCardTwoSVG";
 function HowItWorks() {
   let how_it_works_sections = [
     {
-      title: "AI Realistic Enhancements for users",
+      title: "AI realistic enhancements for users",
       content:
-        "Our AI progress tracking for Pitch Improvement is a cutting-edge solution for individuals and teams to help refine their pitch delivery. Every session is automatically recorded, allowing you to improve your performance. Whether for business, sales, or public speaking, this tool ensures continuous improvement and success.",
+        "Enhancing user interactions with AI-driven customization. Tailored experiences based on behavior and preferences and a real-time responsiveness for a more immersive experience",
       svg: <HowItWorksCardOneSVG className="w-full h-[20rem]" />,
     },
     {
-      title: "AI Progress Tracking for Pitch Improvement",
+      title: "AI progress tracking for pitch improvement",
       content:
-        "Our AI progress tracking for Pitch Improvement is a cutting-edge solution for individuals and teams to help refine their pitch delivery. Every session is automatically recorded, allowing you to improve your performance. Whether for business, sales, or public speaking, this tool ensures continuous improvement and success.",
+        "Our AI progress tracking for public speaking Improvement is a cutting-edge solution for individuals and teams to help refine their pitch delivery. Every session is automatically recorded, allowing you to improve your performance. Whether for business, sales, or public speaking, this tool ensures continuous improvement and success.",
       svg: (
         <HowItWorksCardTwoSVG className="w-[24rem] h-[20rem] mt-22 lg:mt-0" />
       ),
     },
     {
-      title: "Feedback Score Dashboard",
+      title: "Feedback score dashboard",
       content:
-        "Our AI progress tracking for Pitch Improvement is a cutting-edge solution for individuals and teams to help refine their pitch delivery. Every session is automatically recorded, allowing you to improve your performance. Whether for business, sales, or public speaking, this tool ensures continuous improvement and success.",
+        "Get a snapshot of overall feedback scores and Analyzed metrics to understand strengths and areas for improvement. Interpretation of feedback patterns and customer satisfaction levels. Showing steps to enhance feedback scores and improve user experience.",
       svg: (
         <HowItWorksCardThreeSVG className="w-full h-[20rem] mt-22 lg:mt-0" />
       ),

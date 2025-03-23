@@ -10,7 +10,7 @@ function Pricing({ subtext }: { subtext?: string }) {
         "Ideal for individuals looking to test and experience the platform.",
         "Best for occasional users or trial purposes.",
       ],
-      button_text: "Start Now",
+      button_text: "Start now",
       highlight: false,
     },
     {
@@ -21,7 +21,7 @@ function Pricing({ subtext }: { subtext?: string }) {
         "Great for short-term skill improvement and specific goals.",
         "Targeted at mid-level professionals and managers.",
       ],
-      button_text: "Choose Growth Plan",
+      button_text: "Choose growth plan",
       highlight: true,
     },
     {
@@ -32,7 +32,7 @@ function Pricing({ subtext }: { subtext?: string }) {
         "Balanced option for consistent progress over time.",
         "Perfect for those preparing for an important event or ongoing development.",
       ],
-      button_text: "Go Pro",
+      button_text: "Go pro",
       highlight: false,
     },
     {
@@ -44,7 +44,7 @@ function Pricing({ subtext }: { subtext?: string }) {
         "Recommended for executives and individuals committed to professional growth.",
         "Comes with an exclusive bonus (e.g., free consultation or report analysis).",
       ],
-      button_text: "Get the Ultimate Plan",
+      button_text: "Get the ultimate plan",
       highlight: false,
     },
   ];
@@ -70,7 +70,7 @@ function Pricing({ subtext }: { subtext?: string }) {
 
         <div className="lg:w-[70%] text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
-            Choose the Right Plan for <br /> Your Growth
+            Choose the right plan for <br /> your growth
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             {subtext
@@ -89,14 +89,13 @@ function Pricing({ subtext }: { subtext?: string }) {
       <div className="flex flex-col lg:flex-row relative justify-between overflow-clip w-full pl-10 py-12  lg:h-max lg:py-12 bg-[#6F7C8E] rounded-2xl text-white">
         <div className="h-full lg:w-[50%]">
           <div className="lg:w-full pr-[30px] lg:pr-0">
-            <h4 className="font-montreal">Enterprise & Team Plans</h4>
-            <p className="mt-4 font-montreal">
-              Custom Pricing Need a custom solution for your organization,
-              corporate training, or coaching program? We offer tailored
-              enterprise plans with multi-user access, team analytics, and
-              coaching support.
+            <h4 className="font-montreal">Enterprise & team plans</h4>
+            <p className="mt-4 font-montserrat">
+              If you need a custom solution for your organization, corporate
+              training, or coaching program? We offer tailored enterprise plans
+              with multi-user access, team analytics, and coaching support.
             </p>
-            <button className="flex gap-2 font-montreal mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl">
+            <button className="flex gap-2 font-montserrat mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl">
               <p>Contact us for a consultation!</p>
               <svg
                 width="15"

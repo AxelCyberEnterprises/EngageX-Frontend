@@ -19,7 +19,7 @@ function HowItWorksCard({ className, item }: Params) {
       )}
     >
       <div className="space-y-6 flex-1 w-full font-montserrat">
-        <div className="px-3 py-3 flex gap-2 w-max items-center border rounded-xl bg-white border-[#E1E5E7]">
+        <div className="px-3 py-3 flex gap-2 w-max items-center border rounded-xl bg-white !border-[#E1E5E7]">
           <svg
             width="16"
             height="16"
@@ -33,7 +33,7 @@ function HowItWorksCard({ className, item }: Params) {
               fill="#4C5C75"
             />
           </svg>
-          <p className="small text-dull-electric-blue">HOW IT WORKS</p>
+          <p className="small text-dull-electric-blue">FEATURES</p>
         </div>
 
         <div className="space-y-4">
