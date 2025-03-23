@@ -20,7 +20,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
-import UploadSlideSection from "../../widgets/UploadSlideSection";
+import UploadSlideSection from "../../form-sections/UploadSlideSection";
 import SlideDetailsSection from "./SlideDetailsSection";
 import SlidePreviewAndSettingsSection from "./SlidePreviewAndSettingsSection";
 
@@ -45,8 +45,9 @@ const PitchPracticeForm = () => {
                 (slide): slide is { file: File; preview: string } =>
                     slide !== undefined && slide.file !== undefined && slide.preview !== undefined,
             );
+            const slidePreviews = slides.map((slide) => slide.preview);
 
-            dispatch(setslidePreviews(slides));
+            dispatch(setslidePreviews(slidePreviews));
         });
 
         return () => subscription.unsubscribe();

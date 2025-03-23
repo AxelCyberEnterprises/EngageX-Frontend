@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import PDFViewer from "@/components/widgets/pdf-viewer";
-import UploadMediaTrigger, { IFilesWithPreview } from "@/components/widgets/UploadMediaTrigger";
-import { cn, isPdf } from "@/lib/utils";
+import UploadMediaTrigger from "@/components/widgets/UploadMediaTrigger";
+import { cn, convertDataUrlToFile, isDataUrlPdf } from "@/lib/utils";
 import { UnknownAction } from "@reduxjs/toolkit";
 import { Plus, UploadCloud } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 
 interface IUploadSlideSectionProps extends HTMLAttributes<HTMLElement> {
     activeSlideIndex: number;
-    slidePreviews: IFilesWithPreview;
+    slidePreviews: string[];
     setActiveSlideIndex: (index: number) => UnknownAction;
 }
 
@@ -60,7 +60,7 @@ const UploadSlideSection = ({
                     <div className="space-y-5">
                         <h6 className="text-lg">Uploaded Slides ({slidePreviews.length})</h6>
                         <div className="flex flex-col gap-y-3">
-                            {slidePreviews.map(({ file, preview }, i) => (
+                            {slidePreviews.map((preview, i) => (
                                 <div
                                     key={preview + i}
                                     className="flex items-start gap-x-3 cursor-pointer"
@@ -72,8 +72,8 @@ const UploadSlideSection = ({
                                             "border-2 border-gunmetal": i === activeSlideIndex,
                                         })}
                                     >
-                                        {isPdf(file) ? (
-                                            <PDFViewer file={file} />
+                                        {isDataUrlPdf(preview) ? (
+                                            <PDFViewer file={convertDataUrlToFile(preview, `Slide-${i + 1}`)} />
                                         ) : (
                                             <img src={preview} alt="slide" className="object-cover size-full" />
                                         )}
@@ -95,7 +95,7 @@ const UploadSlideSection = ({
                         <Plus className="size-5" />
                     </UploadMediaTrigger>
                 </div>
-                {slidePreviews.map(({ file, preview }, i) => (
+                {slidePreviews.map((preview, i) => (
                     <div
                         key={preview + i}
                         className="flex flex-col items-start gap-y-2 cursor-pointer"
@@ -107,8 +107,8 @@ const UploadSlideSection = ({
                                 "border-2 border-gunmetal": i === activeSlideIndex,
                             })}
                         >
-                            {isPdf(file) ? (
-                                <PDFViewer file={file} />
+                            {isDataUrlPdf(preview) ? (
+                                <PDFViewer file={convertDataUrlToFile(preview, `Slide-${i + 1}`)} />
                             ) : (
                                 <img src={preview} alt="slide" className="object-cover size-full" />
                             )}
