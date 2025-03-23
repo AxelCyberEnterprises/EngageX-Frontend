@@ -1,8 +1,8 @@
 import { isPdf } from "@/lib/utils";
 import { HTMLAttributes } from "react";
 import { Button } from "../ui/button";
-import { IFilesWithPreview } from "./UploadMediaTrigger";
-import PDFViewer from "./pdf-viewer";
+import { IFilesWithPreview } from "../widgets/UploadMediaTrigger";
+import PDFViewer from "../widgets/pdf-viewer";
 
 interface ISlidePreviewSectionProps extends HTMLAttributes<HTMLElement> {
     activeSlide: IFilesWithPreview[number];

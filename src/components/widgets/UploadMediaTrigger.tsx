@@ -22,20 +22,29 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
     const { register, unregister, setValue, watch } = useFormContext();
     const files = watch(name) as IFilesWithPreview | undefined;
 
+    const convertFileToDataUrl = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    };
+
     const handleDrop = useCallback(
-        (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+        async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
             if (rejectedFiles.length > 0) {
                 rejectedFiles.forEach(({ file }) => {
                     console.error(`File ${file.name} was rejected`);
                 });
             }
 
-            const newFiles = acceptedFiles.map((file) => ({
-                file,
-                preview: URL.createObjectURL(file),
-            }));
-
-            // const updatedFiles = files ? [...files, ...newFiles] : newFiles;
+            const newFiles = await Promise.all(
+                acceptedFiles.map(async (file) => ({
+                    file,
+                    preview: await convertFileToDataUrl(file),
+                })),
+            );
 
             setValue(name, newFiles as unknown as T[K], { shouldValidate: true });
         },

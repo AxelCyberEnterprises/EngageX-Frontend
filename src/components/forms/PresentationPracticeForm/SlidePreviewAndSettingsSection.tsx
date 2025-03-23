@@ -1,10 +1,10 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
+import SlidePreviewSection from "@/components/form-sections/SlidePreviewSection";
 import { FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import SlidePreviewSection from "@/components/widgets/SlidePreviewSection";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/store";
 import { HTMLAttributes } from "react";
