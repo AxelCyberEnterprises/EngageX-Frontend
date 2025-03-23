@@ -10,4 +10,5 @@ export const PublicSpeakingSchema = z.object({
     ),
     virtualEnvironment: z.string(),
     speakerNotes: z.string(),
+    enableAiGeneratedQuestions: z.boolean(),
 });

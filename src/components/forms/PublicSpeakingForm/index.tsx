@@ -4,9 +4,10 @@ import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { DefaultGoals } from "@/config/form-field-options";
 import { PublicSpeakingSchema } from "@/schemas/public-speaking";
+import { setValues } from "@/store/slices/dashboard/user/publicSpeakingFormSlice";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { z } from "zod";
@@ -26,9 +27,21 @@ const PublicSpeakingForm = () => {
         defaultValues: useMemo(() => ({ goals: DefaultGoals }), []),
     });
 
+    const handlePublicSpeakingFormSubmit = useCallback(
+        (values: FormType) => {
+            console.log("Public speaking values", values);
+
+            dispatch(setValues(values));
+        },
+        [dispatch],
+    );
+
     return (
         <Form {...form}>
-            <form className="flex lg:flex-row flex-col lg:gap-10 gap-6">
+            <form
+                onSubmit={form.handleSubmit(handlePublicSpeakingFormSubmit)}
+                className="flex lg:flex-row flex-col lg:gap-10 gap-6"
+            >
                 <section className="flex-1 space-y-12">
                     <SessionNameSection {...{ form }} />
                     <GoalsSection {...{ form }} />
@@ -39,7 +52,10 @@ const PublicSpeakingForm = () => {
                     <VirtualEnvironmentSection {...{ form }} />
                     <div className="flex items-center justify-between">
                         <p>Enable AI Generated Questions</p>
-                        <Switch className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5" />
+                        <Switch
+                            onCheckedChange={(checked) => form.setValue("enableAiGeneratedQuestions", checked)}
+                            className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
+                        />
                     </div>
                 </section>
                 <div className="md:absolute bottom-0 inset-x-0 md:p-4 md:mt-0 mt-6 flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center justify-between md:border-t border-bright-gray bg-white">
@@ -64,7 +80,7 @@ const PublicSpeakingForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession />,
+                                        children: <StartSession {...{ form, handlePublicSpeakingFormSubmit }} />,
                                     }),
                                 )
                             }

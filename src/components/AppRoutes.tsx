@@ -1,6 +1,11 @@
 import { tokenManager } from "@/lib/utils";
+import HelpPage from "@/pages/Dashboard/User/help";
+import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
+import Help from "@/pages/Dashboard/User/help/help";
+import SafetyPrivacy from "@/pages/Dashboard/User/help/SafetyPrivacy";
 import PitchPractice from "@/pages/Dashboard/User/PitchPractice";
 import PresentationPractice from "@/pages/Dashboard/User/PresentationPractice";
+import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
@@ -25,12 +30,7 @@ import Pricing from "../pages/Pricing";
 import PitchPracticeSession from "../pages/Sessions/PitchPractice";
 import UserPlan from "./layouts/userAuth";
 import { Button } from "./ui/button";
-import Help from "@/pages/Dashboard/User/help/help";
-import SafetyPrivacy from "@/pages/Dashboard/User/help/SafetyPrivacy";
-import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
-import HelpPage from "@/pages/Dashboard/User/help";
 import { Separator } from "./ui/separator";
-import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
