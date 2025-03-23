@@ -13,6 +13,7 @@ import {
     DialogDescription,
 } from "@/components/ui/dialog";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
+import { useNavigate } from 'react-router-dom';
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
@@ -89,15 +90,16 @@ const PitchSessionReport: React.FC = () => {
     ];
 
     // const sessionType = 'pitch';
+    const navigate = useNavigate();
 
     return (
         <div className="py-4 text-primary-blue">
             <section className="px-4 lg:px-8 border-b-1 border-bright-gray">
                 <div className="py-3 flex flex-wrap justify-between items-center">
-                    <div className="flex items-center gap-2">
+                    <button onClick={()=> navigate(-1)} className="flex items-center text-black bg-transparent hover:bg-transparent p-0 gap-2">
                         <ArrowLeft className="w-5 aspect-square" />
                         <p>Back</p>
-                    </div>
+                    </button>
 
                     <div className="flex items-center gap-2">
                         <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">

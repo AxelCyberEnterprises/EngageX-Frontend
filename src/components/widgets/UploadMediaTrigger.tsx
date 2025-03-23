@@ -1,4 +1,4 @@
-import { cn, isFileWithPreview } from "@/lib/utils";
+import { cn, convertFileToDataUrl, isFileWithPreview } from "@/lib/utils";
 import { HTMLAttributes, useCallback, useEffect } from "react";
 import Dropzone, { DropzoneProps, FileRejection } from "react-dropzone";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
@@ -23,19 +23,19 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
     const files = watch(name) as IFilesWithPreview | undefined;
 
     const handleDrop = useCallback(
-        (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+        async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
             if (rejectedFiles.length > 0) {
                 rejectedFiles.forEach(({ file }) => {
                     console.error(`File ${file.name} was rejected`);
                 });
             }
 
-            const newFiles = acceptedFiles.map((file) => ({
-                file,
-                preview: URL.createObjectURL(file),
-            }));
-
-            // const updatedFiles = files ? [...files, ...newFiles] : newFiles;
+            const newFiles = await Promise.all(
+                acceptedFiles.map(async (file) => ({
+                    file,
+                    preview: await convertFileToDataUrl(file),
+                })),
+            );
 
             setValue(name, newFiles as unknown as T[K], { shouldValidate: true });
         },

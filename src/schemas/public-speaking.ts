@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const PublicSpeakingSchema = z.object({
+    sessionName: z.string(),
     goals: z.array(
         z.object({
             id: z.number(),
@@ -9,4 +10,5 @@ export const PublicSpeakingSchema = z.object({
     ),
     virtualEnvironment: z.string(),
     speakerNotes: z.string(),
+    enableAiGeneratedQuestions: z.boolean(),
 });
