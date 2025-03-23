@@ -2,7 +2,7 @@ import Navbar from "../Navbar";
 
 function Hero() {
   return (
-    <section className="h-max lg:min-h-[100vh] relative border-2">
+    <section className="h-max lg:min-h-[100vh] relative">
       <Navbar />
       <div className="space-y-10 flex h-full lg:min-h-[calc(100vh-5rem)] flex-col font-montserrat">
         <svg

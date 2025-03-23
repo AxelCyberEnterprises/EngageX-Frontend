@@ -364,7 +364,7 @@ const ProgressTracking: React.FC = () => {
               {sectionItems.map((item, index) => (
                 <Button
                   onClick={() => handleSectionChange(index)}
-                  className={`${activeIndex === index ? 'bg-white text-[#252A39]' : 'text-[#6F7C8E] bg-[#F2F2F2]'} py-1 px-3 rounded-[6px] shadow-none`}
+                  className={`${activeIndex === index ? 'bg-white text-[#252A39] hover:bg-white ' : 'text-[#6F7C8E] bg-[#F2F2F2] hover:bg-[#F2F2F2]' } py-1 px-3 rounded-[6px] shadow-none hover:text-inherit hover:shadow-none`}
                 >
                   {item}
                 </Button>
@@ -594,7 +594,7 @@ const ProgressTracking: React.FC = () => {
                         showIcon={true}
                         placeholderClassname='sm:flex hidden'
                         icon={filter}
-                        // isArrow={false}
+                      // isArrow={false}
                       />
                     </div>
 

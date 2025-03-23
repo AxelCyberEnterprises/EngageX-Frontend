@@ -171,7 +171,7 @@ const AccountSecurity: React.FC<AccountSecurityProps> = ({
                       <Switch
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        className="relative bg-[#252A39] rounded-full transition-colors flex items-center py-[1px] px-1 border-0 [&>*[data-slot='switch-thumb'][data-state='unchecked']]:-translate-x-[7px]"
+                        className="p-0 justify-start w-8 [&_[data-slot='switch-thumb']]:size-4"
                       />
 
                     </FormControl>

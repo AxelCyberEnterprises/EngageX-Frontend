@@ -36,6 +36,8 @@
   --color-mauvelous: #EE9C9D;
   --color-sunray: #ECB25E;
   --color-seashell: #FCF0EF;
+    --color-dark-gray: #D0D5DD;
+    --color-success-green: #0E7B33;
 }
 
 @plugin "tailwindcss-animate";
@@ -223,4 +225,8 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+#dialog-content {
+  display: none !important;
 }

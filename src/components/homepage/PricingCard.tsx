@@ -15,8 +15,9 @@ function PricingCard({ plan }: Params) {
   return (
     <div
       className={clsx(
-        "h-max group p-8 font-montreal space-y-10 rounded-2xl duration-700 hover:bg-gunmetal hover:stroke-white hover:border-none hover:text-white cursor-pointer lg:h-full border flex flex-col justify-between border-[#6F7C8E]",
-        plan.highlight && "relative lg:bottom-[4rem]"
+        "h-max group p-8 font-montreal space-y-10 rounded-2xl duration-700 cursor-pointer lg:h-full border flex flex-col justify-between border-[#6F7C8E]",
+        plan.highlight &&
+          "relative lg:bottom-[4rem] text-white stroke-white border-none bg-gunmetal"
       )}
     >
       <div className="space-y-12">
@@ -54,7 +55,8 @@ function PricingCard({ plan }: Params) {
                   viewBox="0 0 16 16"
                   fill="none"
                   className={clsx(
-                    "stroke-gunmetal h-5 w-5 group-hover:stroke-white"
+                    "stroke-gunmetal h-5 w-5",
+                    plan.highlight && "stroke-white"
                   )}
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -77,7 +79,8 @@ function PricingCard({ plan }: Params) {
 
       <button
         className={clsx(
-          "flex gap-2 mx-auto lg:mx-0 w-full group-hover:bg-alice-blue group-hover:text-black py-4 px-6 items-center justify-center rounded-2xl bg-[#6F7C8E]"
+          "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center justify-center rounded-2xl bg-[#6F7C8E]",
+          plan.highlight && "bg-alice-blue text-black"
         )}
       >
         {plan.button_text}
