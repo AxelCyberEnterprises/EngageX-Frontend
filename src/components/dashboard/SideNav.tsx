@@ -10,7 +10,6 @@ const SideNav: React.FC = () => {
     const location = useLocation();
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
-    console.log(location.pathname);
     
     const dispatch = useDispatch()
     const userLinks = [

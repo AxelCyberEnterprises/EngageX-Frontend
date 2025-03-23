@@ -1,4 +1,5 @@
 import { tokenManager } from "@/lib/utils";
+import Contact from "@/pages/Contact";
 import HelpPage from "@/pages/Dashboard/User/help";
 import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
 import Help from "@/pages/Dashboard/User/help/help";
@@ -7,6 +8,7 @@ import PitchPractice from "@/pages/Dashboard/User/PitchPractice";
 import PresentationPractice from "@/pages/Dashboard/User/PresentationPractice";
 import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
+import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, Route, BrowserRouter as Router, Routes, useLocation } from "react-router";
@@ -37,8 +39,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const isUser = useSelector((state: any) => state.auth.user);
-    console.log('is user:', isUser);
-    
+
     const location = useLocation();
 
     if (!isAuthenticated && !tokenManager.getToken()) {
@@ -73,10 +74,10 @@ function UserDashboardRoutes() {
             <Route path="session-history/:id" element={<UserPitchSessionReport />} />
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<UserSettings />} />
-            <Route path="help" element={<HelpPage/>} >
-            <Route index element={<Help/>} />
-            <Route path="safety" element={<SafetyPrivacy />} />
-            <Route path="message" element={<Chat />} />
+            <Route path="help" element={<HelpPage />}>
+                <Route index element={<Help />} />
+                <Route path="safety" element={<SafetyPrivacy />} />
+                <Route path="message" element={<Chat />} />
             </Route>
 
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
@@ -101,6 +102,7 @@ function SessionRoutes() {
     return (
         <Routes>
             <Route path="pitch-practice-session" element={<PitchPracticeSession />} />
+            <Route path="public-speaking-session" element={<PublicSpeakingSession />} />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
@@ -159,6 +161,7 @@ export default function AppRoutes() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="features" element={<Features />} />
                 <Route path="pricing" element={<Pricing />} />
+                <Route path="contact" element={<Contact />} />
                 <Route
                     path="auth/*"
                     element={
