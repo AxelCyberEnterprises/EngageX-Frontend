@@ -7,6 +7,8 @@ import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress";
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
+import { Button } from "@/components/ui/button";
+import improveBg from "../../../assets/images/pngs/improve-bg.png";
 
 const UserDashboardHome: React.FC = () => {
     const score = 89;
@@ -176,10 +178,10 @@ const UserDashboardHome: React.FC = () => {
                 <div className="w-full lg:w-1/4 px-2 mb-3">
                     <div className="index__card p-4 flex flex-col h-full justify-between rounded-[12px] relative overflow-hidden">
                         <img src={cardFlower} alt="card flower background" className="absolute top-0 right-0 h-1/2" />
-                        <small className="independence mb-3.5">Available Credit</small>
-                        <h4 className='gunmetal mb-5.5'>100</h4>
-                        <Link className="w-full" to={'/dashboard/user/settings?section=credits'}>
-                            <button className='p-3 w-full'>Buy More Credits</button>
+                        <small className="independence mb-3.5">Session Credits</small>
+                        <h4 className="gunmetal mb-5.5">4</h4>
+                        <Link className="w-full" to={"/dashboard/user/settings?section=credits"}>
+                            <button className="p-3 w-full rounded-md">Buy more sessions</button>
                         </Link>
                     </div>
                 </div>
@@ -194,7 +196,7 @@ const UserDashboardHome: React.FC = () => {
                             <h6 className="text-white mb-4">{card.title}</h6>
                             <small className="light__silver mb-5">{card.text}</small>
                             <Link to={card.href}>
-                                <button className="p-3 w-full">{card.buttonText}</button>
+                                <button className="p-3 w-full rounded-md">{card.buttonText}</button>
                             </Link>
                         </div>
                     </div>
@@ -223,6 +225,21 @@ const UserDashboardHome: React.FC = () => {
                         </div>
                         <SegmentedProgressBar percent={score} color="#40B869" divisions={5} />
                         <p className="dark__charcoal mt-6">✊Keep going! You’re improving!</p>
+                    </div>
+
+                    {/* improve past session  */}
+                    <div
+                        className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
+                        style={{ backgroundImage: `url(${improveBg})` }}
+                    >
+                        <h6 className="pb-3">Improve past session</h6>
+                        <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
+                            Select any of your previous sessions to continue practicing with the same setup, allowing
+                            you to focus directly on enhancing your skills in specific areas.
+                        </p>
+                        <Link to="#">
+                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3">Improve session</Button>
+                        </Link>
                     </div>
 
                     {/* performance analytics */}
