@@ -1,4 +1,4 @@
-import { apiPost } from "@/lib/api";
+import { apiGet, apiPost } from "@/lib/api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
@@ -63,7 +63,7 @@ export function useForgotPassword() {
         mutationKey: ["forgotPassword"],
         mutationFn: async (data: { email: string }) => {
             dispatch(setEmailForPasswordReset(data.email));
-            return await apiPost<{ message: string }>("/users/auth/password-reset/", data);
+            return await apiPost<{ email: string }>("/users/auth/password-reset/", data);
         },
         onSuccess: () => {
             console.log("Password reset link sent.");
@@ -128,14 +128,30 @@ export function useEmailConfirmation() {
 export function usePublicSpeaking() {
     return useMutation({
         mutationKey: ["publicSpeaking"],
-        mutationFn: async (data: { session_name: string; session_type: string; note: string; allow_ai_questions: boolean; }) => {
-            return await apiPost("/sessions/sessions/", data);
+        mutationFn: async (data: { session_name: string; session_type: string; note: string; sequence: string; allow_ai_questions: boolean; }) => {
+            return await apiPost<{ session_name: string; session_type: string; note: string; sequence: string; allow_ai_questions: boolean; }>("/sessions/sessions/", data);
         },
         onSuccess: () => {
             console.log("Public speaking session created successfully.");
         },
         onError: (error) => {
             console.error(error.message);
+        },
+    });
+}
+
+
+export function useSessionReport() {
+    return useMutation({
+        mutationKey: ["fetchSessionReport"],
+        mutationFn: async (id: string) => {
+            return await apiGet(`/sessions/sessions/${id}/report/`);
+        },
+        onSuccess: (data) => {
+            console.log("Session report fetched successfully:", data);
+        },
+        onError: (error) => {
+            console.error("Failed to fetch session report:", error.message);
         },
     });
 }
