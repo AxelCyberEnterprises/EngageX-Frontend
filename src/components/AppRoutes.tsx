@@ -39,14 +39,15 @@ import PitchPracticeSession from "../pages/Sessions/PitchPractice";
 import UserPlan from "./layouts/userAuth";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
 import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import CookiePolicy from "../pages/CookiePolicy";
 import TermsOfService from "../pages/TermsOfService";
 
 function RequireAuth({ children }: { children: ReactNode }) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const isAuthenticated = useSelector(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (state: any) => state.auth.isAuthenticated
   );
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -89,6 +90,7 @@ function UserDashboardRoutes() {
       <Route path="progress-tracking" element={<ProgressTracking />} />
       <Route path="session-history" element={<UserSessionHistory />} />
       <Route path="session-history/:id" element={<UserPitchSessionReport />} />
+      <Route path="session-comparison" element={<SessionComparison />} />
       <Route path="analytics" element={<UserAnalytics />} />
       <Route path="settings" element={<UserSettings />} />
       <Route path="help" element={<HelpPage />}>

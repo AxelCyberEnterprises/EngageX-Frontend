@@ -26,6 +26,7 @@ interface BaseTableProps<TData, TValue> {
     tableHeaderItemClassName?: string;
     tableContainerClassName?: string;
     pageSize?: number;
+    hidePagination?: boolean;
 }
 
 export function BaseTable<TData, TValue>({ 
@@ -35,6 +36,7 @@ export function BaseTable<TData, TValue>({
     tableHeaderClassName, 
     tableHeaderItemClassName, 
     tableContainerClassName, 
+    hidePagination,
     pageSize }: BaseTableProps<TData, TValue>) {
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
@@ -114,7 +116,7 @@ export function BaseTable<TData, TValue>({
                 <ScrollBar orientation="horizontal" className="hidden" />
             </ScrollArea>
 
-            <BaseTablePagination table={table} />
+            {hidePagination ? <></> : <BaseTablePagination table={table} />}
         </div>
     );
 }
