@@ -299,7 +299,9 @@ const UserDashboardHome: React.FC = () => {
                             ))}
                         </div>
 
-                        <button className="mt-6 w-full rounded-4xl">Set New Goals</button>
+                        <Link to="#">
+                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3 w-full mt-6">Set new goals</Button>
+                        </Link>
                     </div>
                 </div>
             </div>
