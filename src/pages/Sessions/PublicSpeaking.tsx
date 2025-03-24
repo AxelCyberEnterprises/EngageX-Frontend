@@ -43,7 +43,7 @@ const PublicSpeaking: React.FC = () => {
                 </div>
             </section>
 
-            <section className="flex flex-wrap md:flex-row-reverse">
+            <section className="flex flex-wrap md:flex-row-reverse lg:flex-row">
                 {/* left side  */}
                 <div className="w-full hidden md:block gap-4 md:w-3/12 md:px-8 lg:pe-4 py-4">
                     <VoiceAnalytics percent1={72} percent2={62} percent3={85} />
