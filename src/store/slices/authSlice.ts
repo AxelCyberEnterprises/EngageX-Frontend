@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { tokenManager } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 interface Question {
     id: number;
@@ -70,6 +73,8 @@ const initialState: AuthState = {
     successMessage: "",
 };
 
+
+
 const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -125,6 +130,19 @@ const authSlice = createSlice({
         },
     },
 });
+
+export function useAutoClearSuccessMessage() {
+    const dispatch = useDispatch();
+    const location = useLocation()
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            dispatch(setSuccessMessage(""));
+        }, 5000);
+
+        return () => clearTimeout(timer); 
+    }, [location.pathname]); 
+}
 
 export const { setTopicQuestion, setSignupFlow, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
 export default authSlice.reducer;
