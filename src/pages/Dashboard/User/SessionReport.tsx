@@ -234,7 +234,7 @@ const PitchSessionReport: React.FC = () => {
                 <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
                     <h5 className="mb-5">Timing & Efficiency Analysis</h5>
 
-                    <div className="flex gap-6 sm:flex-col lg:flex-row">
+                    <div className="flex gap-6 flex-col lg:flex-row">
                         <div className="flex flex-col gap-3 w-full">
                             <div className="w-full mb-3">
                                 <div className="border-1 border-bright-gray rounded-xl py-5 px-3 w-full">
