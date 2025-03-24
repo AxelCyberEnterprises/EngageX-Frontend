@@ -29,8 +29,6 @@ const PublicSpeakingForm = () => {
 
     const handlePublicSpeakingFormSubmit = useCallback(
         (values: FormType) => {
-            console.log("Public speaking values", values);
-
             dispatch(setValues(values));
         },
         [dispatch],
