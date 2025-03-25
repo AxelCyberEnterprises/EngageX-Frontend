@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { setSuccessMessage } from "@/store/slices/authSlice";
+import { setSuccessMessage, useAutoClearSuccessMessage } from "@/store/slices/authSlice";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -53,6 +53,8 @@ const ResetPassword: React.FC = () => {
             });
         }
     }, [error]);
+
+    useAutoClearSuccessMessage();
 
     return (
         <div className="md:w-10/12 sm:w-3/5 sm:mx-auto flex flex-col justify-center h-screen gap-3 max-lg:pl-5">
