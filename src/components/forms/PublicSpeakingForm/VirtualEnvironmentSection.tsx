@@ -17,7 +17,7 @@ const VirtualEnvironmentSection = ({ form }: IVirtualEnvironmentSectionProps) =>
         <section className="space-y-6 border border-bright-gray p-4 rounded-2xl">
             <div className="space-y-2">
                 <h6>Virtual Environment</h6>
-                <p className="text-independence">Choose your preferred virtual environment</p>
+                <p className="text-auro-metal-saurus">Choose your preferred virtual environment</p>
             </div>
             <div>
                 <ControlledFieldWrapper

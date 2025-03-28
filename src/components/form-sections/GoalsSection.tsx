@@ -27,7 +27,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
         <section className={cn("space-y-5", className)}>
             <div className="space-y-2">
                 <h6>Goals</h6>
-                <p className="text-independence">What are your goals for this session?</p>
+                <p className="text-auro-metal-saurus">What are your goals for this session?</p>
             </div>
             <div className="space-y-2 p-3 rounded-lg border border-bright-gray bg-[#F8F9FC]">
                 {GOALS_GUIDE.map((guide, index) => (
@@ -51,7 +51,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
                                         <Input
                                             {...field}
                                             placeholder="Enter text here"
-                                            className="h-11 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal"
+                                            className="h-11 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-auro-metal-saurus"
                                         />
                                         <Button
                                             type="button"
