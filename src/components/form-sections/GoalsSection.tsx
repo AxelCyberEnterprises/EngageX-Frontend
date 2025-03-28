@@ -36,7 +36,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
                 <p className="text-auro-metal-saurus">What are your goals for this session?</p>
             </div>
             {fields.length > 0 && (
-                <div className="space-y-2 p-3 rounded-lg border border-bright-gray bg-[#F8F9FC]">
+                <div className="space-y-2 p-4 rounded-lg border border-bright-gray bg-[#F8F9FC]">
                     {fields.map((field, index) => {
                         return (
                             <div key={field.id} className="flex items-center gap-x-1.5 text-sm">
