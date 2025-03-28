@@ -13,10 +13,11 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BaseTablePagination from "./BaseTablePagination";
 import BaseTableToolbar from "./BaseTableToolbar";
-import { cn } from "@/lib/utils";
+import { cn, tokenManager } from "@/lib/utils";
+import axios from "axios";
 
 interface BaseTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -69,6 +70,25 @@ export function BaseTable<TData, TValue>({
     });
 
     console.log(table)
+
+        const token = tokenManager.getToken();
+            useEffect(() => {
+                console.log(token); 
+                const fetchData = async () => {
+                  try {
+                    const response = await axios.get("https://api.engagexai.io/sessions/sessions/", {
+                      headers: {
+                        "Authorization": `token ${token}`, 
+                      },
+                    });
+                    console.log(response.data);
+                  } catch (error) {
+                    console.error("Error fetching data:", error);
+                  }
+                };
+            
+                fetchData();
+              }, [token]);
 
     return (
         <div className="flex flex-col gap-y-6">
