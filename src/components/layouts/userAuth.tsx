@@ -1,7 +1,10 @@
 import { useLocation, Link } from "react-router-dom";
-import authPageImage from "../../assets/images/authPage-image.png";
+import authPageImage1 from "../../assets/images/pngs/authPage-image-1.png";
+import authPageImage2 from "../../assets/images/pngs/authPage-image-2.png";
 import engageLogo from "../../assets/images/engage-x-logo.png";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 
 export function BackToWebsite() {
@@ -45,7 +48,9 @@ export function welcomeMessage() {
 }
 const UserPlan = ({ children }: { children: ReactNode }) => {
 
-
+    const signupFlow = useSelector((state: RootState) => state.auth.signupFlow);
+    const authPageImage = useSelector((state: RootState) => state.auth.authPageImage);
+  
   
 
   return (

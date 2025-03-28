@@ -68,6 +68,8 @@ export function BaseTable<TData, TValue>({
         onSortingChange: setSorting,
     });
 
+    console.log(table)
+
     return (
         <div className="flex flex-col gap-y-6">
             {showToolBar && <BaseTableToolbar table={table} />}

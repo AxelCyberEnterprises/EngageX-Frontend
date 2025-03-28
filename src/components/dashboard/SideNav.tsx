@@ -3,8 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/svgs/logo.svg";
 import { Input } from "../ui/input";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "../ui/sidebar";
-import { logout } from "@/store/slices/authSlice";
 import { useDispatch } from "react-redux";
+import { openDialog } from "@/store/slices/dynamicDialogSlice";
+import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
 
 const SideNav: React.FC = () => {
     const location = useLocation();
@@ -423,9 +424,14 @@ const SideNav: React.FC = () => {
                 </svg>
             ),
             path: "/dashboard/user/logout",
-            function: (()=>{
-                dispatch(logout())
-            })
+            function:  (() =>
+                dispatch(
+                    openDialog({
+                        key: "default", 
+                        children: <LogoutConfirmation />
+                    }),
+                )
+            ),
         },
     ];
 

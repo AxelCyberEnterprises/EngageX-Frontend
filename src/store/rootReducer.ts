@@ -7,6 +7,7 @@ import pitchPracticeReducer from "./slices/dashboard/user/pitchPracticeSlice";
 import presentationPracticeReducer from "./slices/dashboard/user/presentationPracticeSlice";
 import publicSpeakingFormReducer from "./slices/dashboard/user/publicSpeakingFormSlice";
 import dynamicDialogReducer from "./slices/dynamicDialogSlice";
+import sessionReducer from "./slices/sessionSlice";
 
 const rootReducer = combineReducers({
     counter: counterReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     pitchPractice: pitchPracticeReducer,
     presentationPractice: presentationPracticeReducer,
     publicSpeakingForm: publicSpeakingFormReducer,
+    session: sessionReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
