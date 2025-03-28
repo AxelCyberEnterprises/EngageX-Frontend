@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { setSignupFlow } from "../../store/slices/authSlice";
+import { setSignupFlow, useAutoClearSuccessMessage } from "../../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Input } from "../../components/ui/input";
@@ -27,6 +27,7 @@ const Confirmation: React.FC = () => {
         defaultValues: { code: "" },
     });
 
+    useAutoClearSuccessMessage();
     const { mutate: emailConfirmation, isPending, error } = useEmailConfirmation();
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 

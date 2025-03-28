@@ -1,4 +1,4 @@
-import { ArrowLeft, Download, Heart, UserRound } from 'lucide-react';
+import { ArrowLeft, Download, UserRound } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ShadLinearLineChart from '@/components/dashboard/ShadLinearLineChart';
@@ -19,18 +19,18 @@ const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
 
     const chartData = [
-        { minute: 0, Curiosity: 0, Empathy: 0, Convictions: 0 },
-        { minute: 5, Curiosity: 305, Empathy: 200, Convictions: 100 },
-        { minute: 10, Curiosity: 237, Empathy: 120, Convictions: 100 },
-        { minute: 15, Curiosity: 73, Empathy: 190, Convictions: 100 },
-        { minute: 20, Curiosity: 209, Empathy: 130, Convictions: 100 },
-        { minute: 25, Curiosity: 214, Empathy: 140, Convictions: 100 },
+        { minute: 0, Impact: 0, Brevity: 0, Conviction: 0 },
+        { minute: 5, Impact: 305, Brevity: 200, Conviction: 100 },
+        { minute: 10, Impact: 237, Brevity: 120, Conviction: 100 },
+        { minute: 15, Impact: 73, Brevity: 190, Conviction: 100 },
+        { minute: 20, Impact: 209, Brevity: 130, Conviction: 100 },
+        { minute: 25, Impact: 214, Brevity: 140, Conviction: 100 },
     ];
 
     const chartColors = {
-        Curiosity: "#252A39",
-        Empathy: "#40B869",
-        Convictions: "#F5B546",
+        Impact: "#252A39",
+        Brevity: "#40B869",
+        Conviction: "#F5B546",
     };
 
     const variety = [
@@ -72,7 +72,7 @@ const PitchSessionReport: React.FC = () => {
             rating: 94,
         },
         {
-            title: "Emotional Impact",
+            title: "Impact",
             rating: 71,
         },
         {
@@ -105,10 +105,6 @@ const PitchSessionReport: React.FC = () => {
                         <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">
                             <Download />
                             <span className="hidden lg:block">Download</span>
-                        </Button>
-                        <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">
-                            <Heart />
-                            <span className="hidden lg:block">Save to Archive</span>
                         </Button>
                         <Button
                             onClick={() => setDialogOneOpen(true)}
@@ -163,7 +159,7 @@ const PitchSessionReport: React.FC = () => {
                                 <div className="absolute bottom-6">
                                     <h4 className="mb-4">88%</h4>
                                     <div className="bg-medium-sea-green text-white rounded-lg px-4 py-2">
-                                        <p>HIGH</p>
+                                        <p>EXCELLENT</p>
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +206,7 @@ const PitchSessionReport: React.FC = () => {
                     </div>
 
                     <div className="mt-7">
-                        <h6 className="mb-5">Delovery and Structure Metrics</h6>
+                        <h6 className="mb-5">Delivery and Structure Metrics</h6>
 
                         {deliveryMetrics.map((metric, index) => (
                             <div key={index} className="flex flex-wrap w-full mb-3 items-center">
@@ -234,7 +230,7 @@ const PitchSessionReport: React.FC = () => {
                 <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
                     <h5 className="mb-5">Timing & Efficiency Analysis</h5>
 
-                    <div className="flex gap-6 sm:flex-col lg:flex-row">
+                    <div className="flex gap-6 flex-col lg:flex-row">
                         <div className="flex flex-col gap-3 w-full">
                             <div className="w-full mb-3">
                                 <div className="border-1 border-bright-gray rounded-xl py-5 px-3 w-full">
@@ -303,10 +299,10 @@ const PitchSessionReport: React.FC = () => {
 
                 <div className="w-full flex flex-wrap gap-3 justify-end mt-8">
                     <Button className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray">
-                        View History Session
+                        View session history
                     </Button>
                     <Button className="flex gap-1 py-5 bg-primary-blue hover:bg-primary-blue/90">
-                        Start New Session
+                        Start new session
                     </Button>
                 </div>
             </section>
