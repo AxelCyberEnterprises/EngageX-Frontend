@@ -19,7 +19,7 @@ function ExistingSequenceCard({
     <div
       onClick={() => dispatch(updateActiveExistingSession(idx))}
       className={clsx(
-        "p-3 pb-4 space-y-6  border rounded-xl cursor-pointer",
+        "p-4 space-y-5  border border-gray rounded-xl cursor-pointer",
         session.is_active ? "bg-alice-blue" : "bg-white"
       )}
     >
@@ -41,21 +41,47 @@ function ExistingSequenceCard({
             </svg>
           </span>
         </h6>
-        <button className="bg-transparent hidden border-2 lg:block !border-black rounded-xl py-3 px-3 text-black">
+        <button
+          className={clsx(
+            "hidden border lg:block border-gray rounded-xl py-3 px-3 text-gunmetal",
+            session.is_active ? "bg-gunmetal text-white" : "bg-transparent"
+          )}
+        >
           New Session
         </button>
       </div>
       <div className="flex flex-col justify-between lg:flex-row">
         <div className="flex justify-between lg:flex-col">
-          <p className="small text-success-green">Start Date</p>
+          <p
+            className={clsx(
+              "small",
+              session.is_active ? "text-success-green" : "text-[#6B7186]"
+            )}
+          >
+            Start Date
+          </p>
           <p className="small">{formatTimestamp(session.start_date)}</p>
         </div>
         <div className="flex justify-between lg:flex-col">
-          <p className="small text-success-green">Last Updated</p>
+          <p
+            className={clsx(
+              "small",
+              session.is_active ? "text-success-green" : "text-[#6B7186]"
+            )}
+          >
+            Last Updated
+          </p>
           <p className="small">{formatTimestamp(session.last_updated_date)}</p>
         </div>
         <div className="flex justify-between lg:flex-col">
-          <p className="small text-success-green">Total Sessions</p>
+          <p
+            className={clsx(
+              "small",
+              session.is_active ? "text-success-green" : "text-[#6B7186]"
+            )}
+          >
+            Total Sessions
+          </p>
           <p className="small">{session.sequences.length} sessions completed</p>
         </div>
       </div>

@@ -1,23 +1,37 @@
+import {
+  PIScreens,
+  handleActiveScreen,
+  handleSelectedScreen,
+} from "@/store/slices/performance_improvement_slice";
 import ExistingSequenceCard from "./ExistingSequenceCard";
 import { ExistingSequenceTable } from "./ExistingSequenceTable";
 import { RootState } from "@/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function SelectExistingSequence() {
-  const { existing_sessions } = useSelector(
+  const { existing_sessions, active_screen } = useSelector(
     (state: RootState) => state.performance_improvment
   );
+  const dispatch = useDispatch();
   return (
     <main className="px-4 lg:px-10 pb-10 bg-[#F9F9F9] font-montreal mb-20">
-      <div className="py-6 flex w-full gap-8 justify-between">
-        <h6>Start a New Session or Improve a Past Session</h6>
-        <button className="bg-transparent border border-dark-gray rounded-xl py-3 text-black">
+      <div className="py-6 flex w-full gap-8 justify-between items-center">
+        <h6>Select from Existing Sequences</h6>
+        <button
+          onClick={() => {
+            if (active_screen == PIScreens.EXISTING_PIS) {
+              dispatch(handleSelectedScreen(PIScreens.DEFAULT));
+              dispatch(handleActiveScreen());
+            }
+          }}
+          className="px-6 py-2 h-12 rounded-2xl bg-transparent text-gunmetal border border-gray"
+        >
           Cancel
         </button>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-6">
         {existing_sessions.map((session, idx) => (
-          <div>
+          <div className="space-y-4">
             <ExistingSequenceCard key={idx} session={session} idx={idx} />
             {session.is_active && (
               <ExistingSequenceTable sequences={session.sequences} />

@@ -145,7 +145,7 @@ interface PIData {
     new_sequence_name: string;
   };
   dialog: DialogState;
-  selceted_screen: PIScreens;
+  selected_screen: PIScreens;
   existing_sessions: Session[];
 }
 
@@ -162,7 +162,7 @@ const initialState: PIData = {
     new_pis_isopen: false,
     session_confirmation: false,
   },
-  selceted_screen: PIScreens.DEFAULT,
+  selected_screen: PIScreens.DEFAULT,
   existing_sessions: sessions,
 };
 
@@ -171,14 +171,14 @@ const PerformanceImprovementSlice = createSlice({
   initialState,
   reducers: {
     handleActiveScreen: (state) => {
-      state.active_screen = state.selceted_screen;
+      state.active_screen = state.selected_screen;
       console.log("active_screen: ", state.active_screen);
       if (state.active_screen == PIScreens.NEW_PIS) {
         state.dialog = { new_pis_isopen: true, session_confirmation: false };
       }
     },
     handleSelectedScreen: (state, action: PayloadAction<PIScreens>) => {
-      state.selceted_screen = action.payload;
+      state.selected_screen = action.payload;
     },
     handleDialog: (state, action: PayloadAction<{ dialog: DialogState }>) => {
       state.dialog = action.payload.dialog; // ✅ Ensure state is updated correctly
