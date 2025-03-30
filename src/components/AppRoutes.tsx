@@ -29,7 +29,8 @@ import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
 import AdminDashboardHome from "../pages/Dashboard/Admin/Index";
 import UserAnalytics from "../pages/Dashboard/User/Analytics";
 import UserDashboardHome from "../pages/Dashboard/User/Index";
-import UserPitchSessionReport from "../pages/Dashboard/User/SessionReport";
+import UserSessionReport from "../pages/Dashboard/User/SessionReport";
+import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
 import UserSettings from "../pages/Dashboard/User/Settings";
 import UserSessionHistory from "../pages/Dashboard/User/UserSessionHistory";
 import Features from "../pages/Features";
@@ -90,7 +91,7 @@ function UserDashboardRoutes() {
       <Route path="presentation-practice" element={<PresentationPractice />} />
       <Route path="progress-tracking" element={<ProgressTracking />} />
       <Route path="session-history" element={<UserSessionHistory />} />
-      <Route path="session-history/:id" element={<UserPitchSessionReport />} />
+      <Route path="session-history/:id" element={<UserSessionReport />} />
       <Route path="session-comparison" element={<SessionComparison />} />
       <Route path="analytics" element={<UserAnalytics />} />
       <Route path="settings" element={<UserSettings />} />
@@ -110,7 +111,7 @@ function AdminDashboardRoutes() {
     <Routes>
       <Route index element={<AdminDashboardHome />} />
       <Route path="session-history" element={<AdminSessionHistory />} />
-      <Route path="session-history/:id" element={<UserPitchSessionReport />} />
+      <Route path="session-history/:id" element={<AdminSessionReport />} />
       <Route path="analytics" element={<UserAnalytics />} />
       <Route path="settings" element={<UserSettings />} />
       <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
