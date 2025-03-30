@@ -72,8 +72,13 @@ function Hero() {
             />
           </div>
         </div>
-        <div className="w-full flex relative h-[15.5rem] lg:h-[15rem] justify-center ">
-          <HeroSVG />
+        <div className="w-full flex relative justify-center">
+          {/* <HeroSVG /> */}
+          <img
+            src="./assets/homepathimg.png"
+            className="absolute bottom-15 mr-20"
+            alt=""
+          />
         </div>
       </div>
     </section>
