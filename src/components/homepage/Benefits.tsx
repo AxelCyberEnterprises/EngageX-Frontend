@@ -140,39 +140,119 @@ function Benefits() {
         <div className="flex gap-x-10 w-full border border-[#EBF1FF] items-center py-8 px-9 rounded-2xl bg-[#EBF1FF]">
           <div className="p-3 flex items-center justify-center rounded-full bg-gunmetal">
             <svg
+              className="size-5"
               width="16"
               height="15"
-              className="h-5 w-5"
               viewBox="0 0 16 15"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clipPath="url(#clip0_577_1411)">
+              <g clip-path="url(#clip0_1208_3902)">
                 <path
-                  d="M10.334 3.125L11.584 4.375L14.084 1.875M14.084 7.5V10.75C14.084 11.8001 14.084 12.3251 13.8796 12.7262C13.6999 13.079 13.413 13.3659 13.0602 13.5456C12.6591 13.75 12.1341 13.75 11.084 13.75H4.58398C3.53389 13.75 3.00884 13.75 2.60775 13.5456C2.25495 13.3659 1.96811 13.079 1.78835 12.7262C1.58398 12.3251 1.58398 11.8001 1.58398 10.75V4.25C1.58398 3.1999 1.58398 2.67485 1.78835 2.27377C1.96811 1.92096 2.25495 1.63413 2.60775 1.45436C3.00884 1.25 3.53389 1.25 4.58398 1.25H7.83398M1.67493 12.4539C1.96814 11.3991 2.93559 10.625 4.08384 10.625H8.45884C9.03966 10.625 9.33007 10.625 9.57157 10.673C10.5633 10.8703 11.3385 11.6455 11.5358 12.6373C11.5838 12.8788 11.5838 13.1692 11.5838 13.75M9.08398 5.9375C9.08398 7.31821 7.9647 8.4375 6.58398 8.4375C5.20327 8.4375 4.08398 7.31821 4.08398 5.9375C4.08398 4.55679 5.20327 3.4375 6.58398 3.4375C7.9647 3.4375 9.08398 4.55679 9.08398 5.9375Z"
+                  d="M10.3333 3.125L11.5833 4.375L14.0833 1.875M14.0833 7.5V10.75C14.0833 11.8001 14.0833 12.3251 13.8789 12.7262C13.6991 13.079 13.4123 13.3659 13.0595 13.5456C12.6584 13.75 12.1334 13.75 11.0833 13.75H4.58325C3.53315 13.75 3.0081 13.75 2.60702 13.5456C2.25422 13.3659 1.96738 13.079 1.78761 12.7262C1.58325 12.3251 1.58325 11.8001 1.58325 10.75V4.25C1.58325 3.1999 1.58325 2.67485 1.78761 2.27377C1.96738 1.92096 2.25422 1.63413 2.60702 1.45436C3.0081 1.25 3.53315 1.25 4.58325 1.25H7.83325M1.67419 12.4539C1.96741 11.3991 2.93485 10.625 4.08311 10.625H8.45811C9.03893 10.625 9.32934 10.625 9.57083 10.673C10.5626 10.8703 11.3378 11.6455 11.5351 12.6373C11.5831 12.8788 11.5831 13.1692 11.5831 13.75M9.08325 5.9375C9.08325 7.31821 7.96396 8.4375 6.58325 8.4375C5.20254 8.4375 4.08325 7.31821 4.08325 5.9375C4.08325 4.55679 5.20254 3.4375 6.58325 3.4375C7.96396 3.4375 9.08325 4.55679 9.08325 5.9375Z"
                   stroke="white"
-                  strokeWidth="1.25"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                 />
               </g>
               <defs>
-                <clipPath id="clip0_577_1411">
+                <clipPath id="clip0_1208_3902">
                   <rect
                     width="15"
                     height="15"
                     fill="white"
-                    transform="translate(0.333984)"
+                    transform="translate(0.333252)"
                   />
                 </clipPath>
               </defs>
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Goal-oriented practice</h6>
+            <h6 className=" font-montreal"> Goal-oriented practice</h6>
             <p className="text-dark-electric-blue">
               Set milestones, achieve badges, and grow your speaking skills
               systematically.
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-x-10 w-full border border-[#EBF1FF] items-center py-8 px-9 rounded-2xl bg-[#EBF1FF]">
+          <div className="p-3 flex items-center justify-center rounded-full bg-gunmetal">
+            <svg
+              className="h-5 w-5"
+              width="16"
+              height="15"
+              viewBox="0 0 16 15"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2078_14170)">
+                <path
+                  d="M12.2083 6.25V2.5M10.3333 4.375H14.0833M10.3333 13.125V12.375C10.3333 11.3249 10.3333 10.7999 10.1289 10.3988C9.94913 10.046 9.66229 9.75913 9.30948 9.57936C8.9084 9.375 8.38335 9.375 7.33325 9.375H4.58325C3.53315 9.375 3.0081 9.375 2.60702 9.57936C2.25422 9.75913 1.96738 10.046 1.78761 10.3988C1.58325 10.7999 1.58325 11.3249 1.58325 12.375V13.125M8.14575 4.6875C8.14575 5.89562 7.16637 6.875 5.95825 6.875C4.75013 6.875 3.77075 5.89562 3.77075 4.6875C3.77075 3.47938 4.75013 2.5 5.95825 2.5C7.16637 2.5 8.14575 3.47938 8.14575 4.6875Z"
+                  stroke="white"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_2078_14170">
+                  <rect
+                    width="15"
+                    height="15"
+                    fill="white"
+                    transform="translate(0.333252)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div className="space-y-4">
+            <h6 className=" font-montreal">Support of a certified coach.</h6>
+            <p className="text-dark-electric-blue">
+              We give you access to ICF certified coaches to help aid your
+              growth.
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-x-10 w-full border border-[#EBF1FF] items-center py-8 px-9 rounded-2xl bg-[#EBF1FF]">
+          <div className="p-3 flex items-center justify-center rounded-full bg-gunmetal">
+            <svg
+              className="size-5"
+              width="16"
+              height="15"
+              viewBox="0 0 16 15"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_2078_14167)">
+                <path
+                  d="M14.0833 7.5H11.5833L9.70825 13.125L5.95825 1.875L4.08325 7.5H1.58325"
+                  stroke="white"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_2078_14167">
+                  <rect
+                    width="15"
+                    height="15"
+                    fill="white"
+                    transform="translate(0.333252)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div className="space-y-4">
+            <h6 className=" font-montreal">
+              Session improvement functionality
+            </h6>
+            <p className="text-dark-electric-blue">
+              Seamlessly Improve on the exact same Speaking exercise you worked
+              on in the past
             </p>
           </div>
         </div>
@@ -180,8 +260,8 @@ function Benefits() {
 
       <div className="relative flex justify-center w-full">
         <Link to="/features">
-          <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl">
-            <p>Unlock your potential</p>
+          <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg">
+            <p>Learn more</p>
             <svg
               width="15"
               height="18"
