@@ -1,10 +1,11 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/index";
-import { setSignupData } from "../../store/slices/authSlice";
+import { setAuthPageImage, setSignupData } from "../../store/slices/authSlice";
 import { welcomeMessage } from "@/components/layouts/userAuth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png"
 
 const AuthQuestions: React.FC = () => {
     const [selectedOptions, setSelectedOptions] = useState<{ plan?: string; role?: string }>({});
@@ -13,6 +14,10 @@ const AuthQuestions: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const questions = useSelector((state: RootState) => state.auth.questions);
+        const location = useLocation()
+                useEffect(()=>{
+                    dispatch(setAuthPageImage(authPageImage2))
+                },[location.pathname])
 
     // Separate the two question sets
     const planQuestion = questions.find((q) => q.question === "What do you plan on doing?");
@@ -45,7 +50,7 @@ const AuthQuestions: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col my-5 md:justify-center md:pt-12 scrollbar-hide overflow-y-auto scroll-smooth h-screen md:pb-10  lg:w-4/5 md:mx-auto max-lg:p-5">
+        <div className="flex flex-col my-5 md:justify-center md:pt-12 scrollbar-hide overflow-y-auto scroll-smooth h-[100dvh] md:pb-10  lg:w-4/5 md:mx-auto max-lg:p-5">
             {welcomeMessage()}
             <div className="font-[Montserrat] mt-10 w-full md:w-[80%] mx-auto lg:w-full md:mt-0 space-y-8">
                 {/* Plan Question */}

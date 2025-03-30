@@ -1,12 +1,20 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import tutorial from "../../assets/images/tutorial-position.png";
 import { welcomeMessage } from "@/components/layouts/userAuth";
+import { useDispatch } from "react-redux";
+import { setAuthPageImage } from "@/store/slices/authSlice";
+import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png"
 
 const Tutorial: React.FC = () => {
     const navigate = useNavigate();
+            const dispatch = useDispatch()
+    const location = useLocation()
+            useEffect(()=>{
+                dispatch(setAuthPageImage(authPageImage2))
+            },[location.pathname])
     return (
-        <div className="md:w-10/12 sm:w-3/5 h-screen flex justify-center   sm:mx-auto flex-col   overflow-y-auto gap-2 max-md:pl-0 max-lg:pl-5">
+        <div className="md:w-10/12 sm:w-3/5 h-[100dvh] flex justify-center   sm:mx-auto flex-col   overflow-y-auto gap-2 max-md:pl-0 max-lg:pl-5">
             {welcomeMessage()}
             <div className="flex justify-center items-center mt-0 flex-col">
                 <p className="text-[#667085] font-[Montserrat] -mt-3 mb-8">
