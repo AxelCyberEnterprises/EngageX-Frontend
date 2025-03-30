@@ -7,8 +7,10 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 180,
       sessions: 4,
       contents: [
-        "Ideal for individuals looking to test and experience the platform.",
-        "Best for occasional users or trial purposes.",
+        "Ideal for individuals looking to gain support, build clarity, and take the first steps toward their personal or professional goals.",
+        "Best for occasional users with minimal speaking opportunities.",
+        "Perfect for exploring coaching at your own pace.",
+        "Offers foundational strategies to boost confidence and communication awareness.",
       ],
       button_text: "Start now",
       highlight: false,
@@ -18,8 +20,10 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 240,
       sessions: 6,
       contents: [
-        "Great for short-term skill improvement and specific goals.",
-        "Targeted at mid-level professionals and managers.",
+        "Great for those seeking impactful meeting engagement and improvement in targeted communication goals.",
+        "Suitable for all professional levels looking to level up their speaking presence.",
+        "Focuses on specific areas like message clarity, audience connection, and confidence-building.",
+        "Ideal for professionals preparing for team meetings, client conversations, or leadership interactions.",
       ],
       button_text: "Choose growth plan",
       highlight: true,
@@ -29,8 +33,11 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 288,
       sessions: 8,
       contents: [
-        "Balanced option for consistent progress over time.",
-        "Perfect for those preparing for an important event or ongoing development.",
+        "Fantastic for professionals looking to make measurable progress over time.",
+        "Covers all four core areas: pitch, presentation, public speaking, and storytelling.",
+        "Covers all four core areas: pitch, presentation, public speaking, and storytelling.",
+        "Great for preparing for key events such as panels, conferences, or investor meetings.",
+        "Offers a structured path with feedback and strategies to elevate your overall communication impact.",
       ],
       button_text: "Go pro",
       highlight: false,
@@ -40,9 +47,10 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 396,
       sessions: 12,
       contents: [
-        "Best value, long-term development.",
-        "Recommended for executives and individuals committed to professional growth.",
-        "Comes with an exclusive bonus (e.g., free consultation or report analysis).",
+        "Best for long-term development and professionals with frequent public speaking responsibilities.",
+        "Highly recommended for executives, thought leaders, and senior managers.",
+        "Provides ongoing, high-touch support across all communication domains.",
+        "Designed for sustained growth, executive presence, and high-stakes performance readiness.",
       ],
       button_text: "Get the ultimate plan",
       highlight: false,
@@ -80,7 +88,7 @@ function Pricing({ subtext }: { subtext?: string }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 w-full lg:grid-cols-4 gap-10 lg:gap-8 lg:pt-32">
+      <div className="grid grid-cols-1 w-full lg:grid-cols-2 xl:grid-cols-4 gap-10 lg:gap-8 lg:pt-32">
         {plans.map((plan, idx) => (
           <PricingCard plan={plan} key={idx} />
         ))}
@@ -91,11 +99,11 @@ function Pricing({ subtext }: { subtext?: string }) {
           <div className="lg:w-full pr-[30px] lg:pr-0">
             <h4 className="font-montreal">Enterprise & team plans</h4>
             <p className="mt-4 font-montserrat">
-              If you need a custom solution for your organization, corporate
-              training, or coaching program? We offer tailored enterprise plans
-              with multi-user access, team analytics, and coaching support.
+              For teams or departments with more than 10 individuals, we offer a
+              customized enterprise plan designed for seamless multi-user
+              access.
             </p>
-            <button className="flex gap-2 font-montserrat mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl">
+            <button className="flex gap-2 font-montserrat mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg">
               <p>Contact us for a consultation!</p>
               <svg
                 width="15"

@@ -6,7 +6,7 @@ function Drafts() {
           <h6>Start a New Session or Improve a Past Session</h6>
           <small>Select session saved in your draft and proceed</small>
         </div>
-        <button className="bg-transparent border border-dark-gray rounded-xl py-3 text-black">
+        <button className="bg-transparent border border-dark-gray rounded-lg py-3 text-black">
           Cancel
         </button>
       </div>

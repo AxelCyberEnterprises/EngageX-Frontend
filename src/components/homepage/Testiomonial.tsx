@@ -9,6 +9,7 @@ type Testimonial = {
   text: string;
   subtext: string;
   avatar?: string;
+  color: string;
 };
 
 function Testiomonial() {
@@ -19,12 +20,14 @@ function Testiomonial() {
         "“This platform revolutionized how I prepare for keynotes. The audience feedback feels incredibly real!”",
       subtext: "- Sarah M., Public Speaker",
       avatar: "./assets/profile3.png",
+      color: "#C1C2B4",
     },
     {
-      img: "./assets/testimonialimg.jpeg",
+      svg: <TestimonialSVG />,
       text:
         "“Practicing my pitch here gave me the confidence to win over investors. I highly recommend!”",
       subtext: "— John D., Startup Founder",
+      color: "#6F7C8E",
     },
     {
       svg: <TestimonialSVG />,
@@ -32,6 +35,7 @@ function Testiomonial() {
         "“I love the detailed analytics and playback options. It's like having a personal speaking coach.”",
       subtext: "-  Priya S., Corporate Trainer",
       avatar: "./assets/profile1.png",
+      color: "#EFF6FC",
     },
   ];
   return (
@@ -70,24 +74,16 @@ function Testiomonial() {
           {testimonials.map((testimonial, idx) => (
             <div
               key={idx}
-              className="flex-shrink-0 w-full lg:w-[30rem] h-[25rem] relative bg-[#C1C2B4] overflow-clip rounded-2xl"
+              className={`flex-shrink-0 w-full lg:w-[30rem] h-[25rem] relative bg-[${testimonial.color}] overflow-clip rounded-2xl`}
             >
-              {testimonial.img ? (
-                <img
-                  src={testimonial.img}
-                  className="absolute h-full w-full object-cover"
-                  alt="profile"
-                />
-              ) : (
-                testimonial.svg
-              )}
+              {testimonial.svg}
               <div className="flex h-full justify-end items-end">
                 <div
                   className={clsx(
                     "space-y-6 relative z-10 p-6 py-8 items-end justify-baseline",
                     testimonial.img
                       ? "bg-gradient-to-b from-black/0 to-black from-0% to-50% text-white"
-                      : "bg-[#C1C2B4]"
+                      : `bg-[${testimonial.color}]`
                   )}
                 >
                   <p className="big">{testimonial.text}</p>
@@ -109,8 +105,8 @@ function Testiomonial() {
       </div>
 
       <div className="relative w-full flex justify-center">
-        <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative">
-          <p>Join the community</p>
+        <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg relative">
+          <p>Join us now</p>
           <svg
             width="15"
             height="18"

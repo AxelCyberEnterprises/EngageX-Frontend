@@ -38,9 +38,9 @@ function PricingCard({ plan }: Params) {
             >
               {plan.sessions} SESSIONS
             </p>
-            <div className="flex items-center font-light">
+            <div className="flex items-center">
               <h2 className="font-bold mr-[20px]">${plan.price}</h2>{" "}
-              <p>/ Month</p>
+              <p>Valid for 1 year</p>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@ function PricingCard({ plan }: Params) {
                   />
                 </svg>
               </div>
-              <p className="w-full">{content}</p>
+              <p className="w-full font-montreal">{content}</p>
             </div>
           ))}
         </div>
@@ -79,7 +79,7 @@ function PricingCard({ plan }: Params) {
 
       <button
         className={clsx(
-          "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center justify-center rounded-2xl bg-[#6F7C8E]",
+          "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center justify-center rounded-lg bg-[#6F7C8E]",
           plan.highlight && "bg-alice-blue text-black"
         )}
       >
