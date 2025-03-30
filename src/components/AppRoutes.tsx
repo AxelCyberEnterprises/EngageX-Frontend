@@ -184,9 +184,9 @@ export default function AppRoutes() {
                 <Route
                     path="/*"
                     element={
-                        <RequireAuth>
+                        // <RequireAuth>
                             <MainRoutes />
-                        </RequireAuth>
+                        // </RequireAuth>
                     }
                 />
                 <Route path="*" element={<NotFound />} />

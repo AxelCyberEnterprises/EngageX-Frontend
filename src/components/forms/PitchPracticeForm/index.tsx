@@ -119,7 +119,7 @@ const PitchPracticeForm = () => {
                     />
                     <SlideDetailsSection
                         {...{ form }}
-                        className="flex-3 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar lg:pl-4 md:pr-4 lg:pt-4 pb-[15vh]"
+                        className="flex-3 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar pb-[15vh]"
                     />
                     <SlidePreviewAndSettingsSection
                         {...{ form }}
