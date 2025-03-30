@@ -1,6 +1,9 @@
 import { JSX } from "react";
 import TestimonialSVG from "./svgs/TestimonialSVG";
+import TestimonialSVG2 from "./svgs/TestimonialSVG2";
+import TestimonialSVG3 from "./svgs/TestimonialSVG3";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 type Testimonial = {
   img?: string;
@@ -9,6 +12,7 @@ type Testimonial = {
   text: string;
   subtext: string;
   avatar?: string;
+  color: string;
 };
 
 function Testiomonial() {
@@ -16,22 +20,23 @@ function Testiomonial() {
     {
       svg: <TestimonialSVG />,
       text:
-        "“This platform revolutionized how I prepare for keynotes. The audience feedback feels incredibly real!”",
-      subtext: "- Sarah M., Public Speaker",
-      avatar: "./assets/profile3.png",
+        "“Practicing my pitch here gave me the confidence to win over investors.  I highly recommend!”",
+      subtext: "- Startup Founder",
+      color: "#C1C2B4",
     },
     {
-      img: "./assets/testimonialimg.jpeg",
+      svg: <TestimonialSVG2 />,
       text:
-        "“Practicing my pitch here gave me the confidence to win over investors. I highly recommend!”",
-      subtext: "— John D., Startup Founder",
+        "“EngageX helped me own my narrative. Now, every interview, every post, every connection reflects who I truly am both on and off the field.”",
+      subtext: "— Pro Athlete & Brand Builder",
+      color: "#6F7C8E",
     },
     {
-      svg: <TestimonialSVG />,
+      svg: <TestimonialSVG3 />,
       text:
-        "“I love the detailed analytics and playback options. It's like having a personal speaking coach.”",
-      subtext: "-  Priya S., Corporate Trainer",
-      avatar: "./assets/profile1.png",
+        "“With EngageX, I don't just pitch, I connect! It's transformed the way I communicate value, build trust, and close deals.”",
+      subtext: "- Top Sales Strategist",
+      color: "#EFF6FC",
     },
   ];
   return (
@@ -70,24 +75,16 @@ function Testiomonial() {
           {testimonials.map((testimonial, idx) => (
             <div
               key={idx}
-              className="flex-shrink-0 w-full lg:w-[30rem] h-[25rem] relative bg-[#C1C2B4] overflow-clip rounded-2xl"
+              className={`flex-shrink-0 w-full lg:w-[30rem] h-[25rem] relative bg-[${testimonial.color}] overflow-clip rounded-2xl`}
             >
-              {testimonial.img ? (
-                <img
-                  src={testimonial.img}
-                  className="absolute h-full w-full object-cover"
-                  alt="profile"
-                />
-              ) : (
-                testimonial.svg
-              )}
+              {testimonial.svg}
               <div className="flex h-full justify-end items-end">
                 <div
                   className={clsx(
                     "space-y-6 relative z-10 p-6 py-8 items-end justify-baseline",
                     testimonial.img
                       ? "bg-gradient-to-b from-black/0 to-black from-0% to-50% text-white"
-                      : "bg-[#C1C2B4]"
+                      : `bg-[${testimonial.color}]`
                   )}
                 >
                   <p className="big">{testimonial.text}</p>
@@ -109,22 +106,24 @@ function Testiomonial() {
       </div>
 
       <div className="relative w-full flex justify-center">
-        <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative">
-          <p>Join the community</p>
-          <svg
-            width="15"
-            height="18"
-            className="h-6 w-7"
-            viewBox="0 0 15 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11.0243 6.32818C11.1897 6.32894 11.3481 6.39499 11.4651 6.51196C11.5821 6.62893 11.6481 6.78737 11.6489 6.95279L11.6489 12.8453C11.6518 12.9292 11.6379 13.0128 11.6078 13.0912C11.5778 13.1696 11.5322 13.2411 11.4739 13.3015C11.4156 13.3619 11.3458 13.4099 11.2685 13.4427C11.1913 13.4755 11.1082 13.4924 11.0243 13.4924C10.9403 13.4924 10.8573 13.4755 10.78 13.4427C10.7027 13.4099 10.6329 13.3619 10.5746 13.3015C10.5163 13.2411 10.4708 13.1696 10.4407 13.0912C10.4107 13.0128 10.3967 12.9292 10.3996 12.8453L10.3996 8.46128L4.39513 14.4658C4.27792 14.583 4.11895 14.6489 3.95319 14.6489C3.78743 14.6489 3.62846 14.583 3.51125 14.4658C3.39404 14.3486 3.32819 14.1896 3.32819 14.0239C3.32819 13.8581 3.39404 13.6991 3.51125 13.5819L9.51576 7.5774L5.1317 7.5774C4.96986 7.57169 4.81655 7.50338 4.70408 7.38687C4.59161 7.27035 4.52875 7.11473 4.52875 6.95279C4.52875 6.79085 4.59161 6.63523 4.70408 6.51871C4.81655 6.4022 4.96986 6.33389 5.1317 6.32818L11.0243 6.32818Z"
-              fill="white"
-            />
-          </svg>
-        </button>
+        <Link to="/auth/signup">
+          <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg relative">
+            <p>Join us now</p>
+            <svg
+              width="15"
+              height="18"
+              className="h-6 w-7"
+              viewBox="0 0 15 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.0243 6.32818C11.1897 6.32894 11.3481 6.39499 11.4651 6.51196C11.5821 6.62893 11.6481 6.78737 11.6489 6.95279L11.6489 12.8453C11.6518 12.9292 11.6379 13.0128 11.6078 13.0912C11.5778 13.1696 11.5322 13.2411 11.4739 13.3015C11.4156 13.3619 11.3458 13.4099 11.2685 13.4427C11.1913 13.4755 11.1082 13.4924 11.0243 13.4924C10.9403 13.4924 10.8573 13.4755 10.78 13.4427C10.7027 13.4099 10.6329 13.3619 10.5746 13.3015C10.5163 13.2411 10.4708 13.1696 10.4407 13.0912C10.4107 13.0128 10.3967 12.9292 10.3996 12.8453L10.3996 8.46128L4.39513 14.4658C4.27792 14.583 4.11895 14.6489 3.95319 14.6489C3.78743 14.6489 3.62846 14.583 3.51125 14.4658C3.39404 14.3486 3.32819 14.1896 3.32819 14.0239C3.32819 13.8581 3.39404 13.6991 3.51125 13.5819L9.51576 7.5774L5.1317 7.5774C4.96986 7.57169 4.81655 7.50338 4.70408 7.38687C4.59161 7.27035 4.52875 7.11473 4.52875 6.95279C4.52875 6.79085 4.59161 6.63523 4.70408 6.51871C4.81655 6.4022 4.96986 6.33389 5.1317 6.32818L11.0243 6.32818Z"
+                fill="white"
+              />
+            </svg>
+          </button>
+        </Link>
       </div>
     </section>
   );

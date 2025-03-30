@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PricingCard from "./PricingCard";
 
 function Pricing({ subtext }: { subtext?: string }) {
@@ -7,45 +8,61 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 180,
       sessions: 4,
       contents: [
-        "Ideal for individuals looking to test and experience the platform.",
-        "Best for occasional users or trial purposes.",
+        "Ideal for individuals looking to gain support, build clarity, and take the first steps toward their personal or professional goals.",
+        "Best for occasional users with minimal speaking opportunities.",
+        "Perfect for exploring coaching at your own pace.",
+        "Offers foundational strategies to boost confidence and communication awareness.",
       ],
       button_text: "Start now",
       highlight: false,
+      payment_link:
+        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-d77fb68013f54350b75d514d54189fd1191971d0274b4d16bb762c22406bdf7156e09114df9548b88a6b0c9d519b1239?locale=EN_US",
     },
     {
       type: "GROWTH PLAN",
       price: 240,
       sessions: 6,
       contents: [
-        "Great for short-term skill improvement and specific goals.",
-        "Targeted at mid-level professionals and managers.",
+        "Great for those seeking impactful meeting engagement and improvement in targeted communication goals.",
+        "Suitable for all professional levels looking to level up their speaking presence.",
+        "Focuses on specific areas like message clarity, audience connection, and confidence-building.",
+        "Ideal for professionals preparing for team meetings, client conversations, or leadership interactions.",
       ],
       button_text: "Choose growth plan",
       highlight: true,
+      payment_link:
+        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-46dbc56154fd4e2fa0150a8246276351757f6a348eca4c02b3b4ebaf67ef244f7b923ec4fce641d0b42984bfc07c8491?locale=EN_US",
     },
     {
       type: "PRO PLAN",
       price: 288,
       sessions: 8,
       contents: [
-        "Balanced option for consistent progress over time.",
-        "Perfect for those preparing for an important event or ongoing development.",
+        "Fantastic for professionals looking to make measurable progress over time.",
+        "Covers all four core areas: pitch, presentation, public speaking, and storytelling.",
+        "Covers all four core areas: pitch, presentation, public speaking, and storytelling.",
+        "Great for preparing for key events such as panels, conferences, or investor meetings.",
+        "Offers a structured path with feedback and strategies to elevate your overall communication impact.",
       ],
       button_text: "Go pro",
       highlight: false,
+      payment_link:
+        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-83fccafc8b004617b1f57152c42c9bd6b711beae594e4ba3b19fcca2ba0c10800257b01db53b4fd4bd54ca1d47bece0e?locale=EN_US",
     },
     {
       type: "ULTIMATE PLAN",
       price: 396,
       sessions: 12,
       contents: [
-        "Best value, long-term development.",
-        "Recommended for executives and individuals committed to professional growth.",
-        "Comes with an exclusive bonus (e.g., free consultation or report analysis).",
+        "Best for long-term development and professionals with frequent public speaking responsibilities.",
+        "Highly recommended for executives, thought leaders, and senior managers.",
+        "Provides ongoing, high-touch support across all communication domains.",
+        "Designed for sustained growth, executive presence, and high-stakes performance readiness.",
       ],
       button_text: "Get the ultimate plan",
       highlight: false,
+      payment_link:
+        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-b4372ea1177e40689bfc3080f896e78ec455af91c9a543eea0b08df2de1ab9b090507c99ea5048beaf1f2b31984ddf0a?locale=EN_US",
     },
   ];
   return (
@@ -80,7 +97,7 @@ function Pricing({ subtext }: { subtext?: string }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 w-full lg:grid-cols-4 gap-10 lg:gap-8 lg:pt-32">
+      <div className="grid grid-cols-1 w-full lg:grid-cols-2 xl:grid-cols-4 gap-10 lg:gap-8 lg:pt-32">
         {plans.map((plan, idx) => (
           <PricingCard plan={plan} key={idx} />
         ))}
@@ -91,26 +108,28 @@ function Pricing({ subtext }: { subtext?: string }) {
           <div className="lg:w-full pr-[30px] lg:pr-0">
             <h4 className="font-montreal">Enterprise & team plans</h4>
             <p className="mt-4 font-montserrat">
-              If you need a custom solution for your organization, corporate
-              training, or coaching program? We offer tailored enterprise plans
-              with multi-user access, team analytics, and coaching support.
+              For teams or departments with more than 10 individuals, we offer a
+              customized enterprise plan designed for seamless multi-user
+              access.
             </p>
-            <button className="flex gap-2 font-montserrat mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl">
-              <p>Contact us for a consultation!</p>
-              <svg
-                width="15"
-                height="18"
-                className="h-6 w-7"
-                viewBox="0 0 15 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11.0243 6.32818C11.1897 6.32894 11.3481 6.39499 11.4651 6.51196C11.5821 6.62893 11.6481 6.78737 11.6489 6.95279L11.6489 12.8453C11.6518 12.9292 11.6379 13.0128 11.6078 13.0912C11.5778 13.1696 11.5322 13.2411 11.4739 13.3015C11.4156 13.3619 11.3458 13.4099 11.2685 13.4427C11.1913 13.4755 11.1082 13.4924 11.0243 13.4924C10.9403 13.4924 10.8573 13.4755 10.78 13.4427C10.7027 13.4099 10.6329 13.3619 10.5746 13.3015C10.5163 13.2411 10.4708 13.1696 10.4407 13.0912C10.4107 13.0128 10.3967 12.9292 10.3996 12.8453L10.3996 8.46128L4.39513 14.4658C4.27792 14.583 4.11895 14.6489 3.95319 14.6489C3.78743 14.6489 3.62846 14.583 3.51125 14.4658C3.39404 14.3486 3.32819 14.1896 3.32819 14.0239C3.32819 13.8581 3.39404 13.6991 3.51125 13.5819L9.51576 7.5774L5.1317 7.5774C4.96986 7.57169 4.81655 7.50338 4.70408 7.38687C4.59161 7.27035 4.52875 7.11473 4.52875 6.95279C4.52875 6.79085 4.59161 6.63523 4.70408 6.51871C4.81655 6.4022 4.96986 6.33389 5.1317 6.32818L11.0243 6.32818Z"
-                  fill="white"
-                />
-              </svg>
-            </button>
+            <Link to="/contact">
+              <button className="flex gap-2 font-montserrat mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg">
+                <p>Contact us for a consultation!</p>
+                <svg
+                  width="15"
+                  height="18"
+                  className="h-6 w-7"
+                  viewBox="0 0 15 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11.0243 6.32818C11.1897 6.32894 11.3481 6.39499 11.4651 6.51196C11.5821 6.62893 11.6481 6.78737 11.6489 6.95279L11.6489 12.8453C11.6518 12.9292 11.6379 13.0128 11.6078 13.0912C11.5778 13.1696 11.5322 13.2411 11.4739 13.3015C11.4156 13.3619 11.3458 13.4099 11.2685 13.4427C11.1913 13.4755 11.1082 13.4924 11.0243 13.4924C10.9403 13.4924 10.8573 13.4755 10.78 13.4427C10.7027 13.4099 10.6329 13.3619 10.5746 13.3015C10.5163 13.2411 10.4708 13.1696 10.4407 13.0912C10.4107 13.0128 10.3967 12.9292 10.3996 12.8453L10.3996 8.46128L4.39513 14.4658C4.27792 14.583 4.11895 14.6489 3.95319 14.6489C3.78743 14.6489 3.62846 14.583 3.51125 14.4658C3.39404 14.3486 3.32819 14.1896 3.32819 14.0239C3.32819 13.8581 3.39404 13.6991 3.51125 13.5819L9.51576 7.5774L5.1317 7.5774C4.96986 7.57169 4.81655 7.50338 4.70408 7.38687C4.59161 7.27035 4.52875 7.11473 4.52875 6.95279C4.52875 6.79085 4.59161 6.63523 4.70408 6.51871C4.81655 6.4022 4.96986 6.33389 5.1317 6.32818L11.0243 6.32818Z"
+                    fill="white"
+                  />
+                </svg>
+              </button>
+            </Link>
           </div>
         </div>
         <img

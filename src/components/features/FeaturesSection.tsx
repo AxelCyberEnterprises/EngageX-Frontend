@@ -29,15 +29,15 @@ function FeaturesSection() {
     },
     {
       svg: <FeatureCardFourSVG />,
-      title: "Post-speech feedback summary",
+      title: "Progress tracking for improvement",
       content:
         "We enable you to be aware of your Progress and stay goal oriented while you train",
     },
     {
       svg: <FeatureCardFiveSVG />,
-      title: "Prompt and cue card system",
+      title: "Post-speech feedback summary",
       content:
-        "In-depth Analysis ensuring you can give your best the next time by understanding what you need to do better in detail",
+        "In-depth analysis ensuring you can give your best the next time by understanding what you need to do better in detail",
     },
     {
       svg: <FeatureCardSixSVG />,

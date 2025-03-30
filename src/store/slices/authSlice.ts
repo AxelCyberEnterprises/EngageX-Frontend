@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { tokenManager } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import authPageImage1 from "@/assets/images/pngs/authPage-image-1.png"
+// import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png"
 
 interface Question {
     id: number;
@@ -30,6 +35,7 @@ interface AuthState {
     emailForPasswordReset: string;
     apiError: string | null;
     successMessage: string | null;
+    authPageImage: string;
 }
 
 const initialState: AuthState = {
@@ -68,7 +74,10 @@ const initialState: AuthState = {
     emailForPasswordReset: "jnr@gmail.com",
     apiError: null,
     successMessage: "",
+    authPageImage: authPageImage1,
 };
+
+
 
 const authSlice = createSlice({
     name: "auth",
@@ -88,6 +97,9 @@ const authSlice = createSlice({
         },
         setSignupFlow: (state, action: PayloadAction<string>) => {
             state.signupFlow = action.payload;
+        },
+        setAuthPageImage: (state, action: PayloadAction<string>) => {
+            state.authPageImage = action.payload;
         },
         setRouteFromLogin: (state, action: PayloadAction<boolean>) => {
             state.routeFromLogin = action.payload;
@@ -126,5 +138,18 @@ const authSlice = createSlice({
     },
 });
 
-export const { setTopicQuestion, setSignupFlow, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
+export function useAutoClearSuccessMessage() {
+    const dispatch = useDispatch();
+    const location = useLocation()
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            dispatch(setSuccessMessage(""));
+        }, 5000);
+
+        return () => clearTimeout(timer); 
+    }, [location.pathname]); 
+}
+
+export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
 export default authSlice.reducer;

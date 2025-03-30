@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import practiceBg from "../../../assets/images/jpegs/practice-bg.png";
+import practiceBg from "../../../assets/images/jpegs/practice-bg.jpeg";
 import presentationBg from "../../../assets/images/jpegs/presentation-bg.jpeg";
 import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
@@ -9,8 +9,31 @@ import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import { Button } from "@/components/ui/button";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
+import axios from "axios";
+import { tokenManager } from "@/lib/utils";
 
 const UserDashboardHome: React.FC = () => {
+  const token = tokenManager.getToken();
+  useEffect(() => {
+    console.log(token);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.engagexai.io/sessions/dashboard/",
+          {
+            headers: {
+              Authorization: `token ${token}`,
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [token]);
   const score = 89;
 
   const cardsData = [
@@ -59,7 +82,7 @@ const UserDashboardHome: React.FC = () => {
     {
       image: practiceBg,
       title: "Pitch Practice",
-      text: "Sharpen your persuasion and confidence",
+      text: "Sharpen your persuasion and Conviction",
       buttonText: "Start Pitching",
       href: "./pitch-practice",
       icon: (
@@ -203,22 +226,22 @@ const UserDashboardHome: React.FC = () => {
   ];
 
   const chartData = [
-    { month: "January", Volume: 186, Articulation: 80, Confidence: 90 },
-    { month: "February", Volume: 305, Articulation: 200, Confidence: 100 },
-    { month: "March", Volume: 237, Articulation: 120, Confidence: 100 },
-    { month: "April", Volume: 73, Articulation: 190, Confidence: 100 },
-    { month: "May", Volume: 209, Articulation: 130, Confidence: 100 },
-    { month: "June", Volume: 214, Articulation: 140, Confidence: 100 },
+    { month: "January", Impact: 186, Brevity: 80, Conviction: 90 },
+    { month: "February", Impact: 305, Brevity: 200, Conviction: 100 },
+    { month: "March", Impact: 237, Brevity: 120, Conviction: 100 },
+    { month: "April", Impact: 73, Brevity: 190, Conviction: 100 },
+    { month: "May", Impact: 209, Brevity: 130, Conviction: 100 },
+    { month: "June", Impact: 214, Brevity: 140, Conviction: 100 },
   ];
 
   const chartColors = {
-    Volume: "#252A39",
-    Articulation: "#40B869",
-    Confidence: "#F5B546",
+    Impact: "#252A39",
+    Brevity: "#40B869",
+    Conviction: "#F5B546",
   };
 
   return (
-    <div className="user__dashboard__index p-4">
+    <div className="user__dashboard__index p-4 md:px-8">
       <p className="independence mb-5">
         You’re making progress! Pick up where you left off
       </p>
@@ -312,9 +335,9 @@ const UserDashboardHome: React.FC = () => {
               the same setup, allowing you to focus directly on enhancing your
               skills in specific areas.
             </p>
-            <Link to="performance-improvement">
+            <Link to="#">
               <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3">
-                Improve session
+                Improve Session
               </Button>
             </Link>
           </div>
@@ -365,7 +388,7 @@ const UserDashboardHome: React.FC = () => {
                   key={index}
                   className="flex progress__bar__item mb-3 items-stretch justify-around"
                 >
-                  <div className="rounded-4xl w-16 icon__bg me-2 aspect-square flex items-center justify-center">
+                  <div className="rounded-4xl w-12 icon__bg me-2 aspect-square flex items-center justify-center">
                     {goal.icon}
                   </div>
                   <div className="w-5/6 flex flex-col justify-between h-full">
@@ -373,7 +396,7 @@ const UserDashboardHome: React.FC = () => {
                       <small>{goal.title}</small>
                       <small>{goal.percent}%</small>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-1">
                       <SegmentedProgressBar
                         percent={goal.percent}
                         color={goal.color}
@@ -385,7 +408,11 @@ const UserDashboardHome: React.FC = () => {
               ))}
             </div>
 
-            <button className="mt-6 w-full rounded-4xl">Set New Goals</button>
+            <Link to="#">
+              <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3 w-full mt-6">
+                View Goals
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

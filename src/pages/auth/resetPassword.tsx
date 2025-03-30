@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { setSuccessMessage } from "@/store/slices/authSlice";
+import { setAuthPageImage, setSuccessMessage, useAutoClearSuccessMessage } from "@/store/slices/authSlice";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useResetPassword } from "@/hooks/auth";
+import { useLocation } from "react-router-dom";
+import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png";
 
 const ResetPasswordSchema = z
     .object({
@@ -54,8 +56,14 @@ const ResetPassword: React.FC = () => {
         }
     }, [error]);
 
+    useAutoClearSuccessMessage();
+     const location = useLocation()
+        useEffect(()=>{
+            dispatch(setAuthPageImage(authPageImage2))
+        },[location.pathname])
+
     return (
-        <div className="md:w-10/12 sm:w-3/5 sm:mx-auto flex flex-col justify-center h-screen gap-3 max-lg:pl-5">
+        <div className="md:w-10/12 sm:w-3/5 sm:mx-auto flex flex-col justify-center h-[100dvh] gap-3 max-lg:pl-5">
             <h2 className="text-3xl text-center">Reset Password</h2>
             <p className="text-center font-[Inter] text-[#667085]">
                 Your new password must be different from the previous one.

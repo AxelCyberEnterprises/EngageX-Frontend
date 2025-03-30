@@ -2,13 +2,15 @@ import React, { useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { setSignupFlow } from "../../store/slices/authSlice";
+import { setAuthPageImage, setSignupFlow, useAutoClearSuccessMessage } from "../../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useEmailConfirmation } from "@/hooks/auth";
+import authPageImage1 from "@/assets/images/pngs/authPage-image-1.png"
+import { useLocation } from "react-router-dom";
 
 const verificationSchema = z.object({
     code: z.string().length(6, "Verification code must be 6 characters"),
@@ -22,11 +24,18 @@ const Confirmation: React.FC = () => {
     const signupData = useSelector((state: RootState) => state.auth.signupData);
     const successMessage = useSelector((state: RootState) => state.auth.successMessage);
 
+
+
+      const location = useLocation()
+                    useEffect(()=>{
+                        dispatch(setAuthPageImage(authPageImage1))
+                    },[location.pathname])
     const form = useForm<VerificationFormValues>({
         resolver: zodResolver(verificationSchema),
         defaultValues: { code: "" },
     });
 
+    useAutoClearSuccessMessage();
     const { mutate: emailConfirmation, isPending, error } = useEmailConfirmation();
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -72,7 +81,7 @@ const Confirmation: React.FC = () => {
     }, [error]);
 
     return (
-        <div className="md:w-10/12 sm:w-3/5 sm:mx-auto flex flex-col justify-center h-screen overflow-y-hidden gap-3 max-md:pl-0 max-lg:pl-5">
+        <div className="md:w-10/12 sm:w-3/5 sm:mx-auto flex flex-col justify-center h-[100dvh] overflow-y-hidden gap-3 max-md:pl-0 max-lg:pl-5">
             <h2 className="text-3xl text-center">Enter OTP</h2>
             <p className="text-center font-[Montserrat] text-sm text-[#667085]">
                 We have sent an OTP to your <br /> email address

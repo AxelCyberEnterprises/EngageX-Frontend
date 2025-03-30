@@ -63,6 +63,28 @@ export function useLogin() {
   });
 }
 
+export function useGoogleLogin() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationKey: ["googleLogin"],
+    mutationFn: async (data: { token: string }) => {
+      return await apiPost<LoginResponse>("/users/auth/google-login/", data);
+    },
+    onSuccess: async (data) => {
+      const admin = data.data.is_admin;
+      console.log("Google login success:", admin);
+
+      dispatch(login(data));
+      navigate(admin ? "/dashboard/admin" : "/dashboard/user");
+    },
+    onError: (error) => {
+      console.error("Google login failed:", error);
+    },
+  });
+}
+
 export function useForgotPassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -169,6 +191,21 @@ export function usePublicSpeaking() {
     },
     onError: (error) => {
       console.error(error.message);
+    },
+  });
+}
+
+export function useDashboardData() {
+  return useMutation({
+    mutationKey: ["dashboardData"],
+    mutationFn: async () => {
+      return await apiGet("/sessions/dashboard/");
+    },
+    onSuccess: (data) => {
+      console.log("Dashboard data fetched successfully:", data);
+    },
+    onError: (error) => {
+      console.error("Error fetching dashboard data:", error);
     },
   });
 }

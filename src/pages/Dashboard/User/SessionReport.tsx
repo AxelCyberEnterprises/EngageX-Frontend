@@ -1,4 +1,4 @@
-import { ArrowLeft, Download, Heart, UserRound } from 'lucide-react';
+import { ArrowLeft, Download, UserRound } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ShadLinearLineChart from '@/components/dashboard/ShadLinearLineChart';
@@ -19,21 +19,27 @@ const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
 
     const chartData = [
-        { minute: 0, Curiosity: 0, Empathy: 0, Convictions: 0 },
-        { minute: 5, Curiosity: 305, Empathy: 200, Convictions: 100 },
-        { minute: 10, Curiosity: 237, Empathy: 120, Convictions: 100 },
-        { minute: 15, Curiosity: 73, Empathy: 190, Convictions: 100 },
-        { minute: 20, Curiosity: 209, Empathy: 130, Convictions: 100 },
-        { minute: 25, Curiosity: 214, Empathy: 140, Convictions: 100 },
+        { minute: 0, Impact: 0, Brevity: 0, Conviction: 0 },
+        { minute: 5, Impact: 305, Brevity: 200, Conviction: 100 },
+        { minute: 10, Impact: 237, Brevity: 120, Conviction: 100 },
+        { minute: 15, Impact: 73, Brevity: 190, Conviction: 100 },
+        { minute: 20, Impact: 209, Brevity: 130, Conviction: 100 },
+        { minute: 25, Impact: 214, Brevity: 140, Conviction: 100 },
     ];
 
     const chartColors = {
-        Curiosity: "#252A39",
-        Empathy: "#40B869",
-        Convictions: "#F5B546",
+        Impact: "#252A39",
+        Brevity: "#40B869",
+        Conviction: "#F5B546",
     };
 
     const variety = [
+        {
+            bg: "bg-sunray/15",
+            title: "Impact",
+            percent: 80,
+            rating: "Excellent",
+        },
         {
             bg: "bg-alice-blue",
             title: "Volume",
@@ -47,20 +53,14 @@ const PitchSessionReport: React.FC = () => {
             rating: "Excellent",
         },
         {
-            bg: "bg-grey/15",
-            title: "Pauses",
-            percent: 80,
-            rating: "Excellent",
-        },
-        {
-            bg: "bg-sunray/15",
-            title: "Impact",
-            percent: 80,
-            rating: "Excellent",
-        },
-        {
             bg: "bg-seashell",
             title: "Pace",
+            percent: 80,
+            rating: "Excellent",
+        },
+        {
+            bg: "bg-grey/15",
+            title: "Pauses",
             percent: 80,
             rating: "Excellent",
         },
@@ -68,15 +68,19 @@ const PitchSessionReport: React.FC = () => {
 
     const deliveryMetrics = [
         {
+            title: "Impact",
+            rating: 71,
+        },
+        {
+            title: "Brevity",
+            rating: 71,
+        },
+        {
             title: "Content Organization",
             rating: 94,
         },
         {
-            title: "Emotional Impact",
-            rating: 71,
-        },
-        {
-            title: "Audience Engagement",
+            title: "Clarity",
             rating: 97,
         },
         {
@@ -105,10 +109,6 @@ const PitchSessionReport: React.FC = () => {
                         <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">
                             <Download />
                             <span className="hidden lg:block">Download</span>
-                        </Button>
-                        <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">
-                            <Heart />
-                            <span className="hidden lg:block">Save to Archive</span>
                         </Button>
                         <Button
                             onClick={() => setDialogOneOpen(true)}
@@ -160,10 +160,10 @@ const PitchSessionReport: React.FC = () => {
                             <div className="relative w-full h-50 flex flex-col items-center">
                                 <SemiCircleProgress percent={0.88} color={"#262B3A"} />
 
-                                <div className="absolute bottom-6">
+                                <div className="absolute bottom-6 text-center">
                                     <h4 className="mb-4">88%</h4>
                                     <div className="bg-medium-sea-green text-white rounded-lg px-4 py-2">
-                                        <p>HIGH</p>
+                                        <p>EXCELLENT</p>
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +210,7 @@ const PitchSessionReport: React.FC = () => {
                     </div>
 
                     <div className="mt-7">
-                        <h6 className="mb-5">Delovery and Structure Metrics</h6>
+                        <h6 className="mb-5">Delivery and Structure Metrics</h6>
 
                         {deliveryMetrics.map((metric, index) => (
                             <div key={index} className="flex flex-wrap w-full mb-3 items-center">
@@ -234,19 +234,19 @@ const PitchSessionReport: React.FC = () => {
                 <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
                     <h5 className="mb-5">Timing & Efficiency Analysis</h5>
 
-                    <div className="flex gap-6 sm:flex-col lg:flex-row">
+                    <div className="flex gap-6 flex-col lg:flex-row">
                         <div className="flex flex-col gap-3 w-full">
                             <div className="w-full mb-3">
                                 <div className="border-1 border-bright-gray rounded-xl py-5 px-3 w-full">
-                                    <p className="mb-4">Total Time Allocated</p>
-                                    <div className="flex gap-4 items-center">
+                                    <p className="mb-4 text-independence">Total Time Allocated</p>
+                                    <div className="flex gap-4 items-center text-gunmetal">
                                         <h5>30 minutes</h5>
                                     </div>
                                 </div>
                             </div>
                             <div className="w-full">
                                 <div className="border-1 border-bright-gray rounded-xl py-5 px-3 w-full">
-                                    <p className="mb-4">Total Time Used</p>
+                                    <p className="mb-4 text-independence">Total Time Used</p>
                                     <div className="flex gap-4 items-center">
                                         <h5>30 minutes</h5>
                                     </div>
@@ -255,9 +255,9 @@ const PitchSessionReport: React.FC = () => {
 
                             <h6 className="py-4 mt-2">Areas to improve to perform within allocated time</h6>
                             <ul className="list-disc text-primary-blue/80">
-                                <li className="mb-2">Reduce time on introduction by 30 seconds</li>
-                                <li className="mb-2">Spend more time explaining key benefits</li>
-                                <li>Spend more time explaining key benefits</li>
+                                <li className="mb-2 text-independence">Reduce time on introduction by 30 seconds</li>
+                                <li className="mb-2 text-independence">Spend more time explaining key benefits</li>
+                                <li className='text-independence'>Spend more time explaining key benefits</li>
                             </ul>
                         </div>
 
@@ -270,13 +270,13 @@ const PitchSessionReport: React.FC = () => {
                                 <div className="w-full md:w-1/2 md:pe-2 mb-3">
                                     <h6 className="text-medium-sea-green mb-3.5">Strengths</h6>
                                     <ul className="list-none space-y-3">
-                                        <li className="flex items-center gap-2">
+                                        <li className="flex items-center gap-2 text-independence">
                                             <span className="text-medium-sea-green">✔</span> Excellent pace variation
                                         </li>
-                                        <li className="flex items-center gap-2">
+                                        <li className="flex items-center gap-2 text-independence">
                                             <span className="text-medium-sea-green">✔</span> Strong opening hook
                                         </li>
-                                        <li className="flex items-center gap-2">
+                                        <li className="flex items-center gap-2 text-independence">
                                             <span className="text-medium-sea-green">✔</span> Effective use of pauses
                                         </li>
                                     </ul>
@@ -285,13 +285,13 @@ const PitchSessionReport: React.FC = () => {
                                 <div className="w-full md:w-1/2 md:ps-2">
                                     <h6 className="text-jelly-bean mb-3.5">Weaknesses</h6>
                                     <ul className="list-none space-y-3">
-                                        <li className="flex items-center gap-2">
+                                        <li className="flex items-center gap-2 text-independence">
                                             <span className="text-jelly-bean">✔</span> Excellent pace variation
                                         </li>
-                                        <li className="flex items-center gap-2">
+                                        <li className="flex items-center gap-2 text-independence">
                                             <span className="text-jelly-bean">✔</span> Strong opening hook
                                         </li>
-                                        <li className="flex items-center gap-2">
+                                        <li className="flex items-center gap-2 text-independence">
                                             <span className="text-jelly-bean">✔</span> Effective use of pauses
                                         </li>
                                     </ul>
@@ -303,10 +303,10 @@ const PitchSessionReport: React.FC = () => {
 
                 <div className="w-full flex flex-wrap gap-3 justify-end mt-8">
                     <Button className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray">
-                        View History Session
+                        View session history
                     </Button>
                     <Button className="flex gap-1 py-5 bg-primary-blue hover:bg-primary-blue/90">
-                        Start New Session
+                        Start new session
                     </Button>
                 </div>
             </section>

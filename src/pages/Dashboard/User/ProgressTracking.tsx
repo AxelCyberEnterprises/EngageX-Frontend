@@ -33,9 +33,9 @@ import PresentationMetricsTable from '@/components/tables/performance-metric-tab
 import { RecentSessionsTable } from '@/components/tables/recent-sessions-table/user';
 import { sessions } from '@/components/tables/recent-sessions-table/user/data';
 import { useSearchParams } from 'react-router-dom';
-import ImprovementSequenceSelector, { SequenceItem } from '@/components/dashboard/SequenceSelector';
 import { columns } from "@/components/tables/performance-metric-table/user/columns";
 import { data } from "@/components/tables/performance-metric-table/user/data";
+import SequenceSelector, { Sequence } from '@/components/dashboard/SequenceSelect';
 
 const ProgressTracking: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -299,6 +299,32 @@ const ProgressTracking: React.FC = () => {
     { value: "duration-asc", label: "Duration (Shortest)" },
   ];
 
+  const sequences: Sequence[] = [
+    {
+      id: "1",
+      title: "Keynote Delivery Refinement",
+      startDate: "February 15, 2025",
+      lastUpdated: "February 22, 2025",
+      totalCompleted: 3,
+    },
+    {
+      id: "2",
+      title: "Pitch Mastery Programme",
+      startDate: "February 15, 2025",
+      lastUpdated: "February 22, 2025",
+      totalCompleted: 3,
+      inProgress: 1
+    },
+    {
+      id: "3",
+      title: "Presentation Programme",
+      startDate: "February 15, 2025",
+      lastUpdated: "February 22, 2025",
+      totalCompleted: 3,
+      inProgress: 1
+    }
+  ];
+
   const [activeFilter, setActiveFilter] = useState("all");
   const [activeSort, setActiveSort] = useState("date-desc");
 
@@ -340,40 +366,13 @@ const ProgressTracking: React.FC = () => {
     }
   }, [sectionFromUrl]);
 
-  const sequences = [
-    {
-      title: "Keynote Delivery Refinement",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1
-    },
-    {
-      title: "Pitch Mastery Programme",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1
-    },
-    {
-      title: "Presentation Programme",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1
-    }
-  ];
-
-  const handleSelectSequence = (sequence: SequenceItem) => {
-    console.log('Selected sequence:', sequence);
-    // Add your logic here
+  const handleSelectSequence = (sequence: Sequence) => {
+    console.log("Selected sequence:", sequence);
   };
 
-  const handleNewSession = (sequence: SequenceItem) => {
-    console.log('New session for:', sequence);
-    // Add your logic here
+  const handleNewSession = (sequenceId: number | string) => {
+    console.log('New session for sequence:', sequenceId);
   };
-
 
   return (
     <>
@@ -658,17 +657,18 @@ const ProgressTracking: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <RecentSessionsTable data={filteredSessions} />
+                <RecentSessionsTable data={filteredSessions} hidePagination={true}/>
               </div>
             </section>
-            <section className="w-full p-5 border border-[#E0E0E0] rounded-[16px] my-10">
-              <ImprovementSequenceSelector
+            <section>
+              <SequenceSelector
                 sequences={sequences}
-                onSelectSequence={handleSelectSequence}
                 onNewSession={handleNewSession}
+                onSelectSequence={handleSelectSequence}
+                trendUpIcon={trendUpIcon}
               />
             </section>
-            <section className='mt-16 mb-6 border border-[#E0E0E0] sm:p-6 p-4 bg-white rounded-[16px]'>
+            <section className='mt-10 mb-6 border border-[#E0E0E0] sm:p-6 p-4 bg-white rounded-[16px]'>
               <div className='mb-6'>
                 <h3 className="text-xl font-medium text-#252A39">Performance Metrics Comparison</h3>
                 <p className="text-sm text-[#6F7C8E] mt-1">Track your progress across key speaking metrics </p>

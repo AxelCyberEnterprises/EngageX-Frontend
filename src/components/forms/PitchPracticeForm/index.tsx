@@ -9,14 +9,13 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Form } from "@/components/ui/form";
-import { DefaultGoals } from "@/config/form-field-options";
 import { PitchPracticeSchema } from "@/schemas/pitch-practice";
 import { RootState } from "@/store";
 import { setActiveSlideIndex, setslidePreviews } from "@/store/slices/dashboard/user/pitchPracticeSlice";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Settings } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { z } from "zod";
@@ -32,7 +31,6 @@ const PitchPracticeForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PitchPracticeSchema),
-        defaultValues: useMemo(() => ({ goals: DefaultGoals }), []),
     });
 
     useEffect(() => {
