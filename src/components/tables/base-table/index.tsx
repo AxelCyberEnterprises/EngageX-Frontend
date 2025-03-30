@@ -13,10 +13,11 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BaseTablePagination from "./BaseTablePagination";
 import BaseTableToolbar from "./BaseTableToolbar";
-import { cn } from "@/lib/utils";
+import { cn, tokenManager } from "@/lib/utils";
+import axios from "axios";
 
 interface BaseTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -27,6 +28,8 @@ interface BaseTableProps<TData, TValue> {
     tableContainerClassName?: string;
     pageSize?: number;
     hidePagination?: boolean;
+    isLoading?: boolean; // Add loading state prop
+    emptyState?: React.ReactNode; // Custom empty state component
 }
 
 export function BaseTable<TData, TValue>({ 
@@ -37,7 +40,10 @@ export function BaseTable<TData, TValue>({
     tableHeaderItemClassName, 
     tableContainerClassName, 
     hidePagination,
-    pageSize }: BaseTableProps<TData, TValue>) {
+    pageSize,
+    isLoading = false, // Default to false
+    emptyState, // Optional custom empty state
+}: BaseTableProps<TData, TValue>) {
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: pageSize ? pageSize : 20,
@@ -68,6 +74,46 @@ export function BaseTable<TData, TValue>({
         onSortingChange: setSorting,
     });
 
+    const token = tokenManager.getToken();
+    useEffect(() => {
+        console.log(token); 
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("https://api.engagexai.io/sessions/sessions/", {
+                    headers: {
+                        "Authorization": `token ${token}`, 
+                    },
+                });
+                console.log(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchData();
+    }, [token]);
+
+    // Default empty state component
+    const defaultEmptyState = (
+        <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results found.
+            </TableCell>
+        </TableRow>
+    );
+
+    // Loading state component
+    const loadingState = (
+        <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+                <div className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-400"></div>
+                    <span>Loading data...</span>
+                </div>
+            </TableCell>
+        </TableRow>
+    );
+
     return (
         <div className="flex flex-col gap-y-6">
             {showToolBar && <BaseTableToolbar table={table} />}
@@ -90,7 +136,9 @@ export function BaseTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {isLoading ? (
+                            loadingState
+                        ) : table.getRowModel().rows?.length < 1 ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
@@ -105,11 +153,7 @@ export function BaseTable<TData, TValue>({
                                 </TableRow>
                             ))
                         ) : (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
-                                </TableCell>
-                            </TableRow>
+                            emptyState || defaultEmptyState
                         )}
                     </TableBody>
                 </Table>
