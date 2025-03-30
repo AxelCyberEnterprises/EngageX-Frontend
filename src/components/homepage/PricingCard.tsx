@@ -8,6 +8,7 @@ interface Params {
     contents: Array<string>;
     button_text: string;
     highlight: boolean;
+    payment_link: string;
   };
 }
 
@@ -77,14 +78,16 @@ function PricingCard({ plan }: Params) {
         </div>
       </div>
 
-      <button
-        className={clsx(
-          "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center justify-center rounded-lg bg-[#6F7C8E]",
-          plan.highlight && "bg-alice-blue text-black"
-        )}
-      >
-        {plan.button_text}
-      </button>
+      <a href={plan.payment_link} target="_blank">
+        <button
+          className={clsx(
+            "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center justify-center rounded-lg bg-[#6F7C8E]",
+            plan.highlight && "bg-alice-blue text-black"
+          )}
+        >
+          {plan.button_text}
+        </button>
+      </a>
     </div>
   );
 }

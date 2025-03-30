@@ -14,6 +14,8 @@ function Pricing({ subtext }: { subtext?: string }) {
       ],
       button_text: "Start now",
       highlight: false,
+      payment_link:
+        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-d77fb68013f54350b75d514d54189fd1191971d0274b4d16bb762c22406bdf7156e09114df9548b88a6b0c9d519b1239?locale=EN_US",
     },
     {
       type: "GROWTH PLAN",
@@ -27,6 +29,8 @@ function Pricing({ subtext }: { subtext?: string }) {
       ],
       button_text: "Choose growth plan",
       highlight: true,
+      payment_link:
+        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-46dbc56154fd4e2fa0150a8246276351757f6a348eca4c02b3b4ebaf67ef244f7b923ec4fce641d0b42984bfc07c8491?locale=EN_US",
     },
     {
       type: "PRO PLAN",
@@ -41,6 +45,8 @@ function Pricing({ subtext }: { subtext?: string }) {
       ],
       button_text: "Go pro",
       highlight: false,
+      payment_link:
+        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-83fccafc8b004617b1f57152c42c9bd6b711beae594e4ba3b19fcca2ba0c10800257b01db53b4fd4bd54ca1d47bece0e?locale=EN_US",
     },
     {
       type: "ULTIMATE PLAN",
@@ -54,6 +60,8 @@ function Pricing({ subtext }: { subtext?: string }) {
       ],
       button_text: "Get the ultimate plan",
       highlight: false,
+      payment_link:
+        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-b4372ea1177e40689bfc3080f896e78ec455af91c9a543eea0b08df2de1ab9b090507c99ea5048beaf1f2b31984ddf0a?locale=EN_US",
     },
   ];
   return (

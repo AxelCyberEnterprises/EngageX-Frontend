@@ -1,5 +1,7 @@
 import { JSX } from "react";
 import TestimonialSVG from "./svgs/TestimonialSVG";
+import TestimonialSVG2 from "./svgs/TestimonialSVG2";
+import TestimonialSVG3 from "./svgs/TestimonialSVG3";
 import clsx from "clsx";
 
 type Testimonial = {
@@ -17,24 +19,22 @@ function Testiomonial() {
     {
       svg: <TestimonialSVG />,
       text:
-        "“This platform revolutionized how I prepare for keynotes. The audience feedback feels incredibly real!”",
-      subtext: "- Sarah M., Public Speaker",
-      avatar: "./assets/profile3.png",
+        "“Practicing my pitch here gave me the confidence to win over investors.  I highly recommend!”",
+      subtext: "- Startup Founder",
       color: "#C1C2B4",
     },
     {
-      svg: <TestimonialSVG />,
+      svg: <TestimonialSVG2 />,
       text:
-        "“Practicing my pitch here gave me the confidence to win over investors. I highly recommend!”",
-      subtext: "— John D., Startup Founder",
+        "“EngageX helped me own my narrative. Now, every interview, every post, every connection reflects who I truly am both on and off the field.”",
+      subtext: "— Pro Athlete & Brand Builder",
       color: "#6F7C8E",
     },
     {
-      svg: <TestimonialSVG />,
+      svg: <TestimonialSVG3 />,
       text:
-        "“I love the detailed analytics and playback options. It's like having a personal speaking coach.”",
-      subtext: "-  Priya S., Corporate Trainer",
-      avatar: "./assets/profile1.png",
+        "“With EngageX, I don't just pitch, I connect! It's transformed the way I communicate value, build trust, and close deals.”",
+      subtext: "- Top Sales Strategist",
       color: "#EFF6FC",
     },
   ];
