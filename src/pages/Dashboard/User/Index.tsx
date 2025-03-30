@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import practiceBg from "../../../assets/images/jpegs/practice-bg.png";
+import practiceBg from "../../../assets/images/jpegs/practice-bg.jpeg";
 import presentationBg from "../../../assets/images/jpegs/presentation-bg.jpeg";
 import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
@@ -67,7 +67,7 @@ const UserDashboardHome: React.FC = () => {
         {
             image: practiceBg,
             title: "Pitch Practice",
-            text: "Sharpen your persuasion and confidence",
+            text: "Sharpen your persuasion and Conviction",
             buttonText: "Start Pitching",
             href: "./pitch-practice",
             icon: (
@@ -175,24 +175,24 @@ const UserDashboardHome: React.FC = () => {
     ];
 
     const chartData = [
-        { month: "January", Volume: 186, Articulation: 80, Confidence: 90 },
-        { month: "February", Volume: 305, Articulation: 200, Confidence: 100 },
-        { month: "March", Volume: 237, Articulation: 120, Confidence: 100 },
-        { month: "April", Volume: 73, Articulation: 190, Confidence: 100 },
-        { month: "May", Volume: 209, Articulation: 130, Confidence: 100 },
-        { month: "June", Volume: 214, Articulation: 140, Confidence: 100 },
+        { month: "January", Impact: 186, Brevity: 80, Conviction: 90 },
+        { month: "February", Impact: 305, Brevity: 200, Conviction: 100 },
+        { month: "March", Impact: 237, Brevity: 120, Conviction: 100 },
+        { month: "April", Impact: 73, Brevity: 190, Conviction: 100 },
+        { month: "May", Impact: 209, Brevity: 130, Conviction: 100 },
+        { month: "June", Impact: 214, Brevity: 140, Conviction: 100 },
     ];
 
     const chartColors = {
-        Volume: "#252A39",
-        Articulation: "#40B869",
-        Confidence: "#F5B546",
+        Impact: "#252A39",
+        Brevity: "#40B869",
+        Conviction: "#F5B546",
     };
 
 
 
     return (
-        <div className="user__dashboard__index p-4">
+        <div className="user__dashboard__index p-4 md:px-8">
             <p className="independence mb-5">You’re making progress! Pick up where you left off</p>
 
             {/* cards */}
@@ -260,7 +260,7 @@ const UserDashboardHome: React.FC = () => {
                             you to focus directly on enhancing your skills in specific areas.
                         </p>
                         <Link to="#">
-                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3">Improve session</Button>
+                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3">Improve Session</Button>
                         </Link>
                     </div>
 
@@ -301,7 +301,7 @@ const UserDashboardHome: React.FC = () => {
                         <div className="progress__bars__div">
                             {goals.map((goal, index) => (
                                 <div key={index} className="flex progress__bar__item mb-3 items-stretch justify-around">
-                                    <div className="rounded-4xl w-16 icon__bg me-2 aspect-square flex items-center justify-center">
+                                    <div className="rounded-4xl w-12 icon__bg me-2 aspect-square flex items-center justify-center">
                                         {goal.icon}
                                     </div>
                                     <div className="w-5/6 flex flex-col justify-between h-full">
@@ -309,7 +309,7 @@ const UserDashboardHome: React.FC = () => {
                                             <small>{goal.title}</small>
                                             <small>{goal.percent}%</small>
                                         </div>
-                                        <div className="mt-2">
+                                        <div className="mt-1">
                                             <SegmentedProgressBar
                                                 percent={goal.percent}
                                                 color={goal.color}
@@ -322,7 +322,7 @@ const UserDashboardHome: React.FC = () => {
                         </div>
 
                         <Link to="#">
-                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3 w-full mt-6">Set new goals</Button>
+                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3 w-full mt-6">View Goals</Button>
                         </Link>
                     </div>
                 </div>

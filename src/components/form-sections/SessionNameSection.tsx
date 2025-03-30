@@ -14,7 +14,7 @@ const SessionNameSection = ({ className, form }: ISessionNameSectionProps) => {
         <section className={cn("space-y-4", className)}>
             <div className="space-y-1">
                 <h6>Session Name</h6>
-                <p className="text-independence">What would you call this session?</p>
+                <p className="text-auro-metal-saurus">What would you call this session?</p>
             </div>
             <ControlledFieldWrapper
                 control={form.control}
@@ -22,8 +22,8 @@ const SessionNameSection = ({ className, form }: ISessionNameSectionProps) => {
                 render={({ field }) => (
                     <Input
                         {...field}
-                        placeholder="Enter text here"
-                        className="h-11 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal"
+                        placeholder="Enter name"
+                        className="h-11 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-auro-metal-saurus"
                     />
                 )}
             />

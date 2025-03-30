@@ -5,7 +5,7 @@ const TimeAllocationSection = () => {
         <section className="space-y-4">
             <div className="space-y-2">
                 <h6>Time Allocation</h6>
-                <p className="text-independence">Time allocated for this session is fixed</p>
+                <p className="text-auro-metal-saurus">Time allocated for this session is fixed</p>
             </div>
             <div className="flex items-center justify-between bg-[#F8F9FC] border border-bright-gray p-3 rounded-lg">
                 <div className="flex items-center gap-x-2">
