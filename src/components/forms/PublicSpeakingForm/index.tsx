@@ -2,12 +2,11 @@ import StartSession from "@/components/dialogs/dialog-contents/StartSession";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { DefaultGoals } from "@/config/form-field-options";
 import { PublicSpeakingSchema } from "@/schemas/public-speaking";
 import { setValues } from "@/store/slices/dashboard/user/publicSpeakingFormSlice";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { z } from "zod";
@@ -24,13 +23,10 @@ const PublicSpeakingForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PublicSpeakingSchema),
-        defaultValues: useMemo(() => ({ goals: DefaultGoals }), []),
     });
 
     const handlePublicSpeakingFormSubmit = useCallback(
         (values: FormType) => {
-            console.log("Public speaking values", values);
-
             dispatch(setValues(values));
         },
         [dispatch],

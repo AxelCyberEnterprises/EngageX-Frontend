@@ -1,6 +1,6 @@
-export const DefaultGoals = [{ id: 1, goal: "" }];
+import ConferenceRoom from "@/assets/images/pngs/conference-room.png";
+
 
 export const VirtialEnvironmentOptions = [
-    { name: "Conference Room", value: "conference_room", src: "/src/assets/images/pngs/conference-room.png" },
-    { name: "Seminar Room", value: "seminar_room", src: "/src/assets/images/jpegs/seminar-room.jpg" },
+    { name: "Conference Room", value: "conference_room", src: ConferenceRoom },
 ] as const;

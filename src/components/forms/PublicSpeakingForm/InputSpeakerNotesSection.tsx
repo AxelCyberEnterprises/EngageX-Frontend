@@ -13,7 +13,9 @@ const InputSpeakerNotesSection = ({ form }: IInputSpeakerNotesSectionProps) => {
         <section className="space-y-6">
             <div className="space-y-2">
                 <h6>Speaker Notes</h6>
-                <p className="text-independence">Add speaker note for this session (Feel free to copy and paste).</p>
+                <p className="text-auro-metal-saurus">
+                    Add speaker note for this session (Feel free to copy and paste).
+                </p>
             </div>
             <ControlledFieldWrapper
                 control={form.control}
@@ -24,7 +26,7 @@ const InputSpeakerNotesSection = ({ form }: IInputSpeakerNotesSectionProps) => {
                     <Textarea
                         {...field}
                         placeholder="Enter text here"
-                        className="resize-none focus-visible:ring-0 shadow-none text-gunmetal h-24.5"
+                        className="resize-none focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-auro-metal-saurus h-24.5"
                     />
                 )}
             />
