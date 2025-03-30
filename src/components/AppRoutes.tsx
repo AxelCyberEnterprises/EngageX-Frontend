@@ -18,14 +18,6 @@ import {
   Routes,
   useLocation,
 } from "react-router";
-import {
-  Link,
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-  useLocation,
-} from "react-router";
 import DashboardLayout from "../components/layouts/DashboardLayout";
 import SessionsLayout from "../components/layouts/SessionsLayout";
 import AuthPage from "../pages/auth";
@@ -100,7 +92,7 @@ function UserDashboardRoutes() {
       <Route path="presentation-practice" element={<PresentationPractice />} />
       <Route path="progress-tracking" element={<ProgressTracking />} />
       <Route path="session-history" element={<UserSessionHistory />} />
-      <Route path="session-history/:id" element={<UserPitchSessionReport />} />
+      <Route path="session-history/:id" element={<UserSessionReport />} />
       <Route path="session-comparison" element={<SessionComparison />} />
       <Route
         path="performance-improvement"
