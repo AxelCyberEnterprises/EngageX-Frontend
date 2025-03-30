@@ -31,8 +31,8 @@ const PublicSpeakingTimer: React.FC<PublicSpeakingTimerProps> = ({ minutes, star
 
     // Change color based on progress
     let progressBarColor = "#252A39"; // Default color
-    if (percentage >= 80) progressBarColor = "red";
-    else if (percentage >= 50) progressBarColor = "yellow";
+    if (percentage >= 80) progressBarColor = "#DD524D";
+    else if (percentage >= 50) progressBarColor = "#F5B546";
 
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60);
@@ -46,7 +46,7 @@ const PublicSpeakingTimer: React.FC<PublicSpeakingTimerProps> = ({ minutes, star
                 <p className="flex items-center">
                     <Clock2 className="w-5 h-5 me-1" />
                     Session Time Remaining:
-                    <span>{formatTime(timeLeft)}</span>
+                    <span className="ms-1" style={{ color: progressBarColor }}>{formatTime(timeLeft)}</span>
                 </p>
             </div>
             <SegmentedProgressBar percent={percentage} color={progressBarColor} divisions={1} />

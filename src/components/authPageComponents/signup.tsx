@@ -12,8 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "../ui/checkbox";
 import googleIcon from "@/assets/images/svgs/google-icon.svg";
-import { useSignup } from "@/hooks/auth";
-import axios from "axios";
+import {  useSignup } from "@/hooks/auth";
 import { RootState } from "@/store";
 // Enhanced password validation schema
 const passwordSchema = z
@@ -108,25 +107,29 @@ const Signup: React.FC = () => {
         }
     };
 
+
     const handleGoogleLogin = async () => {
-        try {
-            const response = await axios.post(
-                "http://exchange-v2-env.eba-ccvmvqqg.us-west-1.elasticbeanstalk.com/users/auth/google-login/", // Your Django endpoint
-                {}, // Send an empty object as the POST body (if no data is needed)
-                { withCredentials: true }
-            );
+        // googleLogin()
+        // try {
+        //     const response = await axios.post(
+        //         "http://exchange-v2-env.eba-ccvmvqqg.us-west-1.elasticbeanstalk.com/users/auth/google-login/", // Your Django endpoint
+        //         {}, // Send an empty object as the POST body (if no data is needed)
+        //         { withCredentials: true }
+        //     );
     
-            console.log("Google login initiated:", response);
+        //     console.log("Google login initiated:", response);
     
-            window.location.href = response.request.responseURL; // Redirect to the Google login page.
-        } catch (error) {
-            console.error("Google login failed:", error);
-        }
+        //     window.location.href = response.request.responseURL; // Redirect to the Google login page.
+        // } catch (error) {
+        //     console.error("Google login failed:", error);
+        // }
+
+
     };
 
     return (
-        <div className="signup-container sm:w-10/12 overflow-y-auto px-1 scrollbar-hide sm:mx-auto md:flex flex flex-col justify-center h-screen mb-10  max-md:pl-0 max-lg:pl-5">
-            <div className="stick mt-36 top-5">{BackToWebsite()}</div>
+        <div className="signup-container sm:w-10/12 overflow-y-auto px-1 scrollbar-hide lg:mt-5 sm:mx-auto md:flex flex flex-col lg:block  max-md:justify-start justify-center h-screen mb-10 pb-7  max-md:pl-0 max-lg:pl-5">
+            <div className="stick lg:mt-0 mt-3 top-5">{BackToWebsite()}</div>
             {welcomeMessage()}
             <Form {...form}>
                 <form

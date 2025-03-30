@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import circleCheck from '../../../assets/images/svgs/circle-check.svg';
 import circleExclamation from '../../../assets/images/svgs/circle-exclamation.svg';
@@ -6,9 +7,9 @@ import trophy from '../../../assets/images/svgs/trophy.svg';
 import download from '../../../assets/images/svgs/download.svg';
 import starAward from '../../../assets/images/svgs/star-award.svg';
 import diamond from '../../../assets/images/pngs/diamond.png';
-import ruby from '../../../assets/images/pngs/ruby.png';
-import silver from '../../../assets/images/pngs/silver-bar.png';
-import coin from '../../../assets/images/pngs/orange-gem.png';
+// import ruby from '../../../assets/images/pngs/ruby.png';
+// import silver from '../../../assets/images/pngs/silver-bar.png';
+// import coin from '../../../assets/images/pngs/orange-gem.png';
 import horse from '../../../assets/images/svgs/horse.svg';
 import trendUpIcon from "../../../assets/images/svgs/trend-up.svg";
 import starIcon from "../../../assets/images/svgs/award.svg";
@@ -32,6 +33,9 @@ import PresentationMetricsTable from '@/components/tables/performance-metric-tab
 import { RecentSessionsTable } from '@/components/tables/recent-sessions-table/user';
 import { sessions } from '@/components/tables/recent-sessions-table/user/data';
 import { useSearchParams } from 'react-router-dom';
+import ImprovementSequenceSelector, { SequenceItem } from '@/components/dashboard/SequenceSelector';
+import { columns } from "@/components/tables/performance-metric-table/user/columns";
+import { data } from "@/components/tables/performance-metric-table/user/data";
 
 const ProgressTracking: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -93,21 +97,21 @@ const ProgressTracking: React.FC = () => {
       number: "15",
       text: "Day Streak"
     },
-    {
-      icon: ruby,
-      number: "373",
-      text: "Total XP"
-    },
-    {
-      icon: silver,
-      number: "Silver",
-      text: "Current League"
-    },
-    {
-      icon: coin,
-      number: "10",
-      text: "Top 10 finishes"
-    },
+    // {
+    //   icon: ruby,
+    //   number: "373",
+    //   text: "Total XP"
+    // },
+    // {
+    //   icon: silver,
+    //   number: "Silver",
+    //   text: "Current League"
+    // },
+    // {
+    //   icon: coin,
+    //   number: "10",
+    //   text: "Top 10 finishes"
+    // },
   ];
 
   const getProgressBarColor = (percentage: number) => {
@@ -336,6 +340,41 @@ const ProgressTracking: React.FC = () => {
     }
   }, [sectionFromUrl]);
 
+  const sequences = [
+    {
+      title: "Keynote Delivery Refinement",
+      startDate: "February 15, 2025",
+      lastUpdated: "February 22, 2025",
+      totalCompleted: 3,
+      inProgress: 1
+    },
+    {
+      title: "Pitch Mastery Programme",
+      startDate: "February 15, 2025",
+      lastUpdated: "February 22, 2025",
+      totalCompleted: 3,
+      inProgress: 1
+    },
+    {
+      title: "Presentation Programme",
+      startDate: "February 15, 2025",
+      lastUpdated: "February 22, 2025",
+      totalCompleted: 3,
+      inProgress: 1
+    }
+  ];
+
+  const handleSelectSequence = (sequence: SequenceItem) => {
+    console.log('Selected sequence:', sequence);
+    // Add your logic here
+  };
+
+  const handleNewSession = (sequence: SequenceItem) => {
+    console.log('New session for:', sequence);
+    // Add your logic here
+  };
+
+
   return (
     <>
       <ActionModal
@@ -359,19 +398,19 @@ const ProgressTracking: React.FC = () => {
       <div className='scrollbar-hide md:px-8 px-4'>
         <section className='py-5 flex md:flex-row flex-col md:gap-2 gap-3 items-start justify-between'>
           <div>
-            <h3 className='xl:text-[24px] text-xl text-[#262B3A]'>Progress Tracking</h3>
+            <h3 className='xl:text-2xl text-xl text-[#262B3A]'>Progress Tracking</h3>
             <div className='bg-[#F2F2F2] rounded-[10px] p-1 my-5'>
               {sectionItems.map((item, index) => (
                 <Button
                   onClick={() => handleSectionChange(index)}
-                  className={`${activeIndex === index ? 'bg-white text-[#252A39] hover:bg-white ' : 'text-[#6F7C8E] bg-[#F2F2F2] hover:bg-[#F2F2F2]' } py-1 px-3 rounded-[6px] shadow-none hover:text-inherit hover:shadow-none`}
+                  className={`${activeIndex === index ? 'bg-white text-[#252A39] hover:bg-white ' : 'text-[#6F7C8E] bg-[#F2F2F2] hover:bg-[#F2F2F2]'} py-1 px-3 rounded-[6px] shadow-none hover:text-inherit hover:shadow-none`}
                 >
                   {item}
                 </Button>
               ))}
             </div>
           </div>
-          {activeIndex === 1 && <div className='flex mr-[5%]'>
+          {<div className='flex mr-[5%]'>
             <div className='flex gap-2 items-center pr-4 mr-4 border-r border-[#E4E7EC]'>
               <div className={`${!userDetails.pfp && 'border border-[#D5D7DA] w-10 h-10 grid place-content-center rounded-full'}`}>
                 {userDetails?.pfp ? <img
@@ -395,7 +434,7 @@ const ProgressTracking: React.FC = () => {
           </div>}
         </section>
         {activeIndex === 0 && <div>
-          <section className='flex justify-between md:items-start items-center gap-5 mb-6'>
+          <section className='flex justify-between md:items-start items-center gap-5 mb-6 sm:mt-0 mt-4'>
             <div>
               <h3 className="text-xl font-medium">Active Goals</h3>
               <p className="text-sm text-[#6F7C8E]">Here’s a quick overview of your active goals </p>
@@ -460,7 +499,7 @@ const ProgressTracking: React.FC = () => {
             <div className='border border-[#E0E0E0] rounded-[12px] p-5 h-fit'>
               <h4 className='text-[#252A39] lg:text-lg text-base'>Streak Statistics</h4>
               <p className='text-[#6F7C8E] text-sm'>Display streaks of  goal progress</p>
-              <div className='grid md:grid-cols-2 md:gap-x-6'>
+              <div className='grid grid-cols-1 md:gap-x-6'>
                 {streakStats.map((item) => (
                   <div className='border border-[#E0E0E0] p-3 flex gap-3 rounded-[12px] mt-4 mb-2'>
                     <img src={item.icon} alt="diamond" className='h-fit' />
@@ -545,7 +584,11 @@ const ProgressTracking: React.FC = () => {
               <h3 className="text-xl font-medium text-#252A39">Performance Metrics Comparison</h3>
               <p className="text-sm text-[#6F7C8E] mt-1">Track your progress across key speaking metrics </p>
             </div>
-            <PresentationMetricsTable />
+            <PresentationMetricsTable
+              columns={columns}
+              data={data}
+              pageSize={7}
+            />
           </section>
         </div>}
 
@@ -615,16 +658,26 @@ const ProgressTracking: React.FC = () => {
                     </p>
                   </div>
                 </div>
-
                 <RecentSessionsTable data={filteredSessions} />
               </div>
+            </section>
+            <section className="w-full p-5 border border-[#E0E0E0] rounded-[16px] my-10">
+              <ImprovementSequenceSelector
+                sequences={sequences}
+                onSelectSequence={handleSelectSequence}
+                onNewSession={handleNewSession}
+              />
             </section>
             <section className='mt-16 mb-6 border border-[#E0E0E0] sm:p-6 p-4 bg-white rounded-[16px]'>
               <div className='mb-6'>
                 <h3 className="text-xl font-medium text-#252A39">Performance Metrics Comparison</h3>
                 <p className="text-sm text-[#6F7C8E] mt-1">Track your progress across key speaking metrics </p>
               </div>
-              <PresentationMetricsTable />
+              <PresentationMetricsTable
+                columns={columns}
+                data={data}
+                pageSize={7}
+              />
             </section>
           </div>
         }

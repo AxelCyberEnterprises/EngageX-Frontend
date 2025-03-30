@@ -19,7 +19,7 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
     {
       type: "GROWTH PLAN",
       price: 240,
-      sessions: 4,
+      sessions: 6,
       contents: ["Perfect for specific goals.", "For mid-level professionals."],
       buttonText: "Choose Growth Plan",
       highlight: true,

@@ -10,7 +10,7 @@ interface EngagementProps {
 
 const EngagementMetrics: React.FC<EngagementProps> = ({ percent1, percent2, percent3 }) => {
     return (
-        <div className="py-5 px-3 border-1 border-bright-gray rounded-xl mt-3">
+        <div className="py-5 px-3 border-1 border-bright-gray rounded-xl mt-3 w-full">
             <h6 className="mb-4.5">Engagement Metrics</h6>
             <div className="metrics">
                 <div className="mb-3">

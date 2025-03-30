@@ -4,799 +4,699 @@
         "sessionName": "Pitch Practice 44",
         "sessionType": "Pitch Practice",
         "date": "Feb 12, 2025",
-        "duration": "12 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "12 Mins"
     },
     {
         "id": "00000002",
         "sessionName": "Client Meeting 32",
         "sessionType": "Client Meeting",
         "date": "Feb 13, 2025",
-        "duration": "15 Mins",
-        "note": "Prepared for the upcoming demo day"
+        "duration": "15 Mins"
     },
     {
         "id": "00000003",
         "sessionName": "Team Sync 18",
         "sessionType": "Team Sync",
         "date": "Feb 14, 2025",
-        "duration": "30 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "30 Mins"
     },
     {
         "id": "00000004",
         "sessionName": "Workshop 56",
         "sessionType": "Workshop",
         "date": "Feb 15, 2025",
-        "duration": "45 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "45 Mins"
     },
     {
         "id": "00000005",
         "sessionName": "Demo Day 23",
         "sessionType": "Demo Day",
         "date": "Feb 16, 2025",
-        "duration": "1 Hour",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "1 Hour"
     },
     {
         "id": "00000006",
         "sessionName": "Pitch Practice 45",
         "sessionType": "Pitch Practice",
         "date": "Feb 17, 2025",
-        "duration": "12 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "12 Mins"
     },
     {
         "id": "00000007",
         "sessionName": "Client Meeting 33",
         "sessionType": "Client Meeting",
         "date": "Feb 18, 2025",
-        "duration": "15 Mins",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "15 Mins"
     },
     {
         "id": "00000008",
         "sessionName": "Team Sync 19",
         "sessionType": "Team Sync",
         "date": "Feb 19, 2025",
-        "duration": "30 Mins",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "30 Mins"
     },
     {
         "id": "00000009",
         "sessionName": "Workshop 57",
         "sessionType": "Workshop",
         "date": "Feb 20, 2025",
-        "duration": "45 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "45 Mins"
     },
     {
         "id": "0000000a",
         "sessionName": "Demo Day 24",
         "sessionType": "Demo Day",
         "date": "Feb 21, 2025",
-        "duration": "1 Hour",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "1 Hour"
     },
     {
         "id": "0000000b",
         "sessionName": "Pitch Practice 46",
         "sessionType": "Pitch Practice",
         "date": "Feb 22, 2025",
-        "duration": "12 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "12 Mins"
     },
     {
         "id": "0000000c",
         "sessionName": "Client Meeting 34",
         "sessionType": "Client Meeting",
         "date": "Feb 23, 2025",
-        "duration": "15 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "15 Mins"
     },
     {
         "id": "0000000d",
         "sessionName": "Team Sync 20",
         "sessionType": "Team Sync",
         "date": "Feb 24, 2025",
-        "duration": "30 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "30 Mins"
     },
     {
         "id": "0000000e",
         "sessionName": "Workshop 58",
         "sessionType": "Workshop",
         "date": "Feb 25, 2025",
-        "duration": "45 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "45 Mins"
     },
     {
         "id": "0000000f",
         "sessionName": "Demo Day 25",
         "sessionType": "Demo Day",
         "date": "Feb 26, 2025",
-        "duration": "1 Hour",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "1 Hour"
     },
     {
         "id": "00000010",
         "sessionName": "Pitch Practice 47",
         "sessionType": "Pitch Practice",
         "date": "Feb 27, 2025",
-        "duration": "12 Mins",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "12 Mins"
     },
     {
         "id": "00000011",
         "sessionName": "Client Meeting 35",
         "sessionType": "Client Meeting",
         "date": "Feb 28, 2025",
-        "duration": "15 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "15 Mins"
     },
     {
         "id": "00000012",
         "sessionName": "Team Sync 21",
         "sessionType": "Team Sync",
         "date": "Mar 01, 2025",
-        "duration": "30 Mins",
-        "note": "Presented the final product to stakeholders; received positive feedback"
+        "duration": "30 Mins"
     },
     {
         "id": "00000013",
         "sessionName": "Workshop 59",
         "sessionType": "Workshop",
         "date": "Mar 02, 2025",
-        "duration": "45 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "45 Mins"
     },
     {
         "id": "00000014",
         "sessionName": "Demo Day 26",
         "sessionType": "Demo Day",
         "date": "Mar 03, 2025",
-        "duration": "1 Hour",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "1 Hour"
     },
     {
         "id": "00000015",
         "sessionName": "Pitch Practice 48",
         "sessionType": "Pitch Practice",
         "date": "Mar 04, 2025",
-        "duration": "12 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "12 Mins"
     },
     {
         "id": "00000016",
         "sessionName": "Client Meeting 36",
         "sessionType": "Client Meeting",
         "date": "Mar 05, 2025",
-        "duration": "15 Mins",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "15 Mins"
     },
     {
         "id": "00000017",
         "sessionName": "Team Sync 22",
         "sessionType": "Team Sync",
         "date": "Mar 06, 2025",
-        "duration": "30 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "30 Mins"
     },
     {
         "id": "00000018",
         "sessionName": "Workshop 60",
         "sessionType": "Workshop",
         "date": "Mar 07, 2025",
-        "duration": "45 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "45 Mins"
     },
     {
         "id": "00000019",
         "sessionName": "Demo Day 27",
         "sessionType": "Demo Day",
         "date": "Mar 08, 2025",
-        "duration": "1 Hour",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "1 Hour"
     },
     {
         "id": "0000001a",
         "sessionName": "Pitch Practice 49",
         "sessionType": "Pitch Practice",
         "date": "Mar 09, 2025",
-        "duration": "12 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "12 Mins"
     },
     {
         "id": "0000001b",
         "sessionName": "Client Meeting 37",
         "sessionType": "Client Meeting",
         "date": "Mar 10, 2025",
-        "duration": "15 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "15 Mins"
     },
     {
         "id": "0000001c",
         "sessionName": "Team Sync 23",
         "sessionType": "Team Sync",
         "date": "Mar 11, 2025",
-        "duration": "30 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "30 Mins"
     },
     {
         "id": "0000001d",
         "sessionName": "Workshop 61",
         "sessionType": "Workshop",
         "date": "Mar 12, 2025",
-        "duration": "45 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "45 Mins"
     },
     {
         "id": "0000001e",
         "sessionName": "Demo Day 28",
         "sessionType": "Demo Day",
         "date": "Mar 13, 2025",
-        "duration": "1 Hour",
-        "note": "Presented the final product to stakeholders; received positive feedback"
+        "duration": "1 Hour"
     },
     {
         "id": "0000001f",
         "sessionName": "Pitch Practice 50",
         "sessionType": "Pitch Practice",
         "date": "Mar 14, 2025",
-        "duration": "12 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "12 Mins"
     },
     {
         "id": "00000020",
         "sessionName": "Client Meeting 38",
         "sessionType": "Client Meeting",
         "date": "Mar 15, 2025",
-        "duration": "15 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "15 Mins"
     },
     {
         "id": "00000021",
         "sessionName": "Team Sync 24",
         "sessionType": "Team Sync",
         "date": "Mar 16, 2025",
-        "duration": "30 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "30 Mins"
     },
     {
         "id": "00000022",
         "sessionName": "Workshop 62",
         "sessionType": "Workshop",
         "date": "Mar 17, 2025",
-        "duration": "45 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "45 Mins"
     },
     {
         "id": "00000023",
         "sessionName": "Demo Day 29",
         "sessionType": "Demo Day",
         "date": "Mar 18, 2025",
-        "duration": "1 Hour",
-        "note": "Felt a bit nervous at first, but my articulation improved as I went on"
+        "duration": "1 Hour"
     },
     {
         "id": "00000024",
         "sessionName": "Pitch Practice 51",
         "sessionType": "Pitch Practice",
         "date": "Mar 19, 2025",
-        "duration": "12 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "12 Mins"
     },
     {
         "id": "00000025",
         "sessionName": "Client Meeting 39",
         "sessionType": "Client Meeting",
         "date": "Mar 20, 2025",
-        "duration": "15 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "15 Mins"
     },
     {
         "id": "00000026",
         "sessionName": "Team Sync 25",
         "sessionType": "Team Sync",
         "date": "Mar 21, 2025",
-        "duration": "30 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "30 Mins"
     },
     {
         "id": "00000027",
         "sessionName": "Workshop 63",
         "sessionType": "Workshop",
         "date": "Mar 22, 2025",
-        "duration": "45 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "45 Mins"
     },
     {
         "id": "00000028",
         "sessionName": "Demo Day 30",
         "sessionType": "Demo Day",
         "date": "Mar 23, 2025",
-        "duration": "1 Hour",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "1 Hour"
     },
     {
         "id": "00000029",
         "sessionName": "Pitch Practice 52",
         "sessionType": "Pitch Practice",
         "date": "Mar 24, 2025",
-        "duration": "12 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "12 Mins"
     },
     {
         "id": "0000002a",
         "sessionName": "Client Meeting 40",
         "sessionType": "Client Meeting",
         "date": "Mar 25, 2025",
-        "duration": "15 Mins",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "15 Mins"
     },
     {
         "id": "0000002b",
         "sessionName": "Team Sync 26",
         "sessionType": "Team Sync",
         "date": "Mar 26, 2025",
-        "duration": "30 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "30 Mins"
     },
     {
         "id": "0000002c",
         "sessionName": "Workshop 64",
         "sessionType": "Workshop",
         "date": "Mar 27, 2025",
-        "duration": "45 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "45 Mins"
     },
     {
         "id": "0000002d",
         "sessionName": "Demo Day 31",
         "sessionType": "Demo Day",
         "date": "Mar 28, 2025",
-        "duration": "1 Hour",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "1 Hour"
     },
     {
         "id": "0000002e",
         "sessionName": "Pitch Practice 53",
         "sessionType": "Pitch Practice",
         "date": "Mar 29, 2025",
-        "duration": "12 Mins",
-        "note": "Felt a bit nervous at first, but my articulation improved as I went on"
+        "duration": "12 Mins"
     },
     {
         "id": "0000002f",
         "sessionName": "Client Meeting 41",
         "sessionType": "Client Meeting",
         "date": "Mar 30, 2025",
-        "duration": "15 Mins",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "15 Mins"
     },
     {
         "id": "00000030",
         "sessionName": "Team Sync 27",
         "sessionType": "Team Sync",
         "date": "Mar 31, 2025",
-        "duration": "30 Mins",
-        "note": "Felt a bit nervous at first, but my articulation improved as I went on"
+        "duration": "30 Mins"
     },
     {
         "id": "00000031",
         "sessionName": "Workshop 65",
         "sessionType": "Workshop",
         "date": "Apr 01, 2025",
-        "duration": "45 Mins",
-        "note": "Presented the final product to stakeholders; received positive feedback"
+        "duration": "45 Mins"
     },
     {
         "id": "00000032",
         "sessionName": "Demo Day 32",
         "sessionType": "Demo Day",
         "date": "Apr 02, 2025",
-        "duration": "1 Hour",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "1 Hour"
     },
     {
         "id": "00000033",
         "sessionName": "Pitch Practice 54",
         "sessionType": "Pitch Practice",
         "date": "Apr 03, 2025",
-        "duration": "12 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "12 Mins"
     },
     {
         "id": "00000034",
         "sessionName": "Client Meeting 42",
         "sessionType": "Client Meeting",
         "date": "Apr 04, 2025",
-        "duration": "15 Mins",
-        "note": "Presented the final product to stakeholders; received positive feedback"
+        "duration": "15 Mins"
     },
     {
         "id": "00000035",
         "sessionName": "Team Sync 28",
         "sessionType": "Team Sync",
         "date": "Apr 05, 2025",
-        "duration": "30 Mins",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "30 Mins"
     },
     {
         "id": "00000036",
         "sessionName": "Workshop 66",
         "sessionType": "Workshop",
         "date": "Apr 06, 2025",
-        "duration": "45 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "45 Mins"
     },
     {
         "id": "00000037",
         "sessionName": "Demo Day 33",
         "sessionType": "Demo Day",
         "date": "Apr 07, 2025",
-        "duration": "1 Hour",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "1 Hour"
     },
     {
         "id": "00000038",
         "sessionName": "Pitch Practice 55",
         "sessionType": "Pitch Practice",
         "date": "Apr 08, 2025",
-        "duration": "12 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "12 Mins"
     },
     {
         "id": "00000039",
         "sessionName": "Client Meeting 43",
         "sessionType": "Client Meeting",
         "date": "Apr 09, 2025",
-        "duration": "15 Mins",
-        "note": "Presented the final product to stakeholders; received positive feedback"
+        "duration": "15 Mins"
     },
     {
         "id": "0000003a",
         "sessionName": "Team Sync 29",
         "sessionType": "Team Sync",
         "date": "Apr 10, 2025",
-        "duration": "30 Mins",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "30 Mins"
     },
     {
         "id": "0000003b",
         "sessionName": "Workshop 67",
         "sessionType": "Workshop",
         "date": "Apr 11, 2025",
-        "duration": "45 Mins",
-        "note": "Prepared for the upcoming demo day"
+        "duration": "45 Mins"
     },
     {
         "id": "0000003c",
         "sessionName": "Demo Day 34",
         "sessionType": "Demo Day",
         "date": "Apr 12, 2025",
-        "duration": "1 Hour",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "1 Hour"
     },
     {
         "id": "0000003d",
         "sessionName": "Pitch Practice 56",
         "sessionType": "Pitch Practice",
         "date": "Apr 13, 2025",
-        "duration": "12 Mins",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "12 Mins"
     },
     {
         "id": "0000003e",
         "sessionName": "Client Meeting 44",
         "sessionType": "Client Meeting",
         "date": "Apr 14, 2025",
-        "duration": "15 Mins",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "15 Mins"
     },
     {
         "id": "0000003f",
         "sessionName": "Team Sync 30",
         "sessionType": "Team Sync",
         "date": "Apr 15, 2025",
-        "duration": "30 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "30 Mins"
     },
     {
         "id": "00000040",
         "sessionName": "Workshop 68",
         "sessionType": "Workshop",
         "date": "Apr 16, 2025",
-        "duration": "45 Mins",
-        "note": "Prepared for the upcoming demo day"
+        "duration": "45 Mins"
     },
     {
         "id": "00000041",
         "sessionName": "Demo Day 35",
         "sessionType": "Demo Day",
         "date": "Apr 17, 2025",
-        "duration": "1 Hour",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "1 Hour"
     },
     {
         "id": "00000042",
         "sessionName": "Pitch Practice 57",
         "sessionType": "Pitch Practice",
         "date": "Apr 18, 2025",
-        "duration": "12 Mins",
-        "note": "Felt a bit nervous at first, but my articulation improved as I went on"
+        "duration": "12 Mins"
     },
     {
         "id": "00000043",
         "sessionName": "Client Meeting 45",
         "sessionType": "Client Meeting",
         "date": "Apr 19, 2025",
-        "duration": "15 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "15 Mins"
     },
     {
         "id": "00000044",
         "sessionName": "Team Sync 31",
         "sessionType": "Team Sync",
         "date": "Apr 20, 2025",
-        "duration": "30 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "30 Mins"
     },
     {
         "id": "00000045",
         "sessionName": "Workshop 69",
         "sessionType": "Workshop",
         "date": "Apr 21, 2025",
-        "duration": "45 Mins",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "45 Mins"
     },
     {
         "id": "00000046",
         "sessionName": "Demo Day 36",
         "sessionType": "Demo Day",
         "date": "Apr 22, 2025",
-        "duration": "1 Hour",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "1 Hour"
     },
     {
         "id": "00000047",
         "sessionName": "Pitch Practice 58",
         "sessionType": "Pitch Practice",
         "date": "Apr 23, 2025",
-        "duration": "12 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "12 Mins"
     },
     {
         "id": "00000048",
         "sessionName": "Client Meeting 46",
         "sessionType": "Client Meeting",
         "date": "Apr 24, 2025",
-        "duration": "15 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "15 Mins"
     },
     {
         "id": "00000049",
         "sessionName": "Team Sync 32",
         "sessionType": "Team Sync",
         "date": "Apr 25, 2025",
-        "duration": "30 Mins",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "30 Mins"
     },
     {
         "id": "0000004a",
         "sessionName": "Workshop 70",
         "sessionType": "Workshop",
         "date": "Apr 26, 2025",
-        "duration": "45 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "45 Mins"
     },
     {
         "id": "0000004b",
         "sessionName": "Demo Day 37",
         "sessionType": "Demo Day",
         "date": "Apr 27, 2025",
-        "duration": "1 Hour",
-        "note": "Prepared for the upcoming demo day"
+        "duration": "1 Hour"
     },
     {
         "id": "0000004c",
         "sessionName": "Pitch Practice 59",
         "sessionType": "Pitch Practice",
         "date": "Apr 28, 2025",
-        "duration": "12 Mins",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "12 Mins"
     },
     {
         "id": "0000004d",
         "sessionName": "Client Meeting 47",
         "sessionType": "Client Meeting",
         "date": "Apr 29, 2025",
-        "duration": "15 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "15 Mins"
     },
     {
         "id": "0000004e",
         "sessionName": "Team Sync 33",
         "sessionType": "Team Sync",
         "date": "Apr 30, 2025",
-        "duration": "30 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "30 Mins"
     },
     {
         "id": "0000004f",
         "sessionName": "Workshop 71",
         "sessionType": "Workshop",
         "date": "May 01, 2025",
-        "duration": "45 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "45 Mins"
     },
     {
         "id": "00000050",
         "sessionName": "Demo Day 38",
         "sessionType": "Demo Day",
         "date": "May 02, 2025",
-        "duration": "1 Hour",
-        "note": "Presented the final product to stakeholders; received positive feedback"
+        "duration": "1 Hour"
     },
     {
         "id": "00000051",
         "sessionName": "Pitch Practice 60",
         "sessionType": "Pitch Practice",
         "date": "May 03, 2025",
-        "duration": "12 Mins",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "12 Mins"
     },
     {
         "id": "00000052",
         "sessionName": "Client Meeting 48",
         "sessionType": "Client Meeting",
         "date": "May 04, 2025",
-        "duration": "15 Mins",
-        "note": "Presented the final product to stakeholders; received positive feedback"
+        "duration": "15 Mins"
     },
     {
         "id": "00000053",
         "sessionName": "Team Sync 34",
         "sessionType": "Team Sync",
         "date": "May 05, 2025",
-        "duration": "30 Mins",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "30 Mins"
     },
     {
         "id": "00000054",
         "sessionName": "Workshop 72",
         "sessionType": "Workshop",
         "date": "May 06, 2025",
-        "duration": "45 Mins",
-        "note": "Felt a bit nervous at first, but my articulation improved as I went on"
+        "duration": "45 Mins"
     },
     {
         "id": "00000055",
         "sessionName": "Demo Day 39",
         "sessionType": "Demo Day",
         "date": "May 07, 2025",
-        "duration": "1 Hour",
-        "note": "Prepared for the upcoming demo day"
+        "duration": "1 Hour"
     },
     {
         "id": "00000056",
         "sessionName": "Pitch Practice 61",
         "sessionType": "Pitch Practice",
         "date": "May 08, 2025",
-        "duration": "12 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "12 Mins"
     },
     {
         "id": "00000057",
         "sessionName": "Client Meeting 49",
         "sessionType": "Client Meeting",
         "date": "May 09, 2025",
-        "duration": "15 Mins",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "15 Mins"
     },
     {
         "id": "00000058",
         "sessionName": "Team Sync 35",
         "sessionType": "Team Sync",
         "date": "May 10, 2025",
-        "duration": "30 Mins",
-        "note": "Practiced delivering concise and impactful messages"
+        "duration": "30 Mins"
     },
     {
         "id": "00000059",
         "sessionName": "Workshop 73",
         "sessionType": "Workshop",
         "date": "May 11, 2025",
-        "duration": "45 Mins",
-        "note": "Discussed project milestones and next steps with the client"
+        "duration": "45 Mins"
     },
     {
         "id": "0000005a",
         "sessionName": "Demo Day 40",
         "sessionType": "Demo Day",
         "date": "May 12, 2025",
-        "duration": "1 Hour",
-        "note": "Worked on improving presentation skills and received constructive feedback"
+        "duration": "1 Hour"
     },
     {
         "id": "0000005b",
         "sessionName": "Pitch Practice 62",
         "sessionType": "Pitch Practice",
         "date": "May 13, 2025",
-        "duration": "12 Mins",
-        "note": "Felt a bit nervous at first, but my articulation improved as I went on"
+        "duration": "12 Mins"
     },
     {
         "id": "0000005c",
         "sessionName": "Client Meeting 50",
         "sessionType": "Client Meeting",
         "date": "May 14, 2025",
-        "duration": "15 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "15 Mins"
     },
     {
         "id": "0000005d",
         "sessionName": "Team Sync 36",
         "sessionType": "Team Sync",
         "date": "May 15, 2025",
-        "duration": "30 Mins",
-        "note": "Reviewed progress on the sprint and assigned new tasks"
+        "duration": "30 Mins"
     },
     {
         "id": "0000005e",
         "sessionName": "Workshop 74",
         "sessionType": "Workshop",
         "date": "May 16, 2025",
-        "duration": "45 Mins",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "45 Mins"
     },
     {
         "id": "0000005f",
         "sessionName": "Demo Day 41",
         "sessionType": "Demo Day",
         "date": "May 17, 2025",
-        "duration": "1 Hour",
-        "note": "Brainstormed new ideas for the upcoming project"
+        "duration": "1 Hour"
     },
     {
         "id": "00000060",
         "sessionName": "Pitch Practice 63",
         "sessionType": "Pitch Practice",
         "date": "May 18, 2025",
-        "duration": "12 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "12 Mins"
     },
     {
         "id": "00000061",
         "sessionName": "Client Meeting 51",
         "sessionType": "Client Meeting",
         "date": "May 19, 2025",
-        "duration": "15 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "15 Mins"
     },
     {
         "id": "00000062",
         "sessionName": "Team Sync 37",
         "sessionType": "Team Sync",
         "date": "May 20, 2025",
-        "duration": "30 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "30 Mins"
     },
     {
         "id": "00000063",
         "sessionName": "Workshop 75",
         "sessionType": "Workshop",
         "date": "May 21, 2025",
-        "duration": "45 Mins",
-        "note": "Collaborated with the team to resolve blockers"
+        "duration": "45 Mins"
     },
     {
         "id": "00000064",
         "sessionName": "Demo Day 42",
         "sessionType": "Demo Day",
         "date": "May 22, 2025",
-        "duration": "1 Hour",
-        "note": "Conducted a hands-on workshop on React best practices"
+        "duration": "1 Hour"
     }
 ]
