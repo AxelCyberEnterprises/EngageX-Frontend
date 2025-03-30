@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import HeroSVG from "./svgs/HeroSVG";
 
 function Hero() {
   return (
