@@ -424,14 +424,15 @@ const SideNav: React.FC = () => {
                 </svg>
             ),
             path: "/dashboard/user/logout",
-            function:  (() =>
+            function:  ((e:any) =>{
+                e.preventDefault()
                 dispatch(
                     openDialog({
                         key: "default", 
                         children: <LogoutConfirmation />
                     }),
                 )
-            ),
+        }),
         },
     ];
 
