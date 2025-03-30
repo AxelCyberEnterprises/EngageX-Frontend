@@ -16,13 +16,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
   Table,
   TableBody,
   TableCell,
@@ -48,15 +41,17 @@ export const columns: ColumnDef<Sequence>[] = [
     accessorKey: "title",
     header: () => <div className="lg:pl-10">Session Name</div>,
     cell: ({ row }) => (
-      <div className="font-medium lg:pl-10 py-2">{row.getValue("title")}</div>
+      <div className="lg:pl-10 py-2 text-[#333333]">
+        <p>{row.getValue("title")}</p>
+      </div>
     ),
   },
   {
     accessorKey: "date",
     header: "Date",
     cell: ({ row }) => (
-      <div className="text-gray-500 ">
-        {formatTimestamp(row.getValue("date"))}
+      <div className="text-[#333333]">
+        <p>{formatTimestamp(row.getValue("date"))}</p>
       </div>
     ),
   },
@@ -64,7 +59,9 @@ export const columns: ColumnDef<Sequence>[] = [
     accessorKey: "duration",
     header: () => <div className="text-right lg:pr-10">Duration (mins)</div>,
     cell: ({ row }) => (
-      <div className="text-right lg:pr-10">{row.getValue("duration")} min</div>
+      <div className="text-right lg:pr-10 text-[#333333]">
+        <p>{row.getValue("duration")} min</p>
+      </div>
     ),
   },
 ];
@@ -105,56 +102,12 @@ export function ExistingSequenceTable({
 
   return (
     <div className="w-full">
-      {/* Search Input */}
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter by session name..."
-          value={
-            (table.getColumn("session_name")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("session_name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        {/* Column Visibility Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            {/* <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
-            </Button> */}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
       {/* Table */}
-      <div className="rounded-lg border overflow-clip">
+      <div className="rounded-lg border border-gray overflow-clip">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                className="bg-dark-gray hover:bg-dark-gray"
-                key={headerGroup.id}
-              >
+              <TableRow className="bg-[#F8F9FC]" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -174,7 +127,7 @@ export function ExistingSequenceTable({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-alice-blue"
+                  className="hover:bg-alice-blue text-[#333333] border-gray"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
