@@ -2,11 +2,10 @@ import NewSession from "@/components/dashboard/performance-improvement/NewSessio
 import SelectExistingSequence from "@/components/dashboard/performance-improvement/SelectExistingSequence";
 import { RootState } from "@/store";
 import { PIScreens } from "@/store/slices/performance_improvement_slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function PerformanceImprovement() {
-  const dispatch = useDispatch();
-  const { active_screen, selected_screen } = useSelector(
+  const { active_screen } = useSelector(
     (state: RootState) => state.performance_improvment
   );
   return (
