@@ -24,7 +24,7 @@ function Intro() {
 
           <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
             <h4 className="h-max font-montreal leading-snug">
-              Why settle for ordinary when You can practice extraordinary
+              Why settle for ordinary when you can practice extraordinary
             </h4>
             <p className="text-dark-electric-blue leading-normal">
               Our platform offers a groundbreaking solution for anyone aiming to
@@ -163,7 +163,7 @@ function Intro() {
         </div>
 
         <Link to="/auth/login">
-          <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative lg:top-7">
+          <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg relative lg:top-7">
             <p>Start practicing today</p>
             <svg
               width="15"

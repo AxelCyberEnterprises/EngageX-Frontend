@@ -4,7 +4,7 @@ function HeroSVG() {
       width="394"
       height="278"
       viewBox="0 0 394 278"
-      className="absolute w-full lg:w-[39rem] h-[30rem] lg:h-[40.3rem] -bottom-[3rem] lg:-bottom-[3.8rem] right-10"
+      className="absolute w-full lg:w-[39rem] h-[30rem] lg:h-[20.3rem] -bottom-[2rem] lg:bottom-[8rem] right-10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"

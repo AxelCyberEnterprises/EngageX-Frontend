@@ -22,7 +22,7 @@ function HowItWorks() {
         <div className="text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
             Simple steps to speaking <br />
-            Success
+            success
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             A simple way to use EngageX
