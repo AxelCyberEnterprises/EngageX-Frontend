@@ -16,7 +16,13 @@ function SelectExistingSequence() {
   return (
     <main className="px-4 lg:px-10 pb-10 bg-[#F9F9F9] font-montreal mb-20">
       <div className="py-6 flex w-full gap-8 justify-between items-center">
-        <h6>Select from Existing Sequences</h6>
+        <div>
+          <h6 className="pb-1">Improve a past session</h6>
+          <small className="text-[#474D63]">
+            Need help setting up?{" "}
+            <span className="text-pantone-green">Click here</span>
+          </small>
+        </div>
         <button
           onClick={() => {
             if (active_screen == PIScreens.EXISTING_PIS) {

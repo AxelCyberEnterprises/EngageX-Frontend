@@ -193,10 +193,6 @@ export default function AppRoutes() {
         <Route path="contact" element={<Contact />} />
         <Route path="terms-of-service" element={<TermsOfService />} />
         <Route
-          path="performance-improvement"
-          element={<PerformanceImprovement />}
-        />
-        <Route
           path="auth/*"
           element={
             <UserPlan>
