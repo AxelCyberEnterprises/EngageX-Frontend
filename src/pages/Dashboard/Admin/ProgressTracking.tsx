@@ -260,10 +260,6 @@ const ProgressTracking: React.FC = () => {
     }
   };
 
-  const handleSetGoals = () => {
-    console.log("Setting new improvement goals");
-  };
-
   const timeOptions = [
     {
       value: "weekly",
@@ -574,7 +570,6 @@ const ProgressTracking: React.FC = () => {
             <div>
               <AIInsights
                 insights={insightsData}
-                onSetGoals={handleSetGoals}
               />
             </div>
           </section>
