@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import HeroSVG from "./svgs/HeroSVG";
 
 function Hero() {
   return (
@@ -39,7 +38,7 @@ function Hero() {
           an expert coach.
         </p>
         <Link to="/dashboard/user/">
-          <button className="flex gap-4 mt-10 mx-auto lg:mx-0 w-full lg:w-max py-3 px-8 items-center justify-center rounded-2xl">
+          <button className="flex gap-4 mt-10 mx-auto lg:mx-0 w-full lg:w-max py-3 px-8 items-center justify-center rounded-lg">
             <p>Get started</p>
             <svg
               width="15"
@@ -72,8 +71,13 @@ function Hero() {
             />
           </div>
         </div>
-        <div className="w-full flex relative h-[15.5rem] lg:h-[20rem] justify-center ">
-          <HeroSVG />
+        <div className="w-full flex relative justify-center">
+          {/* <HeroSVG /> */}
+          <img
+            src="./assets/homepathimg.png"
+            className="absolute bottom-15 mr-20"
+            alt=""
+          />
         </div>
       </div>
     </section>

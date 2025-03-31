@@ -6,11 +6,13 @@ import { Session } from "./data";
 interface RecentSessionsTableProps {
   data: Session[];
   pageSize?: number;
+  hidePagination?: boolean;
 }
 
 export const RecentSessionsTable = ({ 
   data, 
-  pageSize = 5 
+  pageSize = 5,
+  hidePagination
 }: RecentSessionsTableProps) => {
   return (
     <BaseTable
@@ -20,6 +22,7 @@ export const RecentSessionsTable = ({
       tableHeaderClassName="bg-gray-50"
       tableHeaderItemClassName="text-gray-600 font-medium text-sm"
       tableContainerClassName="border-none"
+      hidePagination={hidePagination}
     />
   );
 };
