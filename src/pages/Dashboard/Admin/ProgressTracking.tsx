@@ -536,13 +536,16 @@ const ProgressTracking: React.FC = () => {
                 <span className='text-[#252A39]'>• 5 sessions analyzed</span>
               </p>
             </div>
-            <ShadSelect
-              options={eventOptions}
-              onChange={handleEventChange}
-              placeholder="Keynote Practice Series (Feb 2025)"
-              className='w-fit rounded-[8px] shadow-none py-5 md:ml-0 ml-auto  focus:shadow-none active:shadow-none'
-              icon={calendar}
-            />
+            <div>
+              <ShadSelect
+                options={eventOptions}
+                onChange={handleEventChange}
+                placeholder="Keynote Practice Series (Feb 2025)"
+                className='w-fit rounded-[8px] shadow-none py-5 md:ml-0 ml-auto  focus:shadow-none active:shadow-none'
+                icon={calendar}
+              />
+              <p className='text-[#6F7C8E] sm:text-sm text-xs mt-1'>Choose improvement sequence to get full info.</p>
+            </div>
           </section>
           <section>
             <StatsCardSection cards={statCardsData} />
@@ -652,7 +655,7 @@ const ProgressTracking: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <RecentSessionsTable data={filteredSessions} hidePagination={true}/>
+                <RecentSessionsTable data={filteredSessions} hidePagination={true} />
               </div>
             </section>
             <section>

@@ -464,9 +464,9 @@ const ProgressTracking: React.FC = () => {
                   <h3 className='text-[#252A39] lg:text-lg text-base lg:mt-0 mt-2'>Recent Achievements</h3>
                   <p className='sm:text-sm text-xs text-[#6F7C8E] py-2'>Here’s a list your of your earned achievements</p>
                 </div>
-                <p onClick={()=> setShowRecentAchievementsModal(true)} className='text-[#262B3A] border-b border-[#262B3A] sm:text-sm text-xs whitespace-nowrap cursor-pointer'>View All</p>
+                <p onClick={() => setShowRecentAchievementsModal(true)} className='text-[#262B3A] border-b border-[#262B3A] sm:text-sm text-xs whitespace-nowrap cursor-pointer'>View All</p>
               </div>
-              {achievementData.slice(0,3).map((item) => (
+              {achievementData.slice(0, 3).map((item) => (
                 <div className='flex gap-3 mb-6 px-2'>
                   <div className={`flex flex-col items-center justify-between p-2 rounded-[6px] ${item.level === 1 && 'bg-[#64BA9F]'}  ${item.level === 2 && 'bg-[#ECB25E]'}  ${item.level === 3 && 'bg-[#C1C2B4]'} ${item.level === 4 && 'bg-[#C29C81]'} ${item.level === 5 && 'bg-[#253141]'} ${item.level === 6 && 'bg-[#64BA9F]'}`}>
                     <div className='bg-[#FFFFFF33] rounded-full w-[50px] h-[50px] grid place-content-center'>
@@ -534,13 +534,16 @@ const ProgressTracking: React.FC = () => {
                 <span className='text-[#252A39]'>• 5 sessions analyzed</span>
               </p>
             </div>
-            <ShadSelect
-              options={eventOptions}
-              onChange={handleEventChange}
-              placeholder="Keynote Practice Series (Feb 2025)"
-              className='w-fit rounded-[8px] shadow-none py-5 md:ml-0 ml-auto  focus:shadow-none active:shadow-none'
-              icon={calendar}
-            />
+            <div>
+              <ShadSelect
+                options={eventOptions}
+                onChange={handleEventChange}
+                placeholder="Keynote Practice Series (Feb 2025)"
+                className='w-fit rounded-[8px] shadow-none py-5 md:ml-0 ml-auto  focus:shadow-none active:shadow-none'
+                icon={calendar}
+              />
+              <p className='text-[#6F7C8E] sm:text-sm text-xs mt-1'>Choose improvement sequence to get full info.</p>
+            </div>
           </section>
           <section>
             <StatsCardSection cards={statCardsData} />
@@ -651,7 +654,7 @@ const ProgressTracking: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <RecentSessionsTable data={filteredSessions} hidePagination={true}/>
+                <RecentSessionsTable data={filteredSessions} hidePagination={true} />
               </div>
             </section>
             <section>
