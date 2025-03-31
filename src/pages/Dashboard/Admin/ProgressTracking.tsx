@@ -36,12 +36,10 @@ import { useSearchParams } from 'react-router-dom';
 import { columns } from "@/components/tables/performance-metric-table/user/columns";
 import { data } from "@/components/tables/performance-metric-table/user/data";
 import SequenceSelector, { Sequence } from '@/components/dashboard/SequenceSelect';
-import RecentAchievementsModal from '@/components/modals/modalVariants/RecentAchievementsModal';
 
 const ProgressTracking: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailureModal, setShowFailureModal] = useState(false);
-  const [showRecentAchievementsModal, setShowRecentAchievementsModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const sectionFromUrl = searchParams.get("section");
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
@@ -70,46 +68,25 @@ const ProgressTracking: React.FC = () => {
 
   const achievementData = [
     {
-      title: 'Master Your Voice',
-      portion: 30,
-      total: 100,
+      title: 'Speech Master',
+      portion: 2,
+      total: 3,
       level: 1,
-      note: 'Achieve a pitch variability score of 30%'
+      note: 'Complete 50 speeches'
     },
     {
-      title: 'Impact Maker',
-      portion: 50,
-      total: 100,
+      title: 'Pace Perfect',
+      portion: 30,
+      total: 50,
       level: 2,
-      note: 'Achieve a impact score of 50%'
+      note: 'Maintain ideal pace for 5 speeches'
     },
     {
-      title: 'Transformative speaker',
-      portion: 100,
+      title: 'Audience Favorite',
+      portion: 90,
       total: 100,
       level: 3,
-      note: 'Achieve a transformative potential score of 100%'
-    },
-    {
-      title: 'Crystal Clear',
-      portion: 68,
-      total: 100,
-      level: 4,
-      note: 'Achieve a clarity score of 68'
-    },
-    {
-      title: 'Concise Communicator',
-      portion: 75,
-      total: 100,
-      level: 5,
-      note: 'Achieve a brevity score of 75'
-    },
-    {
-      title: 'Body Language Master',
-      portion: 85,
-      total: 100,
-      level: 6,
-      note: 'Achieve a body posture score of 85'
+      note: 'Get 95% engagement score'
     },
   ]
 
@@ -154,8 +131,16 @@ const ProgressTracking: React.FC = () => {
     if (level === 1) return horse;
     if (level === 2) return trophy;
     if (level === 3) return starAward;
-    return horse;
+    return '';
   };
+
+  const userDetails = {
+    firstname: 'John',
+    lastname: 'Doe',
+    email: 'johndoe@gmail.com',
+    company: 'Tangerine Plc',
+    pfp: ''
+  }
 
   const eventOptions = [
     {
@@ -213,7 +198,7 @@ const ProgressTracking: React.FC = () => {
       icon: micIcon,
       iconAlt: "Progress icon",
       title: "Speaking Time",
-      value: "12.5 hrs",
+      value: "+25%",
       subtext: "Total practice time",
       isPositive: true
     },
@@ -235,7 +220,7 @@ const ProgressTracking: React.FC = () => {
       icon: messageIcon,
       iconAlt: "Focus icon",
       title: "Clarity",
-      value: "92%",
+      value: "92",
       subtext: "Speech clarity score"
     }
   ];
@@ -245,18 +230,18 @@ const ProgressTracking: React.FC = () => {
   };
 
   const chartData = [
-    { month: "January", Impact: 186, AudienceEngagement: 80, Clarity: 33, Confidence: 90 },
-    { month: "February", Impact: 305, AudienceEngagement: 200, Clarity: 33, Confidence: 100 },
-    { month: "March", Impact: 237, AudienceEngagement: 120, Clarity: 33, Confidence: 100 },
-    { month: "April", Impact: 73, AudienceEngagement: 190, Clarity: 33, Confidence: 100 },
-    { month: "May", Impact: 209, AudienceEngagement: 130, Clarity: 33, Confidence: 100 },
-    { month: "June", Impact: 214, AudienceEngagement: 140, Clarity: 33, Confidence: 100 },
+    { month: "January", Voice: 186, AudienceEngagement: 80, Clarity: 33, Confidence: 90 },
+    { month: "February", Voice: 305, AudienceEngagement: 200, Clarity: 33, Confidence: 100 },
+    { month: "March", Voice: 237, AudienceEngagement: 120, Clarity: 33, Confidence: 100 },
+    { month: "April", Voice: 73, AudienceEngagement: 190, Clarity: 33, Confidence: 100 },
+    { month: "May", Voice: 209, AudienceEngagement: 130, Clarity: 33, Confidence: 100 },
+    { month: "June", Voice: 214, AudienceEngagement: 140, Clarity: 33, Confidence: 100 },
   ];
 
   const chartColors = {
-    Impact: "#252A39",
-    AudienceEngagement: "#64BA9F",
-    Clarity: '#40B869'
+    Voice: "#252A39",
+    AudienceEngagement: "#40B869",
+    Clarity: '#40B869', Confidence: "#F5B546",
   };
 
   const insightsData = {
@@ -273,6 +258,10 @@ const ProgressTracking: React.FC = () => {
       observation: "Your performance peaks in the middle of presentations.",
       recommendation: "strengthening your openings and closings"
     }
+  };
+
+  const handleSetGoals = () => {
+    console.log("Setting new improvement goals");
   };
 
   const timeOptions = [
@@ -405,11 +394,6 @@ const ProgressTracking: React.FC = () => {
         cta='Cancel'
         ctaClassName='bg-[#262B3A] text-[#414651]'
       />
-      <RecentAchievementsModal
-        show={showRecentAchievementsModal}
-        onClose={() => setShowRecentAchievementsModal(false)}
-        achievementData={achievementData}
-      />
       <div className='scrollbar-hide md:px-8 px-4'>
         <section className='py-5 flex md:flex-row flex-col md:gap-2 gap-3 items-start justify-between'>
           <div>
@@ -425,6 +409,28 @@ const ProgressTracking: React.FC = () => {
               ))}
             </div>
           </div>
+          {<div className='flex mr-[5%]'>
+            <div className='flex gap-2 items-center pr-4 mr-4 border-r border-[#E4E7EC]'>
+              <div className={`${!userDetails.pfp && 'border border-[#D5D7DA] w-10 h-10 grid place-content-center rounded-full'}`}>
+                {userDetails?.pfp ? <img
+                  src={userDetails.pfp}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover border"
+                /> :
+                  <p className="capitalize text-sm">{`${userDetails.firstname[0]}${userDetails.lastname[0]}`.toUpperCase()}</p>
+                }
+              </div>
+
+              <div>
+                <p>{userDetails.firstname} {userDetails.lastname}</p>
+                <p className='text-[#474D63] text-sm font-light'>{userDetails.email}</p>
+              </div>
+            </div>
+            <div>
+              <p>Company</p>
+              <p className='text-[#474D63] text-sm font-light'>{userDetails.company}</p>
+            </div>
+          </div>}
         </section>
         {activeIndex === 0 && <div>
           <section className='flex justify-between md:items-start items-center gap-5 mb-6 sm:mt-0 mt-4'>
@@ -464,11 +470,11 @@ const ProgressTracking: React.FC = () => {
                   <h3 className='text-[#252A39] lg:text-lg text-base lg:mt-0 mt-2'>Recent Achievements</h3>
                   <p className='sm:text-sm text-xs text-[#6F7C8E] py-2'>Here’s a list your of your earned achievements</p>
                 </div>
-                <p onClick={()=> setShowRecentAchievementsModal(true)} className='text-[#262B3A] border-b border-[#262B3A] sm:text-sm text-xs whitespace-nowrap cursor-pointer'>View All</p>
+                <p className='text-[#262B3A] border-b border-[#262B3A] sm:text-sm text-xs whitespace-nowrap'>View All</p>
               </div>
-              {achievementData.slice(0,3).map((item) => (
+              {achievementData.map((item) => (
                 <div className='flex gap-3 mb-6 px-2'>
-                  <div className={`flex flex-col items-center justify-between p-2 rounded-[6px] ${item.level === 1 && 'bg-[#64BA9F]'}  ${item.level === 2 && 'bg-[#ECB25E]'}  ${item.level === 3 && 'bg-[#C1C2B4]'} ${item.level === 4 && 'bg-[#C29C81]'} ${item.level === 5 && 'bg-[#253141]'} ${item.level === 6 && 'bg-[#64BA9F]'}`}>
+                  <div className={`flex flex-col items-center justify-between p-2 rounded-[6px] ${item.level === 1 && 'bg-[#64BA9F]'}  ${item.level === 2 && 'bg-[#ECB25E]'}  ${item.level === 3 && 'bg-[#C1C2B4]'}`}>
                     <div className='bg-[#FFFFFF33] rounded-full w-[50px] h-[50px] grid place-content-center'>
                       <img src={getLevelImage(item.level)} alt="level image" />
                     </div>
@@ -568,6 +574,7 @@ const ProgressTracking: React.FC = () => {
             <div>
               <AIInsights
                 insights={insightsData}
+                onSetGoals={handleSetGoals}
               />
             </div>
           </section>
@@ -596,7 +603,7 @@ const ProgressTracking: React.FC = () => {
               <StatsCardSection cards={performanceCardsData} />
             </section>
             <section className='grid lg:grid-cols-2 grid-cols-1 gap-6 mt-10'>
-              <div className="analytics sm:px-5 px-4 sm:py-7 py-5 h-fit rounded-[8px] border border-[#E4E7EC] shadow-none">
+              <div className="analytics sm:px-5 px-4 sm:py-7 py-5 h-fit rounded-[8px] border border-[#E4E7EC]">
                 <div className="flex justify-between items-center mb-6">
                   <p className="big chinese__black">Performance Analytics</p>
                   <div className="flex items-center">
@@ -615,9 +622,9 @@ const ProgressTracking: React.FC = () => {
                   <ShadLineChart data={chartData} colors={chartColors} />
                 </div>
               </div>
-              <div className="pl-6 pt-4 rounded-lg border border-gray-200 bg-white shadow-none">
-                <div className="flex justify-between gap-4 items-center mb-6 mr-6 overflow-auto scrollbar-hide">
-                  <h2 className="md:text-xl text-lg font-medium whitespace-nowrap">Recent Sessions</h2>
+              <div className="px-6 py-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="md:text-xl text-lg font-medium">Recent Sessions</h2>
 
                   <div className="flex gap-2 items-center">
                     <div className="relative">
@@ -629,7 +636,7 @@ const ProgressTracking: React.FC = () => {
                         showIcon={true}
                         placeholderClassname='sm:flex hidden'
                         icon={filter}
-                        hideChevron={true}
+                      // isArrow={false}
                       />
                     </div>
 
@@ -642,11 +649,10 @@ const ProgressTracking: React.FC = () => {
                         showIcon={true}
                         placeholderClassname='sm:flex hidden'
                         icon={select}
-                        hideChevron={true}
                       />
                     </div>
 
-                    <p className="text-sm underline cursor-pointer whitespace-nowrap">
+                    <p className="text-sm underline">
                       View All
                     </p>
                   </div>

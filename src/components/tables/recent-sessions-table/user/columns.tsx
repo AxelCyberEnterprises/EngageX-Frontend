@@ -36,7 +36,7 @@ export const columns: ColumnDef<Session, any>[] = [
   {
     accessorKey: "date",
     header: ({ column }) => (
-      <div className="flex items-center gap-1 cursor-pointer" onClick={() => column.toggleSorting()}>
+      <div className="flex items-center gap-[8px] cursor-pointer" onClick={() => column.toggleSorting()}>
         Date
         <img src={select} alt='calendar' className="h-4 w-4 text-gray-500" />
       </div>
@@ -46,7 +46,7 @@ export const columns: ColumnDef<Session, any>[] = [
   {
     accessorKey: "type",
     header: ({ column }) => (
-      <div className="flex items-center gap-1 cursor-pointer" onClick={() => column.toggleSorting()}>
+      <div className="flex items-center gap-[8px] cursor-pointer" onClick={() => column.toggleSorting()}>
         Session Type
         <img src={select} alt='calendar' className="h-4 w-4 text-gray-500" />
       </div>
@@ -56,7 +56,7 @@ export const columns: ColumnDef<Session, any>[] = [
   {
     accessorKey: "duration",
     header: ({ column }) => (
-      <div className="flex items-center gap-1 cursor-pointer" onClick={() => column.toggleSorting()}>
+      <div className="flex items-center gap-[8px] cursor-pointer" onClick={() => column.toggleSorting()}>
         Duration
         <img src={select} alt='calendar' className="h-4 w-4 text-gray-500" />
       </div>
