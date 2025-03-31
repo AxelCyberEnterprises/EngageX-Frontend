@@ -36,8 +36,8 @@
   --color-mauvelous: #EE9C9D;
   --color-sunray: #ECB25E;
   --color-seashell: #FCF0EF;
-    --color-dark-gray: #D0D5DD;
-    --color-success-green: #0E7B33;
+  --color-dark-gray: #D0D5DD;
+  --color-success-green: #0E7B33;
 }
 
 @plugin "tailwindcss-animate";
@@ -214,8 +214,10 @@
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
-  scrollbar-width: none;  /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none;
+  /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none;
+  /* Hide scrollbar for Firefox */
 }
 
 @utility hide-scrollbar {
@@ -224,6 +226,15 @@
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@utility input-arrow-hidden {
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 

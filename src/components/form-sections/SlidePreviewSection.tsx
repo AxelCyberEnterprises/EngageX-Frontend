@@ -14,16 +14,24 @@ const SlidePreviewSection = ({ activeSlide, activeSlideIndex }: ISlidePreviewSec
             <h6 className="text-lg">Slide Preview</h6>
             <div className="space-y-4">
                 <div className="w-auto md:h-29 h-36 p-2 border border-bright-gray rounded-lg overflow-hidden">
-                    {isDataUrlPdf(activeSlide) ? (
-                        <PDFViewer file={convertDataUrlToFile(activeSlide, `Slide-${activeSlideIndex + 1}`)} />
+                    {activeSlide ? (
+                        <>
+                            {isDataUrlPdf(activeSlide) ? (
+                                <PDFViewer file={convertDataUrlToFile(activeSlide, `Slide-${activeSlideIndex + 1}`)} />
+                            ) : (
+                                <img src={activeSlide} alt="" className="object-cover size-full rounded-md" />
+                            )}
+                        </>
                     ) : (
-                        <img src={activeSlide} alt="" className="object-cover size-full rounded-md" />
+                        <div className="size-full grid place-content-center bg-ghost-white text-sm text-primary-base rounded-md border border-bright-gray">
+                            <span>No slide uploaded yet</span>
+                        </div>
                     )}
                 </div>
                 <Button
                     type="button"
-                    variant="outline"
-                    className="w-full h-10 text-gunmetal font-normal border-gunmetal"
+                    disabled={!activeSlide}
+                    className="w-full h-10 bg-[#ECEEF4] hover:bg-[#ECEEF4]/80 text-gunmetal font-normal border-gunmetal"
                 >
                     Preview Slide
                 </Button>

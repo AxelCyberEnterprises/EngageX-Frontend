@@ -1,3 +1,4 @@
+import NoUploadedSlides from "@/assets/images/svgs/no-uploaded-slides.svg";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import PDFViewer from "@/components/widgets/pdf-viewer";
@@ -34,12 +35,7 @@ const UploadSlideSection = ({
             <section className={cn("lg:flex flex-col hidden gap-y-4", className)}>
                 <h6 className="text-lg">Upload slides</h6>
                 <div className="space-y-2">
-                    <div className="p-2 bg-[#FBEDD9] rounded-lg">
-                        <p className="text-sm">
-                            You can proceed to your practice session without uploading slides. Our AI will provide
-                            slides for you.
-                        </p>
-                    </div>
+                    <p className="font-medium">You can proceed to your practice session without uploading slides.</p>
                     <UploadMediaTrigger
                         name="slides"
                         className="flex flex-col gap-y-3 p-4 items-center bg-ghost-white text-sm text-independence rounded-lg"
@@ -56,9 +52,11 @@ const UploadSlideSection = ({
                     </UploadMediaTrigger>
                 </div>
                 <Separator className="bg-bright-gray" />
-                {slidePreviews.length > 0 && (
-                    <div className="space-y-5">
-                        <h6 className="text-lg">Uploaded Slides ({slidePreviews.length})</h6>
+                <div className="space-y-5">
+                    <h6 className="text-lg">
+                        Uploaded Slides {slidePreviews.length > 0 && `(${slidePreviews.length})`}
+                    </h6>
+                    {slidePreviews.length > 0 ? (
                         <div className="flex flex-col gap-y-3">
                             {slidePreviews.map((preview, i) => (
                                 <div
@@ -81,8 +79,13 @@ const UploadSlideSection = ({
                                 </div>
                             ))}
                         </div>
-                    </div>
-                )}
+                    ) : (
+                        <div className="flex flex-col gap-y-3 p-4 items-center bg-ghost-white text-sm text-primary-base rounded-lg">
+                            <img src={NoUploadedSlides} alt="" className="object-cover" />
+                            <span>No slide uploaded yet</span>
+                        </div>
+                    )}
+                </div>
             </section>
             <section className="lg:hidden absolute bottom-0 inset-x-0 p-4 flex items-start gap-x-3 border-t border-bright-gray bg-white overflow-auto hide-scrollbar z-10">
                 <div className="flex flex-col gap-y-2 whitespace-nowrap">
