@@ -1,10 +1,12 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
 import SlidePreviewSection from "@/components/form-sections/SlidePreviewSection";
+import VirtualEnvironmentSection from "@/components/form-sections/VirtualEnvironmentSection";
 import { FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { practicesVEOptions } from "@/config/form-field-options";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/store";
 import { HTMLAttributes } from "react";
@@ -23,25 +25,27 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
     return (
         <section className={cn("flex flex-col gap-y-4", className)}>
             <>
-                <SlidePreviewSection {...{ activeSlide, activeSlideIndex }} />
+                <VirtualEnvironmentSection
+                    {...{ form }}
+                    instruction="Select a suitable environment for your speaking needs"
+                    options={practicesVEOptions}
+                    className="md:block hidden p-0 border-0 [&_[data-slot='form-label']>div]:h-37.5 [&_h6]:text-lg"
+                />
+                <SlidePreviewSection {...{ activeSlide, activeSlideIndex }} className="[&_h6]:text-lg" />
                 <Separator className="bg-bright-gray" />
                 <div className="space-y-4">
                     <h6 className="text-lg">Slide Settings</h6>
                     <div className="space-y-5">
-                        <div className="flex items-center justify-between">
-                            <span className="text-sm">Auto Slide Progression</span>
-                            <Switch className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5" />
-                        </div>
                         <ControlledFieldWrapper
                             control={form.control}
                             name="transitionType"
                             label="Transition Type"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} defaultValue="fade">
                                         <FormControl>
-                                            <SelectTrigger className="text-gunmetal [&_svg:not([class*='text-'])]:text-gunmetal [&_svg:not([class*='text-'])]:opacity-100 h-10">
-                                                <SelectValue placeholder="Select transition type" />
+                                            <SelectTrigger className="text-gunmetal [&_svg:not([class*='text-'])]:text-gunmetal [&_svg:not([class*='text-'])]:opacity-100 h-10 focus-visible:ring-0">
+                                                <SelectValue />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent className="border-none">
@@ -59,12 +63,16 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
                             name="allocatedTime"
                             label="Allocate time for each slide"
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    type="number"
-                                    placeholder="0"
-                                    className="focus-visible:ring-0 h-10 appearance-none"
-                                />
+                                <div className="relative grid items-center">
+                                    <Input
+                                        {...field}
+                                        type="number"
+                                        min={0}
+                                        placeholder="0"
+                                        className="focus-visible:ring-0 h-10 input-arrow-hidden text-gunmetal"
+                                    />
+                                    <span className="absolute right-3 text-sm text-auro-metal-saurus">minutes</span>
+                                </div>
                             )}
                         />
                         <ControlledFieldWrapper
@@ -72,10 +80,19 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
                             name="totalAllocatedTime"
                             label="Total Allocated Time"
                             render={({ field }) => (
-                                <Input {...field} placeholder="0" className="focus-visible:ring-0 h-10" readOnly />
+                                <div className="relative grid items-center">
+                                    <Input
+                                        {...field}
+                                        placeholder="0"
+                                        value={form.watch("allocatedTime")}
+                                        className="focus-visible:ring-0 h-10 text-gunmetal"
+                                        readOnly
+                                    />
+                                    <span className="absolute right-3 text-sm text-auro-metal-saurus">minutes</span>
+                                </div>
                             )}
                         />
-                        <div className="p-2 space-y-4 rounded-lg border border-bright-gray">
+                        <div className="hidden p-2 space-y-4 rounded-lg border border-bright-gray">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm">Annotation Tool</span>{" "}
                                 <Switch className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5" />

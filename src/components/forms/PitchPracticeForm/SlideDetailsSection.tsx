@@ -2,7 +2,6 @@ import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper
 import GoalsSection from "@/components/form-sections/GoalsSection";
 import SessionNameSection from "@/components/form-sections/SessionNameSection";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import PDFViewer from "@/components/widgets/pdf-viewer";
 import { cn, convertDataUrlToFile, isDataUrlPdf } from "@/lib/utils";
@@ -10,6 +9,7 @@ import { RootState } from "@/store";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { FormType } from ".";
 
 interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
@@ -23,7 +23,18 @@ const SlideDetailsSection = ({ className, form }: ISlideDetailsSectionProps) => 
     return (
         <section className={cn("flex flex-col gap-y-6", className)}>
             <div className="space-y-5">
-                <SessionNameSection {...{ form }} className="[&_h6]:text-lg lg:pl-4 md:pr-4 lg:pt-4" />
+                <div>
+                    <div className="lg:flex hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
+                        <span>Need help setting up?</span>
+                        <Link to="">
+                            <span className="text-[#64BA9F]">Click here</span>
+                        </Link>
+                    </div>
+                    <SessionNameSection
+                        {...{ form }}
+                        className="[&_h6]:text-lg lg:pl-4 md:pl-0 pl-3 md:pr-4 pr-3 lg:pt-0 pt-3 md:pb-0 pb-3 md:border-0 border border-bright-gray md:rounded-none rounded-lg"
+                    />
+                </div>
                 <Separator />
                 <div className="space-y-5 lg:pl-4 md:pr-4">
                     <p className="lg:hidden block text-sm font-medium">
@@ -60,10 +71,6 @@ const SlideDetailsSection = ({ className, form }: ISlideDetailsSectionProps) => 
                                 />
                             )}
                         />
-                        <div className="flex items-center gap-x-4">
-                            <Switch className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5" />
-                            <span className="text-sm">Enable Q&A for This Slide</span>
-                        </div>
                         <GoalsSection {...{ form }} className="[&_h6]:text-lg" />
                     </div>
                 </div>

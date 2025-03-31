@@ -35,7 +35,7 @@ const UploadSlideSection = ({
             <section className={cn("lg:flex flex-col hidden gap-y-4", className)}>
                 <h6 className="text-lg">Upload slides</h6>
                 <div className="space-y-2">
-                    <p className="text-sm font-medium">You can proceed to your practice session without uploading slides.</p>
+                    <p className="font-medium">You can proceed to your practice session without uploading slides.</p>
                     <UploadMediaTrigger
                         name="slides"
                         className="flex flex-col gap-y-3 p-4 items-center bg-ghost-white text-sm text-independence rounded-lg"

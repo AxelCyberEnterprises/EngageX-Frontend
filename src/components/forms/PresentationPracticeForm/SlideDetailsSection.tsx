@@ -10,6 +10,7 @@ import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { FormType } from ".";
+import { Link } from "react-router-dom";
 
 interface ISlideDetatilsSectionProps extends HTMLAttributes<HTMLElement> {
     form: UseFormReturn<FormType>;
@@ -22,12 +23,17 @@ const SlideDetailsSection = ({ className, form }: ISlideDetatilsSectionProps) =>
     return (
         <section className={cn("flex flex-col gap-y-6", className)}>
             <div className="space-y-5">
-                <SessionNameSection {...{ form }} className="[&_h6]:text-lg lg:pl-4 md:pr-4 lg:pt-4" />
-                <Separator />
+                <div>
+                    <div className="lg:flex hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
+                        <span>Need help setting up?</span>
+                        <Link to="">
+                            <span className="text-[#64BA9F]">Click here</span>
+                        </Link>
+                    </div>
+                    <SessionNameSection {...{ form }} className="[&_h6]:text-lg lg:pl-4 md:pl-0 pl-3 md:pr-4 pr-3 lg:pt-0 pt-3 md:pb-0 pb-3 md:border-0 border border-bright-gray md:rounded-none rounded-lg" />
+                </div>
+                <Separator className="md:block hidden" />
                 <div className="space-y-5 lg:pl-4 md:pr-4">
-                    <p className="lg:hidden block text-sm font-medium">
-                        You can proceed to your practice session without uploading slides.
-                    </p>
                     <h6 className="text-lg">Slide {activeSlideIndex + 1}</h6>
                     <div className="w-auto h-90 rounded-lg overflow-hidden">
                         {activeSlide ? (

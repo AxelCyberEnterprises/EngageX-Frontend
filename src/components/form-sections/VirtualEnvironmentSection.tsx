@@ -1,23 +1,28 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { VirtialEnvironmentOptions } from "@/config/form-field-options";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { FormType } from ".";
 
 interface IVirtualEnvironmentSectionProps extends HTMLAttributes<HTMLElement> {
-    form: UseFormReturn<FormType>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form: UseFormReturn<any>;
+    instruction?: string;
+    options: {
+        name: string;
+        value: string;
+        src: string;
+    }[];
 }
 
-const VirtualEnvironmentSection = ({ form }: IVirtualEnvironmentSectionProps) => {
+const VirtualEnvironmentSection = ({ className, form, instruction, options }: IVirtualEnvironmentSectionProps) => {
     return (
-        <section className="space-y-6 border border-bright-gray p-4 rounded-2xl">
-            <div className="space-y-2">
+        <section className={cn("space-y-5 border border-bright-gray p-4 rounded-2xl", className)}>
+            <div className="space-y-1">
                 <h6>Virtual Environment</h6>
-                <p className="text-auro-metal-saurus">Choose your preferred virtual environment</p>
+                {instruction && <p className="text-auro-metal-saurus">{instruction}</p>}
             </div>
             <div>
                 <ControlledFieldWrapper
@@ -29,16 +34,16 @@ const VirtualEnvironmentSection = ({ form }: IVirtualEnvironmentSectionProps) =>
                                 <RadioGroup
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
-                                    className="flex lg:flex-col md:flex-row flex-col"
+                                    className="flex flex-col"
                                 >
-                                    {VirtialEnvironmentOptions.map(({ name, value, src }, index) => (
+                                    {options.map(({ name, value, src }, index) => (
                                         <FormItem key={value + index}>
                                             <FormControl className="hidden">
                                                 <RadioGroupItem value={value} />
                                             </FormControl>
                                             <FormLabel className="cursor-pointer">
                                                 <div
-                                                    className={cn("relative md:w-85 w-full h-37.5 rounded-lg isolate", {
+                                                    className={cn("relative rounded-lg isolate", {
                                                         "outline-4 outline-medium-sea-green":
                                                             form.watch("virtualEnvironment") === value,
                                                     })}
