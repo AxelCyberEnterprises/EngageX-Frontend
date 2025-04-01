@@ -72,7 +72,7 @@ function PricingCard({ plan }: Params) {
                   />
                 </svg>
               </div>
-              <p className="w-full font-montreal">{content}</p>
+              <p className="w-full font-montreal ">{content}</p>
             </div>
           ))}
         </div>

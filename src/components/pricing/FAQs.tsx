@@ -40,7 +40,7 @@ function FAQs() {
           </svg>
           <p className="small">PRICING</p>
         </div>
-        <div className="lg:w-[50%] lg:text-center mx-auto space-y-4 flex flex-col items-center">
+        <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
             Everything you need to know
           </h4>

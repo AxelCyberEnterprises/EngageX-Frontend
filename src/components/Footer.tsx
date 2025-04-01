@@ -8,12 +8,12 @@ function Footer() {
 
   return (
     <section className="px-10 lg:px-20 bg-gunmetal text-white pt-16 space-y-20">
-      <div className="p-20 flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:justify-between text-black lg:items-center bg-alice-blue rounded-2xl">
+      <div className="p-10 xl:p-20 text-center lg:text-left flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:justify-between text-black lg:items-center bg-alice-blue rounded-2xl">
         <h4 className="font-montreal lg:w-[17rem] font-medium leading-relaxed">
           Ready to speak with confidence?
         </h4>
         <Link to="/auth/login">
-          <button className="px-6 py-6 space-x-10 rounded-lg">
+          <button className="px-6 py-6 space-x-3 font-montserrat w-full lg:w-max mx-auto rounded-lg">
             <p className="">Get started</p>
             <svg
               width="28"

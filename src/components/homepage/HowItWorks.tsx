@@ -30,10 +30,10 @@ function HowItWorks() {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row w-full lg:justify-between items-center gap-x-10">
+      <div className="flex flex-col lg:flex-row w-full lg:justify-between items-center gap-x-20">
         <div className="lg:w-[35%]">
-          <div className="flex gap-x-8 items-center">
-            <div className="w-10 h-10 relative z-20 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
+          <div className="flex gap-x-8 relative z-30 items-center">
+            <div className="w-10 h-10 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
               <p>1</p>
             </div>
             <div className="space-y-4">
@@ -44,16 +44,8 @@ function HowItWorks() {
               </p>
             </div>
           </div>
-          <div className=" relative h-20 w-10 flex items-center justify-center">
-            <svg
-              width="1"
-              className="h-56 -top-6 absolute z-10"
-              // viewBox="0 0 1 120"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
-            </svg>
+          <div className=" relative h-20 z-10 w-10 flex items-center justify-center">
+            <img src="./assets/divider.png" className="h-[7.8rem]" alt="" />
           </div>
           <div className="flex gap-x-8 items-center">
             <div className="w-10 h-10 relative z-20 aspect-square gap-[8px] bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
@@ -67,16 +59,8 @@ function HowItWorks() {
               </p>
             </div>
           </div>
-          <div className=" relative h-20 w-10 flex items-center justify-center">
-            <svg
-              width="1"
-              className="h-56 -top-6 absolute z-10"
-              // viewBox="0 0 1 120"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
-            </svg>
+          <div className=" relative h-20 z-10 w-10 flex items-center justify-center">
+            <img src="./assets/divider.png" className="h-[7.8rem]" alt="" />
           </div>
           <div className="flex gap-x-8 items-center">
             <div className="w-10 h-10 relative z-20 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
@@ -91,16 +75,8 @@ function HowItWorks() {
               </p>
             </div>
           </div>
-          <div className=" h-20 w-10 relative flex items-center justify-center">
-            <svg
-              width="1"
-              className="h-[150rem] -top-6 absolute z-10"
-              // viewBox="0 0 1 120"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M0.5 0V130" stroke="black" strokeDasharray="10 10" />
-            </svg>
+          <div className=" relative h-20 z-10 w-10 flex items-center justify-center">
+            <img src="./assets/divider.png" className="h-[7.8rem]" alt="" />
           </div>
           <div className="flex gap-x-8 items-center">
             <div className="w-10 h-10 relative">
@@ -118,18 +94,23 @@ function HowItWorks() {
           </div>
         </div>
 
-        <div className="h-[40rem] w-full lg:w-1/2 hidden lg:block rounded-3xl overflow-clip relative">
+        <video className="lg:h-[29rem] mt-20 lg:mt-0 rounded-xl" controls>
+          <source src="./assets/intovid.mp4" type="video/mp4" />
+        </video>
+
+        {/* <div className="h-[40rem] w-full lg:w-1/2 hidden lg:block rounded-3xl overflow-clip relative">
           <img
             src="./assets/videopc.png"
             className="absolute h-full w-full object-cover top-0 right-0"
           />
-        </div>
-        <div className="h-[509px] w-full mt-[80px] lg:hidden rounded-3xl overflow-clip relative">
+        </div> */}
+
+        {/* <div className="h-[509px] w-full mt-[80px] lg:hidden rounded-3xl overflow-clip relative">
           <img
             src="./assets/videomb.png"
             className="absolute h-full w-full object-cover top-0 right-0"
           />
-        </div>
+        </div> */}
       </div>
     </section>
   );
