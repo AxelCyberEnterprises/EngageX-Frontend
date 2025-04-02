@@ -4,10 +4,10 @@ function Hero() {
   return (
     <section className="flex flex-col md:flex-row px-10 lg:px-20 gap-20 font-montserrat py-26">
       <div className="flex-1 flex flex-col justify-between gap-28">
-        <div className="space-y-4">
-          <h2 className="font-montreal leading-snug">
+        <div className="space-y-4 text-center lg:text-left">
+          <h1 className="font-montreal leading-snug">
             We'd love to hear from you
-          </h2>
+          </h1>
           <p className="text-[#475467]">
             Fill out the form and our friendly team would get back to you
             shortly.
@@ -209,15 +209,15 @@ function Hero() {
         </div>
       </div>
 
-      <div className="flex-1 space-y-8 p-9 border rounded-2xl">
-        <div className="flex gap-6">
-          <div className="space-y-4">
+      <div className="flex-1 space-y-8 p-6 lg:p-9 border border-[#D0D5DD] rounded-2xl">
+        <div className="flex flex-wrap gap-6">
+          <div className="space-y-4 w-full">
             <label className="text-[#475467] small" htmlFor="firstname">
               First name
             </label>
             <input type="text" placeholder="First name" className="mt-3" />
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4 w-full">
             <label className="text-[#475467] small" htmlFor="lastname">
               Last name
             </label>

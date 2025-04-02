@@ -54,13 +54,11 @@ interface AIInsightsProps {
     };
   };
   className?: string;
-  onSetGoals?: () => void;
 }
 
 const AIInsights: React.FC<AIInsightsProps> = ({
   insights,
   className,
-  onSetGoals
 }) => {
   return (
     <div className={cn("bg-white rounded-xl md:px-6 px-4 md:py-4 py-3 shadow-sm border border-gray-100", className)}>
@@ -102,13 +100,6 @@ const AIInsights: React.FC<AIInsightsProps> = ({
           description={`${insights.pattern.observation} Consider ${insights.pattern.recommendation}`}
         />
       </div>
-      
-      <button
-        onClick={onSetGoals}
-        className="w-full mt-6 py-3 bg-gray-800 hover:bg-gray-700 text-white sm:text-lg text-base sm:font-medium font-normal rounded-lg transition-colors"
-      >
-        Set New Improvement Goals
-      </button>
     </div>
   );
 };

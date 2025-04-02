@@ -1,4 +1,4 @@
-import { Area, AreaChart, CartesianGrid, Legend, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, Legend, XAxis, LegendProps, YAxis } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -11,6 +11,24 @@ type ChartData = {
 type Props = {
     data: ChartData[];
     colors: Record<string, string>;
+};
+
+const CustomLegend = (props: LegendProps) => {
+    const { payload } = props;
+    if (!payload) return null;
+
+    return (
+        <div className="flex justify-center gap-4 pt-4">
+            {payload.map((entry, index) => (
+                <div key={index} className="flex items-center gap-2">
+                    <div className="w-1.5 h-4 rounded-xs" style={{ backgroundColor: entry.color }} />
+                    <span className="text-sm" style={{ color: entry.color }}>
+                        {entry.value}
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
 };
 
 export default function ShadAreaChart({ data, colors }: Props) {
@@ -32,14 +50,10 @@ export default function ShadAreaChart({ data, colors }: Props) {
                             tickMargin={8}
                             tickFormatter={(value) => value.slice(0, 3)}
                         />
+                        <YAxis width={25} tickLine={false} axisLine={false} tickMargin={8} />
                         <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
 
-                        <Legend
-                            verticalAlign="bottom"
-                            align="center"
-                            iconType="plainline"
-                            wrapperStyle={{ paddingTop: 16 }}
-                        />
+                        <Legend content={<CustomLegend />} />
                         <defs>
                             {Object.keys(colors).map((key) => (
                                 <linearGradient key={key} id={`fill${key}`} x1="0" y1="0" x2="0" y2="1">

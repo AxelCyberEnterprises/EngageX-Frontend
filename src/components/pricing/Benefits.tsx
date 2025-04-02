@@ -30,7 +30,7 @@ function Benefits() {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 hidden lg:block">
         <div className="flex w-full text-gunmetal gap-x-10">
           <div className="w-1/3 py-5 px-8 border rounded-xl border-[#79A2FF40]">
             <p className="big">Feature</p>
@@ -129,6 +129,75 @@ function Benefits() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="lg:hidden font-montserrat">
+        <div className="flex justify-between items-center">
+          <p className="border-r pr-2 w-[35%] font-medium flex items-start h-[3rem] text-[#262B3A]">
+            Feature
+          </p>
+          <p className="border-r pl-2 font-medium w-[40%] flex justify-center text-center items-start h-[3rem] text-[#262B3A]">
+            other methods
+          </p>
+          <div className="w-full pl-2 flex-1 flex h-[3rem] relative justify-center items-start">
+            <img src="./assets/logoalt.png" className="h-4" alt="" />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[5rem] text-[#262B3A]">
+            Realistic audience reactions
+          </p>
+          <div className="pl-2 h-[5rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[5rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[5rem] text-[#262B3A]">
+            Real-time feedback
+          </p>
+          <div className="pl-2 h-[5rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[5rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[5rem] text-[#262B3A]">
+            Engagement analytics
+          </p>
+          <div className="pl-2 h-[5rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[5rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[5rem] text-[#262B3A]">
+            Flexible virtual environments
+          </p>
+          <div className="pl-2 h-[5rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[5rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[5rem] text-[#262B3A]">
+            Progress tracking
+          </p>
+          <div className="pl-2 h-[5rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[5rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
           </div>
         </div>
       </div>

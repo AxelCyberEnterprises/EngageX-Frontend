@@ -96,10 +96,10 @@ export const columns: ColumnDef<Session>[] = [
         accessorKey: "sessionName",
         header: ({ column }) => {
             return (
-                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                <div className="flex items-center cursor-pointer" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
                     Session Name
-                    <ChevronsUpDown />
-                </Button>
+                    <ChevronsUpDown className="h-6 w-6" />
+                </div>
             );
         },
         cell: ({ row }) => <div>{row.getValue("sessionName")}</div>,
@@ -113,10 +113,10 @@ export const columns: ColumnDef<Session>[] = [
         accessorKey: "sessionType",
         header: ({ column }) => {
             return (
-                <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                <div className="flex items-center cursor-pointer" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
                     Session Type
-                    <ChevronsUpDown />
-                </Button>
+                    <ChevronsUpDown className="h-6 w-6" />
+                </div>
             );
         },
         cell: ({ row }) => <div>{row.getValue("sessionType")}</div>,
@@ -222,17 +222,19 @@ export default function DataTableDemo() {
                                 })}
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <small className="underline cursor-pointer">View All</small>
+                    <Link to="/dashboard/admin/session-history" className="underline cursor-pointer">
+                        View All
+                    </Link>
                 </div>
             </div>
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
+            <div className="rounded-md">
+                <Table className="**:border-bright-gray">
+                    <TableHeader className="bg-[#F7F9FC] text-black">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead key={header.id} className="text-black">
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(header.column.columnDef.header, header.getContext())}
@@ -254,7 +256,7 @@ export default function DataTableDemo() {
                                 </TableRow>
                             ))
                         ) : (
-                            <TableRow>
+                            <TableRow className="border-b-light-silver">
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
                                     No results.
                                 </TableCell>

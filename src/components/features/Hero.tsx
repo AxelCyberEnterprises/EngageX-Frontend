@@ -13,11 +13,12 @@ function Hero() {
             <h2 className="font-montreal leading-snug">
               Transform your speaking skills with EngageX
             </h2>
-            <p className="big">
+            <p className="big text-[#62717A]">
               Step into the future of public speaking, pitching, and
-              presentations with EngageX—an AI-powered training platform
-              designed to enhance your confidence, delivery, and audience
-              engagement.
+              presentations with EngageX™, a training platform designed to
+              enhance your confidence, delivery, and audience engagement using
+              cutting edge technology combined with AI and Real life ICF
+              certified coaches.
             </p>
           </div>
           <Link to="/dashboard/user/">

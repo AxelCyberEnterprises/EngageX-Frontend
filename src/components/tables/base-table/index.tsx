@@ -87,7 +87,7 @@ export function BaseTable<TData, TValue>({
         <TableRow>
             <TableCell
                 colSpan={columns.length}
-                className=" justify-center items-center w-full mx-auto py-[20vh] flex-col gap-4 text-center"
+                className=" justify-center items-center w-full mx-auto py-[10%] flex-col gap-4 text-center"
             >
                 <img src={emptyStateImage} className="w-28 mx-auto" alt="empty state logo" />
                 <p className="text-lg font-medium">No session recorded!</p>
