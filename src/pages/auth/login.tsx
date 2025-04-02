@@ -12,7 +12,7 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { useLogin } from "@/hooks/auth";
 import { useDispatch } from "react-redux";
 import { setAuthPageImage } from "@/store/slices/authSlice";
-import authPageImage1 from "@/assets/images/pngs/authPage-image-1.png";
+import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
 
 const loginSchema = z.object({
     email: z.string().email("Invalid email address").min(1, "Email is required"),

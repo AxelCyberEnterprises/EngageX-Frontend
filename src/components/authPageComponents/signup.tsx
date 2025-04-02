@@ -14,7 +14,7 @@ import { Checkbox } from "../ui/checkbox";
 import googleIcon from "@/assets/images/svgs/google-icon.svg";
 import {  useSignup } from "@/hooks/auth";
 import { RootState } from "@/store";
-import authPageImage1 from "@/assets/images/pngs/authPage-image-1.png";
+import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
 // Enhanced password validation schema
 const passwordSchema = z
     .string()

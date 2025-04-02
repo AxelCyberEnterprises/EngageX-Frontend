@@ -3,8 +3,7 @@ import { tokenManager } from "@/lib/utils";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import authPageImage1 from "@/assets/images/pngs/authPage-image-1.png"
-// import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png"
+import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg"
 
 interface Question {
     id: number;

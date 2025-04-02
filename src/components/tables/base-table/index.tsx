@@ -180,7 +180,7 @@ export function BaseTable<TData, TValue>({
                 <ScrollBar orientation="horizontal" className="hidden" />
             </ScrollArea>
 
-            {!hidePagination ? <></> : <BaseTablePagination table={table} />}
+            {hidePagination ? <></> : <BaseTablePagination table={table} />}
         </div>
     );
 }
