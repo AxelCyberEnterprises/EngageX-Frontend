@@ -13,15 +13,16 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import BaseTablePagination from "./BaseTablePagination";
 import BaseTableToolbar from "./BaseTableToolbar";
-import { cn, tokenManager } from "@/lib/utils";
-import axios from "axios";
+import { cn } from "@/lib/utils";
+
 
 interface BaseTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    error: any;
     showToolBar?: boolean;
     tableHeaderClassName?: string;
     tableHeaderItemClassName?: string;
@@ -32,9 +33,12 @@ interface BaseTableProps<TData, TValue> {
     emptyState?: React.ReactNode; // Custom empty state component
 }
 import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
+import { setSessionId } from "@/store/slices/sessionSlice";
 
-export function BaseTable<TData, TValue>({
+export function BaseTable<TData extends { id: string }, TValue>({
     columns,
+    error,
+    isLoading,
     data,
     showToolBar,
     tableHeaderClassName,
@@ -42,7 +46,6 @@ export function BaseTable<TData, TValue>({
     tableContainerClassName,
     hidePagination,
     pageSize,
-    isLoading = false, // Default to false
     emptyState, // Optional custom empty state
 }: BaseTableProps<TData, TValue>) {
     const [pagination, setPagination] = useState<PaginationState>({
@@ -57,6 +60,7 @@ export function BaseTable<TData, TValue>({
     const table = useReactTable({
         data,
         columns,
+
         state: {
             columnFilters,
             columnVisibility,
@@ -74,25 +78,6 @@ export function BaseTable<TData, TValue>({
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
     });
-
-    const token = tokenManager.getToken();
-    useEffect(() => {
-        console.log(token);
-        const fetchData = async () => {
-            try {
-                const response = await axios.get("https://api.engagexai.io/sessions/sessions/", {
-                    headers: {
-                        Authorization: `token ${token}`,
-                    },
-                });
-                console.log(response.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchData();
-    }, [token]);
 
     // Default empty state component
     const defaultEmptyState = (
@@ -153,23 +138,33 @@ export function BaseTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {isLoading
-                            ? loadingState
-                            : table.getRowModel().rows?.length < 1
-                              ? table.getRowModel().rows.map((row) => (
-                                    <TableRow
-                                        key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
-                                        className="hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray"
-                                    >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id} className="text-dark-charcoal p-4 align-baseline">
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))
-                              : emptyState || defaultEmptyState}
+                        {error ? (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center text-red-500">
+                                    <p className="font-semibold">Error fetching data</p>
+                                    <p className="text-sm">{error.message || "An unexpected error occurred."}</p>
+                                </TableCell>
+                            </TableRow>
+                        ) : isLoading ? (
+                            loadingState
+                        ) : table.getRowModel().rows?.length  < 1 ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                key={row.id}
+                                onClick={() => setSessionId(row.original.id)} 
+                                    data-state={row.getIsSelected() && "selected"}
+                                    className="hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray"
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id} className="text-dark-charcoal p-4 align-baseline">
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : (
+                            emptyState || defaultEmptyState
+                        )}
                     </TableBody>
                 </Table>
                 <ScrollBar orientation="horizontal" className="hidden" />

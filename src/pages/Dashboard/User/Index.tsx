@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import practiceBg from "../../../assets/images/jpegs/practice-bg.jpeg";
 import presentationBg from "../../../assets/images/jpegs/presentation-bg.jpeg";
@@ -9,28 +9,12 @@ import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import { Button } from "@/components/ui/button";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
-import axios from 'axios';
-import { tokenManager } from "@/lib/utils";
+// import { tokenManager } from "@/lib/utils";
+// import { useDashboardData } from "@/hooks/auth";
 
 const UserDashboardHome: React.FC = () => {
-        const token = tokenManager.getToken();
-        useEffect(() => {
-            console.log(token); 
-            const fetchData = async () => {
-              try {
-                const response = await axios.get("https://api.engagexai.io/sessions/dashboard/", {
-                  headers: {
-                    "Authorization": `token ${token}`, 
-                  },
-                });
-                console.log(response.data);
-              } catch (error) {
-                console.error("Error fetching data:", error);
-              }
-            };
-        
-            fetchData();
-          }, [token]);
+        // const token = tokenManager.getToken();
+      
     const score = 89;
 
     const cardsData = [
@@ -188,6 +172,11 @@ const UserDashboardHome: React.FC = () => {
         Brevity: "#40B869",
         Conviction: "#F5B546",
     };
+
+
+    // const { data, error } = useDashboardData();
+    // console.error(error?.message);
+
 
 
 

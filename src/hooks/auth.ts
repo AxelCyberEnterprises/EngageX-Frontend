@@ -1,5 +1,5 @@
 import { apiGet, apiPost } from "@/lib/api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { login, setEmailForPasswordReset, setSignupFlow, setSuccessMessage } from "@/store/slices/authSlice";
@@ -164,32 +164,21 @@ export function usePublicSpeaking() {
 
 
 export function useDashboardData() {
-    return useMutation({
-        mutationKey: ["dashboardData"],
-        mutationFn: async () => {
-            return await apiGet("/sessions/dashboard/");
-            
-        },
-        onSuccess: (data) => {
-            console.log("Dashboard data fetched successfully:", data)},
-        onError: (error) => {
-            console.error("Error fetching dashboard data:", error);
-        },
+    return useQuery({
+        queryKey: ["dashboardData"],
+        queryFn: () => apiGet("/sessions/dashboard/"),
     });
 }
 
-
-export function useSessionReport() {
-    return useMutation({
-        mutationKey: ["fetchSessionReport"],
-        mutationFn: async (id: string) => {
-            return await apiGet(`/sessions/sessions/${id}/report/`);
-        },
-        onSuccess: (data) => {
-            console.log("Session report fetched successfully:", data);
-        },
-        onError: (error) => {
-            console.error("Failed to fetch session report:", error.message);
-        },
+export function useSessionHistory() {
+    return useQuery({
+        queryKey: ["sessionHistory"],
+        queryFn: () => apiGet("/sessions/sessions/"),
+    });
+}
+export function useSessionHistoryById(id: string) {
+    return useQuery({
+        queryKey: ["sessionHistoryById", id],
+        queryFn: () => apiGet(`/sessions/sessions/${id}/`),
     });
 }
