@@ -125,7 +125,18 @@ const AdminDashboardHome: React.FC = () => {
     };
 
     return (
-        <div className="admin__dashboard__index py-3 px-4">
+        <div className="admin__dashboard__index py-3 px-4 bg-ghost-white">
+            <div className="py-4 justify-between hidden md:flex">
+                <p>Here’s an overview of your dashboard</p>
+
+                <div className="flex items-center">
+                    <select className="me-4 px-3 py-2 rounded-[8px]">
+                        <option value="weekly">Today</option>
+                        <option value="monthly">Last Week</option>
+                        <option value="yearly">Last Month</option>
+                    </select>
+                </div>
+            </div>
             {/* top cards  */}
             <div className="flex flex-wrap items-stretch">
                 {cardsData.map((card, index) => (
@@ -275,7 +286,7 @@ const AdminDashboardHome: React.FC = () => {
                                 {/* inactive users  */}
                                 <div className="flex justify-between items-center">
                                     <div className="flex gap-2 items-center">
-                                        <div className="auro__bg h-4 w-2 rounded-[2px]"></div>
+                                        <div className="bg-[#B9BCC8] h-4 w-2 rounded-[2px]"></div>
                                         <p className="auro__metal">Inactive Users</p>
                                     </div>
                                     <div className="flex items-center me-2">
