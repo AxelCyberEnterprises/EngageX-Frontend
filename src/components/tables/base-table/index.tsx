@@ -20,9 +20,10 @@ import { cn } from "@/lib/utils";
 
 
 interface BaseTableProps<TData, TValue> {
+    id?: string;
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    error: any;
+    error?: any;
     showToolBar?: boolean;
     tableHeaderClassName?: string;
     tableHeaderItemClassName?: string;
@@ -34,8 +35,10 @@ interface BaseTableProps<TData, TValue> {
 }
 import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 import { setSessionId } from "@/store/slices/sessionSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
 
-export function BaseTable<TData extends { id: string }, TValue>({
+export function BaseTable<TData, TValue>({
     columns,
     error,
     isLoading,
@@ -93,7 +96,6 @@ export function BaseTable<TData extends { id: string }, TValue>({
         </TableRow>
     );
 
-    // Loading state component
     const loadingState = (
         <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
@@ -104,6 +106,9 @@ export function BaseTable<TData extends { id: string }, TValue>({
             </TableCell>
         </TableRow>
     );
+    const dispatch = useDispatch();
+    const sessionId = useSelector((state: RootState) => state.session.sessionId);
+    console.log(sessionId)
 
     return (
         <div className="flex flex-col gap-y-6">
@@ -147,11 +152,16 @@ export function BaseTable<TData extends { id: string }, TValue>({
                             </TableRow>
                         ) : isLoading ? (
                             loadingState
-                        ) : table.getRowModel().rows?.length  < 1 ? (
+                        ) : table.getRowModel().rows?.length   ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                 key={row.id}
-                                onClick={() => setSessionId(row.original.id)} 
+                                onClick={() => {
+                                    const rowData = row.original as {id?: string};
+                                    if (rowData.id) {
+                                      dispatch(setSessionId(rowData.id));
+                                    }
+                                  }}
                                     data-state={row.getIsSelected() && "selected"}
                                     className="hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray"
                                 >
