@@ -1,7 +1,8 @@
 import { useLocation, Link } from "react-router-dom";
-import authPageImage from "../../assets/images/authPage-image.png";
 import engageLogo from "../../assets/images/engage-x-logo.png";
 import { ReactNode } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 
 export function BackToWebsite() {
@@ -45,7 +46,8 @@ export function welcomeMessage() {
 }
 const UserPlan = ({ children }: { children: ReactNode }) => {
 
-
+    const authPageImage = useSelector((state: RootState) => state.auth.authPageImage);
+  
   
 
   return (

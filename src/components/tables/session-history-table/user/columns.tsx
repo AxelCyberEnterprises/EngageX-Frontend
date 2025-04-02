@@ -20,6 +20,7 @@ export type IUserSessionHistory = {
 };
 
 export const columns: ColumnDef<IUserSessionHistory>[] = [
+
     {
         id: "select",
         header: ({ table }) => (
@@ -61,7 +62,7 @@ export const columns: ColumnDef<IUserSessionHistory>[] = [
         id: "actions",
         header: () => <span className="text-primary-base">Action</span>,
         enableHiding: false,
-        cell: () => {
+        cell: (row) => {
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -73,8 +74,8 @@ export const columns: ColumnDef<IUserSessionHistory>[] = [
                             <MoreHorizontal className="size-5" />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" alignOffset={-10} className="p-0">
-                        <Link to="/dashboard/user/session-history/1">
+                    <DropdownMenuContent align="end" alignOffset={-10} className="p-0 border-bright-gray">
+                        <Link to={`/dashboard/user/session-history/${row.row.original.id}`}>
                             <DropdownMenuItem className="px-4 py-2 cursor-pointer">
                                 <ChartLine className="text-primary-base" />
                                 <span className="text-primary-base text-sm">View Report</span>
@@ -92,3 +93,4 @@ export const columns: ColumnDef<IUserSessionHistory>[] = [
         },
     },
 ];
+

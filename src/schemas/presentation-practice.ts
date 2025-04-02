@@ -14,4 +14,5 @@ export const PresentationPracticeSchema = z.object({
     transitionType: z.enum(["fade", "slide", "none"]),
     allocatedTime: z.number().int().positive(),
     totalAllocatedTime: z.number().int().positive(),
+    virtualEnvironment: z.string(),
 });

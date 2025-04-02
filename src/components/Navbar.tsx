@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
+import { Menu } from "lucide-react";
 
 function Navbar() {
-  const [showMenu] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const location = useLocation();
 
   return (
@@ -23,6 +24,7 @@ function Navbar() {
             { path: "/features", label: "Features" },
             { path: "/pricing", label: "Pricing" },
             { path: "/contact", label: "Contact" },
+            // { path: "/press", label: "Contact" },
           ].map(({ path, label }) => (
             <Link key={path} to={path}>
               <li
@@ -36,7 +38,7 @@ function Navbar() {
             </Link>
           ))}
         </ul>
-        <button className="h-[3rem] lg:hidden space-x-4 border rounded-2xl border-dark-electric-blue/20">
+        <button className="h-[3rem] pl-8 pr-6 lg:hidden space-x-4 rounded-lg border !border-green-sheen">
           <p>Login</p>
           <svg
             width="26"
@@ -54,7 +56,7 @@ function Navbar() {
         </button>
       </div>
       <Link to="/auth/login">
-        <button className="h-[3rem] pl-8 pr-6 space-x-4 hidden lg:flex border rounded-2xl border-dark-electric-blue/20">
+        <button className="h-[3rem] pl-8 pr-6 space-x-4 hidden lg:flex border rounded-lg !border-green-sheen">
           <p>Login</p>
           <svg
             width="26"
@@ -71,6 +73,9 @@ function Navbar() {
           </svg>
         </button>
       </Link>
+      <button className="p-4 border lg:hidden rounded-lg border-[#64BA9F]">
+        <Menu className="h-4" onClick={() => setShowMenu((prev) => !prev)} />
+      </button>
     </div>
   );
 }

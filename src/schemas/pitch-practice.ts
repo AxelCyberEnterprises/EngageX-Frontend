@@ -12,4 +12,5 @@ export const PitchPracticeSchema = z.object({
             goal: z.string(),
         }),
     ),
+    virtualEnvironment: z.string(),
 });

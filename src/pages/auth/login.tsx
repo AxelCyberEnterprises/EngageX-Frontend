@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { welcomeMessage } from "../../components/layouts/userAuth";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../../components/ui/form";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Checkbox } from "../../components/ui/checkbox";
 import { useLogin } from "@/hooks/auth";
+import { useDispatch } from "react-redux";
+import { setAuthPageImage } from "@/store/slices/authSlice";
+import authPageImage1 from "@/assets/images/pngs/authPage-image-1.png";
 
 const loginSchema = z.object({
     email: z.string().email("Invalid email address").min(1, "Email is required"),
@@ -17,7 +20,6 @@ const loginSchema = z.object({
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
-
 const Login: React.FC = () => {
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -35,9 +37,14 @@ const Login: React.FC = () => {
             login(data);
 
     };
+      const location = useLocation()
+      const dispatch = useDispatch()
+                        useEffect(()=>{
+                            dispatch(setAuthPageImage(authPageImage1))
+                        },[location.pathname])
 
     return (
-        <div className="login-container font-[Inter] sm:w-10/12 px-1 sm:mx-auto flex flex-col justify-center h-screen md:overflow-y-hidden max-md:pl-0 max-lg:pl-5">
+        <div className="login-container font-[Inter] sm:w-10/12 px-1 sm:mx-auto flex flex-col justify-center h-[100dvh] md:overflow-y-hidden max-md:pl-0 max-lg:pl-5">
             {welcomeMessage()}
             <Form {...form}>
                 <form

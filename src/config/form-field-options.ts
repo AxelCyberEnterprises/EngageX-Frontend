@@ -1,6 +1,8 @@
-export const DefaultGoals = [{ id: 1, goal: "" }];
+import ConferenceRoom from "@/assets/images/pngs/conference-room.png";
 
-export const VirtialEnvironmentOptions = [
-    { name: "Conference Room", value: "conference_room", src: "/src/assets/images/pngs/conference-room.png" },
-    { name: "Seminar Room", value: "seminar_room", src: "/src/assets/images/jpegs/seminar-room.jpg" },
-] as const;
+export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
+
+export const practicesVEOptions = [
+    { name: "Boardroom 1", value: "boardroom_1", src: ConferenceRoom },
+    { name: "Boardroom 2", value: "boardroom_2", src: ConferenceRoom },
+];
