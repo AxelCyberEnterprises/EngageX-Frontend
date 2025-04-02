@@ -44,8 +44,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
                                 <span>{(field as Record<"id" | "goal", string>).goal}</span>
                                 <Button
                                     type="button"
-                                    variant="outline"
-                                    className="text-gunmetal rounded-lg shadow-none px-0 has-[>svg]:px-0 py-0 size-fit ml-auto"
+                                    className="bg-transparent hover:bg-transparent text-gunmetal rounded-lg shadow-none px-0 has-[>svg]:px-0 py-0 size-fit ml-auto"
                                     onClick={() => remove(index)}
                                 >
                                     <Trash2 className="size-4" />

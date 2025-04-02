@@ -2,6 +2,7 @@ import StartSession from "@/components/dialogs/dialog-contents/StartSession";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
+import { publicSpeakingVEOptions } from "@/config/form-field-options";
 import { PublicSpeakingSchema } from "@/schemas/public-speaking";
 import { setValues } from "@/store/slices/dashboard/user/publicSpeakingFormSlice";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
@@ -12,9 +13,9 @@ import { useDispatch } from "react-redux";
 import { z } from "zod";
 import GoalsSection from "../../form-sections/GoalsSection";
 import SessionNameSection from "../../form-sections/SessionNameSection";
+import VirtualEnvironmentSection from "../../form-sections/VirtualEnvironmentSection";
 import InputSpeakerNotesSection from "./InputSpeakerNotesSection";
 import TimeAllocationSection from "./TimeAllocationSection";
-import VirtualEnvironmentSection from "./VirtualEnvironmentSection";
 
 export type FormType = z.infer<typeof PublicSpeakingSchema>;
 
@@ -45,7 +46,11 @@ const PublicSpeakingForm = () => {
                     <InputSpeakerNotesSection {...{ form }} />
                 </section>
                 <section className="space-y-6">
-                    <VirtualEnvironmentSection {...{ form }} />
+                    <VirtualEnvironmentSection
+                        {...{ form }}
+                        className="[&_[data-slot='form-label']>div]:md:w-85 [&_[data-slot='form-label']>div]:w-full [&_[data-slot='form-label']>div]:h-37.5"
+                        options={publicSpeakingVEOptions}
+                    />
                     <div className="flex items-center justify-between">
                         <p>Enable AI Generated Questions</p>
                         <Switch

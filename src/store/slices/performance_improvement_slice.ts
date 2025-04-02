@@ -33,7 +33,7 @@ export interface DialogState {
 
 export const sessions: Session[] = [
   {
-    title: "Morning Yoga",
+    title: "Keynote Delivery Refinement",
     start_date: "2025-03-14T08:00:00Z",
     last_updated_date: "2025-03-14T10:00:00Z",
     is_active: false,
@@ -46,91 +46,70 @@ export const sessions: Session[] = [
     ],
   },
   {
-    title: "Evening Meditation",
+    title: "Pitch Mastery Programe",
     start_date: "2025-03-14T18:00:00Z",
     last_updated_date: "2025-03-14T19:30:00Z",
     is_active: false,
     sequences: [
-      { title: "Breath Awareness", date: "2025-03-14T18:05:00Z", duration: 10 },
+      { title: "Session 1", date: "2025-03-14T18:05:00Z", duration: 10 },
       {
-        title: "Guided Visualization",
+        title: "Session 2",
         date: "2025-03-14T18:20:00Z",
         duration: 15,
       },
       { title: "Body Scan", date: "2025-03-14T18:40:00Z", duration: 20 },
       {
-        title: "Silent Meditation",
+        title: "Session 3",
         date: "2025-03-14T19:00:00Z",
         duration: 20,
       },
-      { title: "Reflection", date: "2025-03-14T19:25:00Z", duration: 5 },
+      { title: "Session 4", date: "2025-03-14T19:25:00Z", duration: 5 },
     ],
   },
   {
-    title: "Strength Training",
+    title: "Presentation Programe",
     start_date: "2025-03-15T07:30:00Z",
     last_updated_date: "2025-03-15T09:00:00Z",
     is_active: false,
     sequences: [
-      { title: "Warm-up", date: "2025-03-15T07:35:00Z", duration: 10 },
-      { title: "Squats", date: "2025-03-15T07:45:00Z", duration: 20 },
-      { title: "Bench Press", date: "2025-03-15T08:05:00Z", duration: 20 },
-      { title: "Deadlifts", date: "2025-03-15T08:30:00Z", duration: 20 },
+      { title: "Session 1", date: "2025-03-15T07:35:00Z", duration: 10 },
+      { title: "Session 2", date: "2025-03-15T07:45:00Z", duration: 20 },
+      { title: "Session 3", date: "2025-03-15T08:05:00Z", duration: 20 },
+      { title: "Session 4", date: "2025-03-15T08:30:00Z", duration: 20 },
       {
-        title: "Cooldown Stretching",
+        title: "Session 5",
         date: "2025-03-15T08:50:00Z",
         duration: 10,
       },
     ],
   },
   {
-    title: "Coding Bootcamp",
+    title: "Public Speaking Practice",
     start_date: "2025-03-16T10:00:00Z",
     last_updated_date: "2025-03-16T12:30:00Z",
     is_active: false,
     sequences: [
       {
-        title: "HTML & CSS Basics",
+        title: "Session 1",
         date: "2025-03-16T10:05:00Z",
         duration: 30,
       },
       {
-        title: "JavaScript Fundamentals",
+        title: "Session 2",
         date: "2025-03-16T10:40:00Z",
         duration: 40,
       },
       {
-        title: "React Introduction",
+        title: "Session 3",
         date: "2025-03-16T11:30:00Z",
         duration: 30,
       },
       {
-        title: "APIs & Fetching Data",
+        title: "Session 4",
         date: "2025-03-16T12:00:00Z",
         duration: 20,
       },
-      { title: "Project Setup", date: "2025-03-16T12:25:00Z", duration: 5 },
-    ],
-  },
-  {
-    title: "Music Theory Class",
-    start_date: "2025-03-17T15:00:00Z",
-    last_updated_date: "2025-03-17T16:30:00Z",
-    is_active: false,
-    sequences: [
-      { title: "Scales & Modes", date: "2025-03-17T15:05:00Z", duration: 20 },
-      {
-        title: "Chord Progressions",
-        date: "2025-03-17T15:30:00Z",
-        duration: 20,
-      },
-      {
-        title: "Melody Composition",
-        date: "2025-03-17T15:55:00Z",
-        duration: 25,
-      },
-      { title: "Ear Training", date: "2025-03-17T16:20:00Z", duration: 10 },
-      { title: "Q&A Session", date: "2025-03-17T16:30:00Z", duration: 5 },
+      { title: "Session 5", date: "2025-03-16T12:25:00Z", duration: 5 },
     ],
   },
 ];
@@ -145,7 +124,7 @@ interface PIData {
     new_sequence_name: string;
   };
   dialog: DialogState;
-  selceted_screen: PIScreens;
+  selected_screen: PIScreens;
   existing_sessions: Session[];
 }
 
@@ -162,7 +141,7 @@ const initialState: PIData = {
     new_pis_isopen: false,
     session_confirmation: false,
   },
-  selceted_screen: PIScreens.DEFAULT,
+  selected_screen: PIScreens.DEFAULT,
   existing_sessions: sessions,
 };
 
@@ -171,14 +150,14 @@ const PerformanceImprovementSlice = createSlice({
   initialState,
   reducers: {
     handleActiveScreen: (state) => {
-      state.active_screen = state.selceted_screen;
+      state.active_screen = state.selected_screen;
       console.log("active_screen: ", state.active_screen);
       if (state.active_screen == PIScreens.NEW_PIS) {
         state.dialog = { new_pis_isopen: true, session_confirmation: false };
       }
     },
     handleSelectedScreen: (state, action: PayloadAction<PIScreens>) => {
-      state.selceted_screen = action.payload;
+      state.selected_screen = action.payload;
     },
     handleDialog: (state, action: PayloadAction<{ dialog: DialogState }>) => {
       state.dialog = action.payload.dialog; // ✅ Ensure state is updated correctly

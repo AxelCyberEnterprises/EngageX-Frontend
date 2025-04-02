@@ -45,6 +45,7 @@ import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import CookiePolicy from "../pages/CookiePolicy";
 import TermsOfService from "../pages/TermsOfService";
+import PerformanceImprovement from "@/pages/Dashboard/User/PerformanceImprovement";
 import Press from "@/pages/Press/Press";
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -93,6 +94,10 @@ function UserDashboardRoutes() {
       <Route path="session-history" element={<UserSessionHistory />} />
       <Route path="session-history/:id" element={<UserSessionReport />} />
       <Route path="session-comparison" element={<SessionComparison />} />
+      <Route
+        path="performance-improvement"
+        element={<PerformanceImprovement />}
+      />
       <Route path="analytics" element={<UserAnalytics />} />
       <Route path="settings" element={<UserSettings />} />
       <Route path="help" element={<HelpPage />}>
