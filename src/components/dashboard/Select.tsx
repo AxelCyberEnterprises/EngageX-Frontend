@@ -23,6 +23,7 @@ interface SelectProps {
   className?: string;
   placeholderClassname?: string;
   showIcon?: boolean;
+  hideChevron?: boolean;
   icon?: string;
 }
 
@@ -34,6 +35,7 @@ const ShadSelect: React.FC<SelectProps> = ({
   className,
   placeholderClassname,
   showIcon = true,
+  hideChevron,
   icon,
 }) => {
 
@@ -58,7 +60,8 @@ const ShadSelect: React.FC<SelectProps> = ({
     <Select defaultValue={defaultValue} onValueChange={handleChange}>
       <SelectTrigger
         className={cn(
-          "w-full rounded-full border bg-white px-4 py-3 text-left shadow-none focus-visible:ring-0 [&>svg]:hidden",
+          "w-full rounded-full border bg-white px-4 py-3 text-left shadow-none focus-visible:ring-0",
+          hideChevron && '[&>svg]:hidden',
           className
         )}
       >
