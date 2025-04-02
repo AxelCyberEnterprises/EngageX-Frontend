@@ -222,33 +222,16 @@ const PitchSessionReport: React.FC = () => {
 
             <section className="px-4 lg:px-8 py-4">
                 <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
-                    <h5 className="mb-5">Timing & Efficiency Analysis</h5>
+                    <h5 className="mb-1.5">Session Feedback Analysis</h5>
+                    <p className="mb-5 text-independence">Session feedback summary</p>
 
-                    <div className="flex gap-6 flex-col lg:flex-row">
-                        <div className="flex flex-col gap-3 w-full">
-                            <div className="w-full mb-3">
-                                <div className="border-1 border-bright-gray rounded-xl py-5 px-3 w-full">
-                                    <p className="mb-4 text-independence">Total Time Allocated</p>
-                                    <div className="flex gap-4 items-center text-gunmetal">
-                                        <h5>30 minutes</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="w-full">
-                                <div className="border-1 border-bright-gray rounded-xl py-5 px-3 w-full">
-                                    <p className="mb-4 text-independence">Total Time Used</p>
-                                    <div className="flex gap-4 items-center">
-                                        <h5>30 minutes</h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h6 className="py-4 mt-2">Areas to improve to perform within allocated time</h6>
-                            <ul className="list-disc text-primary-blue/80">
-                                <li className="mb-2 text-independence">Reduce time on introduction by 30 seconds</li>
-                                <li className="mb-2 text-independence">Spend more time explaining key benefits</li>
-                                <li className="text-independence">Spend more time explaining key benefits</li>
-                            </ul>
+                    <div className="flex gap-6 flex-col">
+                        <div className="p-4 rounded-md border-bright-gray border-1 max-w-2xl">
+                            <p>
+                                The session was completed within the allocated time. Key strengths include clear
+                                delivery and structured pacing. Areas for improvement include reducing time spent on
+                                introductions and enhancing explanation of key benefits.
+                            </p>
                         </div>
 
                         <div className="flex flex-col w-full sm:mt-5">
@@ -256,7 +239,7 @@ const PitchSessionReport: React.FC = () => {
                                 <h6 className="mb-4">Strengths & Areas for Improvement</h6>
                             </div>
 
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-3 lg:flex-row">
                                 <div className="w-full md:w-1/2 md:pe-2 mb-3">
                                     <h6 className="text-medium-sea-green mb-3.5">Strengths</h6>
                                     <ul className="list-none space-y-3">

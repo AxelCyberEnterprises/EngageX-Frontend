@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/svgs/logo.svg";
@@ -447,7 +448,7 @@ const SideNav: React.FC = () => {
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
-                        className="absolute left-2 top-1 w-4.5 aspect-square"
+                        className="absolute left-2 top-2 w-4.5 h-4.5"
                         width="24"
                         height="24"
                         color="#BDBDBD"

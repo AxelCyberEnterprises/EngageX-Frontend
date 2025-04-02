@@ -43,8 +43,20 @@ export default function ShadLinearLineChart({ data, colors }: Props) {
                 <ChartContainer config={chartConfig}>
                     <LineChart accessibilityLayer data={data} margin={{ left: 12, right: 12 }}>
                         <CartesianGrid vertical={false} />
-                        <XAxis dataKey="minute" tickLine={false} axisLine={false} tickMargin={8} />
-                        <YAxis width={25} tickLine={false} axisLine={false} tickMargin={8} />
+                        <XAxis
+                            dataKey="minute"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickFormatter={(value) => (value === 0 ? "" : value)}
+                        />
+                        <YAxis
+                            width={25}
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickFormatter={(value) => (value === 0 ? "" : value)}
+                        />
                         <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
                         <Legend content={<CustomLegend />} />
                         {Object.keys(colors).map((key) => (

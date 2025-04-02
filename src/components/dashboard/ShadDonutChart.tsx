@@ -1,4 +1,4 @@
-import { Pie, PieChart, Sector, Legend } from "recharts";
+import { Pie, PieChart, Sector } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -26,12 +26,6 @@ export default function ShadDonutChart({ data, colors }: Props) {
                 <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
                     <PieChart>
                         <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                        <Legend
-                            verticalAlign="bottom"
-                            align="center"
-                            iconType="circle"
-                            wrapperStyle={{ paddingTop: 16 }}
-                        />
                         <Pie
                             data={data}
                             dataKey="value"
