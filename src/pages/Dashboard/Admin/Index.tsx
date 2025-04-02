@@ -126,7 +126,7 @@ const AdminDashboardHome: React.FC = () => {
 
     return (
         <div className="admin__dashboard__index py-3 px-4 bg-ghost-white">
-            <div className="py-4 justify-between hidden md:flex">
+            <div className="py-4 px-2 justify-between hidden md:flex">
                 <p>Here’s an overview of your dashboard</p>
 
                 <div className="flex items-center">
