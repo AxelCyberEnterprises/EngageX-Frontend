@@ -1,4 +1,4 @@
-import { Area, AreaChart, CartesianGrid, Legend, XAxis, LegendProps } from "recharts";
+import { Area, AreaChart, CartesianGrid, Legend, XAxis, LegendProps, YAxis } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -50,6 +50,7 @@ export default function ShadAreaChart({ data, colors }: Props) {
                             tickMargin={8}
                             tickFormatter={(value) => value.slice(0, 3)}
                         />
+                        <YAxis width={25} tickLine={false} axisLine={false} tickMargin={8} />
                         <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
 
                         <Legend content={<CustomLegend />} />
