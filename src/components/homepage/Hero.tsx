@@ -71,11 +71,11 @@ function Hero() {
             />
           </div>
         </div>
-        <div className="w-full flex relative justify-center">
+        <div className="w-full flex relative h-[17rem] lg:h-min  justify-center">
           {/* <HeroSVG /> */}
           <img
             src="./assets/homepathimg.png"
-            className="absolute bottom-15 mr-20"
+            className="absolute w-[40rem] bottom-[6.1rem] lg:bottom-14 mr-20"
             alt=""
           />
         </div>

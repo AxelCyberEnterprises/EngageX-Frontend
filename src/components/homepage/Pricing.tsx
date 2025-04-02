@@ -114,7 +114,7 @@ function Pricing({ subtext }: { subtext?: string }) {
             </p>
             <Link to="/contact">
               <button className="flex gap-2 font-montserrat mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg">
-                <p>Contact us for a consultation!</p>
+                <p>Book a consultation!</p>
                 <svg
                   width="15"
                   height="18"
