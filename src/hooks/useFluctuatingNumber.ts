@@ -5,9 +5,11 @@ const useFluctuatingNumber = (baseValue: number, interval = 500) => {
 
     useEffect(() => {
         const fluctuate = () => {
-            const fluctuation = Math.floor(Math.random() * 11) - 5; // Random between -5 and +5
-            const newValue = Math.max(0, baseValue + fluctuation); // Keep it within range, never < 0
-            setValue(newValue);
+            if (baseValue > 0) {
+                const fluctuation = Math.floor(Math.random() * 11) - 2; // Random between -5 and +5
+                const newValue = Math.max(0, baseValue + fluctuation); // Keep it within range, never < 0
+                setValue(newValue);
+            }
         };
 
         const intervalId = setInterval(fluctuate, interval);

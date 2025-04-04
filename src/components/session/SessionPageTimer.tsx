@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import SegmentedProgressBar from "../dashboard/SegmentedProgressBar"; // Import your progress bar component
 import { Clock2 } from "lucide-react";
 
-interface PublicSpeakingTimerProps {
+interface SessionPageTimerProps {
     minutes: number;
     start: boolean; // Boolean to control when the countdown starts
 }
 
-const PublicSpeakingTimer: React.FC<PublicSpeakingTimerProps> = ({ minutes, start }) => {
+const SessionPageTimer: React.FC<SessionPageTimerProps> = ({ minutes, start }) => {
     const totalTime = minutes * 60; // Convert minutes to seconds
     const [timeLeft, setTimeLeft] = useState(totalTime);
 
@@ -54,4 +54,4 @@ const PublicSpeakingTimer: React.FC<PublicSpeakingTimerProps> = ({ minutes, star
     );
 };
 
-export default PublicSpeakingTimer;
+export default SessionPageTimer;
