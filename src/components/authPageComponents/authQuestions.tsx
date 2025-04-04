@@ -5,7 +5,7 @@ import { RootState } from "../../store/index";
 import { setAuthPageImage, setSignupData } from "../../store/slices/authSlice";
 import { welcomeMessage } from "@/components/layouts/userAuth";
 import { useLocation, useNavigate } from "react-router-dom";
-import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png"
+import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg"
 
 const AuthQuestions: React.FC = () => {
     const [selectedOptions, setSelectedOptions] = useState<{ plan?: string; role?: string }>({});

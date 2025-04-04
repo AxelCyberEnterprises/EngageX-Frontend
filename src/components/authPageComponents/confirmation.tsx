@@ -9,7 +9,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useEmailConfirmation } from "@/hooks/auth";
-import authPageImage1 from "@/assets/images/pngs/authPage-image-1.png"
+import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg"
 import { useLocation } from "react-router-dom";
 
 const verificationSchema = z.object({
