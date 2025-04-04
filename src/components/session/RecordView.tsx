@@ -57,7 +57,7 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
                 mediaRecorder.start(30000); // Capture in 30s chunks
 
                 // Auto stop after duration
-                stopTimeoutRef.current = setTimeout(() => stopStreaming(), ((duration * 60000) + 2000));
+                stopTimeoutRef.current = setTimeout(() => stopStreaming(), duration * 60000 + 2000);
             } catch (error) {
                 console.error("Error accessing camera:", error);
             }
@@ -114,11 +114,7 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
         onStop();
     };
 
-    return (
-        <div>
-            <video ref={videoRef} autoPlay playsInline muted />
-        </div>
-    );
+    return <video className="w-full h-full object-cover" ref={videoRef} autoPlay playsInline muted />;
 };
 
 export default VideoStreamer;
