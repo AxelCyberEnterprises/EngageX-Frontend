@@ -22,7 +22,7 @@ const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionPro
         }
 
         dispatch(closeDialog());
-        navigate("/sessions/public-speaking-session");
+        navigate("/sessions/pitch-practice-session");
     }, [dispatch, form, handlePublicSpeakingFormSubmit, navigate]);
 
     return (

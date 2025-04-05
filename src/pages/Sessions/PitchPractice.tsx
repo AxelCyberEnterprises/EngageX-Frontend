@@ -1,123 +1,195 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SquareArrowUpRight, ThumbsUp, Volume2, X } from "lucide-react";
+import { SquareArrowUpRight, Volume2, MessageCircleMore } from "lucide-react";
 import audience from "../../assets/images/pngs/audience.png";
-import { ReactMediaRecorder } from "react-media-recorder";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
-import LiveAudienceReaction from "@/components/session/LiveAudienceReaction";
 import EngagementMetrics from "@/components/session/VoiceAnalytics";
 import CountdownTimer from "@/components/session/CountdownTimer";
 import TimerProgressBar from "@/components/session/TimerProgressBar";
-
-// Component to preview video stream
-const VideoPreview = ({ stream }: { stream: MediaStream | null }) => {
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    useEffect(() => {
-        if (videoRef.current && stream) {
-            videoRef.current.srcObject = stream;
-        }
-    }, [stream]);
-
-    if (!stream) {
-        return null;
-    }
-
-    return <video ref={videoRef} className="w-full h-full object-cover" autoPlay />;
-};
-
-// Main recording component
-const RecordView = () => {
-    const [isRecording, setIsRecording] = useState(false);
-
-    return (
-        <ReactMediaRecorder
-            video
-            render={({ previewStream, startRecording, stopRecording }) => {
-                const handleStart = () => {
-                    setIsRecording(true);
-                    startRecording();
-                };
-
-                const handleStop = () => {
-                    setIsRecording(false);
-                    stopRecording();
-                };
-
-                return (
-                    <div className="h-full relative rounded-3xl">
-                        <VideoPreview stream={previewStream} />
-                        <div className="absolute bottom-0 z-10">
-                            {!isRecording ? (
-                                <Button onClick={handleStart}>Play</Button>
-                            ) : (
-                                <Button onClick={handleStop}>Stop</Button>
-                            )}
-                        </div>
-                    </div>
-                );
-            }}
-        />
-    );
-};
+import pitchRoom from "../../assets/images/pngs/pitch-presentation-room.png";
+import VideoStreamer from "@/components/session/RecordView";
+import { useNavigate } from "react-router-dom";
+import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import alert from "../../assets/images/svgs/alert.svg";
+import questionImage from "../../assets/images/pngs/question-image.png";
+import TimerComponent from "@/components/session/TimerComponent";
 
 const PitchPractice: React.FC = () => {
+    const [stop, setStop] = useState(false);
+    const [startTimer, setStartTimer] = useState(false);
+    const [isDialogOneOpen, setDialogOneOpen] = useState(false);
+    const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
+    const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(true);
+    const navigate = useNavigate();
+    const time = 10; // in minutes
+
+    const StopStreaming = () => {
+        setStop(true);
+        navigate("/dashboard/user/session-history/1");
+    };
+
     return (
         <div className="text-primary-blue">
+            {/* question dialog  */}
+            <Dialog open={isQuestionDialogOpen} onOpenChange={setQuestionDialogOpen}>
+                <DialogContent className="flex flex-col gap-4">
+                    <div className="flex gap-4">
+                        <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
+                            <MessageCircleMore className="text-primary-blue" />
+                        </div>
+
+                        <div className="flex flex-col gap-4">
+                            <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
+                                Question from Elizabeth Wang
+                            </DialogTitle>
+                            <DialogDescription className="text-primary-blue big">
+                                How does your proposal address potential scalability challenges?
+                            </DialogDescription>
+
+                            <div className="flex justify-end gap-3">
+                                <Button
+                                    className="bg-transparent hover:bg-bright-gray text-independence py-6"
+                                    onClick={() => setQuestionDialogOpen(false)}
+                                >
+                                    Skip
+                                </Button>
+                                <Button
+                                    className="bg-primary-blue hover:bg-primary-blue/80 py-6"
+                                    onClick={() => setQuestionDialogOpen(false)}
+                                >
+                                    Answer Now
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <TimerComponent minutes={time} start={startTimer} />
+
+                    <img
+                        src={questionImage}
+                        alt="woman in blue giving a presentation"
+                        className="rounded-lg w-full object-cover h-60"
+                    />
+                </DialogContent>
+            </Dialog>
+
+            {/* time over dialog  */}
+            <Dialog open={isDialogTwoOpen} onOpenChange={setDialogTwoOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
+                        <DialogTitle className="text-primary-blue text-left">Session ended</DialogTitle>
+                        <DialogDescription className="text-auro-metal-saurus text-left">
+                            Looks like you ran out of time, kindly proceed by clicking next to view your result
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="w-full">
+                        <Button
+                            className="bg-primary-blue hover:bg-primary-blue/90 w-full"
+                            onClick={() => StopStreaming()}
+                        >
+                            Next
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
-                <div className="w-full lg:w-9/12">
+                <div className="w-full">
+                    <Button
+                        className="bg-jelly-bean hover:bg-jelly-bean/90 flex lg:hidden mb-4"
+                        onClick={() => setDialogOneOpen(true)}
+                    >
+                        <SquareArrowUpRight className="me-1" /> End Session
+                    </Button>
                     <h4 className="mb-4">Pitch Practice Session</h4>
                     <div className="mb-3">
-                        <TimerProgressBar minutes={2} />
+                        <TimerProgressBar minutes={time} />
                     </div>
                     <small className="text-grey">Slide 1 of 10</small>
-                </div>
-
-                <div className="flex gap-2 my-3">
-                    <Button className="bg-transparent hover:bg-ghost-white/50 border-1 border-bright-gray text-primary-blue">
-                        Restart
-                    </Button>
-                    <Button className="bg-primary-blue hover:bg-primary-blue/90 flex">
-                        <X className="me-1" /> Exit
-                    </Button>
                 </div>
             </section>
 
             <section className="flex flex-wrap">
                 {/* left side  */}
                 <div className="left__side w-full md:w-9/12 lg:w-9/12 md:px-8 lg:pe-4 py-4">
-                    <div className="">
-                        <div className="md:border-16 lg:border-32 border-primary-blue rounded-3xl w-full h-120">
-                            <RecordView />
+                    <div className="md:p-5 lg:p-10 border-primary-blue bg-primary-blue rounded-3xl w-full h-80 md:h-140">
+                        <div
+                            className="py-5 rounded-xl w-full h-full relative"
+                            style={{
+                                backgroundImage: `url(${pitchRoom})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                            }}
+                        >
+                            <div className="w-17.5 h-10.5 md:w-36 md:h-20.5 lg:w-35 lg:h-20 absolute top-34.5 right-35.5 md:top-53.5 md:right-84 lg:top-49 lg:right-82.5">
+                                <VideoStreamer
+                                    duration={time}
+                                    stop={stop}
+                                    onStop={() => setDialogTwoOpen(true)}
+                                    onStart={() => setStartTimer(true)}
+                                />
+                            </div>
                         </div>
+                    </div>
 
-                        <div className="mt-3 px-4 md:px-0">
-                            <div className="flex items-center justify-between md:justify-start">
-                                <div className="flex items-center">
-                                    <Volume2 />
-                                    <p className="ms-2">Audio Settings</p>
+                    <div className="mt-3 px-4 md:px-0">
+                        <div className="flex items-center justify-between md:justify-start">
+                            <div className="flex items-center">
+                                <Volume2 />
+                                <p className="ms-2">Audio Settings</p>
+                            </div>
+                            <p className="ms-3 text-grey">
+                                <CountdownTimer minutes={time} />
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className=" px-4 md:px-0">
+                        <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">
+                            <h6 className="py-2">Speaker Notes</h6>
+                            <p className="text-grey">
+                                “Our solution leverages cutting-edge AI to transform how businesses handle customer
+                                service...”
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="w-full flex justify-end mt-16 px-4 md:px-0">
+                        <Button
+                            className="bg-jelly-bean hover:bg-jelly-bean/90 hidden lg:flex"
+                            onClick={() => setDialogOneOpen(true)}
+                        >
+                            <SquareArrowUpRight className="me-1" /> End Session
+                        </Button>
+
+                        <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
+                                    <DialogTitle className="text-primary-blue text-left">End a session</DialogTitle>
+                                    <DialogDescription className="text-auro-metal-saurus text-left">
+                                        You are about to End a Session, you will be sent to the Session Analysis Report
+                                        page and you will no longer be able to continue this session
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="flex gap-2 w-full">
+                                    <Button
+                                        className="bg-white hover:bg-white/90 border border-gray w-full text-primary-blue"
+                                        onClick={() => setDialogOneOpen(false)}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        className="bg-jelly-bean hover:bg-jelly-bean/90 w-full"
+                                        onClick={() => StopStreaming()}
+                                    >
+                                        End
+                                    </Button>
                                 </div>
-                                <p className="ms-3 text-grey">
-                                    <CountdownTimer minutes={2} />
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className=" px-4 md:px-0">
-                            <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">
-                                <h6 className="py-2">Speaker Notes</h6>
-                                <p className="text-grey">
-                                    “Our solution leverages cutting-edge AI to transform how businesses handle customer
-                                    service...”
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="w-full flex justify-end mt-16 px-4 md:px-0">
-                            <Button className="bg-jelly-bean hover:bg-jelly-bean/90 flex">
-                                <SquareArrowUpRight className="me-1" /> End Session
-                            </Button>
-                        </div>
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 </div>
 
@@ -129,8 +201,6 @@ const PitchPractice: React.FC = () => {
                     </div>
 
                     <AudienceEngaged percent={86} />
-
-                    <LiveAudienceReaction percent1={32} percent2={42} percent3={35} />
 
                     <EngagementMetrics percent1={72} percent2={62} percent3={85} />
 
@@ -145,39 +215,8 @@ const PitchPractice: React.FC = () => {
 
                 {/* right side mobile */}
                 <div className="p-4 md:hidden w-full">
-                    <div className="border-1 border-gray py-5 px-3">
-                        <div className="row flex">
-                            <div className="w-6/12">
-                                <h6>Live Audience Reaction</h6>
-                            </div>
-
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-primary-blue rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-white" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-primary-blue rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-white" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-primary-blue rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-white" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-                        </div>
+                    <div className="border-1 border-bright-gray py-5 px-3 rounded-md">
+                        <MobileVoiceAnalytics impact={70} engagement={60} transformativePotential={80} />
                     </div>
                 </div>
             </section>
