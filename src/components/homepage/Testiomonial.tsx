@@ -13,6 +13,7 @@ type Testimonial = {
   subtext: string;
   avatar?: string;
   color: string;
+  text_color: string;
 };
 
 function Testiomonial() {
@@ -23,20 +24,23 @@ function Testiomonial() {
         "“Practicing my pitch here gave me the confidence to win over investors.  I highly recommend!”",
       subtext: "- Startup Founder",
       color: "#C1C2B4",
+      text_color: "",
     },
     {
       svg: <TestimonialSVG2 />,
       text:
-        "“EngageX helped me own my narrative. Now, every interview, every post, every connection reflects who I truly am both on and off the field.”",
+        "“EngageX™ helped me own my narrative. Now, every interview, every post, every connection reflects who I truly am both on and off the field.”",
       subtext: "— Pro Athlete & Brand Builder",
       color: "#6F7C8E",
+      text_color: "",
     },
     {
       svg: <TestimonialSVG3 />,
       text:
-        "“With EngageX, I don't just pitch, I connect! It's transformed the way I communicate value, build trust, and close deals.”",
+        "“With EngageX™, I don't just pitch, I connect! It's transformed the way I communicate value, build trust, and close deals.”",
       subtext: "- Top Sales Strategist",
       color: "#EFF6FC",
+      text_color: "",
     },
   ];
   return (

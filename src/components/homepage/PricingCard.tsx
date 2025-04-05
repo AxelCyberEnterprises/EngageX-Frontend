@@ -16,7 +16,7 @@ function PricingCard({ plan }: Params) {
   return (
     <div
       className={clsx(
-        "h-max group p-8 font-montreal space-y-10 rounded-2xl duration-700 cursor-pointer lg:h-full border flex flex-col justify-between border-[#6F7C8E]",
+        "h-max group font-montserrat p-8 space-y-10 rounded-2xl duration-700 cursor-pointer lg:h-full border flex flex-col justify-between border-[#6F7C8E]",
         plan.highlight &&
           "relative lg:bottom-[4rem] text-white stroke-white border-none bg-gunmetal"
       )}
@@ -72,7 +72,7 @@ function PricingCard({ plan }: Params) {
                   />
                 </svg>
               </div>
-              <p className="w-full font-montreal ">{content}</p>
+              <p className="w-full font-montserrat ">{content}</p>
             </div>
           ))}
         </div>

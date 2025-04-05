@@ -33,7 +33,7 @@ function Hero() {
               />
             </svg>
             <p className="big font-semibold">Email</p>
-            <p className="text-green-sheen">info@ldoxygen.com</p>
+            <p className="text-green-sheen">info@engagexai.io</p>
           </div>
           <div className="space-y-4">
             <svg
@@ -153,7 +153,10 @@ function Hero() {
                   />
                 </svg>
               </a>
-              <a href="www.youtube.com/@TheCareerDoctorLLC" target="_blank">
+              <a
+                href="https://www.youtube.com/@TheCareerDoctorLLC"
+                target="_blank"
+              >
                 <svg
                   width="20"
                   height="20"
@@ -244,7 +247,7 @@ function Hero() {
           <label htmlFor="agree" className="ml-4">
             You agree to our{" "}
             <span className="underline">
-              <Link to="/privacypolicy">privacy policy</Link>
+              <Link to="/privacy-policy">privacy policy</Link>
             </span>
             .
           </label>

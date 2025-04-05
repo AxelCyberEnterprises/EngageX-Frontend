@@ -25,14 +25,14 @@ function HowItWorks() {
             success
           </h4>
           <p className="text-dark-electric-blue leading-normal">
-            A simple way to use EngageX
+            A simple way to use EngageX™
           </p>
         </div>
       </div>
 
       <div className="flex flex-col lg:flex-row w-full lg:justify-between items-center gap-x-20">
         <div className="lg:w-[35%]">
-          <div className="flex gap-x-8 relative z-30 items-center">
+          <div className="flex gap-x-8 items-center">
             <div className="w-10 h-10 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
               <p>1</p>
             </div>
@@ -40,7 +40,7 @@ function HowItWorks() {
               <h6 className="font-montreal">Sign up</h6>
               <p className="small text-dark-electric-blue">
                 Create your profile and select your focus: public speaking or
-                presentation.
+                presentation
               </p>
             </div>
           </div>
@@ -48,14 +48,13 @@ function HowItWorks() {
             <img src="./assets/divider.png" className="h-[7.8rem]" alt="" />
           </div>
           <div className="flex gap-x-8 items-center">
-            <div className="w-10 h-10 relative z-20 aspect-square gap-[8px] bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
+            <div className="w-10 h-10 aspect-square gap-[8px] bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
               <p>2</p>
             </div>
             <div className="space-y-4">
               <h6 className="font-montreal">Set up your session</h6>
               <p className="small text-dark-electric-blue">
-                Upload slides, outline your phases, or choose from our
-                templates.
+                Upload slides, outline your phases, or choose from our templates
               </p>
             </div>
           </div>
@@ -63,7 +62,7 @@ function HowItWorks() {
             <img src="./assets/divider.png" className="h-[7.8rem]" alt="" />
           </div>
           <div className="flex gap-x-8 items-center">
-            <div className="w-10 h-10 relative z-20 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
+            <div className="w-10 h-10 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
               <p>3</p>
             </div>
             <div className="space-y-4">
@@ -71,7 +70,7 @@ function HowItWorks() {
                 Practice in a realistic virtual room
               </h6>
               <p className="small text-dark-electric-blue">
-                Engage with dynamic AI-powered audience reactions.
+                Engage with dynamic AI-powered audience reactions
               </p>
             </div>
           </div>
@@ -88,7 +87,7 @@ function HowItWorks() {
               <h6 className="font-montreal">Review & improve</h6>
               <p className="small text-dark-electric-blue">
                 Analyze detailed feedback and rewatch key moments to refine your
-                skills.
+                skills
               </p>
             </div>
           </div>

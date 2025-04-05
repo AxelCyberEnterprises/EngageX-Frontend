@@ -34,8 +34,8 @@ function Hero() {
           Prepare, perfect, and present with confidence in a realistic,
           AI-powered environment tailored for leaders, presenters, and
           entrepreneurs to refine their communication, captivate audiences, and
-          elevate their influence—plus, get the bonus of real-time guidance from
-          an expert coach.
+          elevate their influence and get the bonus of real-time guidance from
+          an expert coach
         </p>
         <Link to="/dashboard/user/">
           <button className="flex gap-4 mt-10 mx-auto lg:mx-0 w-full lg:w-max py-3 px-8 items-center justify-center rounded-lg">

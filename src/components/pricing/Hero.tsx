@@ -53,7 +53,7 @@ function Hero() {
               </h1>
               <p className="big">
                 Our plans ensure flexibility and affordability, making sure you
-                get the best Value for your specific Speech improvement needs
+                get the best value for your specific speech improvement needs
               </p>
             </div>
           </div>

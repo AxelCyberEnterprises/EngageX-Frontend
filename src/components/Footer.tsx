@@ -63,7 +63,10 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a href="www.youtube.com/@TheCareerDoctorLLC" target="_blank">
+            <a
+              href="https://www.youtube.com/@TheCareerDoctorLLC"
+              target="_blank"
+            >
               <svg
                 width="20"
                 height="20"
@@ -148,14 +151,14 @@ function Footer() {
             <ul className="space-y-6">
               <li>
                 <Link
-                  to="/help-center"
-                  className={getActiveClass("/help-center")}
+                  to="/contact#faq"
+                  className={getActiveClass("/contact#faq")}
                 >
-                  FAQ's
+                  FAQ
                 </Link>
               </li>
               <li>
-                <Link to="/live-chat" className={getActiveClass("/live-chat")}>
+                <Link to="/contact" className={getActiveClass("/contact")}>
                   Contact us
                 </Link>
               </li>
@@ -194,9 +197,9 @@ function Footer() {
       </div>
 
       <div className="border-t border-t-alice-blue flex flex-col lg:flex-row space-y-4 lg:space-y-0 py-6 justify-between text-white">
-        <p>© 2025 EngageX™ Inc. All rights reserved.</p>
+        <p>© 2025 EngageX™ - Career Doctor LLC all right reserved.</p>
         <div className="flex items-center gap-4">
-          <Link
+          {/* <Link
             to="/terms-of-service"
             className={getActiveClass("/terms-of-service")}
           >
@@ -208,7 +211,7 @@ function Footer() {
             className={getActiveClass("/privacy-policy")}
           >
             Privacy policy
-          </Link>
+          </Link> */}
         </div>
       </div>
     </section>
