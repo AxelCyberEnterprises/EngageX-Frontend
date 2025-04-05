@@ -120,7 +120,7 @@ function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row space-y-16 lg:w-3/4 justify-between lg:pl-[10rem]">
+        <div className="flex flex-col lg:flex-row space-y-16 font-montserrat lg:w-3/4 justify-between lg:pl-[10rem]">
           <div className="space-y-8">
             <p className="text-[#737373]">Pages</p>
             <ul className="space-y-6">
@@ -140,7 +140,7 @@ function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/press" className={getActiveClass("/pricing")}>
+                <Link to="/press" className={getActiveClass("/press")}>
                   Press
                 </Link>
               </li>
@@ -198,21 +198,7 @@ function Footer() {
 
       <div className="border-t border-t-alice-blue flex flex-col lg:flex-row space-y-4 lg:space-y-0 py-6 justify-between text-white">
         <p>© 2025 EngageX™ - Career Doctor LLC all right reserved.</p>
-        <div className="flex items-center gap-4">
-          {/* <Link
-            to="/terms-of-service"
-            className={getActiveClass("/terms-of-service")}
-          >
-            Terms & conditions
-          </Link>
-          <div className="h-2 w-2 rounded-full bg-white" />
-          <Link
-            to="/privacy-policy"
-            className={getActiveClass("/privacy-policy")}
-          >
-            Privacy policy
-          </Link> */}
-        </div>
+        <div className="flex items-center gap-4"></div>
       </div>
     </section>
   );
