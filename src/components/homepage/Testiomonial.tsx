@@ -20,6 +20,7 @@ function Testiomonial() {
   let testimonials: Testimonial[] = [
     {
       svg: <TestimonialSVG />,
+      img: "./assets/testimonialImg1.jpeg",
       text:
         "“Practicing my pitch here gave me the confidence to win over investors.  I highly recommend!”",
       subtext: "- Startup Founder",
@@ -28,6 +29,7 @@ function Testiomonial() {
     },
     {
       svg: <TestimonialSVG2 />,
+      img: "./assets/testimonialImg2.jpeg",
       text:
         "“EngageX™ helped me own my narrative. Now, every interview, every post, every connection reflects who I truly am both on and off the field.”",
       subtext: "— Pro Athlete & Brand Builder",
@@ -36,6 +38,7 @@ function Testiomonial() {
     },
     {
       svg: <TestimonialSVG3 />,
+      img: "./assets/testimonialImg3.jpeg",
       text:
         "“With EngageX™, I don't just pitch, I connect! It's transformed the way I communicate value, build trust, and close deals.”",
       subtext: "- Top Sales Strategist",
@@ -81,7 +84,12 @@ function Testiomonial() {
               key={idx}
               className={`flex-shrink-0 w-full lg:w-[30rem] h-[25rem] relative bg-[${testimonial.color}] overflow-clip rounded-2xl`}
             >
-              {testimonial.svg}
+              {/* {testimonial.svg} */}
+              <img
+                src={testimonial.img}
+                className="absolute top-0 right-0 h-full w-full object-cover"
+                alt=""
+              />
               <div className="flex h-full justify-end items-end">
                 <div
                   className={clsx(
