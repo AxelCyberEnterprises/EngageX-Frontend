@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SquareArrowUpRight, Volume2, MessageCircleMore } from "lucide-react";
+import { SquareArrowUpRight, Volume2, MessageCircleMore, ChevronRight } from "lucide-react";
 import audience from "../../assets/images/pngs/audience.png";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
 import EngagementMetrics from "@/components/session/VoiceAnalytics";
 import CountdownTimer from "@/components/session/CountdownTimer";
 import TimerProgressBar from "@/components/session/TimerProgressBar";
-import pitchRoom from "../../assets/images/pngs/pitch-presentation-room.png";
+import presentationRoom from "../../assets/images/pngs/presentation-practice-room.png";
 import VideoStreamer from "@/components/session/RecordView";
 import { useNavigate } from "react-router-dom";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
@@ -14,6 +14,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import alert from "../../assets/images/svgs/alert.svg";
 import questionImage from "../../assets/images/pngs/question-image.png";
 import TimerComponent from "@/components/session/TimerComponent";
+import ImageSlider, {
+    useImageSlider,
+    SlideCountdown,
+    SlideProgress,
+    NextSlideImage,
+} from "@/components/session/SlidesPreviewer";
 
 const PitchPractice: React.FC = () => {
     const [stop, setStop] = useState(false);
@@ -22,7 +28,24 @@ const PitchPractice: React.FC = () => {
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(true);
     const navigate = useNavigate();
-    const time = 10; // in minutes
+    const time = 20; // in minutes
+    const slides = [
+        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
+        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
+        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
+        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
+        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
+        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
+        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
+        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
+        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
+        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
+    ];
+    
+    const { currentSlide, totalSlides, durationPerSlide } = useImageSlider({
+        images: slides,
+        minutes: time,
+    });
 
     const StopStreaming = () => {
         setStop(true);
@@ -103,11 +126,11 @@ const PitchPractice: React.FC = () => {
                     >
                         <SquareArrowUpRight className="me-1" /> End Session
                     </Button>
-                    <h4 className="mb-4">Pitch Practice Session</h4>
+                    <h4 className="mb-4">Q1 Sales Presentation Practice</h4>
                     <div className="mb-3">
                         <TimerProgressBar minutes={time} />
                     </div>
-                    <small className="text-grey">Slide 1 of 10</small>
+                    <SlideProgress currentSlide={currentSlide} totalSlides={totalSlides} />
                 </div>
             </section>
 
@@ -118,18 +141,22 @@ const PitchPractice: React.FC = () => {
                         <div
                             className="py-5 rounded-xl w-full h-full relative"
                             style={{
-                                backgroundImage: `url(${pitchRoom})`,
+                                backgroundImage: `url(${presentationRoom})`,
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
                             }}
                         >
-                            <div className="w-17.5 h-10.5 md:w-36 md:h-20.5 lg:w-35 lg:h-20 absolute top-34.5 right-35.5 md:top-53.5 md:right-84 lg:top-49 lg:right-82.5">
+                            <div className="w-40 h-23.5 md:w-59 md:h-34 lg:w-58 lg:h-34 absolute top-14.5 right-53 md:top-27.5 md:right-77.5 lg:top-23 lg:right-76">
                                 <VideoStreamer
                                     duration={time}
                                     stop={stop}
                                     onStop={() => setDialogTwoOpen(true)}
                                     onStart={() => setStartTimer(true)}
                                 />
+                            </div>
+
+                            <div className="w-60 h-35 absolute left-5 bottom-5">
+                                <ImageSlider images={slides} minutes={time} currentSlide={currentSlide} />
                             </div>
                         </div>
                     </div>
@@ -146,13 +173,27 @@ const PitchPractice: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className=" px-4 md:px-0">
+                    <div className="px-4 md:px-0 flex gap-3">
                         <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">
                             <h6 className="py-2">Speaker Notes</h6>
                             <p className="text-grey">
                                 “Our solution leverages cutting-edge AI to transform how businesses handle customer
                                 service...”
                             </p>
+                        </div>
+
+                        <div className="w-2/3 rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5 hidden md:inline-block">
+                            <div className="flex items-center justify-between">
+                                <div className="w-2/3 h-40">
+                                    <NextSlideImage images={slides} currentSlide={currentSlide} />
+                                </div>
+                                <div className="flex flex-col gap-3 h-full justify-center">
+                                    <div className="rounded-md border-1 border-bright-gray py-2 px-4">
+                                        <SlideCountdown durationPerSlide={durationPerSlide} />
+                                    </div>
+                                    <small className="flex text-grey items-center text-xs ms-2">Next Slide <ChevronRight className="h-4 w-4" /></small>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -205,7 +246,7 @@ const PitchPractice: React.FC = () => {
                     <EngagementMetrics percent1={72} percent2={62} percent3={85} />
 
                     <div className="py-5 px-3 border-1 border-bright-gray rounded-xl mt-3">
-                        <h6 className="mb-4">Realtime Feedback</h6>
+                        <h6 className="mb-4">Quick Tips</h6>
                         <ul className="text-grey list-disc">
                             <li className="mb-2">Great eye contact with audience</li>
                             <li>Consider slowing down your speech rate</li>
