@@ -4,6 +4,7 @@ import { columns, IAdminSessionHistory } from "./columns";
 // import data from "./data.json";
 import { useSessionHistory } from "@/hooks/auth";
 
+
 export type DataInterface = {
     id: string;
     sessionName: string;
