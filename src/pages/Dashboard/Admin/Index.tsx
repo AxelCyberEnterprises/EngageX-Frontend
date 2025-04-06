@@ -4,37 +4,11 @@ import ShadAreaChart from "@/components/dashboard/ShadAreaChart";
 import RecentSessions from "../../../components/dashboard/RecentSessionsTable";
 import ShadDonutChart from "@/components/dashboard/ShadDonutChart";
 import { useDashboardData } from "@/hooks/auth";
-import { UseQueryResult } from "@tanstack/react-query";
-import { Session } from "../../../components/dashboard/RecentSessionsTable";
-import { Loader } from "lucide-react";
-import { capitalizeWords, formatDate, formatTime } from "@/components/tables/session-history-table/admin";
 
 const AdminDashboardHome: React.FC = () => {
-    // type Session = {
-    //     id: string;
-    //     name: string;
-    //     // Add other properties of a session here
-    // };
-
-    const { data, isLoading } = useDashboardData() as UseQueryResult<
-        { recent_sessions: Session[]; active_users_count: number; inactive_users_count: number; today_new_users_count: number },
-        Error
-    >;
-    console.log("unprocessed", data);
-    const recentData = useMemo(
-        () =>
-            data?.recent_sessions?.map((item: any) => ({
-                id: item.id || "N/A",
-                sessionName: capitalizeWords(item.session_name || "Unknown Session"),
-                sessionType: capitalizeWords(item.session_type_display || "Unknown Type"),
-                date: formatDate(item.date),
-                duration: formatTime(item.formatted_duration), // Keep duration as a number
-            })) || [],
-        [data?.recent_sessions],
-    );
+    const { data } = useDashboardData();
 
     console.log(data);
-    console.log(recentData);
     const cardsData = [
         {
             icon: (
@@ -191,7 +165,7 @@ const AdminDashboardHome: React.FC = () => {
                                 {card.icon}
                                 <p className="ms-2.5 gunmetal">{card.title}</p>
                             </div>
-                            <h4 className="gunmetal mb-5.5">{16}</h4>
+                            <h4 className="gunmetal mb-5.5">{[card.key]}</h4>
                             <div className="flex items-center">
                                 <div className="flex items-center me-2">
                                     {card.direction === "up" ? (
