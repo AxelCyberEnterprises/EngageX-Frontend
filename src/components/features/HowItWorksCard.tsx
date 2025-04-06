@@ -1,11 +1,10 @@
 import clsx from "clsx";
-import { JSX } from "react";
 
 interface Params {
   item: {
     title: string;
     content: string;
-    svg: JSX.Element;
+    img: string;
   };
   className?: string;
 }
@@ -14,7 +13,7 @@ function HowItWorksCard({ className, item }: Params) {
   return (
     <div
       className={clsx(
-        "flex flex-col lg:flex-row px-10 lg:px-20 lg:space-x-22 items-center py-22 w-full justify-between",
+        "flex flex-col lg:flex-row px-10 lg:px-20 lg:!space-x-22 items-center py-22 w-full justify-between",
         className
       )}
     >
@@ -42,7 +41,9 @@ function HowItWorksCard({ className, item }: Params) {
         </div>
       </div>
 
-      <div className="flex-1 flex items-start justify-start">{item.svg}</div>
+      <div className="flex-1 flex mt-22 lg:mt-0 lg:mr-22 items-start justify-start">
+        <img src={item.img} alt="" />
+      </div>
     </div>
   );
 }

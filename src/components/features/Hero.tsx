@@ -7,17 +7,17 @@ function Hero() {
     <section className="min-h-[100vh]">
       <Navbar />
       <div className="flex flex-col lg:flex-row pt-26 lg:pt-0 lg:pl-20 font-montserrat lg:gap-20 justify-between min-h-[calc(100vh-5rem)] items-center">
-        <div className="flex-1 space-y-2 px-10 text-center lg:text-left">
+        <div className="flex-1 relative z-20 space-y-2 px-10 text-center lg:text-left">
           <p className="text-dark-orange">Provide tailored pitch to users</p>
           <div className="space-y-8">
             <h2 className="font-montreal leading-snug">
-              Transform your speaking skills with EngageX
+              Transform your speaking skills with EngageX™
             </h2>
             <p className="big text-[#62717A]">
               Step into the future of public speaking, pitching, and
               presentations with EngageX™, a training platform designed to
               enhance your confidence, delivery, and audience engagement using
-              cutting edge technology combined with AI and Real life ICF
+              cutting edge technology combined with AI and real life ICF
               certified coaches.
             </p>
           </div>

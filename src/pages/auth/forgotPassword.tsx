@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Link, useLocation} from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useForgotPassword } from "@/hooks/auth";
-import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png"
+import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg"
 import { setAuthPageImage } from "@/store/slices/authSlice";
 import { useDispatch } from "react-redux";
 

@@ -1,24 +1,35 @@
+import { Link } from "react-router-dom";
+
 function FAQs() {
   let faqs = [
     {
-      title: "Is there a free trial available?",
-      content:
-        "Yes, you can try us for free for 30 days. Our friendly team will work with you to get you up and running as soon as possible.",
+      question: "Is there a free trial?",
+      answer:
+        "Yes, for leaders seeking an enterprise solution, we provide up to three decision-makers with user access for two sessions",
     },
     {
-      title: "Can I change my plan later?",
-      content:
-        "Of course. Our pricing scales with your company. Chat to our friendly team to find a solution that works for you.",
+      question: "How does the virtual audience work?",
+      answer:
+        "The virtual audience simulates real-time feedback to help you practice effectively",
     },
     {
-      title: "What is your cancellation policy?",
-      content:
-        "We understand that things change. You can cancel your plan at any time and we’ll refund you the difference already paid.",
+      question: "Can I practice with my own slides?",
+      answer:
+        "Yes! You can upload and practice with your own presentation slides",
     },
     {
-      title: "How does billing work?",
-      content:
-        "Plans are per workspace, not per account. You can upgrade one workspace, and still have any number of free workspaces.",
+      question: "Can I change my plan later?",
+      answer: "Yes, once your current plan session has been used or expire",
+    },
+    {
+      question: "What is your cancellation policy?",
+      answer:
+        "Please note that our cancellation policy does not include refunds",
+    },
+    {
+      question: "How does billing work?",
+      answer:
+        "Session plans are paid upfront before session engagement using any major credit card and must be used within 12 months from the date of purchase",
     },
   ];
   return (
@@ -45,12 +56,12 @@ function FAQs() {
             Everything you need to know
           </h4>
           <p className="big text-dark-electric-blue">
-            If you have anything else you want to ask,{" "}
-            <a href="">
+            For further questions,{" "}
+            <Link to="/contact">
               <span className="underline underline-offset-4 text-gunmetal">
                 reach out to us.
               </span>
-            </a>
+            </Link>
           </p>
         </div>
       </div>
@@ -61,8 +72,8 @@ function FAQs() {
             key={idx}
             className="flex-1 min-w-[300px] text-center max-w-[33%] space-y-2"
           >
-            <p className="big font-montreal">{faq.title}</p>
-            <p className="text-dark-electric-blue">{faq.content}</p>
+            <p className="big font-montreal">{faq.question}</p>
+            <p className="text-dark-electric-blue">{faq.answer}</p>
           </div>
         ))}
       </div>

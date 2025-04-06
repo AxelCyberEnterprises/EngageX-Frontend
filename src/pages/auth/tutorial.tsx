@@ -4,7 +4,7 @@ import tutorial from "../../assets/images/tutorial-position.png";
 import { welcomeMessage } from "@/components/layouts/userAuth";
 import { useDispatch } from "react-redux";
 import { setAuthPageImage } from "@/store/slices/authSlice";
-import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png"
+import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg"
 
 const Tutorial: React.FC = () => {
     const navigate = useNavigate();

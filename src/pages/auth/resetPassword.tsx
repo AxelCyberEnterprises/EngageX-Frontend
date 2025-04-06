@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useResetPassword } from "@/hooks/auth";
 import { useLocation } from "react-router-dom";
-import authPageImage2 from "@/assets/images/pngs/authPage-image-2.png";
+import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg";
 
 const ResetPasswordSchema = z
     .object({

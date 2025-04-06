@@ -8,19 +8,32 @@ interface FaqItem {
 
 const faqs: FaqItem[] = [
   {
+    question: "Is there a free trial?",
+    answer:
+      "Yes, for leaders seeking an enterprise solution, we provide up to three decision-makers with user access for two sessions",
+  },
+  {
     question: "How does the virtual audience work?",
     answer:
-      "The virtual audience simulates real-time feedback to help you practice effectively.",
+      "The virtual audience simulates real-time feedback to help you practice effectively",
   },
   {
     question: "Can I practice with my own slides?",
     answer:
-      "Yes! You can upload and practice with your own presentation slides.",
+      "Yes! You can upload and practice with your own presentation slides",
   },
   {
-    question: "Is there a free trial?",
+    question: "Can I change my plan later?",
+    answer: "Yes, once your current plan session has been used or expire",
+  },
+  {
+    question: "What is your cancellation policy?",
+    answer: "Please note that our cancellation policy does not include refunds",
+  },
+  {
+    question: "How does billing work?",
     answer:
-      "Yes! Sign up to try our platform for free and experience the benefits firsthand.",
+      "Session plans are paid upfront before session engagement using any major credit card and must be used within 12 months from the date of purchase",
   },
 ];
 
