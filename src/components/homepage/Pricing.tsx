@@ -8,10 +8,10 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 180,
       sessions: 4,
       contents: [
-        "Ideal for individuals looking to gain support, build clarity, and take the first steps toward their personal or professional goals.",
-        "Best for occasional users with minimal speaking opportunities.",
-        "Perfect for exploring coaching at your own pace.",
-        "Offers foundational strategies to boost confidence and communication awareness.",
+        "Ideal for individuals looking to gain support, build clarity, and take the first steps toward their personal or professional goals",
+        "Best for occasional users with minimal speaking opportunities",
+        "Perfect for exploring coaching at your own pace",
+        "Offers foundational strategies to boost confidence and communication awareness",
       ],
       button_text: "Start now",
       highlight: false,
@@ -23,10 +23,10 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 240,
       sessions: 6,
       contents: [
-        "Great for those seeking impactful meeting engagement and improvement in targeted communication goals.",
-        "Suitable for all professional levels looking to level up their speaking presence.",
-        "Focuses on specific areas like message clarity, audience connection, and confidence-building.",
-        "Ideal for professionals preparing for team meetings, client conversations, or leadership interactions.",
+        "Great for those seeking impactful meeting engagement and improvement in targeted communication goals",
+        "Suitable for all professional levels looking to level up their speaking presence",
+        "Focuses on specific areas like message clarity, audience connection, and confidence-building",
+        "Ideal for professionals preparing for team meetings, client conversations, or leadership interactions",
       ],
       button_text: "Choose growth plan",
       highlight: true,
@@ -38,11 +38,11 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 288,
       sessions: 8,
       contents: [
-        "Fantastic for professionals looking to make measurable progress over time.",
-        "Covers all four core areas: pitch, presentation, public speaking, and storytelling.",
-        "Covers all four core areas: pitch, presentation, public speaking, and storytelling.",
-        "Great for preparing for key events such as panels, conferences, or investor meetings.",
-        "Offers a structured path with feedback and strategies to elevate your overall communication impact.",
+        "Fantastic for professionals looking to make measurable progress over time",
+        "Covers all four core areas: pitch, presentation, public speaking, and storytelling",
+        "Covers all four core areas: pitch, presentation, public speaking, and storytelling",
+        "Great for preparing for key events such as panels, conferences, or investor meetings",
+        "Offers a structured path with feedback and strategies to elevate your overall communication impact",
       ],
       button_text: "Go pro",
       highlight: false,
@@ -54,10 +54,10 @@ function Pricing({ subtext }: { subtext?: string }) {
       price: 396,
       sessions: 12,
       contents: [
-        "Best for long-term development and professionals with frequent public speaking responsibilities.",
-        "Highly recommended for executives, thought leaders, and senior managers.",
-        "Provides ongoing, high-touch support across all communication domains.",
-        "Designed for sustained growth, executive presence, and high-stakes performance readiness.",
+        "Best for long-term development and professionals with frequent public speaking responsibilities",
+        "Highly recommended for executives, thought leaders, and senior managers",
+        "Provides ongoing, high-touch support across all communication domains",
+        "Designed for sustained growth, executive presence, and high-stakes performance readiness",
       ],
       button_text: "Get the ultimate plan",
       highlight: false,
@@ -92,7 +92,7 @@ function Pricing({ subtext }: { subtext?: string }) {
           <p className="text-dark-electric-blue leading-normal">
             {subtext
               ? subtext
-              : "Brief introduction highlighting the flexibility of pricing plans to cater to different professional needs."}
+              : "Brief introduction highlighting the flexibility of pricing plans to cater to different professional needs"}
           </p>
         </div>
       </div>
@@ -109,8 +109,7 @@ function Pricing({ subtext }: { subtext?: string }) {
             <h4 className="font-montreal">Enterprise & team plans</h4>
             <p className="mt-4 font-montserrat">
               For teams or departments with more than 10 individuals, we offer a
-              customized enterprise plan designed for seamless multi-user
-              access.
+              customized enterprise plan designed for seamless multi-user access
             </p>
             <Link to="/contact">
               <button className="flex gap-2 font-montserrat mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg">

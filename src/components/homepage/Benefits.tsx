@@ -68,7 +68,7 @@ function Benefits() {
             <h6 className=" font-montreal">Confidence & mastery</h6>
             <p className="text-dark-electric-blue">
               Perfect your tone, pace, and delivery through personalized
-              feedback.
+              feedback
             </p>
           </div>
         </div>
@@ -94,7 +94,7 @@ function Benefits() {
           <div className="space-y-4">
             <h6 className=" font-montreal">Real-time insights</h6>
             <p className="text-dark-electric-blue">
-              Get immediate feedback on audience engagement and sentiment.
+              Get immediate feedback on audience engagement and sentiment
             </p>
           </div>
         </div>
@@ -133,7 +133,7 @@ function Benefits() {
             <h6 className=" font-montreal">Comprehensive analytics</h6>
             <p className="text-dark-electric-blue">
               Track your progress with detailed session reports and playback
-              features.
+              features
             </p>
           </div>
         </div>
@@ -172,7 +172,7 @@ function Benefits() {
             <h6 className=" font-montreal"> Goal-oriented practice</h6>
             <p className="text-dark-electric-blue">
               Set milestones, achieve badges, and grow your speaking skills
-              systematically.
+              systematically
             </p>
           </div>
         </div>
@@ -210,8 +210,8 @@ function Benefits() {
           <div className="space-y-4">
             <h6 className=" font-montreal">Support of a certified coach.</h6>
             <p className="text-dark-electric-blue">
-              We give you access to ICF certified coaches to help aid your
-              growth.
+              We give you access to Distinguished Toastmasters (DTM) and ICF
+              certified coaches to help aid your growth
             </p>
           </div>
         </div>
@@ -251,7 +251,7 @@ function Benefits() {
               Session improvement functionality
             </h6>
             <p className="text-dark-electric-blue">
-              Seamlessly Improve on the exact same Speaking exercise you worked
+              Seamlessly improve on the exact same speaking exercise you worked
               on in the past
             </p>
           </div>

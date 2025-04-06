@@ -24,12 +24,12 @@ function Intro() {
 
           <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
             <h4 className="h-max font-montreal leading-snug">
-              Why settle for ordinary when you can practice extraordinary
+              Why settle for ordinary when you can be extraordinary
             </h4>
             <p className="text-dark-electric-blue leading-normal">
               Our platform offers a groundbreaking solution for anyone aiming to
               improve their public speaking, pitch delivery, or presentation
-              skills.{" "}
+              skills{" "}
             </p>
           </div>
         </div>
@@ -74,7 +74,7 @@ function Intro() {
                 Realistic environment enhancements
               </h6>
               <p className="">
-                Realistic virtual environments tailored to your needs.
+                Responsive virtual environments tailored to your presentation
               </p>
             </div>
           </div>
@@ -115,7 +115,7 @@ function Intro() {
             <div className="space-y-4">
               <h6 className="font-montreal">Interactive audience feedback</h6>
               <p className="">
-                AI-powered audience simulations that react in real time.
+                AI-powered audience simulations that react in real time
               </p>
             </div>
           </div>
@@ -156,7 +156,7 @@ function Intro() {
             <div className="space-y-4">
               <h6 className="font-montreal">Feedback score dashboard</h6>
               <p className="">
-                Comprehensive feedback on your speaking style and engagement.
+                Comprehensive feedback on your speaking style and engagement
               </p>
             </div>
           </div>
