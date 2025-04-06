@@ -7,22 +7,21 @@ import GetInTouch from "@/components/help/GetInTouch";
 
 const Help: React.FC = () => {
     const navigate = useNavigate();
-     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     return (
         <div className="m-0 p-0">
             <section className="w-full border-y flex items-start text-[#262b3a] py-2 px-7 gap-2 ">
-               <button className="bg-transparent mt-0.5 hover:bg-transparent p-0" onClick={() => navigate(-1)}>
-
-                <svg width="18" height="18" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M5 12.8945L11 6.89453M5 12.8945L11 18.8945M5 12.8945H19"
-                        stroke="black"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </svg>
-                        </button>
+                <button className="bg-transparent mt-0.5 hover:bg-transparent p-0" onClick={() => navigate(-1)}>
+                    <svg width="18" height="18" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M5 12.8945L11 6.89453M5 12.8945L11 18.8945M5 12.8945H19"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </button>
 
                 <div>
                     <p className=" text-xl">Help & Support</p>
@@ -44,13 +43,16 @@ const Help: React.FC = () => {
                                 <img src={webImage} className="w-auto right-0 absolute bottom-0" alt="web image" />
                             </div>
                         </Link>
-                            <button onClick={()=> setIsOpen(true)} className="sm:w-72 w-full bg-[#757575] hover:scale-105 duration-300 overflow-hidden justify-normal items-start text-left px-6 py-4 text-lg font-semibold relative rounded-3xl h-32">
-                                <p className="w-fit p-0 m-0">
-                                    Contact <br /> Our mail
-                                </p>
-                                <img src={mailImage} className="absolute w-auto right-0 bottom-0" alt="mail image" />
-                            </button>
-                        <Link to="message">
+                        <button
+                            onClick={() => setIsOpen(true)}
+                            className="sm:w-72 w-full bg-[#757575] hover:scale-105 duration-300 overflow-hidden justify-normal items-start text-left px-6 py-4 text-lg font-semibold relative rounded-3xl h-32"
+                        >
+                            <p className="w-fit p-0 m-0">
+                                Contact <br /> Our mail
+                            </p>
+                            <img src={mailImage} className="absolute w-auto right-0 bottom-0" alt="mail image" />
+                        </button>
+                        <Link className="hidden" to="message">
                             <div className="sm:w-72 w-full py-4 bg-[#5279a2] hover:scale-105 duration-300 overflow-hidden px-6 text-lg font-semibold relative rounded-3xl h-32">
                                 <p>
                                     Message <br /> Chatbot
@@ -66,8 +68,12 @@ const Help: React.FC = () => {
                 </section>
 
                 <section className="w-full bg-[#262b3a] text-white rounded-3xl font-[montserrat] mb-28 sm:mb-16 py-20 px-10 gap-3 mt-10 flex flex-col justify-center items-center">
-                    <p className="text-4xl max-sm:text-3xl max-sm:leading-10 font-medium text-center ">Still want to know more?</p>
-                    <p className="text-[#a5b8c3] sm:text-xl  text-center">Visit our FAQs page to know more about our services at EngageX</p>
+                    <p className="text-4xl max-sm:text-3xl max-sm:leading-10 font-medium text-center ">
+                        Still want to know more?
+                    </p>
+                    <p className="text-[#a5b8c3] sm:text-xl  text-center">
+                        Visit our FAQs page to know more about our services at EngageX
+                    </p>
                     <Link className="mt-5 " to="faqs">
                         <div className="bg-[#6f7c8e]  text-lg flex items-center gap-0 px-8 py-3  hover:bg-[#6f7c8e90] border-dotted  !important border-[#6f7c8e] rounded-md">
                             <p className=" font-medium">Visit our FAQs</p>

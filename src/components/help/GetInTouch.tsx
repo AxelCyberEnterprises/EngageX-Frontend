@@ -118,8 +118,8 @@ const GetInTouch: React.FC<modalProps> = ({ isOpen, setIsOpen }) => {
                                 <p>
                                     Or email us at{" "}
                                     <span>
-                                        <a className="hover:underline" href="mailto:engagex@info.com">
-                                            engagex@info.com
+                                        <a className="hover:underline" href="mailto:info@engagexai.io">
+                                            info@engagexai.io
                                         </a>
                                     </span>
                                 </p>

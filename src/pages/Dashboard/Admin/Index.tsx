@@ -3,8 +3,12 @@ import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import ShadAreaChart from "@/components/dashboard/ShadAreaChart";
 import RecentSessions from "../../../components/dashboard/RecentSessionsTable";
 import ShadDonutChart from "@/components/dashboard/ShadDonutChart";
+import { useDashboardData } from "@/hooks/auth";
 
 const AdminDashboardHome: React.FC = () => {
+    const { data } = useDashboardData();
+
+    console.log(data);
     const cardsData = [
         {
             icon: (
@@ -20,6 +24,7 @@ const AdminDashboardHome: React.FC = () => {
                 </svg>
             ),
             title: "Total New Sessions",
+            key: "total_new_sessions_count",
             value: 10,
             direction: "up",
             percent: 1.7,
@@ -33,6 +38,7 @@ const AdminDashboardHome: React.FC = () => {
                     />
                 </svg>
             ),
+            key: "",
             title: "Pitch Sessions",
             value: 2,
             direction: "down",
@@ -146,7 +152,7 @@ const AdminDashboardHome: React.FC = () => {
                                 {card.icon}
                                 <p className="ms-2.5 gunmetal">{card.title}</p>
                             </div>
-                            <h4 className="gunmetal mb-5.5">{card.value}</h4>
+                            <h4 className="gunmetal mb-5.5">{[card.key]}</h4>
                             <div className="flex items-center">
                                 <div className="flex items-center me-2">
                                     {card.direction === "up" ? (
