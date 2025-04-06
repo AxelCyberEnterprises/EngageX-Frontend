@@ -11,39 +11,39 @@ function FeaturesSection() {
   let features = [
     {
       svg: <FeatureCardOneSVG />,
-      title: "Prompt and cue card system",
+      title: "Prompt and cue card system.",
       content:
-        "Get a heads up on your next speaking point and be better prepared to deliver the best way possible",
+        "Get a heads up on your next speaking point and be better prepared to deliver the best way possible.",
     },
     {
       svg: <FeatureCardTwoSVG />,
-      title: "Speaker analytics and self-assessment tools",
+      title: "Speaker analytics and self-assessment tools.",
       content:
-        "Live analysis and feedback to your speech powered by unparalleled AI Technology",
+        "Live analysis and feedback to your speech powered by unparalleled AI technology.",
     },
     {
       svg: <FeatureCardThreeSVG />,
-      title: "Realistic environment enhancements",
+      title: "Realistic environment enhancements.",
       content:
-        "Immersive speaking rooms that give you a taste of the real thing even including reactions from your Audience and Listeners",
+        "Immersive speaking rooms that give you a taste of the real thing even including reactions from your audience and listeners.",
     },
     {
       svg: <FeatureCardFourSVG />,
-      title: "Progress tracking for improvement",
+      title: "Progress tracking for improvement.",
       content:
-        "We enable you to be aware of your Progress and stay goal oriented while you train",
+        "We enable you to be aware of your progress and stay goal oriented while you train.",
     },
     {
       svg: <FeatureCardFiveSVG />,
-      title: "Post-speech feedback summary",
+      title: "Post speech feedback summary.",
       content:
-        "In-depth analysis ensuring you can give your best the next time by understanding what you need to do better in detail",
+        "In-depth analysis ensuring you can give your best the next time by understanding what you need to do better in detail.",
     },
     {
       svg: <FeatureCardSixSVG />,
-      title: "Speech progress & phase indicators",
+      title: "Speech progress & phase indicators.",
       content:
-        "Know where you are in the journey of your  delivery so you can flow with an awareness of how much time you take, every time you train",
+        "Know where you are in the journey of your delivery so you can flow with an awareness of how much time you take, every time you train.",
     },
   ];
   return (

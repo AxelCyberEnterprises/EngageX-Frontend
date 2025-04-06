@@ -1,22 +1,33 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SquareArrowUpRight, ThumbsUp } from "lucide-react";
+import {
+    MessageCircleMore,
+    SquareArrowUpRight,
+} from "lucide-react";
 import audience from "../../assets/images/pngs/audience.png";
+import questionImage from "../../assets/images/pngs/question-image.png";
+import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import VoiceAnalytics from "@/components/session/VoiceAnalytics";
-import PublicSpeakingTimer from "@/components/session/PublicSpeakingTimer";
+import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
 import VideoStreamer from "@/components/session/RecordView";
 import EngagementMetrics from "@/components/session/EngagementMetrics";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import alert from "../../assets/images/svgs/alert.svg";
+import TimerComponent from "@/components/session/TimerComponent";
+import { useMediaQuery } from "react-responsive";
+import MobileEngagementMetrics from "@/components/session/MobileEngagementMetrics";
+import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 
 const PublicSpeaking: React.FC = () => {
     const [stop, setStop] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
-    // const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
+    const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(true);
     const navigate = useNavigate();
+    const time = 10; // in minutes
+    const isLargeScreen = useMediaQuery({ minWidth: 1024 }); // Tailwind's lg breakpoint
 
     const StopStreaming = () => {
         setStop(true);
@@ -27,21 +38,66 @@ const PublicSpeaking: React.FC = () => {
         <div className="text-primary-blue">
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
                 <div className="w-full">
-                    <div className="flex justify-between items-center">
+                    <Button
+                        className="bg-jelly-bean hover:bg-jelly-bean/90 flex mt-2 md:hidden"
+                        onClick={() => setDialogOneOpen(true)}
+                    >
+                        <SquareArrowUpRight className="me-1" /> End Session
+                    </Button>
+                    {/* <div className="flex justify-between items-center mb-4">
                         <h4 className="mb-0 md:mb-4">Public Speaking Session</h4>
-
-                        <Button
-                            className="bg-jelly-bean hover:bg-jelly-bean/90 flex my-4 md:hidden"
-                            onClick={() => setDialogOneOpen(true)}
-                        >
-                            <SquareArrowUpRight className="me-1" /> End Session
-                        </Button>
+                    </div> */}
+                    <div className="inline-block py-2 px-4 md:hidden bg-ghost-white border border-bright-gray rounded-3xl w-auto relative top-7">
+                        <p>CC Key Point 2</p>
                     </div>
                     <div className="mb-3">
-                        <PublicSpeakingTimer minutes={2} start={startTimer} />
+                        <PublicSpeakingTimer minutes={time} start={startTimer} />
                     </div>
                 </div>
             </section>
+
+            {/* question dialog  */}
+            <Dialog open={isQuestionDialogOpen} onOpenChange={setQuestionDialogOpen}>
+                <DialogContent className="flex flex-col gap-4">
+                    <div className="flex gap-4">
+                        <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
+                            <MessageCircleMore className="text-primary-blue" />
+                        </div>
+
+                        <div className="flex flex-col gap-4">
+                            <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
+                                Question from Elizabeth Wang
+                            </DialogTitle>
+                            <DialogDescription className="text-primary-blue big">
+                                How does your proposal address potential scalability challenges?
+                            </DialogDescription>
+
+                            <div className="flex justify-end gap-3">
+                                <Button
+                                    className="bg-transparent hover:bg-bright-gray text-independence py-6"
+                                    onClick={() => setQuestionDialogOpen(false)}
+                                >
+                                    Skip
+                                </Button>
+                                <Button
+                                    className="bg-primary-blue hover:bg-primary-blue/80 py-6"
+                                    onClick={() => setQuestionDialogOpen(false)}
+                                >
+                                    Answer Now
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <TimerComponent minutes={time} start={startTimer} />
+
+                    <img
+                        src={questionImage}
+                        alt="woman in blue giving a presentation"
+                        className="rounded-lg w-full object-cover h-60"
+                    />
+                </DialogContent>
+            </Dialog>
 
             <section className="flex flex-wrap md:flex-row-reverse lg:flex-row">
                 {/* left side  */}
@@ -52,11 +108,30 @@ const PublicSpeaking: React.FC = () => {
                 </div>
 
                 {/* middle side  */}
-                <div className="w-full md:w-9/12 lg:w-6/12 md:px-8 lg:pe-4 py-4 px-4">
+                <div className="w-full md:w-9/12 lg:w-6/12 md:px-8 lg:pe-4 py-4">
                     <div className="">
-                        <div className="rounded-xl w-full h-120">
-                            <h6 className="mb-3">Live Audience</h6>
+                        <div className="rounded-xl w-full h-120 relative">
+                            <h6 className="ps-4 md:ps-0 mb-3">Live Audience</h6>
                             <img src={audience} alt="audience" className="w-full h-full object-cover rounded-xl" />
+                            {!isLargeScreen && (
+                                <div
+                                    className="py-5 lg:hidden block rounded-xl w-50 h-30 md:w-80 md:h-50 absolute bottom-0 right-3 md:right-10"
+                                    style={{
+                                        backgroundImage: `url(${xpImg})`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                    }}
+                                >
+                                    <div className="w-20 h-12 md:w-32 md:h-18 absolute top-1 left-17.5 md:top-3 md:left-27.5">
+                                        <VideoStreamer
+                                            duration={time}
+                                            stop={stop}
+                                            onStop={() => setDialogTwoOpen(true)}
+                                            onStart={() => setStartTimer(true)}
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="w-full flex justify-end mt-16 px-4 md:px-0">
@@ -93,25 +168,42 @@ const PublicSpeaking: React.FC = () => {
                                 </DialogContent>
                             </Dialog>
                         </div>
+
+                        {/* tablet and mobile notes  */}
+                        <div className="border px-2 py-4 rounded-lg border-bright-gray mx-4 md:mx-0 md:mt-5 lg:hidden">
+                            <h6 className="mb-3">Speaker Notes</h6>
+                            <p>This is a note</p>
+                        </div>
                     </div>
                 </div>
 
                 {/* right side large screens  */}
-                <div className="right__side w-full hidden lg:block md:w-3/12 lg:w-3/12 px-8 lg:ps-4 py-4">
-                    <div className="py-5 px-3 hidden md:block border-1 border-bright-gray rounded-xl">
-                        <VideoStreamer
-                            duration={2}
-                            stop={stop}
-                            onStop={() => setDialogTwoOpen(true)}
-                            onStart={() => setStartTimer(true)}
-                        />
-                    </div>
+                {isLargeScreen && (
+                    <div className="right__side w-full hidden lg:block md:w-3/12 lg:w-3/12 px-8 lg:ps-4 py-4">
+                        <div
+                            className="py-5 hidden lg:block rounded-xl w-full h-50 relative"
+                            style={{
+                                backgroundImage: `url(${xpImg})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                            }}
+                        >
+                            <div className="w-32 h-18 absolute top-3 left-25.5">
+                                <VideoStreamer
+                                    duration={time}
+                                    stop={stop}
+                                    onStop={() => setDialogTwoOpen(true)}
+                                    onStart={() => setStartTimer(true)}
+                                />
+                            </div>
+                        </div>
 
-                    <div className="border px-2 py-4 rounded-lg border-bright-gray mt-3">
-                        <h6 className="mb-3">Speaker Notes</h6>
-                        <p>This is a note</p>
+                        <div className="border px-2 py-4 rounded-lg border-bright-gray mt-3">
+                            <h6 className="mb-3">Speaker Notes</h6>
+                            <p>This is a note</p>
+                        </div>
                     </div>
-                </div>
+                )}
                 <Dialog open={isDialogTwoOpen} onOpenChange={setDialogTwoOpen}>
                     <DialogContent>
                         <DialogHeader>
@@ -134,71 +226,10 @@ const PublicSpeaking: React.FC = () => {
 
                 {/* right side mobile */}
                 <div className="px-4 md:hidden w-full mb-5 ">
-                    <div className="border-1 border-gray py-5 px-3 rounded-md">
-                        <div className="row flex">
-                            <div className="w-6/12">
-                                <h6>Voice Analytics</h6>
-                            </div>
+                    <div className="border-1 border-bright-gray py-5 px-3 rounded-md">
+                        <MobileVoiceAnalytics impact={70} engagement={60} transformativePotential={80} />
 
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-bright-gray rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-primary-blue" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-bright-gray rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-primary-blue" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-bright-gray rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-primary-blue" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-                        </div>
-                        <div className="row flex mt-3">
-                            <div className="w-6/12">
-                                <h6>Engagement Metrics</h6>
-                            </div>
-
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-bright-gray rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-primary-blue" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-bright-gray rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-primary-blue" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-
-                            <div className="flex flex-col justify-between items-center w-2/12">
-                                <div className="flex items-center justify-center bg-cultured w-1/2 aspect-square rounded-4xl mb-2">
-                                    <div className="w-6 h-6 bg-bright-gray rounded-4xl flex items-center justify-center bg-">
-                                        <ThumbsUp className="w-1/2 aspect-square text-primary-blue" />
-                                    </div>
-                                </div>
-                                <p>{86}</p>
-                            </div>
-                        </div>
+                        <MobileEngagementMetrics impact={70} volume={90} pace={30} />
                     </div>
                 </div>
             </section>

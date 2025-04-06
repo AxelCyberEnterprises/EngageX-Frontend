@@ -1,28 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from "react";
-import { io } from "socket.io-client";
 
 interface VideoStreamerProps {
-    duration: number; // Duration in minutes
-    stop: boolean; // Controlled by parent to stop streaming
-    onStart: () => void; // Callback to notify parent when streaming starts
-    onStop: () => void; // Callback to notify parent when streaming stops
+    duration: number;
+    stop: boolean;
+    onStart: () => void;
+    onStop: () => void;
 }
 
 const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const videoRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioRecorderRef = useRef<MediaRecorder | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
-    const socket = useRef(io("http://localhost:5000")); // Update with your backend URL
-    const streamingRef = useRef(false); // ✅ Use ref instead of state
+    const websocket = useRef<WebSocket | null>(null);
+    const streamingRef = useRef(false);
     const stopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const chunkCounterRef = useRef(1);
+
+    // Buffers for pairing audio and video
+    const pendingChunks = useRef<{
+        [chunk: number]: { video?: Blob; audio?: Blob };
+    }>({});
 
     useEffect(() => {
-        let chunkCounter = 1;
-
         const startStreaming = async () => {
             try {
-                console.log("Starting video stream...");
+                console.log("🎥 Requesting media devices...");
+
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
                 streamRef.current = stream;
 
@@ -30,51 +35,99 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
                     videoRef.current.srcObject = stream;
                 }
 
-                const mediaRecorder = new MediaRecorder(stream, { mimeType: "video/webm" });
-                mediaRecorderRef.current = mediaRecorder;
+                websocket.current = new WebSocket("wss://api.engagexai.io");
+                websocket.current.binaryType = "arraybuffer";
 
-                // ✅ Notify parent that streaming has started
+                websocket.current.onopen = () => console.log("✅ WebSocket connected.");
+                websocket.current.onerror = (err) => console.error("❌ WebSocket error:", err);
+
+                const videoStream = new MediaStream(stream.getVideoTracks());
+                const audioStream = new MediaStream(stream.getAudioTracks());
+
+                const videoRecorder = new MediaRecorder(videoStream, { mimeType: "video/webm" });
+                const audioRecorder = new MediaRecorder(audioStream, { mimeType: "audio/webm" });
+
+                videoRecorderRef.current = videoRecorder;
+                audioRecorderRef.current = audioRecorder;
+
                 onStart();
                 streamingRef.current = true;
 
-                mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0 && streamingRef.current) {
-                        console.log(`Sending chunk_${chunkCounter}`, event.data);
-                        socket.current.emit("video_chunk", {
-                            chunkName: `chunk_${chunkCounter}`,
-                            data: event.data,
-                        });
-                        chunkCounter++;
+                const handleChunk = (type: "video" | "audio", blob: Blob) => {
+                    const chunkId = chunkCounterRef.current;
+
+                    if (!pendingChunks.current[chunkId]) {
+                        pendingChunks.current[chunkId] = {};
+                    }
+
+                    pendingChunks.current[chunkId][type] = blob;
+
+                    if (
+                        pendingChunks.current[chunkId].video &&
+                        pendingChunks.current[chunkId].audio &&
+                        websocket.current?.readyState === WebSocket.OPEN
+                    ) {
+                        // Combine and send
+                        const payload = {
+                            type: "video_audio",
+                            chunk: chunkId,
+                            video: pendingChunks.current[chunkId].video,
+                            audio: pendingChunks.current[chunkId].audio,
+                        };
+
+                        console.log(`📦 Sending chunk_${chunkId}`, payload);
+
+                        // Read blobs and send together
+                        Promise.all([blobToArrayBuffer(payload.video), blobToArrayBuffer(payload.audio)]).then(
+                            ([videoBuf, audioBuf]) => {
+                                websocket.current?.send(
+                                    JSON.stringify({
+                                        type: "video_audio",
+                                        chunk: payload.chunk,
+                                        video: Array.from(new Uint8Array(videoBuf)),
+                                        audio: Array.from(new Uint8Array(audioBuf)),
+                                    }),
+                                );
+                            },
+                        );
+
+                        delete pendingChunks.current[chunkId];
+                        chunkCounterRef.current++;
                     }
                 };
 
-                // ✅ Capture final chunk when stopped
-                mediaRecorder.onstop = () => {
-                    console.log("Final chunk sent before stopping.");
-                    streamingRef.current = false;
+                videoRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0 && streamingRef.current) {
+                        handleChunk("video", event.data);
+                    }
                 };
 
-                mediaRecorder.start(30000); // Capture in 30s chunks
+                audioRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0 && streamingRef.current) {
+                        handleChunk("audio", event.data);
+                    }
+                };
 
-                // Auto stop after duration
-                stopTimeoutRef.current = setTimeout(() => stopStreaming(), ((duration * 60000) + 2000));
+                videoRecorder.start(30000);
+                audioRecorder.start(30000);
+
+                stopTimeoutRef.current = setTimeout(() => stopStreaming(), duration * 60000 + 2000);
             } catch (error) {
-                console.error("Error accessing camera:", error);
+                console.error("❌ Error accessing media devices:", error);
             }
         };
 
         startStreaming();
 
         return () => {
-            console.log("Component unmounting: Stopping stream");
+            console.log("🔁 Unmounting: stopping stream");
             stopStreaming();
-            socket.current.disconnect();
         };
     }, [duration]);
 
     useEffect(() => {
         if (stop && streamingRef.current) {
-            console.log("Stop button pressed: Stopping stream");
+            console.log("⏹️ Stop triggered");
             stopStreaming();
         }
     }, [stop]);
@@ -82,43 +135,40 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
     const stopStreaming = () => {
         if (!streamingRef.current) return;
 
-        console.log("Stopping video stream...");
+        console.log("🛑 Stopping streams...");
         streamingRef.current = false;
 
-        // Stop media recorder properly
-        if (mediaRecorderRef.current) {
-            mediaRecorderRef.current.stop(); // ✅ This ensures the last chunk is sent
-        }
+        videoRecorderRef.current?.stop();
+        audioRecorderRef.current?.stop();
 
-        // Stop all tracks
         streamRef.current?.getTracks().forEach((track) => track.stop());
 
-        // Remove video feed
         if (videoRef.current) {
             videoRef.current.srcObject = null;
         }
 
-        // ✅ Disconnect socket safely
-        if (socket.current) {
-            socket.current.disconnect();
-            console.log("Socket disconnected.");
+        if (websocket.current && websocket.current.readyState === WebSocket.OPEN) {
+            websocket.current.close();
+            console.log("🔌 WebSocket closed.");
         }
-
-        socket.current.disconnect();
 
         if (stopTimeoutRef.current) {
             clearTimeout(stopTimeoutRef.current);
         }
 
-        // Notify parent that streaming has stopped
         onStop();
     };
 
-    return (
-        <div>
-            <video ref={videoRef} autoPlay playsInline muted />
-        </div>
-    );
+    const blobToArrayBuffer = (blob: Blob): Promise<ArrayBuffer> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as ArrayBuffer);
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(blob);
+        });
+    };
+
+    return <video className="w-full h-full object-cover" ref={videoRef} autoPlay playsInline muted />;
 };
 
 export default VideoStreamer;
