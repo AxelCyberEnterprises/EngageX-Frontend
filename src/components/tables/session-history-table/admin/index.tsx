@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { BaseTable } from "../../base-table";
 import { columns, IAdminSessionHistory } from "./columns";
-// import data from "./data.json";
+import data from "./data.json";
 import { useSessionHistory } from "@/hooks/auth";
 
 export type DataInterface = {
@@ -41,7 +41,7 @@ export function formatDate(timestamp?: string): string {
 }
 
 export function formatTime(time?: string): string {
-    if (!time) return "0 mins";
+    if (!time) return "Unknown Duration";
     
     const parts = time.split(":").map(Number);
     if (parts.length !== 3 || parts.some(isNaN)) return "Invalid Duration";
@@ -58,7 +58,7 @@ export function formatTime(time?: string): string {
 
 const SessionHistoryTable = () => {
     const { data, error, isLoading } = useSessionHistory() as { data: { results: IAdminSessionHistory[] } | null; error: any; isLoading: boolean };
-        console.log(data)
+        
         const adminSessionHistoryData = useMemo<DataInterface[]>(() =>
             data?.results?.map((item: any) => ({
                 id: item.id || "N/A",
