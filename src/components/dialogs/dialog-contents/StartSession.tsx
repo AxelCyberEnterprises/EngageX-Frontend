@@ -8,11 +8,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
+    sessionType: "public-speaking" | "presentation-practice" | "pitch-practice";
     form?: UseFormReturn<FormType>;
     handlePublicSpeakingFormSubmit?: (values: FormType) => void;
 }
 
-const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionProps) => {
+const StartSession = ({ sessionType, form, handlePublicSpeakingFormSubmit }: IStartSessionProps) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -21,9 +22,22 @@ const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionPro
             form.handleSubmit(handlePublicSpeakingFormSubmit)();
         }
 
+        const sessionPath = (() => {
+            switch (sessionType) {
+                case "public-speaking":
+                    return "/sessions/public-speaking-session";
+                case "presentation-practice":
+                    return "/sessions/presentation-practice-session";
+                case "pitch-practice":
+                    return "/sessions/pitch-practice-session";
+                default:
+                    return "/";
+            }
+        })();
+
         dispatch(closeDialog());
-        navigate("/sessions/pitch-practice-session");
-    }, [dispatch, form, handlePublicSpeakingFormSubmit, navigate]);
+        navigate(sessionPath);
+    }, [dispatch, form, handlePublicSpeakingFormSubmit, navigate, sessionType]);
 
     return (
         <div className="flex flex-col justify-between">
