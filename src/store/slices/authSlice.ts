@@ -19,6 +19,7 @@ interface SignupData {
     confirmPassword: string;
     planQuestion: string;
     roleQuestion: string;
+    userId: string;
 }
 
 interface AuthState {
