@@ -5,7 +5,6 @@ import authReducer from "./slices/authSlice";
 import counterReducer from "./slices/counter";
 import pitchPracticeReducer from "./slices/dashboard/user/pitchPracticeSlice";
 import presentationPracticeReducer from "./slices/dashboard/user/presentationPracticeSlice";
-import publicSpeakingFormReducer from "./slices/dashboard/user/publicSpeakingFormSlice";
 import dynamicDialogReducer from "./slices/dynamicDialogSlice";
 import sessionReducer from "./slices/sessionSlice";
 
@@ -17,7 +16,6 @@ const rootReducer = combineReducers({
     dynamicDialog: dynamicDialogReducer,
     pitchPractice: pitchPracticeReducer,
     presentationPractice: presentationPracticeReducer,
-    publicSpeakingForm: publicSpeakingFormReducer,
     session: sessionReducer,
 });
 

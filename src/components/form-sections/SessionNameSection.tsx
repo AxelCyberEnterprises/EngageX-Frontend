@@ -18,7 +18,7 @@ const SessionNameSection = ({ className, form }: ISessionNameSectionProps) => {
             </div>
             <ControlledFieldWrapper
                 control={form.control}
-                name="sessionName"
+                name="session_name"
                 render={({ field }) => (
                     <Input
                         {...field}

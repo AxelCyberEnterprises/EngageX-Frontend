@@ -1,43 +1,39 @@
 import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
+import { useCreatePublicSpeakingSession } from "@/hooks/mutations/dashboard/user";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { PlayCircle } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
     sessionType: "public-speaking" | "presentation-practice" | "pitch-practice";
     form?: UseFormReturn<FormType>;
     handlePublicSpeakingFormSubmit?: (values: FormType) => void;
+    isLoading?: boolean;
+    isSuccess?: boolean;
+    isError?: boolean;
 }
 
-const StartSession = ({ sessionType, form, handlePublicSpeakingFormSubmit }: IStartSessionProps) => {
+const StartSession = ({ form }: IStartSessionProps) => {
+    const { mutate: createPublicSpeakingSession, isPending, isSuccess } = useCreatePublicSpeakingSession();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+
+    const handleSessionSetupSubmit = useCallback(
+        (values: FormType) => {
+            createPublicSpeakingSession(values);
+        },
+        [createPublicSpeakingSession],
+    );
 
     const handleProceed = useCallback(() => {
-        if (form && handlePublicSpeakingFormSubmit) {
-            form.handleSubmit(handlePublicSpeakingFormSubmit)();
+        if (form) {
+            form.handleSubmit(handleSessionSetupSubmit)();
         }
 
-        const sessionPath = (() => {
-            switch (sessionType) {
-                case "public-speaking":
-                    return "/sessions/public-speaking-session";
-                case "presentation-practice":
-                    return "/sessions/presentation-practice-session";
-                case "pitch-practice":
-                    return "/sessions/pitch-practice-session";
-                default:
-                    return "/";
-            }
-        })();
-
-        dispatch(closeDialog());
-        navigate(sessionPath);
-    }, [dispatch, form, handlePublicSpeakingFormSubmit, navigate, sessionType]);
+        if (isSuccess) dispatch(closeDialog());
+    }, [dispatch, form, handleSessionSetupSubmit, isSuccess]);
 
     return (
         <div className="flex flex-col justify-between">
@@ -61,7 +57,7 @@ const StartSession = ({ sessionType, form, handlePublicSpeakingFormSubmit }: ISt
                 >
                     Cancel
                 </Button>
-                <Button className="bg-gunmetal font-normal w-full h-11" onClick={handleProceed}>
+                <Button isLoading={isPending} className="bg-gunmetal font-normal w-full h-11" onClick={handleProceed}>
                     Proceed
                 </Button>
             </div>
