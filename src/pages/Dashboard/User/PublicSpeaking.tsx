@@ -63,7 +63,7 @@ const PublicSpeaking = () => {
                         variant="outline"
                         className="md:inlineflex hidden text-gunmetal rounded-lg border-gunmetal"
                     >
-                        Setup Drafts
+                        Continue with Draft
                     </Button>
                 </div>
                 <Button className="md:hidden inline-flex bg-transparent hover:bg-transparent size-fit px-0 py-0">
