@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SquareArrowUpRight, Volume2, MessageCircleMore } from "lucide-react";
 import audience from "../../assets/images/pngs/audience.png";
@@ -8,7 +9,7 @@ import CountdownTimer from "@/components/session/CountdownTimer";
 import TimerProgressBar from "@/components/session/TimerProgressBar";
 import pitchRoom from "../../assets/images/pngs/pitch-presentation-room.png";
 import VideoStreamer from "@/components/session/RecordView";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import alert from "../../assets/images/svgs/alert.svg";
@@ -28,6 +29,62 @@ const PitchPractice: React.FC = () => {
         setStop(true);
         navigate("/dashboard/user/session-history/1");
     };
+    
+    const { id } = useParams();
+    const [feedback, setFeedback] = useState<any | undefined>(undefined);
+    const [sessionId, setSessionId] = useState<string | undefined>();
+    const socket = useRef<WebSocket | null>(null);
+    const [isSocketConnected, setIsSocketConnected] = useState(false);
+
+    console.log(feedback);
+    
+
+    useEffect(() => {
+        if (id) {
+            setSessionId(id);
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (!sessionId) return;
+
+        const ws = new WebSocket(`ws://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
+        socket.current = ws;
+
+        ws.onopen = () => {
+            console.log("WebSocket connection established");
+            setIsSocketConnected(true);
+        };
+
+        ws.onmessage = (event) => {
+            console.log("Message received from server:", event.data);
+            try {
+                const parsed = JSON.parse(event.data);
+                console.log("Parsed message:", parsed);
+
+                if (parsed.type === "question") {
+                    setQuestionDialogOpen(true);
+                } else if (parsed.type === "realtime_feedback") {
+                    setFeedback(parsed);
+                }
+            } catch (e) {
+                console.error("Invalid JSON from server:", e);
+            }
+        };
+
+        ws.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+
+        ws.onclose = () => {
+            console.log("WebSocket connection closed");
+            setIsSocketConnected(false);
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, [sessionId]);
 
     return (
         <div className="text-primary-blue">
@@ -129,6 +186,8 @@ const PitchPractice: React.FC = () => {
                                     stop={stop}
                                     onStop={() => setDialogTwoOpen(true)}
                                     onStart={() => setStartTimer(true)}
+                                    ws={socket.current}
+                                    isWsReady={isSocketConnected}
                                 />
                             </div>
                         </div>
