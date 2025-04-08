@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-    MessageCircleMore,
-    SquareArrowUpRight,
-} from "lucide-react";
+import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
 import audience from "../../assets/images/pngs/audience.png";
 import questionImage from "../../assets/images/pngs/question-image.png";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
@@ -11,28 +9,81 @@ import VoiceAnalytics from "@/components/session/VoiceAnalytics";
 import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
 import VideoStreamer from "@/components/session/RecordView";
 import EngagementMetrics from "@/components/session/EngagementMetrics";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import alert from "../../assets/images/svgs/alert.svg";
 import TimerComponent from "@/components/session/TimerComponent";
 import { useMediaQuery } from "react-responsive";
 import MobileEngagementMetrics from "@/components/session/MobileEngagementMetrics";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
+import { useEffect } from "react";
 
 const PublicSpeaking: React.FC = () => {
     const [stop, setStop] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
-    const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(true);
+    const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
     const navigate = useNavigate();
     const time = 10; // in minutes
     const isLargeScreen = useMediaQuery({ minWidth: 1024 }); // Tailwind's lg breakpoint
+    const [feedback, setFeedback] = useState<any | undefined>(undefined);
 
     const StopStreaming = () => {
         setStop(true);
         navigate("/dashboard/user/session-history/1");
     };
+    const { id } = useParams();
+    const [sessionId, setSessionId] = useState<string | undefined>();
+    const socket = useRef<WebSocket | null>(null);
+    const [isSocketConnected, setIsSocketConnected] = useState(false);
+
+    useEffect(() => {
+        if (id) {
+            setSessionId(id);
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (!sessionId) return;
+
+        const ws = new WebSocket(`ws://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
+        socket.current = ws;
+
+        ws.onopen = () => {
+            console.log("WebSocket connection established");
+            setIsSocketConnected(true);
+        };
+
+        ws.onmessage = (event) => {
+            console.log("Message received from server:", event.data);
+            try {
+                const parsed = JSON.parse(event.data);
+                console.log("Parsed message:", parsed);
+                
+                if (parsed.type === "question") {
+                    setQuestionDialogOpen(true);
+                } else if (parsed.type === "realtime_feedback") {
+                    setFeedback(parsed);
+                }
+            } catch (e) {
+                console.error("Invalid JSON from server:", e);
+            }
+        };
+
+        ws.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+
+        ws.onclose = () => {
+            console.log("WebSocket connection closed");
+            setIsSocketConnected(false);
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, [sessionId]);
 
     return (
         <div className="text-primary-blue">
@@ -102,9 +153,17 @@ const PublicSpeaking: React.FC = () => {
             <section className="flex flex-wrap md:flex-row-reverse lg:flex-row">
                 {/* left side  */}
                 <div className="w-full hidden md:block gap-4 md:w-3/12 md:px-8 lg:pe-4 py-4">
-                    <VoiceAnalytics percent1={72} percent2={62} percent3={85} />
+                    <VoiceAnalytics
+                        percent1={feedback ? feedback.volume : 0}
+                        percent2={feedback ? feedback.clarity : 0}
+                        percent3={feedback ? feedback.pace : 0}
+                    />
 
-                    <EngagementMetrics percent1={32} percent2={42} percent3={35} />
+                    <EngagementMetrics
+                        percent1={feedback ? feedback.impact : 0}
+                        percent2={feedback ? feedback.engagement : 0}
+                        percent3={feedback ? feedback.transformative_potential : 0}
+                    />
                 </div>
 
                 {/* middle side  */}
@@ -128,6 +187,8 @@ const PublicSpeaking: React.FC = () => {
                                             stop={stop}
                                             onStop={() => setDialogTwoOpen(true)}
                                             onStart={() => setStartTimer(true)}
+                                            ws={socket.current}
+                                            isWsReady={isSocketConnected}
                                         />
                                     </div>
                                 </div>
@@ -194,6 +255,8 @@ const PublicSpeaking: React.FC = () => {
                                     stop={stop}
                                     onStop={() => setDialogTwoOpen(true)}
                                     onStart={() => setStartTimer(true)}
+                                    ws={socket.current}
+                                    isWsReady={isSocketConnected}
                                 />
                             </div>
                         </div>
@@ -227,9 +290,17 @@ const PublicSpeaking: React.FC = () => {
                 {/* right side mobile */}
                 <div className="px-4 md:hidden w-full mb-5 ">
                     <div className="border-1 border-bright-gray py-5 px-3 rounded-md">
-                        <MobileVoiceAnalytics impact={70} engagement={60} transformativePotential={80} />
+                        <MobileVoiceAnalytics
+                            impact={feedback ? feedback.curiosity : 0}
+                            engagement={feedback ? feedback.engagement : 0}
+                            transformativePotential={feedback ? feedback.transformative_potential : 0}
+                        />
 
-                        <MobileEngagementMetrics impact={70} volume={90} pace={30} />
+                        <MobileEngagementMetrics
+                            impact={feedback ? feedback.impact : 0}
+                            volume={feedback ? feedback.volume : 0}
+                            pace={feedback ? feedback.pace : 0}
+                        />
                     </div>
                 </div>
             </section>
