@@ -9,31 +9,14 @@ import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import { Button } from "@/components/ui/button";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
-import axios from "axios";
-import { tokenManager } from "@/lib/utils";
+import { useDashboardData } from "@/hooks/auth";
 
 const UserDashboardHome: React.FC = () => {
-  const token = tokenManager.getToken();
-  useEffect(() => {
-    console.log(token);
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.engagexai.io/sessions/dashboard/",
-          {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          }
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const {data} = useDashboardData()
 
-    fetchData();
-  }, [token]);
+  useEffect(()=>{
+    console.log(data)
+  }, [])
   const score = 89;
 
   const cardsData = [
