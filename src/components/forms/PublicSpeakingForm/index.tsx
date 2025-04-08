@@ -65,7 +65,13 @@ const PublicSpeakingForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartPublicSpeakingSession initiationType="skip" form={form} />,
+                                        children: (
+                                            <StartPublicSpeakingSession
+                                                initiationType="skip"
+                                                setValue={form.setValue}
+                                                handleSubmit={form.handleSubmit}
+                                            />
+                                        ),
                                     }),
                                 )
                             }
@@ -79,7 +85,12 @@ const PublicSpeakingForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartPublicSpeakingSession initiationType="start" form={form} />,
+                                        children: (
+                                            <StartPublicSpeakingSession
+                                                initiationType="start"
+                                                handleSubmit={form.handleSubmit}
+                                            />
+                                        ),
                                     }),
                                 )
                             }
