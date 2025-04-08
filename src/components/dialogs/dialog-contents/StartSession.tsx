@@ -9,10 +9,6 @@ import { useDispatch } from "react-redux";
 
 interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
     form?: UseFormReturn<FormType>;
-    handlePublicSpeakingFormSubmit?: (values: FormType) => void;
-    isLoading?: boolean;
-    isSuccess?: boolean;
-    isError?: boolean;
 }
 
 const StartSession = ({ form }: IStartSessionProps) => {

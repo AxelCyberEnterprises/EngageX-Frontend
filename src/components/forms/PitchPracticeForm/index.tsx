@@ -124,7 +124,7 @@ const PitchPracticeForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession sessionType="pitch-practice" />,
+                                        children: <StartSession />,
                                     }),
                                 )
                             }
@@ -173,7 +173,7 @@ const PitchPracticeForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession sessionType="pitch-practice" />,
+                                        children: <StartSession />,
                                     }),
                                 )
                             }

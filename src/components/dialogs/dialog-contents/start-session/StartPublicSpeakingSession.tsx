@@ -6,12 +6,11 @@ import { UseFormReturn } from "react-hook-form";
 import StartSession from ".";
 
 interface IStartPublicSpeakingSessionProps extends HTMLAttributes<HTMLDivElement> {
+    form: UseFormReturn<FormType>;
     initiationType: "skip" | "start";
-    setValue?: UseFormReturn<FormType>["setValue"];
-    handleSubmit: UseFormReturn<FormType>["handleSubmit"];
 }
 
-const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: IStartPublicSpeakingSessionProps) => {
+const StartPublicSpeakingSession = ({ initiationType, form }: IStartPublicSpeakingSessionProps) => {
     const SessionNameId = useId();
     const { mutate: createPublicSpeakingSession, isPending } = useCreatePublicSpeakingSession();
 
@@ -23,10 +22,10 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
     );
 
     const handleProceed = useCallback(() => {
-        if (setValue && initiationType === "skip") setValue("session_name", `Public Speaking Session ${SessionNameId}`);
-
-        handleSubmit(handleSessionSetupSubmit)();
-    }, [SessionNameId, handleSessionSetupSubmit, handleSubmit, initiationType, setValue]);
+        if (initiationType === "skip") form.setValue("session_name", `Public Speaking Session ${SessionNameId}`);
+        
+        form.handleSubmit(handleSessionSetupSubmit)();
+    }, [SessionNameId, form, handleSessionSetupSubmit, initiationType]);
 
     return (
         <StartSession>
