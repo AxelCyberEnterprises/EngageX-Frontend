@@ -4,10 +4,9 @@ import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { publicSpeakingVEOptions } from "@/config/form-field-options";
 import { PublicSpeakingSchema } from "@/schemas/public-speaking";
-import { setValues } from "@/store/slices/dashboard/user/publicSpeakingFormSlice";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { z } from "zod";
@@ -24,21 +23,12 @@ const PublicSpeakingForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PublicSpeakingSchema),
+        defaultValues: useMemo(() => ({ session_type: "public" }), []),
     });
-
-    const handlePublicSpeakingFormSubmit = useCallback(
-        (values: FormType) => {
-            dispatch(setValues(values));
-        },
-        [dispatch],
-    );
 
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(handlePublicSpeakingFormSubmit)}
-                className="flex lg:flex-row flex-col lg:gap-10 gap-6"
-            >
+            <form className="flex lg:flex-row flex-col lg:gap-10 gap-6">
                 <section className="flex-1 space-y-12">
                     <SessionNameSection {...{ form }} />
                     <GoalsSection {...{ form }} />
@@ -54,7 +44,7 @@ const PublicSpeakingForm = () => {
                     <div className="flex items-center justify-between">
                         <p>Enable AI Generated Questions</p>
                         <Switch
-                            onCheckedChange={(checked) => form.setValue("enableAiGeneratedQuestions", checked)}
+                            onCheckedChange={(checked) => form.setValue("allow_ai_questions", checked)}
                             className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
                         />
                     </div>
@@ -75,7 +65,7 @@ const PublicSpeakingForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession />,
+                                        children: <StartSession sessionType="public-speaking" />,
                                     }),
                                 )
                             }
@@ -89,7 +79,7 @@ const PublicSpeakingForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession {...{ form, handlePublicSpeakingFormSubmit }} />,
+                                        children: <StartSession {...{ form }} sessionType="public-speaking" />,
                                     }),
                                 )
                             }
