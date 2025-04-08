@@ -1,29 +1,39 @@
 import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
+import { useCreatePublicSpeakingSession } from "@/hooks/mutations/dashboard/user";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { PlayCircle } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
+    sessionType: "public-speaking" | "presentation-practice" | "pitch-practice";
     form?: UseFormReturn<FormType>;
     handlePublicSpeakingFormSubmit?: (values: FormType) => void;
+    isLoading?: boolean;
+    isSuccess?: boolean;
+    isError?: boolean;
 }
 
-const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionProps) => {
+const StartSession = ({ form }: IStartSessionProps) => {
+    const { mutate: createPublicSpeakingSession, isPending, isSuccess } = useCreatePublicSpeakingSession();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+
+    const handleSessionSetupSubmit = useCallback(
+        (values: FormType) => {
+            createPublicSpeakingSession(values);
+        },
+        [createPublicSpeakingSession],
+    );
 
     const handleProceed = useCallback(() => {
-        if (form && handlePublicSpeakingFormSubmit) {
-            form.handleSubmit(handlePublicSpeakingFormSubmit)();
+        if (form) {
+            form.handleSubmit(handleSessionSetupSubmit)();
         }
 
-        dispatch(closeDialog());
-        navigate("/sessions/pitch-practice-session");
-    }, [dispatch, form, handlePublicSpeakingFormSubmit, navigate]);
+        if (isSuccess) dispatch(closeDialog());
+    }, [dispatch, form, handleSessionSetupSubmit, isSuccess]);
 
     return (
         <div className="flex flex-col justify-between">
@@ -47,7 +57,7 @@ const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionPro
                 >
                     Cancel
                 </Button>
-                <Button className="bg-gunmetal font-normal w-full h-11" onClick={handleProceed}>
+                <Button isLoading={isPending} className="bg-gunmetal font-normal w-full h-11" onClick={handleProceed}>
                     Proceed
                 </Button>
             </div>
