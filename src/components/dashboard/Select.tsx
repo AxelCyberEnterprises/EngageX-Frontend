@@ -25,6 +25,7 @@ interface SelectProps {
   showIcon?: boolean;
   hideChevron?: boolean;
   icon?: string;
+  disabled?: boolean;
 }
 
 const ShadSelect: React.FC<SelectProps> = ({
@@ -37,6 +38,7 @@ const ShadSelect: React.FC<SelectProps> = ({
   showIcon = true,
   hideChevron,
   icon,
+  disabled,
 }) => {
 
   const [selectedLabel, setSelectedLabel] = useState<string>(() => {
@@ -59,6 +61,7 @@ const ShadSelect: React.FC<SelectProps> = ({
   return (
     <Select defaultValue={defaultValue} onValueChange={handleChange}>
       <SelectTrigger
+        disabled={disabled}
         className={cn(
           "w-full rounded-full border bg-white px-4 py-3 text-left shadow-none focus-visible:ring-0",
           hideChevron && '[&>svg]:hidden',
