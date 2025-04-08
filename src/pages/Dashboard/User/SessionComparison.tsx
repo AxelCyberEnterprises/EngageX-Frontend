@@ -8,6 +8,8 @@ import ShadSelect from '@/components/dashboard/Select';
 import { useSearchParams } from 'react-router-dom';
 import SessionComparisonResults from '@/components/dashboard/SessionComparison';
 import SequenceSelector, { Sequence } from '@/components/dashboard/SequenceSelect';
+// @ts-ignore
+import html2pdf from 'html2pdf.js';
 
 interface SequenceItem {
   id: string;
@@ -31,6 +33,7 @@ const SessionComparison: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const sectionFromUrl = searchParams.get("section");
   const [activeSection, setActiveSection] = useState(sectionItems[0]);
+  const [selectedSequence, setSelectedSequence] = useState<Sequence>();
   const [selectedSequence1, setSelectedSequence1] = useState<string>("");
   const [selectedSequence2, setSelectedSequence2] = useState<string>("");
 
@@ -100,6 +103,9 @@ const SessionComparison: React.FC = () => {
   const handleSelectSequence1 = (sequence: string) => {
     console.log('Selected sequence:', sequence);
     setSelectedSequence1(sequence);
+    if (sequence === selectedSequence2) {
+      setSelectedSequence2("");
+    }
   };
 
   const handleSelectSequence2 = (sequence: string) => {
@@ -109,10 +115,6 @@ const SessionComparison: React.FC = () => {
 
   const handleNewSession = (sequenceId: number | string) => {
     console.log('New session for sequence:', sequenceId);
-  };
-
-  const handleDownloadReport = () => {
-    console.log('Downloading report...');
   };
 
   const handleCompareSequences = (section: string) => {
@@ -141,7 +143,24 @@ const SessionComparison: React.FC = () => {
 
   const handleSelectSequence = (sequence: Sequence) => {
     console.log("Selected sequence:", sequence);
-    // Your logic for when a sequence is selected
+    setSelectedSequence(sequence);
+  };
+
+  const handleDownloadReport = () => {
+    console.log('Downloading report...');
+
+    const element = document.querySelector('.comparison-results-container'); // Add this class to your comparison results section
+    const opt = {
+      margin: 10,
+      filename: 'session-comparison-report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    if (element) {
+      html2pdf().set(opt).from(element).save();
+    }
   };
 
   return (
@@ -155,6 +174,7 @@ const SessionComparison: React.FC = () => {
           variant="outline"
           className="bg-white text-[#252A39] border-[#6F7C8E] hover:bg-gray-50 shadow-none sm:flex hidden items-center gap-2"
           onClick={handleDownloadReport}
+          disabled={activeSection !== 'comparison'}
         >
           <img src={download} alt="download icon" />
           Download Report
@@ -178,17 +198,19 @@ const SessionComparison: React.FC = () => {
               placeholder="Select Sequence"
               className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full'
               icon={calendar}
+              disabled={!selectedSequence}
             />
           </div>
 
           <div>
             <h3 className="mb-2 text-[#252A39] text-lg font-medium">Select an Improvement Sequence</h3>
             <ShadSelect
-              options={sequenceOptions2}
+              options={sequenceOptions2.filter(option => option.value !== selectedSequence1)}
               onChange={handleSelectSequence2}
               placeholder="Select Sequence"
-              className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto  focus:shadow-none active:shadow-none w-full'
+              className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full'
               icon={calendar}
+              disabled={!selectedSequence}
             />
           </div>
         </div>
@@ -197,6 +219,7 @@ const SessionComparison: React.FC = () => {
           <Button
             className="bg-[#252A39] hover:bg-[#1e2330] text-white shadow-none"
             onClick={() => handleCompareSequences('comparison')}
+            disabled={!selectedSequence1 || !selectedSequence2}
           >
             Compare Sessions
           </Button>

@@ -12,8 +12,6 @@ import diamond from "../../../assets/images/pngs/diamond.png";
 // import coin from '../../../assets/images/pngs/orange-gem.png';
 import horse from "../../../assets/images/svgs/horse.svg";
 import trendUpIcon from "../../../assets/images/svgs/trend-up.svg";
-import starIcon from "../../../assets/images/svgs/award.svg";
-import documentIcon from "../../../assets/images/svgs/document.svg";
 import messageIcon from "../../../assets/images/svgs/message.svg";
 import micIcon from "../../../assets/images/svgs/mic.svg";
 import speakerIcon from "../../../assets/images/svgs/speaker.svg";
@@ -37,6 +35,15 @@ import { columns } from "@/components/tables/performance-metric-table/user/colum
 import { data } from "@/components/tables/performance-metric-table/user/data";
 import SequenceSelector, { Sequence } from "@/components/dashboard/SequenceSelect";
 import RecentAchievementsModal from "@/components/modals/modalVariants/RecentAchievementsModal";
+
+interface Achievement {
+  id: number;
+  title: string;
+  level: number;
+  score: number;
+  total: number;
+  note: string;
+}
 
 const ProgressTracking: React.FC = () => {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
