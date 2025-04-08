@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { BaseTable } from "../../base-table";
 import { columns, IAdminSessionHistory } from "./columns";
-import data from "./data.json";
+// import data from "./data.json";
 import { useSessionHistory } from "@/hooks/auth";
 
 export type DataInterface = {
