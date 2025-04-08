@@ -27,13 +27,13 @@ const PublicSpeaking: React.FC = () => {
     const navigate = useNavigate();
     const time = 10; // in minutes
     const isLargeScreen = useMediaQuery({ minWidth: 1024 }); // Tailwind's lg breakpoint
-    const [feedback, setFeedback] = useState<any | undefined>(undefined);
 
     const StopStreaming = () => {
         setStop(true);
         navigate("/dashboard/user/session-history/1");
     };
     const { id } = useParams();
+    const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
@@ -60,7 +60,7 @@ const PublicSpeaking: React.FC = () => {
             try {
                 const parsed = JSON.parse(event.data);
                 console.log("Parsed message:", parsed);
-                
+
                 if (parsed.type === "question") {
                     setQuestionDialogOpen(true);
                 } else if (parsed.type === "realtime_feedback") {
