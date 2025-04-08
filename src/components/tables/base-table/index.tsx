@@ -37,6 +37,7 @@ import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 import { setSessionId } from "@/store/slices/sessionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { useNavigate } from "react-router-dom";
 
 export function BaseTable<TData, TValue>({
     columns,
@@ -59,6 +60,10 @@ export function BaseTable<TData, TValue>({
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
+    const navigate = useNavigate()
+
+    const user = localStorage.getItem('user') === 'true';
+console.log(user)
 
     const table = useReactTable({
         data,
@@ -160,6 +165,7 @@ export function BaseTable<TData, TValue>({
                                     const rowData = row.original as {id?: string};
                                     if (rowData.id) {
                                       dispatch(setSessionId(rowData.id));
+                                      navigate(`/dashboard/${user?"user":"admin"}/session-history/${rowData.id}`);
                                     }
                                   }}
                                     data-state={row.getIsSelected() && "selected"}

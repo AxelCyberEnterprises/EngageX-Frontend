@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import ShadAreaChart from "@/components/dashboard/ShadAreaChart";
 import RecentSessions from "../../../components/dashboard/RecentSessionsTable";
 import ShadDonutChart from "@/components/dashboard/ShadDonutChart";
 import { useDashboardData } from "@/hooks/auth";
+import { UseQueryResult } from "@tanstack/react-query";
+import { Session } from "../../../components/dashboard/RecentSessionsTable";
+import { Loader } from "lucide-react";
+import { capitalizeWords, formatDate } from "@/components/tables/session-history-table/admin";
 
 const AdminDashboardHome: React.FC = () => {
-    const { data } = useDashboardData();
+    // type Session = {
+    //     id: string;
+    //     name: string;
+    //     // Add other properties of a session here
+    // };
+
+    
+
+    const { data, isLoading } = useDashboardData() as UseQueryResult<{ recent_sessions: Session[] }, Error>;
+    console.log("unprocessed" , data)
+     const recentData = useMemo(() =>
+                data?.recent_sessions?.map((item: any) => ({
+                    id: item.id || "N/A",
+                    sessionName: capitalizeWords(item.session_name || "Unknown Session"),
+                    sessionType: capitalizeWords(item.session_type || "Unknown Type"),
+                    date: formatDate(item.date),
+                    duration: item.duration, // Keep duration as a number
+                })) || [],
+                [data?.recent_sessions]
+            );
 
     console.log(data);
     const cardsData = [
@@ -129,6 +152,15 @@ const AdminDashboardHome: React.FC = () => {
         ActiveUsers: "#252A39",
         InactiveUsers: "#B9BCC8",
     };
+    // console.log(data?.recent_sessions)
+
+    if(isLoading){
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <Loader />
+            </div>
+        );
+    }
 
     return (
         <div className="admin__dashboard__index py-3 px-4 bg-ghost-white">
@@ -152,7 +184,7 @@ const AdminDashboardHome: React.FC = () => {
                                 {card.icon}
                                 <p className="ms-2.5 gunmetal">{card.title}</p>
                             </div>
-                            <h4 className="gunmetal mb-5.5">{[card.key]}</h4>
+                            <h4 className="gunmetal mb-5.5">{16}</h4>
                             <div className="flex items-center">
                                 <div className="flex items-center me-2">
                                     {card.direction === "up" ? (
@@ -239,7 +271,7 @@ const AdminDashboardHome: React.FC = () => {
             <div className="flex flex-wrap lg:items-stretch">
                 <div className="w-full lg:w-6/9 lg:pe-2 mb-4 mt-3 shad__table">
                     <div className="dash__card px-5 py-4 rounded-[8px]">
-                        <RecentSessions />
+                        {data?.recent_sessions && <RecentSessions data={recentData} />}
                     </div>
                 </div>
 

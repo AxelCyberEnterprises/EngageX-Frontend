@@ -20,6 +20,7 @@ interface SignupData {
     confirmPassword: string;
     planQuestion: string;
     roleQuestion: string;
+    userId: string;
 }
 
 export interface AuthUser {
