@@ -27,7 +27,7 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
             <div>
                 <ControlledFieldWrapper
                     control={form.control}
-                    name="virtualEnvironment"
+                    name="virtual_environment"
                     render={({ field }) => (
                         <FormItem className="space-y-3">
                             <FormControl>
@@ -45,7 +45,7 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
                                                 <div
                                                     className={cn("relative rounded-lg isolate", {
                                                         "outline-4 outline-medium-sea-green":
-                                                            form.watch("virtualEnvironment") === value,
+                                                            form.watch("virtual_environment") === value,
                                                     })}
                                                 >
                                                     <img

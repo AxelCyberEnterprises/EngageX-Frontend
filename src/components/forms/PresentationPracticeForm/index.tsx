@@ -112,7 +112,7 @@ const PresentationPracticeForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession />,
+                                        children: <StartSession sessionType="presentation-practice" />,
                                     }),
                                 )
                             }
@@ -161,7 +161,7 @@ const PresentationPracticeForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession />,
+                                        children: <StartSession sessionType="presentation-practice" />,
                                     }),
                                 )
                             }

@@ -1,14 +1,17 @@
 import { z } from "zod";
 
 export const PublicSpeakingSchema = z.object({
-    sessionName: z.string(),
-    goals: z.array(
-        z.object({
-            id: z.number(),
-            goal: z.string(),
-        }),
-    ),
-    virtualEnvironment: z.string(),
-    speakerNotes: z.string(),
-    enableAiGeneratedQuestions: z.boolean(),
+    session_name: z.string(),
+    session_type: z.enum(["pitch", "public", "presentation"]),
+    goals: z
+        .array(
+            z.object({
+                id: z.number(),
+                goal: z.string(),
+            }),
+        )
+        .optional(),
+    virtual_environment: z.enum(["conference_room"]).optional(),
+    notes: z.string().optional(),
+    allow_ai_questions: z.boolean().optional(),
 });
