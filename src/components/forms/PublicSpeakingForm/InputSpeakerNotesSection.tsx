@@ -19,7 +19,7 @@ const InputSpeakerNotesSection = ({ form }: IInputSpeakerNotesSectionProps) => {
             </div>
             <ControlledFieldWrapper
                 control={form.control}
-                name="speakerNotes"
+                name="notes"
                 label="Speaker note"
                 className="[&_[data-slot='form-label']]:font-normal"
                 render={({ field }) => (
