@@ -1,34 +1,11 @@
-import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
-import { useCreatePublicSpeakingSession } from "@/hooks/mutations/dashboard/user";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { PlayCircle } from "lucide-react";
-import { HTMLAttributes, useCallback } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { ReactNode } from "react";
 import { useDispatch } from "react-redux";
 
-interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
-    form?: UseFormReturn<FormType>;
-}
-
-const StartSession = ({ form }: IStartSessionProps) => {
-    const { mutate: createPublicSpeakingSession, isPending, isSuccess } = useCreatePublicSpeakingSession();
+const StartSession = ({ children }: { children: ReactNode }) => {
     const dispatch = useDispatch();
-
-    const handleSessionSetupSubmit = useCallback(
-        (values: FormType) => {
-            createPublicSpeakingSession(values);
-        },
-        [createPublicSpeakingSession],
-    );
-
-    const handleProceed = useCallback(() => {
-        if (form) {
-            form.handleSubmit(handleSessionSetupSubmit)();
-        }
-
-        if (isSuccess) dispatch(closeDialog());
-    }, [dispatch, form, handleSessionSetupSubmit, isSuccess]);
 
     return (
         <div className="flex flex-col justify-between">
@@ -52,9 +29,7 @@ const StartSession = ({ form }: IStartSessionProps) => {
                 >
                     Cancel
                 </Button>
-                <Button isLoading={isPending} className="bg-gunmetal font-normal w-full h-11" onClick={handleProceed}>
-                    Proceed
-                </Button>
+                {children}
             </div>
         </div>
     );

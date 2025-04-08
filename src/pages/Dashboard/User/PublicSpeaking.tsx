@@ -1,11 +1,15 @@
 import LicenseDraft from "@/assets/images/svgs/license-draft.svg";
+import FeatureWalkthrough from "@/components/dialogs/dialog-contents/FeatureWalkthrough";
 import PublicSpeakingForm from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
+import { useAppDispatch } from "@/store";
+import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { ArrowLeft } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PublicSpeaking = () => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     return (
         <section className="flex flex-col gap-y-8 px-4 pt-4 pb-[15vh]">
@@ -20,9 +24,19 @@ const PublicSpeaking = () => {
                     </Button>
                     <div className="md:flex hidden items-center gap-x-1 text-sm font-medium">
                         <span>Need help setting up?</span>
-                        <Link to="">
+                        <Button
+                            className="size-fit bg-transparent hover:bg-transparent p-0 shadow-none"
+                            onClick={() =>
+                                dispatch(
+                                    openDialog({
+                                        key: "feature-walkthrough",
+                                        children: <FeatureWalkthrough />,
+                                    }),
+                                )
+                            }
+                        >
                             <span className="text-[#64BA9F]">Click here</span>
-                        </Link>
+                        </Button>
                     </div>
                 </div>
                 <div className="flex items-center justify-between">
@@ -30,14 +44,24 @@ const PublicSpeaking = () => {
                         <h5>Set up Public Speaking Session</h5>
                         <div className="md:hidden flex items-center gap-x-1 text-sm font-medium">
                             <span>Need help setting up?</span>
-                            <Link to="">
+                            <Button
+                                className="size-fit bg-transparent hover:bg-transparent p-0 shadow-none"
+                                onClick={() =>
+                                    dispatch(
+                                        openDialog({
+                                            key: "feature-walkthrough",
+                                            children: <FeatureWalkthrough />,
+                                        }),
+                                    )
+                                }
+                            >
                                 <span className="text-[#64BA9F]">Click here</span>
-                            </Link>
+                            </Button>
                         </div>
                     </div>
                     <Button
                         variant="outline"
-                        className="md:inline-flex hidden text-gunmetal rounded-lg border-gunmetal"
+                        className="md:inlineflex hidden text-gunmetal rounded-lg border-gunmetal"
                     >
                         Setup Drafts
                     </Button>
