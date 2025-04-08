@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//     DropdownMenu,
+//     DropdownMenuContent,
+//     DropdownMenuItem,
+//     DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { ChartLine, Download, MoreHorizontal } from "lucide-react";
-import { Link } from "react-router-dom";
+// import { ChartLine, Download, MoreHorizontal } from "lucide-react";
+// import { Link } from "react-router-dom";
 import BaseTableColumnHeader from "../../base-table/BaseTableColumnHeader";
 
 export type IUserSessionHistory = {
@@ -58,39 +58,39 @@ export const columns: ColumnDef<IUserSessionHistory>[] = [
         accessorKey: "duration",
         header: ({ column }) => <BaseTableColumnHeader column={column} title="Duration" />,
     },
-    {
-        id: "actions",
-        header: () => <span className="text-primary-base">Action</span>,
-        enableHiding: false,
-        cell: (row) => {
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            className="bg-transparent hover:bg-transparent text-primary-base size-fit p-0 has-[>svg]:px-0 focus-visible:border-none focus-visible:ring-0"
-                        >
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="size-5" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" alignOffset={-10} className="p-0 border-bright-gray">
-                        <Link to={`/dashboard/user/session-history/${row.row.original.id}`}>
-                            <DropdownMenuItem className="px-4 py-2 cursor-pointer">
-                                <ChartLine className="text-primary-base" />
-                                <span className="text-primary-base text-sm">View Report</span>
-                            </DropdownMenuItem>
-                        </Link>
-                        <Link to="">
-                            <DropdownMenuItem className="px-4 py-2 cursor-pointer">
-                                <Download className="text-primary-base" />
-                                <span className="text-primary-base text-sm">Download</span>
-                            </DropdownMenuItem>
-                        </Link>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
-    },
+    // {
+    //     id: "actions",
+    //     header: () => <span className="text-primary-base">Action</span>,
+    //     enableHiding: false,
+    //     cell: (row) => {
+    //         return (
+    //             <DropdownMenu>
+    //                 <DropdownMenuTrigger asChild>
+    //                     <Button
+    //                         variant="ghost"
+    //                         className="bg-transparent hover:bg-transparent text-primary-base size-fit p-0 has-[>svg]:px-0 focus-visible:border-none focus-visible:ring-0"
+    //                     >
+    //                         <span className="sr-only">Open menu</span>
+    //                         <MoreHorizontal className="size-5" />
+    //                     </Button>
+    //                 </DropdownMenuTrigger>
+    //                 <DropdownMenuContent align="end" alignOffset={-10} className="p-0 border-bright-gray">
+    //                     <Link to={`/dashboard/user/session-history/${row.row.original.id}`}>
+    //                         <DropdownMenuItem className="px-4 py-2 cursor-pointer">
+    //                             <ChartLine className="text-primary-base" />
+    //                             <span className="text-primary-base text-sm">View Report</span>
+    //                         </DropdownMenuItem>
+    //                     </Link>
+    //                     <Link to="">
+    //                         <DropdownMenuItem className="px-4 py-2 cursor-pointer">
+    //                             <Download className="text-primary-base" />
+    //                             <span className="text-primary-base text-sm">Download</span>
+    //                         </DropdownMenuItem>
+    //                     </Link>
+    //                 </DropdownMenuContent>
+    //             </DropdownMenu>
+    //         );
+    //     },
+    // },
 ];
 
