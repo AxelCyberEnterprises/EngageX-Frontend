@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
@@ -26,13 +27,13 @@ const PublicSpeaking: React.FC = () => {
     const navigate = useNavigate();
     const time = 10; // in minutes
     const isLargeScreen = useMediaQuery({ minWidth: 1024 }); // Tailwind's lg breakpoint
+    const [feedback, setFeedback] = useState<any | undefined>(undefined);
 
     const StopStreaming = () => {
         setStop(true);
         navigate("/dashboard/user/session-history/1");
     };
     const { id } = useParams();
-    const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
@@ -46,7 +47,7 @@ const PublicSpeaking: React.FC = () => {
     useEffect(() => {
         if (!sessionId) return;
 
-        const ws = new WebSocket(`wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
+        const ws = new WebSocket(`ws://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
         socket.current = ws;
 
         ws.onopen = () => {
@@ -59,7 +60,7 @@ const PublicSpeaking: React.FC = () => {
             try {
                 const parsed = JSON.parse(event.data);
                 console.log("Parsed message:", parsed);
-
+                
                 if (parsed.type === "question") {
                     setQuestionDialogOpen(true);
                 } else if (parsed.type === "realtime_feedback") {
@@ -83,100 +84,6 @@ const PublicSpeaking: React.FC = () => {
             ws.close();
         };
     }, [sessionId]);
-
-     const [sessionId, setSessionId] = useState<string | null>(null); // Store sessionId in state
-     const socket = useRef<WebSocket | null>(null); // Store WebSocket in useRef
-
-     async function createPracticeSession() {
-         try {
-             const response = await fetch(`https://api.engagexai.io/sessions/sessions/`, {
-                 method: "POST",
-                 headers: {
-                     "Content-Type": "application/json",
-                     Authorization: `Token fb6748ce351fb7c7a1821d24c3c4874c8dfdaac0`,
-                 },
-                 body: JSON.stringify({
-                     session_name: "Live Practice Session",
-                     session_type: "public",
-                 }),
-             });
-             if (!response.ok) {
-                 console.error("Failed to create practice session:", response.status);
-                 return null;
-             }
-             const data = await response.json();
-             setSessionId(data.id); // Update sessionId state
-             console.log("Created Practice Session with ID:", data.id);
-         } catch (error) {
-             console.error("Error creating practice session:", error);
-         }
-     }
-
-     // useEffect to ensure createPracticeSession runs only once
-     useEffect(() => {
-         if (!sessionId) {
-             // Only create a new session if there isn't already one
-             createPracticeSession();
-         }
-     }, [sessionId]); // Dependency array with sessionId ensures it runs only once
-
-     // Establish WebSocket connection only when sessionId is set
-     useEffect(() => {
-         if (sessionId) {
-             socket.current = new WebSocket(`ws://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
-
-             socket.current.onopen = () => {
-                 console.log("WebSocket connection established");
-             };
-
-             socket.current.onmessage = (event) => {
-                 console.log("Message received from server:", event.data);
-             };
-
-             socket.current.onerror = (error) => {
-                 console.error("WebSocket error:", error);
-             };
-
-             socket.current.onclose = () => {
-                 console.log("WebSocket connection closed");
-             };
-         }
-
-         // Cleanup WebSocket when component unmounts or sessionId changes
-         return () => {
-             if (socket.current) {
-                 socket.current.close();
-             }
-         };
-     }, [sessionId]);
-
-    // useEffect(() => {
-    //     createPracticeSession();
-    //     socket.current = new WebSocket(`ws:api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
-
-    //     socket.current.onopen = () => {
-    //         console.log("WebSocket connection established");
-    //     };
-
-    //     socket.current.onmessage = (event) => {
-    //         console.log("Message received from server:", event.data);
-    //     };
-
-    //     socket.current.onerror = (error) => {
-    //         console.error("WebSocket error:", error);
-    //     };
-
-    //     socket.current.onclose = () => {
-    //         console.log("WebSocket connection closed");
-    //     };
-
-    //     return () => {
-    //         if (socket.current) {
-    //             socket.current.close();
-    //             console.log("WebSocket connection cleaned up");
-    //         }
-    //     };
-    // }, []);
 
     return (
         <div className="text-primary-blue">
@@ -281,7 +188,7 @@ const PublicSpeaking: React.FC = () => {
                                             onStop={() => setDialogTwoOpen(true)}
                                             onStart={() => setStartTimer(true)}
                                             ws={socket.current}
-                                            sessionId={sessionId}
+                                            isWsReady={isSocketConnected}
                                         />
                                     </div>
                                 </div>
@@ -349,7 +256,7 @@ const PublicSpeaking: React.FC = () => {
                                     onStop={() => setDialogTwoOpen(true)}
                                     onStart={() => setStartTimer(true)}
                                     ws={socket.current}
-                                    sessionId={sessionId}
+                                    isWsReady={isSocketConnected}
                                 />
                             </div>
                         </div>
