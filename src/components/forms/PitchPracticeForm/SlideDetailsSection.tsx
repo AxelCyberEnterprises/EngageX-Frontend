@@ -75,7 +75,7 @@ const SlideDetailsSection = ({ className, form }: ISlideDetailsSectionProps) => 
                     <div className="space-y-6">
                         <ControlledFieldWrapper
                             control={form.control}
-                            name={`slidesNotes.${activeSlideIndex}`}
+                            name="notes"
                             label="Slide Note"
                             render={({ field }) => (
                                 <Textarea

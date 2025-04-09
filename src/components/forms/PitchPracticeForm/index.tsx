@@ -110,7 +110,7 @@ const PitchPracticeForm = () => {
                         <Button
                             type="button"
                             variant="outline"
-                            className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal"
+                            className="hidden text-gunmetal hover:text-gunmetal border-gunmetal font-normal"
                         >
                             Save as Draft
                         </Button>
@@ -159,7 +159,7 @@ const PitchPracticeForm = () => {
                         <Button
                             type="button"
                             variant="outline"
-                            className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal"
+                            className="hidden text-gunmetal hover:text-gunmetal border-gunmetal font-normal"
                         >
                             Save as Draft
                         </Button>

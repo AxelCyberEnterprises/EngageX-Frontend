@@ -43,7 +43,7 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
                                             </FormControl>
                                             <FormLabel className="cursor-pointer">
                                                 <div
-                                                    className={cn("relative rounded-lg isolate", {
+                                                    className={cn("w-full relative rounded-lg isolate", {
                                                         "outline-4 outline-medium-sea-green":
                                                             form.watch("virtual_environment") === value,
                                                     })}

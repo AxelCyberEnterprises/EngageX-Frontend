@@ -1,8 +1,5 @@
-import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
 import SlidePreviewSection from "@/components/form-sections/SlidePreviewSection";
 import VirtualEnvironmentSection from "@/components/form-sections/VirtualEnvironmentSection";
-import { FormControl, FormItem, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { practicesVEOptions } from "@/config/form-field-options";
 import { cn } from "@/lib/utils";
@@ -11,6 +8,7 @@ import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { FormType } from ".";
+import { Switch } from "@/components/ui/switch";
 
 interface ISlidePreviewAndSettingsSectionProps extends HTMLAttributes<HTMLElement> {
     form: UseFormReturn<FormType>;
@@ -31,34 +29,12 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
                 />
                 <SlidePreviewSection {...{ activeSlide, activeSlideIndex }} />
                 <Separator className="bg-bright-gray" />
-                <div className="space-y-4">
-                    <h6 className="text-lg">Slide Settings</h6>
-                    <div className="space-y-5">
-                        <ControlledFieldWrapper
-                            control={form.control}
-                            name="qaQuestionsPerSession"
-                            label="Q&A Questions per session"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue="1">
-                                        <FormControl>
-                                            <SelectTrigger className="text-gunmetal [&_svg:not([class*='text-'])]:text-gunmetal [&_svg:not([class*='text-'])]:opacity-100 h-10">
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent className="border-none">
-                                            <SelectItem value="1">1</SelectItem>
-                                            <SelectItem value="2">2</SelectItem>
-                                            <SelectItem value="3">3</SelectItem>
-                                            <SelectItem value="4">4</SelectItem>
-                                            <SelectItem value="5">5</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                <div className="flex items-center justify-between">
+                    <small>Enable AI Generated Questions</small>
+                    <Switch
+                        onCheckedChange={(checked) => form.setValue("allow_ai_questions", checked)}
+                        className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
+                    />
                 </div>
             </>
         </section>

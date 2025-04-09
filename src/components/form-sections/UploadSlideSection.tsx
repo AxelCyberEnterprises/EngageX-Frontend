@@ -43,7 +43,9 @@ const UploadSlideSection = ({
                         <UploadCloud className="size-5 text-gunmetal" />
                         <span className="text-center">
                             Drag and drop slides here
-                            <br /> PNG, JPG, PDF (max. 800x400px)
+                            <br />
+                            PDF, PPTX
+                            <br /> (max. 800x400px)
                         </span>
                         <span>Or</span>
                         <Button type="button" className="bg-green-sheen hover:bg-green-sheen/80 transition-colors">
