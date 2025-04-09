@@ -7,19 +7,19 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import PDFViewer from "@/components/widgets/pdf-viewer";
 import { cn, convertDataUrlToFile, isDataUrlPdf } from "@/lib/utils";
-import { RootState, useAppDispatch } from "@/store";
+import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { FormType } from ".";
 
 interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
-    form: UseFormReturn<FormType>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form: UseFormReturn<any>;
+    activeSlideIndex: number;
+    slidePreviews: string[];
 }
 
-const SlideDetailsSection = ({ className, form }: ISlideDetailsSectionProps) => {
-    const { activeSlideIndex, slidePreviews } = useSelector((state: RootState) => state.pitchPractice);
+const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews }: ISlideDetailsSectionProps) => {
     const activeSlide = slidePreviews[activeSlideIndex];
     const dispatch = useAppDispatch();
 
@@ -51,9 +51,6 @@ const SlideDetailsSection = ({ className, form }: ISlideDetailsSectionProps) => 
                 </div>
                 <Separator />
                 <div className="space-y-5 lg:pl-4 md:pr-4">
-                    <p className="lg:hidden block text-sm font-medium">
-                        You can proceed to your practice session without uploading slides.
-                    </p>
                     <h6 className="text-lg">Slide {activeSlideIndex + 1}</h6>
                     <div className="w-auto h-90 rounded-lg overflow-hidden">
                         {activeSlide ? (

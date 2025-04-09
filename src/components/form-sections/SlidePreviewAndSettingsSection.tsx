@@ -1,21 +1,25 @@
 import SlidePreviewSection from "@/components/form-sections/SlidePreviewSection";
 import VirtualEnvironmentSection from "@/components/form-sections/VirtualEnvironmentSection";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { practicesVEOptions } from "@/config/form-field-options";
 import { cn } from "@/lib/utils";
-import { RootState } from "@/store";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { FormType } from ".";
-import { Switch } from "@/components/ui/switch";
 
 interface ISlidePreviewAndSettingsSectionProps extends HTMLAttributes<HTMLElement> {
-    form: UseFormReturn<FormType>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form: UseFormReturn<any>;
+    activeSlideIndex: number;
+    slidePreviews: string[];
 }
 
-const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSettingsSectionProps) => {
-    const { activeSlideIndex, slidePreviews } = useSelector((state: RootState) => state.pitchPractice);
+const SlidePreviewAndSettingsSection = ({
+    className,
+    form,
+    activeSlideIndex,
+    slidePreviews,
+}: ISlidePreviewAndSettingsSectionProps) => {
     const activeSlide = slidePreviews[activeSlideIndex];
 
     return (

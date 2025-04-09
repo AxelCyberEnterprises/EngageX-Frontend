@@ -11,7 +11,7 @@ const initialState: IPitchPracticeState = {
 };
 
 const pitchPracticeSlice = createSlice({
-    name: "pitch-practice",
+    name: "pitchPractice",
     initialState,
     reducers: {
         setActiveSlideIndex: (state, action: PayloadAction<number>) => {
