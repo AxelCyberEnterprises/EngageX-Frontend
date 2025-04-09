@@ -74,7 +74,7 @@ const Help: React.FC = () => {
                     <p className="text-[#a5b8c3] sm:text-xl  text-center">
                         Visit our FAQs page to know more about our services at EngageX
                     </p>
-                    <Link className="mt-5 " to="faqs">
+                    <a target="_blank" href={`${window.location.origin}/contact#faq`} rel="noopener noreferrer" className="mt-5 " >
                         <div className="bg-[#6f7c8e]  text-lg flex items-center gap-0 px-8 py-3  hover:bg-[#6f7c8e90] border-dotted  !important border-[#6f7c8e] rounded-md">
                             <p className=" font-medium">Visit our FAQs</p>
                             <svg
@@ -90,7 +90,7 @@ const Help: React.FC = () => {
                                 />
                             </svg>
                         </div>
-                    </Link>
+                    </a>
                 </section>
             </main>
         </div>
