@@ -1,4 +1,4 @@
-import StartSession from "@/components/dialogs/dialog-contents/StartSession";
+import StartPublicSpeakingSession from "@/components/dialogs/dialog-contents/start-session/StartPublicSpeakingSession";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
@@ -65,7 +65,13 @@ const PublicSpeakingForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession sessionType="public-speaking" />,
+                                        children: (
+                                            <StartPublicSpeakingSession
+                                                initiationType="skip"
+                                                setValue={form.setValue}
+                                                handleSubmit={form.handleSubmit}
+                                            />
+                                        ),
                                     }),
                                 )
                             }
@@ -74,12 +80,17 @@ const PublicSpeakingForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            className="bg-[#D4D6DF] hover:bg-[#D4D6DF]/80 text-gunmetal font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            className="bg-gunmetal hover:bg-gunmetal/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession {...{ form }} sessionType="public-speaking" />,
+                                        children: (
+                                            <StartPublicSpeakingSession
+                                                initiationType="start"
+                                                handleSubmit={form.handleSubmit}
+                                            />
+                                        ),
                                     }),
                                 )
                             }

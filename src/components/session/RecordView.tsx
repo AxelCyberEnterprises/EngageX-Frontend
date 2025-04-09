@@ -1,174 +1,134 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface VideoStreamerProps {
     duration: number;
     stop: boolean;
     onStart: () => void;
     onStop: () => void;
+    ws: WebSocket | null;
+    isWsReady: boolean;
 }
 
-const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop }) => {
+const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop, ws, isWsReady }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const videoRecorderRef = useRef<MediaRecorder | null>(null);
-    const audioRecorderRef = useRef<MediaRecorder | null>(null);
+    const [isRecording, setIsRecording] = useState(false);
     const streamRef = useRef<MediaStream | null>(null);
-    const websocket = useRef<WebSocket | null>(null);
-    const streamingRef = useRef(false);
-    const stopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const chunkCounterRef = useRef(1);
+    const recorderRef = useRef<MediaRecorder | null>(null);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Buffers for pairing audio and video
-    const pendingChunks = useRef<{
-        [chunk: number]: { video?: Blob; audio?: Blob };
-    }>({});
-
-    useEffect(() => {
-        const startStreaming = async () => {
-            try {
-                console.log("🎥 Requesting media devices...");
-
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                streamRef.current = stream;
-
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                }
-
-                websocket.current = new WebSocket("wss://api.engagexai.io");
-                websocket.current.binaryType = "arraybuffer";
-
-                websocket.current.onopen = () => console.log("✅ WebSocket connected.");
-                websocket.current.onerror = (err) => console.error("❌ WebSocket error:", err);
-
-                const videoStream = new MediaStream(stream.getVideoTracks());
-                const audioStream = new MediaStream(stream.getAudioTracks());
-
-                const videoRecorder = new MediaRecorder(videoStream, { mimeType: "video/webm" });
-                const audioRecorder = new MediaRecorder(audioStream, { mimeType: "audio/webm" });
-
-                videoRecorderRef.current = videoRecorder;
-                audioRecorderRef.current = audioRecorder;
-
-                onStart();
-                streamingRef.current = true;
-
-                const handleChunk = (type: "video" | "audio", blob: Blob) => {
-                    const chunkId = chunkCounterRef.current;
-
-                    if (!pendingChunks.current[chunkId]) {
-                        pendingChunks.current[chunkId] = {};
-                    }
-
-                    pendingChunks.current[chunkId][type] = blob;
-
-                    if (
-                        pendingChunks.current[chunkId].video &&
-                        pendingChunks.current[chunkId].audio &&
-                        websocket.current?.readyState === WebSocket.OPEN
-                    ) {
-                        // Combine and send
-                        const payload = {
-                            type: "video_audio",
-                            chunk: chunkId,
-                            video: pendingChunks.current[chunkId].video,
-                            audio: pendingChunks.current[chunkId].audio,
-                        };
-
-                        console.log(`📦 Sending chunk_${chunkId}`, payload);
-
-                        // Read blobs and send together
-                        Promise.all([blobToArrayBuffer(payload.video), blobToArrayBuffer(payload.audio)]).then(
-                            ([videoBuf, audioBuf]) => {
-                                websocket.current?.send(
-                                    JSON.stringify({
-                                        type: "video_audio",
-                                        chunk: payload.chunk,
-                                        video: Array.from(new Uint8Array(videoBuf)),
-                                        audio: Array.from(new Uint8Array(audioBuf)),
-                                    }),
-                                );
-                            },
-                        );
-
-                        delete pendingChunks.current[chunkId];
-                        chunkCounterRef.current++;
-                    }
-                };
-
-                videoRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0 && streamingRef.current) {
-                        handleChunk("video", event.data);
-                    }
-                };
-
-                audioRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0 && streamingRef.current) {
-                        handleChunk("audio", event.data);
-                    }
-                };
-
-                videoRecorder.start(30000);
-                audioRecorder.start(30000);
-
-                stopTimeoutRef.current = setTimeout(() => stopStreaming(), duration * 60000 + 2000);
-            } catch (error) {
-                console.error("❌ Error accessing media devices:", error);
-            }
-        };
-
-        startStreaming();
-
-        return () => {
-            console.log("🔁 Unmounting: stopping stream");
-            stopStreaming();
-        };
-    }, [duration]);
-
-    useEffect(() => {
-        if (stop && streamingRef.current) {
-            console.log("⏹️ Stop triggered");
-            stopStreaming();
-        }
-    }, [stop]);
-
-    const stopStreaming = () => {
-        if (!streamingRef.current) return;
-
-        console.log("🛑 Stopping streams...");
-        streamingRef.current = false;
-
-        videoRecorderRef.current?.stop();
-        audioRecorderRef.current?.stop();
-
-        streamRef.current?.getTracks().forEach((track) => track.stop());
-
-        if (videoRef.current) {
-            videoRef.current.srcObject = null;
-        }
-
-        if (websocket.current && websocket.current.readyState === WebSocket.OPEN) {
-            websocket.current.close();
-            console.log("🔌 WebSocket closed.");
-        }
-
-        if (stopTimeoutRef.current) {
-            clearTimeout(stopTimeoutRef.current);
-        }
-
-        onStop();
-    };
-
-    const blobToArrayBuffer = (blob: Blob): Promise<ArrayBuffer> => {
-        return new Promise((resolve, reject) => {
+    const arrayBufferToBase64 = (buffer: ArrayBuffer): Promise<string> => {
+        return new Promise((resolve) => {
+            const blob = new Blob([buffer], { type: "video/webm" });
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as ArrayBuffer);
-            reader.onerror = reject;
-            reader.readAsArrayBuffer(blob);
+            reader.onload = () => {
+                const dataUrl = reader.result as string;
+                resolve(dataUrl.split(",")[1]);
+            };
+            reader.readAsDataURL(blob);
         });
     };
 
-    return <video className="w-full h-full object-cover" ref={videoRef} autoPlay playsInline muted />;
+    useEffect(() => {
+        if (isWsReady && !isRecording) {
+            startRecordingLoop();
+        }
+
+        return () => {
+            stopRecordingLoop();
+        };
+    }, [isWsReady]);
+
+    useEffect(() => {
+        if (stop) {
+            stopRecordingLoop();
+        }
+    }, [stop]);
+
+    const startRecordingLoop = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true,
+            });
+
+            streamRef.current = stream;
+
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+            }
+
+            onStart();
+            setIsRecording(true);
+
+            startRecorder();
+
+            // Stop after `duration` minutes
+            timerRef.current = setTimeout(stopRecordingLoop, duration * 60 * 1000);
+
+            // Loop every 10s: stop current recorder and start a new one
+            intervalRef.current = setInterval(() => {
+                if (recorderRef.current?.state === "recording") {
+                    recorderRef.current.stop(); // triggers `ondataavailable`
+                }
+            }, 10000);
+        } catch (error) {
+            console.error("Failed to start recording:", error);
+            onStop();
+        }
+    };
+
+    const startRecorder = () => {
+        if (!streamRef.current) return;
+
+        const recorder = new MediaRecorder(streamRef.current, {
+            mimeType: "video/webm; codecs=vp8,opus",
+        });
+
+        recorder.ondataavailable = async (event) => {
+            if (event.data.size > 0 && ws?.readyState === WebSocket.OPEN) {
+                try {
+                    const base64Data = await arrayBufferToBase64(await event.data.arrayBuffer());
+                    ws.send(
+                        JSON.stringify({
+                            type: "media",
+                            data: base64Data,
+                        }),
+                    );
+                    console.log(`Chunk sent (${Math.round(base64Data.length / 1024)} KB)`);
+                } catch (err) {
+                    console.error("Error converting chunk:", err);
+                }
+            }
+
+            // Immediately start a new recorder after sending
+            startRecorder();
+        };
+
+        recorder.start();
+        recorderRef.current = recorder;
+    };
+
+    const stopRecordingLoop = () => {
+        if (!isRecording) return;
+
+        console.log("Stopping recording...");
+
+        if (recorderRef.current?.state === "recording") {
+            recorderRef.current.stop();
+        }
+
+        streamRef.current?.getTracks().forEach((track) => track.stop());
+
+        if (timerRef.current) clearTimeout(timerRef.current);
+        if (intervalRef.current) clearInterval(intervalRef.current);
+
+        setIsRecording(false);
+        onStop();
+    };
+
+    return <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />;
 };
 
 export default VideoStreamer;

@@ -19,7 +19,7 @@ const initialState: IDynamicDialogProps = {
 };
 
 const dynamicDialogSlice = createSlice({
-    name: "dynamic-dialog",
+    name: "dynamicDialog",
     initialState,
     reducers: {
         openDialog: (state, action: PayloadAction<IDialogTemplateProps>) => {
