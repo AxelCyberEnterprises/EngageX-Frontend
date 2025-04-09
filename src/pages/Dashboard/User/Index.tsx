@@ -335,9 +335,11 @@ const UserDashboardHome: React.FC = () => {
                   <option value="monthly">Past Month</option>
                   <option value="yearly">Past Year</option>
                 </select>
+                <Link to="progress-tracking?section=Performance+Analysis">
                 <small className="underline cursor-pointer gunmetal">
                   View All
                 </small>
+                </Link>
               </div>
             </div>
 
@@ -351,9 +353,11 @@ const UserDashboardHome: React.FC = () => {
         <div className="w-full lg:w-3/9 lg:ps-2 mb-3 lg:mb-10">
           <div className="goals p-5 rounded-[12px]">
             <p className="chinese__black big mb-3">Your goals & achievments</p>
+            <Link to="progress-tracking">
             <small className="underline gunmetal cursor-pointer">
               View All
             </small>
+            </Link>
 
             <div className="progress__div relative flex flex-col items-center w-full mt-7 mb-6">
               <SemiCircleProgress percent={0.8} color="#7387FF" />
