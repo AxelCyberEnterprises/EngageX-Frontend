@@ -1,10 +1,11 @@
+import PracticeSetUpControlsLayout from "@/components/form-layout/PracticeSetUpControlsLayout";
 import PracticeSetupLayout from "@/components/form-layout/PracticeSetupLayout";
 import { Form } from "@/components/ui/form";
 import { PitchPracticeSchema } from "@/schemas/dashboard/user";
 import { RootState, useAppDispatch } from "@/store";
 import { setActiveSlideIndex, setNumSlides, setslidePreviews } from "@/store/slices/dashboard/user/pitchPracticeSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
@@ -17,6 +18,7 @@ const PitchPracticeForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PitchPracticeSchema),
+        defaultValues: useMemo(() => ({ session_type: "pitch" }), []),
     });
 
     useEffect(() => {
@@ -39,9 +41,11 @@ const PitchPracticeForm = () => {
     return (
         <Form {...form}>
             <form>
-                <PracticeSetupLayout
-                    {...{ form, activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
-                />
+                <PracticeSetUpControlsLayout {...{ form, activeSlideIndex, slidePreviews, sessionType: "pitch" }}>
+                    <PracticeSetupLayout
+                        {...{ form, activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
+                    />
+                </PracticeSetUpControlsLayout>
             </form>
         </Form>
     );

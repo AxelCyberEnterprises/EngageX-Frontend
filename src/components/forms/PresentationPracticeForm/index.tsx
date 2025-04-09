@@ -1,3 +1,4 @@
+import PracticeSetUpControlsLayout from "@/components/form-layout/PracticeSetUpControlsLayout";
 import PracticeSetupLayout from "@/components/form-layout/PracticeSetupLayout";
 import { Form } from "@/components/ui/form";
 import { PresentationPracticeSchema } from "@/schemas/dashboard/user";
@@ -8,7 +9,7 @@ import {
     setslidePreviews,
 } from "@/store/slices/dashboard/user/presentationPracticeSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
@@ -23,6 +24,7 @@ const PresentationPracticeForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PresentationPracticeSchema),
+         defaultValues: useMemo(() => ({ session_type: "presentation" }), []),
     });
 
     useEffect(() => {
@@ -44,10 +46,14 @@ const PresentationPracticeForm = () => {
 
     return (
         <Form {...form}>
-            <form className="flex flex-col">
-                <PracticeSetupLayout
-                    {...{ form, activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
-                />
+            <form>
+                <PracticeSetUpControlsLayout
+                    {...{ form, activeSlideIndex, slidePreviews, sessionType: "presentation" }}
+                >
+                    <PracticeSetupLayout
+                        {...{ form, activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
+                    />
+                </PracticeSetUpControlsLayout>
             </form>
         </Form>
     );
