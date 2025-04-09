@@ -90,6 +90,7 @@ const RecentAchievementsModal: React.FC<RecentAchievementsModalProps> = ({ show,
                   percent={getPercentage(item.score, item.total)}
                   color={getProgressBarColor(item.score)}
                   divisions={10}
+                  height='0.375rem'
                 />
                 <p className='text-[#252A39D9] mt-1 sm:text-sm text-xs'>{item.note}</p>
               </Card>
