@@ -434,6 +434,7 @@ const ProgressTracking: React.FC = () => {
                   percent={item.percentage}
                   color={getProgressBarColorCard(item.percentage)}
                   divisions={10}
+                  className='!h-1.5'
                 />
                 <p className='text-[#252A39D9] mt-3'>{item.percentage}% complete</p>
               </Card>
@@ -466,6 +467,7 @@ const ProgressTracking: React.FC = () => {
                       percent={getPercentage(item.score, item.total)}
                       color={getProgressBarColor(item.score)}
                       divisions={10}
+                      className='!h-1.5'
                     />
                     <p className='text-[#252A39D9] mt-1 sm:text-sm text-xs'>{item.note}</p>
                   </Card>
