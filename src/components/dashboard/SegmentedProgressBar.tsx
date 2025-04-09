@@ -3,11 +3,18 @@ interface SegmentedProgressBarProps {
     color: string;
     divisions: number;
     className?: string;
+    height?: string; // New prop specifically for height
 }
 
-const SegmentedProgressBar = ({ percent, color, divisions, className }: SegmentedProgressBarProps) => {
+const SegmentedProgressBar = ({ 
+    percent, 
+    color, 
+    divisions, 
+    className = '', 
+    height = '0.875rem' // Default height (equivalent to h-3.5)
+}: SegmentedProgressBarProps) => {
     return (
-        <div className={`bar flex gap-1 h-3.5`}>
+        <div className={`bar flex gap-1 ${className}`} style={{ height }}>
             {[...Array(divisions)].map((_, index) => {
                 const fillPercentage = Math.min(
                     100,
@@ -17,12 +24,19 @@ const SegmentedProgressBar = ({ percent, color, divisions, className }: Segmente
                 return (
                     <div
                         key={index}
-                        className={`empty__bar h-3.5 rounded-4xl w-full ${className}`}
-                        style={{ backgroundColor: "#D0D5DD" }}
+                        className={`empty__bar rounded-4xl w-full ${className}`}
+                        style={{ 
+                            backgroundColor: "#D0D5DD",
+                            height
+                        }}
                     >
                         <div
-                            className={`bar__fill rounded-4xl h-3.5 transition-all duration-300 ${className}`}
-                            style={{ width: `${fillPercentage}%`, backgroundColor: color }}
+                            className={`bar__fill rounded-4xl transition-all duration-300 ${className}`}
+                            style={{ 
+                                width: `${fillPercentage}%`, 
+                                backgroundColor: color,
+                                height
+                            }}
                         ></div>
                     </div>
                 );
