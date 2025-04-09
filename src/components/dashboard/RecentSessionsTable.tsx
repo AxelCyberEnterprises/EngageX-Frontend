@@ -69,7 +69,7 @@ import { setSessionId } from "@/store/slices/sessionSlice";
 
 export type Session = {
     id: string;
-    duration: number;
+    duration: string;
     date: string;
     sessionName: string;
     sessionType: string;

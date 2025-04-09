@@ -7,7 +7,7 @@ import { useDashboardData } from "@/hooks/auth";
 import { UseQueryResult } from "@tanstack/react-query";
 import { Session } from "../../../components/dashboard/RecentSessionsTable";
 import { Loader } from "lucide-react";
-import { capitalizeWords, formatDate } from "@/components/tables/session-history-table/admin";
+import { capitalizeWords, formatDate, formatTime } from "@/components/tables/session-history-table/admin";
 
 const AdminDashboardHome: React.FC = () => {
     // type Session = {
@@ -16,22 +16,25 @@ const AdminDashboardHome: React.FC = () => {
     //     // Add other properties of a session here
     // };
 
-    
-
-    const { data, isLoading } = useDashboardData() as UseQueryResult<{ recent_sessions: Session[] }, Error>;
-    console.log("unprocessed" , data)
-     const recentData = useMemo(() =>
-                data?.recent_sessions?.map((item: any) => ({
-                    id: item.id || "N/A",
-                    sessionName: capitalizeWords(item.session_name || "Unknown Session"),
-                    sessionType: capitalizeWords(item.session_type || "Unknown Type"),
-                    date: formatDate(item.date),
-                    duration: item.duration, // Keep duration as a number
-                })) || [],
-                [data?.recent_sessions]
-            );
+    const { data, isLoading } = useDashboardData() as UseQueryResult<
+        { recent_sessions: Session[]; active_users_count: number; inactive_users_count: number; today_new_users_count: number },
+        Error
+    >;
+    console.log("unprocessed", data);
+    const recentData = useMemo(
+        () =>
+            data?.recent_sessions?.map((item: any) => ({
+                id: item.id || "N/A",
+                sessionName: capitalizeWords(item.session_name || "Unknown Session"),
+                sessionType: capitalizeWords(item.session_type_display || "Unknown Type"),
+                date: formatDate(item.date),
+                duration: formatTime(item.formatted_duration), // Keep duration as a number
+            })) || [],
+        [data?.recent_sessions],
+    );
 
     console.log(data);
+    console.log(recentData);
     const cardsData = [
         {
             icon: (
@@ -144,8 +147,8 @@ const AdminDashboardHome: React.FC = () => {
     };
 
     const donutChartData = [
-        { name: "ActiveUsers", value: 908, fill: "#252A39" },
-        { name: "InactiveUsers", value: 92, fill: "#B9BCC8" },
+        { name: "ActiveUsers", value: Number(data?.active_users_count), fill: "#252A39" },
+        { name: "InactiveUsers", value: Number(data?.inactive_users_count), fill: "#B9BCC8" },
     ];
 
     const donutChartColors = {
@@ -154,7 +157,11 @@ const AdminDashboardHome: React.FC = () => {
     };
     // console.log(data?.recent_sessions)
 
-    if(isLoading){
+    const totalUsers = Number(data?.active_users_count) + Number(data?.inactive_users_count);
+    const userPercentage = parseFloat(((Number(data?.today_new_users_count) / totalUsers) * 100).toFixed(1));
+
+
+    if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen">
                 <Loader />
@@ -290,7 +297,7 @@ const AdminDashboardHome: React.FC = () => {
                                 {/* total users  */}
                                 <div className="flex justify-between items-center mb-2.5">
                                     <div className="flex gap-2 items-center">
-                                        <h4 className="gunmetal">1024</h4>
+                                        <h4 className="gunmetal">{totalUsers}</h4>
                                         <p className="auro__metal">Total Users</p>
                                     </div>
                                     <div className="flex items-center me-2">
@@ -306,7 +313,7 @@ const AdminDashboardHome: React.FC = () => {
                                                 fill="#07A042"
                                             />
                                         </svg>
-                                        <p style={{ color: "#07A042" }}>1.7%</p>
+                                        <p style={{ color: "#07A042" }}>{userPercentage}%</p>
                                     </div>
                                 </div>
 
@@ -317,7 +324,7 @@ const AdminDashboardHome: React.FC = () => {
                                         <p className="auro__metal">Active Users</p>
                                     </div>
                                     <div className="flex items-center me-2">
-                                        <p className="gunmetal">908</p>
+                                        <p className="gunmetal">{data?.active_users_count}</p>
                                     </div>
                                 </div>
 
@@ -328,7 +335,7 @@ const AdminDashboardHome: React.FC = () => {
                                         <p className="auro__metal">Inactive Users</p>
                                     </div>
                                     <div className="flex items-center me-2">
-                                        <p className="gunmetal">92</p>
+                                        <p className="gunmetal">{data?.inactive_users_count}</p>
                                     </div>
                                 </div>
                             </div>

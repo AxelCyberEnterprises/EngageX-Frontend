@@ -4,7 +4,6 @@ import circleCheck from '../../../assets/images/svgs/circle-check.svg';
 import circleExclamation from '../../../assets/images/svgs/circle-exclamation.svg';
 import menuWhite from '../../../assets/images/svgs/menu-white.svg';
 import trophy from '../../../assets/images/svgs/trophy.svg';
-import download from '../../../assets/images/svgs/download.svg';
 import starAward from '../../../assets/images/svgs/star-award.svg';
 import diamond from '../../../assets/images/pngs/diamond.png';
 // import ruby from '../../../assets/images/pngs/ruby.png';
@@ -12,13 +11,10 @@ import diamond from '../../../assets/images/pngs/diamond.png';
 // import coin from '../../../assets/images/pngs/orange-gem.png';
 import horse from '../../../assets/images/svgs/horse.svg';
 import trendUpIcon from "../../../assets/images/svgs/trend-up.svg";
-import starIcon from "../../../assets/images/svgs/award.svg";
-import documentIcon from "../../../assets/images/svgs/document.svg";
 import messageIcon from "../../../assets/images/svgs/message.svg";
 import micIcon from "../../../assets/images/svgs/mic.svg";
 import speakerIcon from "../../../assets/images/svgs/speaker.svg";
 import tvIcon from "../../../assets/images/svgs/tv.svg";
-import calendar from '../../../assets/images/svgs/calendar.svg';
 import filter from '../../../assets/images/svgs/filter.svg';
 import select from '../../../assets/images/svgs/select.svg';
 import ActionModal from '@/components/modals/modalVariants/ActionModal';
@@ -28,7 +24,6 @@ import SegmentedProgressBar from '@/components/dashboard/SegmentedProgressBar';
 import ShadSelect from '@/components/dashboard/Select';
 import StatsCardSection from '@/components/dashboard/StatusCard';
 import ShadLineChart from '@/components/dashboard/ShadLineChart';
-import AIInsights from '@/components/dashboard/AiInsights';
 import PresentationMetricsTable from '@/components/tables/performance-metric-table/user';
 import { RecentSessionsTable } from '@/components/tables/recent-sessions-table/user';
 import { sessions } from '@/components/tables/recent-sessions-table/user/data';
@@ -38,7 +33,17 @@ import { data } from "@/components/tables/performance-metric-table/user/data";
 import SequenceSelector, { Sequence } from '@/components/dashboard/SequenceSelect';
 import RecentAchievementsModal from '@/components/modals/modalVariants/RecentAchievementsModal';
 
+interface Achievement {
+  id: number;
+  title: string;
+  level: number;
+  score: number;
+  total: number;
+  note: string;
+}
+
 const ProgressTracking: React.FC = () => {
+  const [selectedSequence, setSelectedSequence] = useState<Sequence>();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailureModal, setShowFailureModal] = useState(false);
   const [showRecentAchievementsModal, setShowRecentAchievementsModal] = useState(false);
@@ -52,66 +57,87 @@ const ProgressTracking: React.FC = () => {
 
   const cardData = [
     {
-      title: 'Improve Speech Pace',
-      wordRate: '120-150 words/min',
+      title: 'Master Your Voice',
+      wordRate: '85% pitch score',
       percentage: 60
     },
     {
-      title: 'Reduce filler words',
-      wordRate: '>3 per min',
+      title: 'Impact Maker',
+      wordRate: '85% impact score',
       percentage: 80
     },
     {
-      title: 'Enhance content structure',
-      wordRate: 'Daily Practice',
+      title: 'Transformative Speaker',
+      wordRate: '85% speaker',
       percentage: 40
-    },
-  ]
-
-  const achievementData = [
-    {
-      title: 'Master Your Voice',
-      portion: 30,
-      total: 100,
-      level: 1,
-      note: 'Achieve a pitch variability score of 30%'
-    },
-    {
-      title: 'Impact Maker',
-      portion: 50,
-      total: 100,
-      level: 2,
-      note: 'Achieve a impact score of 50%'
-    },
-    {
-      title: 'Transformative speaker',
-      portion: 100,
-      total: 100,
-      level: 3,
-      note: 'Achieve a transformative potential score of 100%'
     },
     {
       title: 'Crystal Clear',
-      portion: 68,
-      total: 100,
-      level: 4,
-      note: 'Achieve a clarity score of 68'
+      wordRate: '85% clarity score',
+      percentage: 60
     },
     {
       title: 'Concise Communicator',
-      portion: 75,
-      total: 100,
-      level: 5,
-      note: 'Achieve a brevity score of 75'
+      wordRate: '85% brevity score',
+      percentage: 80
     },
     {
       title: 'Body Language Master',
-      portion: 85,
-      total: 100,
-      level: 6,
-      note: 'Achieve a body posture score of 85'
-    },
+      wordRate: '85% posture',
+      percentage: 40
+    }
   ]
+
+  const achievementData: Achievement[] = [
+    {
+      id: 1,
+      title: "Master Your Voice",
+      level: 1,
+      score: 3,
+      total: 10,
+      note: "Achieve a pitch variability score of 85%"
+    },
+    {
+      id: 2,
+      title: "Impact Maker",
+      level: 2,
+      score: 5,
+      total: 10,
+      note: "Achieve a impact score of 85%"
+    },
+    {
+      id: 3,
+      title: "Transformative Speaker",
+      level: 3,
+      score: 10,
+      total: 10,
+      note: "Achieve a transformative potential score of 85%"
+    },
+    {
+      id: 4,
+      title: "Crystal Clear",
+      level: 2,
+      score: 6,
+      total: 10,
+      note: "Achieve a clarity score of 85"
+    },
+    {
+      id: 5,
+      title: "Concise Communicator",
+      level: 2,
+      score: 7,
+      total: 10,
+      note: "Achieve a brevity score of 85"
+    },
+    {
+      id: 6,
+      title: "Body Language Master",
+      level: 3,
+      score: 8,
+      total: 10,
+      note: "Achieve a body posture score of 85"
+    }
+  ];
 
 
   const streakStats = [
@@ -137,75 +163,46 @@ const ProgressTracking: React.FC = () => {
     // },
   ];
 
-  const getProgressBarColor = (percentage: number) => {
-    if (percentage >= 80 && percentage <= 100) return '#40B869';
-    if (percentage >= 60 && percentage < 80) return '#F5B546';
-    return '#DD524D';
+  const getProgressBarColor = (score: number) => {
+    const level = getLevel(score);
+    if (level === 1) return '#C1C2B4';
+    if (level === 2) return '#ECB25E';
+    if (level === 3) return '#64BA9F';
+    return '#C1C2B4';
   };
 
-  const getPercentage = (portion: number, total: number) => {
-    const decimal = portion / total;
-    const percentage = decimal * 100;
-    const fixedPercentage = percentage.toFixed(0)
-    return Number(fixedPercentage);
-  }
+  const getProgressBarColorCard = (score: number) => {
+    if (score >= 1 && score <= 30) return '#C1C2B4'; // Light gray/beige for Level 1
+    if (score >= 40 && score <= 70) return '#ECB25E'; // Gold/Yellow for Level 2
+    if (score >= 80 && score <= 100) return '#64BA9F'; // Green for Level 3
+    return '#C1C2B4';
+  };
 
-  const getLevelImage = (level: number) => {
-    if (level === 1) return horse;
+  const getPercentage = (score: number, total: number) => {
+    return (score / total) * 100;
+  };
+
+  const getLevelImage = (score: number) => {
+    const level = getLevel(score);
+    if (level === 1) return starAward;
     if (level === 2) return trophy;
-    if (level === 3) return starAward;
-    return horse;
+    if (level === 3) return horse;
+    return starAward;
   };
 
-  const eventOptions = [
-    {
-      value: "keynote-feb-2025",
-      label: "Keynote Practice Series",
-      date: "Feb 2025"
-    },
-    {
-      value: "sales-pitch-jan-2025",
-      label: "Sales Pitch Improvements",
-      date: "Jan 2025"
-    },
-    {
-      value: "team-updates-dec-2024",
-      label: "Team Updates Practice",
-      date: "Dec 2024"
-    }
-  ];
+  const getLevel = (score: number) => {
+    if (score >= 1 && score <= 3) return 1;
+    if (score >= 4 && score <= 7) return 2;
+    if (score >= 8 && score <= 10) return 3;
+    return 1;
+  };
 
-  const statCardsData = [
-    {
-      icon: trendUpIcon,
-      iconAlt: "Progress icon",
-      title: "Overall Progress",
-      value: "+25%",
-      subtext: "Improvement since first session",
-      isPositive: true
-    },
-    {
-      icon: starIcon,
-      iconAlt: "Performance icon",
-      title: "Best Performance",
-      value: "87%",
-      subtext: "Audience engagement (March 2024)"
-    },
-    {
-      icon: documentIcon,
-      iconAlt: "Content icon",
-      title: "Content Structure",
-      value: "87%",
-      subtext: "Content improvement score"
-    },
-    {
-      icon: messageIcon,
-      iconAlt: "Focus icon",
-      title: "Focus Area",
-      value: "Vocal Clarity",
-      subtext: "Recommended improvement area"
-    }
-  ];
+  const getLevelColor = (score: number) => {
+    if (score >= 1 && score <= 3) return 'bg-[#C1C2B4]';
+    if (score >= 4 && score <= 7) return 'bg-[#ECB25E]';
+    if (score >= 8 && score <= 10) return 'bg-[#64BA9F]';
+    return 'bg-[#C1C2B4]';
+  };
 
 
   const performanceCardsData = [
@@ -240,10 +237,6 @@ const ProgressTracking: React.FC = () => {
     }
   ];
 
-  const handleEventChange = (value: string) => {
-    console.log("Selected event:", value);
-  };
-
   const chartData = [
     { month: "January", Impact: 186, AudienceEngagement: 80, Clarity: 33, Confidence: 90 },
     { month: "February", Impact: 305, AudienceEngagement: 200, Clarity: 33, Confidence: 100 },
@@ -257,22 +250,6 @@ const ProgressTracking: React.FC = () => {
     Impact: "#252A39",
     AudienceEngagement: "#64BA9F",
     Clarity: '#40B869'
-  };
-
-  const insightsData = {
-    improvement: {
-      percentage: "19%",
-      sessions: 5
-    },
-    strength: {
-      area: "content structure",
-      score: "80%"
-    },
-    focusRecommendation: "Work on vocal variety and pitch modulation to increase audience engagement further",
-    pattern: {
-      observation: "Your performance peaks in the middle of presentations.",
-      recommendation: "strengthening your openings and closings"
-    }
   };
 
   const timeOptions = [
@@ -379,6 +356,7 @@ const ProgressTracking: React.FC = () => {
 
   const handleSelectSequence = (sequence: Sequence) => {
     console.log("Selected sequence:", sequence);
+    setSelectedSequence(sequence);
   };
 
   const handleNewSession = (sequenceId: number | string) => {
@@ -445,19 +423,24 @@ const ProgressTracking: React.FC = () => {
               View all goals
             </Button>
           </section>
-          <section className='grid lg:grid-cols-3 grid-cols-1 md:gap-12 gap-6'>
-            {cardData.map((item) => (
-              <Card className='gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]'>
-                <div className='flex justify-between items-center mb-10'>
+          <section className='grid lg:grid-cols-3 grid-cols-1 md:gap-6 gap-4'>
+            {cardData.map((item, index) => (
+              <Card key={index} className='gap-0 px-4 py-4 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]'>
+                <div className='flex justify-between items-center mb-4'>
                   <h4 className='lg:text-lg text-base text-[#333333]'>{item.title}</h4>
                   <p className='text-sm text-[#6F7C8E]'>{item.wordRate}</p>
                 </div>
-                <SegmentedProgressBar percent={item.percentage} color={getProgressBarColor(item.percentage)} divisions={5} />
+                <SegmentedProgressBar
+                  percent={item.percentage}
+                  color={getProgressBarColorCard(item.percentage)}
+                  divisions={10}
+                  height='0.375rem'
+                />
                 <p className='text-[#252A39D9] mt-3'>{item.percentage}% complete</p>
               </Card>
             ))}
           </section>
-          <section className='grid lg:grid-cols-[2fr_3fr] grid-cols-1 lg:gap-4 md:gap-10 gap-6 lg:mt-6 md:mt-10 mt-6'>
+          <section className='grid lg:grid-cols-[2fr_3fr] grid-cols-1 lg:gap-4 md:gap-10 gap-6 lg:mt-6 md:mt-10 mt-6 mb-12'>
             <div className='gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]'>
               <div className='flex justify-between gap-4 items-center'>
                 <div>
@@ -467,26 +450,28 @@ const ProgressTracking: React.FC = () => {
                 <p onClick={() => setShowRecentAchievementsModal(true)} className='text-[#262B3A] border-b border-[#262B3A] sm:text-sm text-xs whitespace-nowrap cursor-pointer'>View All</p>
               </div>
               {achievementData.slice(0, 3).map((item) => (
-                <div className='flex gap-3 mb-6 px-2'>
-                  <div className={`flex flex-col items-center justify-between p-2 rounded-[6px] ${item.level === 1 && 'bg-[#64BA9F]'}  ${item.level === 2 && 'bg-[#ECB25E]'}  ${item.level === 3 && 'bg-[#C1C2B4]'} ${item.level === 4 && 'bg-[#C29C81]'} ${item.level === 5 && 'bg-[#253141]'} ${item.level === 6 && 'bg-[#64BA9F]'}`}>
+                <div key={item.id} className='flex gap-3 mb-6 px-2'>
+                  <div className={`flex flex-col items-center justify-between p-2 rounded-[6px] ${getLevelColor(item.score)}`}>
                     <div className='bg-[#FFFFFF33] rounded-full w-[50px] h-[50px] grid place-content-center'>
-                      <img src={getLevelImage(item.level)} alt="level image" />
+                      <img src={getLevelImage(item.score)} alt="level icon" />
                     </div>
-                    <p className='text-white md:text-xs text-[11px] whitespace-nowrap'>LEVEL {item.level}</p>
+                    <p className='text-white text-xs whitespace-nowrap'>LEVEL {getLevel(item.score)}</p>
                   </div>
+
                   <Card className='border-none shadow-none py-2 gap-2 w-full'>
                     <div className='flex justify-between items-center'>
                       <h4 className='lg:text-lg text-base text-[#333333]'>{item.title}</h4>
-                      <p className='text-sm text-[#6F7C8E]'>{item.portion}/{item.total}</p>
+                      <p className='text-sm text-[#6F7C8E]'>{item.score}/{item.total}</p>
                     </div>
                     <SegmentedProgressBar
-                      percent={getPercentage(item.portion, item.total)}
-                      color={getProgressBarColor(getPercentage(item.portion, item.total))}
-                      divisions={1} />
+                      percent={getPercentage(item.score, item.total)}
+                      color={getProgressBarColor(item.score)}
+                      divisions={10}
+                      className='h-1.5'
+                    />
                     <p className='text-[#252A39D9] mt-1 sm:text-sm text-xs'>{item.note}</p>
                   </Card>
                 </div>
-
               ))}
             </div>
             <div className='border border-[#E0E0E0] rounded-[12px] p-5 h-fit'>
@@ -506,84 +491,6 @@ const ProgressTracking: React.FC = () => {
 
 
             </div>
-
-          </section>
-          <section className='flex items-center justify-between sm:mt-18 mt-12'>
-            <div>
-              <h3 className="lg:text-2xl text-xl font-medium">Performance Improvement Analysis</h3>
-              <p className="lg:text-lg text-base text-[#6F7C8E] mb-6">Track your speaking progress across multiples sessions</p>
-            </div>
-            <Button
-              type="button"
-              onClick={() => { }}
-              className="w-auto text-white px-6 bg-[#252A39] sm:flex hidden"
-            >
-              <img
-                src={download}
-                alt="Plus Circle"
-                className="xl:w-[18px] xl:h-[18px] w-5 h-5 sm:text-base text-sm"
-              />
-              Download Report
-            </Button>
-          </section>
-          <section className='flex md:flex-row flex-col-reverse md:items-center justify-between md:mt-10 mt-4 md:mb-6 mb-3 gap-6'>
-            <div>
-              <h3 className="lg:text-xl text-lg font-medium">Session Sequence</h3>
-              <p className="sm:text-sm text-xs text-[#6F7C8E] mb-6 flex gap-2">
-                <span className='text-[#6F7C8E]'>Feb 10 - Mar 15, 2025</span>
-                <span className='text-[#252A39]'>• 5 sessions analyzed</span>
-              </p>
-            </div>
-            <div>
-              <ShadSelect
-                options={eventOptions}
-                onChange={handleEventChange}
-                placeholder="Keynote Practice Series (Feb 2025)"
-                className='w-fit rounded-[8px] shadow-none py-5 md:ml-0 ml-auto  focus:shadow-none active:shadow-none'
-                icon={calendar}
-              />
-              <p className='text-[#6F7C8E] sm:text-sm text-xs mt-1'>Choose improvement sequence to get full info.</p>
-            </div>
-          </section>
-          <section>
-            <StatsCardSection cards={statCardsData} />
-          </section>
-          <section className='grid lg:grid-cols-2 gap-6 mt-16'>
-            <div className="analytics px-5 py-7 h-fit rounded-[8px] border border-[#E4E7EC]">
-              <div className="flex justify-between items-center mb-6">
-                <p className="big chinese__black">Performance Analytics</p>
-                <div className="flex items-center">
-                  <ShadSelect
-                    options={timeOptions}
-                    onChange={handleTimeFrameChange}
-                    placeholder="Weekly"
-                    className='w-fit sm:rounded-[7px] rounded-[5px] shadow-none sm:py-3 py-1 sm:px-4 px-2 sm:h-9 h-7 text-[#333333] focus-visible:ring-0 active:shadow-none'
-                    showIcon={false}
-                  />
-                  <small className="underline cursor-pointer gunmetal ml-4">View Report</small>
-                </div>
-              </div>
-
-              <div className="chart__div">
-                <ShadLineChart data={chartData} colors={chartColors} />
-              </div>
-            </div>
-            <div>
-              <AIInsights
-                insights={insightsData}
-              />
-            </div>
-          </section>
-          <section className='mt-16 mb-6 border border-[#E0E0E0] sm:p-6 p-4 bg-white rounded-[16px]'>
-            <div className='mb-6'>
-              <h3 className="text-xl font-medium text-#252A39">Performance Metrics Comparison</h3>
-              <p className="text-sm text-[#6F7C8E] mt-1">Track your progress across key speaking metrics </p>
-            </div>
-            <PresentationMetricsTable
-              columns={columns}
-              data={data}
-              pageSize={7}
-            />
           </section>
         </div>}
 
@@ -657,7 +564,7 @@ const ProgressTracking: React.FC = () => {
                 <RecentSessionsTable data={filteredSessions} hidePagination={true} />
               </div>
             </section>
-            <section>
+            <section className='mb-10'>
               <SequenceSelector
                 sequences={sequences}
                 onNewSession={handleNewSession}
@@ -665,7 +572,7 @@ const ProgressTracking: React.FC = () => {
                 trendUpIcon={trendUpIcon}
               />
             </section>
-            <section className='mt-10 mb-6 border border-[#E0E0E0] sm:p-6 p-4 bg-white rounded-[16px]'>
+            {selectedSequence && <section className='mt-10 mb-6 border border-[#E0E0E0] sm:p-6 p-4 bg-white rounded-[16px]'>
               <div className='mb-6'>
                 <h3 className="text-xl font-medium text-#252A39">Performance Metrics Comparison</h3>
                 <p className="text-sm text-[#6F7C8E] mt-1">Track your progress across key speaking metrics </p>
@@ -675,7 +582,7 @@ const ProgressTracking: React.FC = () => {
                 data={data}
                 pageSize={7}
               />
-            </section>
+            </section>}
           </div>
         }
 
