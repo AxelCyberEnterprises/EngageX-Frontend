@@ -1,7 +1,7 @@
 import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
 import { useCreatePublicSpeakingSession } from "@/hooks/mutations/dashboard/user";
-import { HTMLAttributes, useCallback, useId } from "react";
+import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import StartSession from ".";
 
@@ -12,7 +12,6 @@ interface IStartPublicSpeakingSessionProps extends HTMLAttributes<HTMLDivElement
 }
 
 const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: IStartPublicSpeakingSessionProps) => {
-    const SessionNameId = useId();
     const { mutate: createPublicSpeakingSession, isPending } = useCreatePublicSpeakingSession();
 
     const handleSessionSetupSubmit = useCallback(
@@ -23,10 +22,10 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
     );
 
     const handleProceed = useCallback(() => {
-        if (setValue && initiationType === "skip") setValue("session_name", `Public Speaking Session ${SessionNameId}`);
+        if (setValue && initiationType === "skip") setValue("session_name", `Public Speaking Session`); //todo: fetch sessions and use append length++ to the name
 
         handleSubmit(handleSessionSetupSubmit)();
-    }, [SessionNameId, handleSessionSetupSubmit, handleSubmit, initiationType, setValue]);
+    }, [handleSessionSetupSubmit, handleSubmit, initiationType, setValue]);
 
     return (
         <StartSession>
