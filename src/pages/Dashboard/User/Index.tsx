@@ -395,7 +395,7 @@ const UserDashboardHome: React.FC = () => {
               ))}
             </div>
 
-            <Link to="#">
+            <Link to="progress-tracking">
               <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3 w-full mt-6">
                 View Goals
               </Button>
