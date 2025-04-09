@@ -42,6 +42,7 @@ export function formatDate(timestamp?: string): string {
 }
 
 export function formatTime(time?: string): string {
+    console.log(time)
     if (!time) return "0 mins";
     
     const parts = time.split(":").map(Number);
