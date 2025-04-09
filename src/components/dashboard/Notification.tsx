@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import settings from '../../assets/images/svgs/settings.svg';
 
 interface NotificationOption {
   id: string;
@@ -110,27 +109,6 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({
           <div>
             <CardTitle className="text-xl font-medium text-[#10161E]">Notifications</CardTitle>
             <p className="text-sm text-[#6F7C8E] mt-1">Choose how you want to customize your notifications</p>
-          </div>
-          <div className="flex gap-2 mt-4 sm:mt-0">
-            <Button
-              variant="outline"
-              onClick={onCancel}
-              className="border-[#D0D5DD] text-[#6F7C8E] sm:flex hidden"
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="default"
-              className="flex items-center gap-2"
-              onClick={onCancel}
-            >
-              <img
-                src={settings}
-                alt="Profile edit"
-                className="xl:w-[20px] xl:h-[20px] w-5 h-5 sm:text-base text-sm"
-              />
-              Manage
-            </Button>
           </div>
         </div>
       </CardHeader>

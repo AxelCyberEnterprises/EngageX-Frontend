@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg"
+import { LoginResponse } from "@/hooks/auth";
 
 interface Question {
     id: number;
@@ -22,14 +23,22 @@ interface SignupData {
     userId: string;
 }
 
+export interface AuthUser {
+    is_admin: boolean;
+    token: string;
+    email: string;
+    first_name: string | null;
+    last_name: string | null;
+    id: number;
+}
+
 interface AuthState {
     questions: Question[];
     topicQuestion: string;
     signupFlow: string;
     routeFromLogin: boolean;
     signupData: SignupData | null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    user: any | null;
+    user: AuthUser | null;
     isAuthenticated: boolean;
     hasCheckedAuth: boolean;
     emailForPasswordReset: string;
@@ -38,6 +47,7 @@ interface AuthState {
     authPageImage: string;
 }
 
+const storedUser = localStorage.getItem("user");
 const initialState: AuthState = {
     questions: [
         {
@@ -68,7 +78,7 @@ const initialState: AuthState = {
     signupFlow: "signup",
     routeFromLogin: false,
     signupData: null, // Stores signup details
-    user: localStorage.getItem("user") ? true : false,
+    user: storedUser ? JSON.parse(storedUser) as AuthUser : null,
     isAuthenticated: false,
     hasCheckedAuth: false,
     emailForPasswordReset: "jnr@gmail.com",
@@ -107,7 +117,7 @@ const authSlice = createSlice({
         setSignupData: (state, action: PayloadAction<Partial<SignupData>>) => {
             state.signupData = { ...state.signupData!, ...action.payload };
         },
-        setUser: (state, action: PayloadAction<boolean>) => {
+        setUser: (state, action: PayloadAction<AuthUser | null>) => {
             state.user = action.payload;
         },
         logout: (state) => {
@@ -117,24 +127,26 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.hasCheckedAuth = true;
         },
-        login: (state, data) => {
-            const { token, email, is_admin } = data.payload.data;
-            if (!token || !email) {
+        login: (state, action: PayloadAction<LoginResponse>) => {
+            const user = action.payload.data;
+
+            if (!user.token || !user.email) {
                 throw new Error("Invalid data");
             }
 
             try {
-                tokenManager.setToken(token);
+                tokenManager.setToken(user.token);
+                localStorage.setItem("user", JSON.stringify(user));
+
                 state.isAuthenticated = true;
-                localStorage.setItem('user', String(!is_admin))
-                state.user = !is_admin;
+                state.user = user;
             } catch (error) {
                 console.error("Failed to set tokens:", error);
                 state.user = null;
                 state.isAuthenticated = false;
-
             }
-        },
+        }
+
     },
 });
 
@@ -147,8 +159,8 @@ export function useAutoClearSuccessMessage() {
             dispatch(setSuccessMessage(""));
         }, 5000);
 
-        return () => clearTimeout(timer); 
-    }, [location.pathname]); 
+        return () => clearTimeout(timer);
+    }, [location.pathname]);
 }
 
 export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;

@@ -5,7 +5,7 @@ interface PricingCardProps {
   planPayment: () => void;
 }
 
-const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
+const PricingCards: React.FC<PricingCardProps> = () => {
   const plans = [
     {
       type: "STARTER PLAN",
@@ -15,6 +15,7 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
       buttonText: "Select Starter Plan",
       highlight: false,
       sessionColor: "text-[#64BA9F]",
+      paymentLink: 'https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-d77fb68013f54350b75d514d54189fd1191971d0274b4d16bb762c22406bdf7156e09114df9548b88a6b0c9d519b1239?locale=EN_US'
     },
     {
       type: "GROWTH PLAN",
@@ -24,6 +25,7 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
       buttonText: "Choose Growth Plan",
       highlight: true,
       sessionColor: "text-amber-500",
+      paymentLink: 'https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-46dbc56154fd4e2fa0150a8246276351757f6a348eca4c02b3b4ebaf67ef244f7b923ec4fce641d0b42984bfc07c8491?locale=EN_US '
     },
     {
       type: "PRO PLAN",
@@ -33,6 +35,7 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
       buttonText: "Go Pro",
       highlight: false,
       sessionColor: "text-[#64BA9F]",
+      paymentLink: 'https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-83fccafc8b004617b1f57152c42c9bd6b711beae594e4ba3b19fcca2ba0c10800257b01db53b4fd4bd54ca1d47bece0e?locale=EN_US '
     },
     {
       type: "ULTIMATE PLAN",
@@ -46,6 +49,7 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
       buttonText: "Get the Ultimate Plan",
       highlight: false,
       sessionColor: "text-[#64BA9F]",
+      paymentLink: 'https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-b4372ea1177e40689bfc3080f896e78ec455af91c9a543eea0b08df2de1ab9b090507c99ea5048beaf1f2b31984ddf0a?locale=EN_US '
     },
   ];
 
@@ -55,10 +59,9 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
         <div
           key={index}
           className={`relative flex-1 rounded-3xl p-6 flex flex-col justify-between duration-700 hover:bg-[#262B3A] hover:stroke-white hover:border-none hover:text-[#EFF6FC] group
-            ${
-              plan.highlight
-                ? "bg-[#262B3A] text-white z-10"
-                : "lg:bg-transparent border border-[#BDBDBD]"
+            ${plan.highlight
+              ? "bg-[#262B3A] text-white z-10"
+              : "lg:bg-transparent border border-[#BDBDBD]"
             }`}
         >
           {plan.highlight && (
@@ -76,18 +79,16 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
                   {plan.type}
                 </div>
                 <div
-                  className={`${
-                    plan.highlight ? "text-[#ECB25E]" : "text-[#64BA9F]"
-                  } group-hover:text-[#ECB25E] my-auto`}
+                  className={`${plan.highlight ? "text-[#ECB25E]" : "text-[#64BA9F]"
+                    } group-hover:text-[#ECB25E] my-auto`}
                 >
                   {plan.sessions} SESSIONS
                 </div>
               </div>
               <div>
                 <div
-                  className={`flex flex-col gap-2 items-start mt-2 ${
-                    plan.highlight && "text-[#EFF6FC]"
-                  }`}
+                  className={`flex flex-col gap-2 items-start mt-2 ${plan.highlight && "text-[#EFF6FC]"
+                    }`}
                 >
                   <span className="md:text-5xl text-4xl font-bold">
                     ${plan.price}
@@ -104,11 +105,10 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
                   className="flex items-center font-light sm:text-base text-sm"
                 >
                   <div
-                    className={`mr-3 ${
-                      plan.highlight
+                    className={`mr-3 ${plan.highlight
                         ? ""
                         : "text-[#64BA9F] group-hover:text-white"
-                    }`}
+                      }`}
                   >
                     <CheckIcon
                       strokeColor={plan.highlight ? "#ECB25E" : "#64BA9F"}
@@ -120,17 +120,18 @@ const PricingCards: React.FC<PricingCardProps> = ({ planPayment }) => {
             </div>
           </div>
 
-          <button
-            onClick={planPayment}
-            className={`text-sm mt-10 w-full py-3 rounded-lg group-hover:bg-alice-blue group-hover:text-black
-            ${
-              plan.highlight
+          <a
+            href={plan.paymentLink}
+            target="_blank"
+            // onClick={planPayment}
+            className={`text-center text-sm mt-10 w-full py-3 rounded-lg group-hover:bg-alice-blue group-hover:text-black
+            ${plan.highlight
                 ? "bg-white text-slate-800"
                 : "bg-slate-400 text-white group-hover:bg-alice-blue group-hover:text-black"
-            }`}
+              }`}
           >
             {plan.buttonText}
-          </button>
+          </a>
         </div>
       ))}
     </div>
