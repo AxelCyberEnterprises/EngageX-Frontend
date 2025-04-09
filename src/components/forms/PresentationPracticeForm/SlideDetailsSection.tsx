@@ -1,16 +1,18 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
+import FeatureWalkthrough from "@/components/dialogs/dialog-contents/FeatureWalkthrough";
 import GoalsSection from "@/components/form-sections/GoalsSection";
 import SessionNameSection from "@/components/form-sections/SessionNameSection";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import PDFViewer from "@/components/widgets/pdf-viewer";
 import { cn, convertDataUrlToFile, isDataUrlPdf } from "@/lib/utils";
-import { RootState } from "@/store";
+import { RootState, useAppDispatch } from "@/store";
+import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { FormType } from ".";
-import { Link } from "react-router-dom";
 
 interface ISlideDetatilsSectionProps extends HTMLAttributes<HTMLElement> {
     form: UseFormReturn<FormType>;
@@ -19,6 +21,7 @@ interface ISlideDetatilsSectionProps extends HTMLAttributes<HTMLElement> {
 const SlideDetailsSection = ({ className, form }: ISlideDetatilsSectionProps) => {
     const { activeSlideIndex, slidePreviews } = useSelector((state: RootState) => state.presentationPractice);
     const activeSlide = slidePreviews[activeSlideIndex];
+    const dispatch = useAppDispatch();
 
     return (
         <section className={cn("flex flex-col gap-y-6", className)}>
@@ -26,11 +29,25 @@ const SlideDetailsSection = ({ className, form }: ISlideDetatilsSectionProps) =>
                 <div>
                     <div className="lg:flex hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
                         <span>Need help setting up?</span>
-                        <Link to="">
+                        <Button
+                            type="button"
+                            className="size-fit bg-transparent hover:bg-transparent p-0 shadow-none"
+                            onClick={() =>
+                                dispatch(
+                                    openDialog({
+                                        key: "feature-walkthrough",
+                                        children: <FeatureWalkthrough />,
+                                    }),
+                                )
+                            }
+                        >
                             <span className="text-[#64BA9F]">Click here</span>
-                        </Link>
+                        </Button>
                     </div>
-                    <SessionNameSection {...{ form }} className="[&_h6]:text-lg lg:pl-4 md:pl-0 pl-3 md:pr-4 pr-3 lg:pt-0 pt-3 md:pb-0 pb-3 md:border-0 border border-bright-gray md:rounded-none rounded-lg" />
+                    <SessionNameSection
+                        {...{ form }}
+                        className="[&_h6]:text-lg lg:pl-4 md:pl-0 pl-3 md:pr-4 pr-3 lg:pt-0 pt-3 md:pb-0 pb-3 md:border-0 border border-bright-gray md:rounded-none rounded-lg"
+                    />
                 </div>
                 <Separator className="md:block hidden" />
                 <div className="space-y-5 lg:pl-4 md:pr-4">
