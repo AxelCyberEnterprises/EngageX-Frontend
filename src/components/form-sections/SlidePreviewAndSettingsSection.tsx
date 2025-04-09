@@ -3,8 +3,8 @@ import VirtualEnvironmentSection from "@/components/form-sections/VirtualEnviron
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { practicesVEOptions } from "@/config/form-field-options";
-import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+import { cn, convertDataUrlToFile } from "@/lib/utils";
+import { HTMLAttributes, useId, useMemo } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 interface ISlidePreviewAndSettingsSectionProps extends HTMLAttributes<HTMLElement> {
@@ -20,7 +20,12 @@ const SlidePreviewAndSettingsSection = ({
     activeSlideIndex,
     slidePreviews,
 }: ISlidePreviewAndSettingsSectionProps) => {
-    const activeSlide = slidePreviews[activeSlideIndex];
+    const slideId = useId();
+    const [slidePreview] = useMemo(() => slidePreviews, [slidePreviews]);
+    const slidePreviewFile = useMemo(
+        () => (slidePreview ? convertDataUrlToFile(slidePreview, `Slide-${slideId}`) : null),
+        [slideId, slidePreview],
+    );
 
     return (
         <section className={cn("flex flex-col gap-y-4", className)}>
@@ -31,7 +36,7 @@ const SlidePreviewAndSettingsSection = ({
                     options={practicesVEOptions}
                     className="md:block hidden p-0 border-0 [&_[data-slot='form-label']>div]:h-37.5 [&_h6]:text-lg"
                 />
-                <SlidePreviewSection {...{ activeSlide, activeSlideIndex }} />
+                <SlidePreviewSection {...{ activeSlideIndex, slidePreviewFile }} />
                 <Separator className="bg-bright-gray" />
                 <div className="flex items-center justify-between">
                     <small>Enable AI Generated Questions</small>

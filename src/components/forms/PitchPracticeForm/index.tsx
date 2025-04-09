@@ -1,8 +1,8 @@
-import PracticeSetupLayout from "@/components/form-layout/practice-setup-layout";
+import PracticeSetupLayout from "@/components/form-layout/PracticeSetupLayout";
 import { Form } from "@/components/ui/form";
-import { PitchPracticeSchema } from "@/schemas/pitch-practice";
+import { PitchPracticeSchema } from "@/schemas/dashboard/user";
 import { RootState, useAppDispatch } from "@/store";
-import { setActiveSlideIndex, setslidePreviews } from "@/store/slices/dashboard/user/pitchPracticeSlice";
+import { setActiveSlideIndex, setNumSlides, setslidePreviews } from "@/store/slices/dashboard/user/pitchPracticeSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -12,7 +12,7 @@ import { z } from "zod";
 export type FormType = z.infer<typeof PitchPracticeSchema>;
 
 const PitchPracticeForm = () => {
-    const { activeSlideIndex, slidePreviews } = useSelector((state: RootState) => state.pitchPractice);
+    const { activeSlideIndex, slidePreviews, numSlides } = useSelector((state: RootState) => state.pitchPractice);
     const dispatch = useAppDispatch();
 
     const form = useForm<FormType>({
@@ -26,8 +26,7 @@ const PitchPracticeForm = () => {
             if (name !== "slides" || !("slides" in values && values.slides)) return;
 
             const slides = values.slides.filter(
-                (slide): slide is { file: File; preview: string } =>
-                    slide !== undefined && slide.file !== undefined && slide.preview !== undefined,
+                (slide): slide is { file: File; preview: string } => slide !== undefined && slide.preview !== undefined,
             );
             const slidePreviews = slides.map((slide) => slide.preview);
 
@@ -40,7 +39,9 @@ const PitchPracticeForm = () => {
     return (
         <Form {...form}>
             <form>
-                <PracticeSetupLayout {...{ form, activeSlideIndex, slidePreviews, setActiveSlideIndex }} />
+                <PracticeSetupLayout
+                    {...{ form, activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
+                />
             </form>
         </Form>
     );

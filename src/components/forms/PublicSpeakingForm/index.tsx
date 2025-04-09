@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { publicSpeakingVEOptions } from "@/config/form-field-options";
-import { PublicSpeakingSchema } from "@/schemas/public-speaking";
+import { PublicSpeakingSchema } from "@/schemas/dashboard/user";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";

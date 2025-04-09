@@ -1,4 +1,4 @@
-import { cn, convertFileToDataUrl, isFileWithPreview } from "@/lib/utils";
+import { cn, convertFileToDataUrl } from "@/lib/utils";
 import { HTMLAttributes, useCallback, useEffect } from "react";
 import Dropzone, { DropzoneProps, FileRejection } from "react-dropzone";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
@@ -21,8 +21,7 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
     children,
     name,
 }: IUploadMediaTriggerProps<T, K>) => {
-    const { register, unregister, setValue, watch } = useFormContext();
-    const files = watch(name) as IFilesWithPreview | undefined;
+    const { register, unregister, setValue } = useFormContext();
 
     const handleDrop = useCallback(
         async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
@@ -56,7 +55,6 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
 
             const newFiles = await Promise.all(
                 acceptedFiles.map(async (file) => ({
-                    file,
                     preview: await convertFileToDataUrl(file),
                 })),
             );
@@ -72,17 +70,6 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
             unregister(name);
         };
     }, [register, unregister, name]);
-
-    useEffect(() => {
-        return () => {
-            if (!files) return;
-            files.forEach((file) => {
-                if (isFileWithPreview(file)) {
-                    URL.revokeObjectURL(file.preview);
-                }
-            });
-        };
-    }, [files]);
 
     return (
         <Dropzone accept={accept} maxFiles={1} onDrop={handleDrop}>
