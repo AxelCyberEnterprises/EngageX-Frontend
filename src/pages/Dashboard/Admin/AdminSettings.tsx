@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import PersonalInfoForm, {
-  PersonalInfoFormData,
-} from "@/components/dashboard/ProfileForm";
+import PersonalInfoForm from "@/components/dashboard/ProfileForm";
 import ActionModal from "@/components/modals/modalVariants/ActionModal";
 import circleCheck from "../../../assets/images/svgs/circle-check.svg";
 import Arrow from "../../../assets/images/svgs/arrow.svg";
@@ -20,7 +18,6 @@ const AdminSettings: React.FC = () => {
   // const [showFailureModal, setShowFailureModal] = useState(false);
   const [planSuccessModal, setPlanSuccessModal] = useState(false);
   const [planFailureModal, setPlanFailureModal] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const sectionFromUrl = searchParams.get("section");
   const notificationCount = 4;
@@ -52,34 +49,6 @@ const AdminSettings: React.FC = () => {
         behavior: "smooth",
       });
     }
-  };
-
-  const handlePersonalInfo = (
-    data: PersonalInfoFormData,
-    photo: File | null
-  ) => {
-    console.log(data);
-    console.log(photo);
-    setShowSuccessModal(true);
-  };
-
-  const initialData = {
-    firstName: "Von",
-    lastName: "Wayne",
-    email: "vonwayne@yopmail.com",
-    company: "EngageX™",
-    industry: "Media & Presentation",
-    country: "United States",
-    timezone: "Pacific Standard Time (PST)",
-  };
-
-  const handleSaveNotifications = (categories: any) => {
-    console.log("Saved notification preferences:", categories);
-    setShowSuccessModal(true);
-  };
-
-  const handleCancel = () => {
-    // console.log('Cancelled notification changes');
   };
 
   useEffect(() => {
@@ -170,35 +139,13 @@ const AdminSettings: React.FC = () => {
 
         <section className="flex-1 overflow-y-auto scrollbar-hide">
           {activeIndex === 0 && (
-            <PersonalInfoForm
-              onSubmit={handlePersonalInfo}
-              initialData={initialData}
-              credits={102}
-              onCancel={() => {
-                setIsEditMode(false);
-              }}
-              isLoading={false}
-              isEditable={isEditMode}
-              enableEdit={() => {
-                setIsEditMode(true);
-              }}
-            />
+            <PersonalInfoForm />
           )}
           {activeIndex === 1 && (
-            <NotificationSettings
-              onSave={handleSaveNotifications}
-              onCancel={handleCancel}
-            />
+            <NotificationSettings />
           )}
           {activeIndex === 2 && (
-            <AccountSecurity
-              onSave={(data) => {
-                console.log("Saving data:", data);
-              }}
-              onCancel={() => {
-                // console.log('Cancelled')
-              }}
-            />
+            <AccountSecurity />
           )}
           {activeIndex === 3 && (
             <Credits

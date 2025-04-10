@@ -16,15 +16,7 @@ interface NotificationCategory {
   options: NotificationOption[];
 }
 
-interface NotificationSettingsProps {
-  onSave: (categories: NotificationCategory[]) => void;
-  onCancel: () => void;
-}
-
-const NotificationSettings: React.FC<NotificationSettingsProps> = ({
-  onSave,
-  onCancel,
-}) => {
+const NotificationSettings: React.FC = () => {
   const [categories, setCategories] = useState<NotificationCategory[]>([
     {
       id: 'email',
@@ -99,7 +91,7 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({
   };
 
   const handleSave = () => {
-    onSave(categories);
+    console.log(categories);
   };
 
   return (
@@ -143,7 +135,7 @@ const NotificationSettings: React.FC<NotificationSettingsProps> = ({
         <div className="mt-8 flex sm:flex-row flex-col sm:justify-end w-full gap-6">
           <Button
             variant="outline"
-            onClick={onCancel}
+            onClick={()=>{}}
             className="border-[#D0D5DD] text-[#6F7C8E] sm:hidden w-full sm:w-auto"
           >
             Cancel
