@@ -36,6 +36,7 @@ interface AuthState {
     apiError: string | null;
     successMessage: string | null;
     authPageImage: string;
+    userIdAfterSignup: string;
 }
 
 const initialState: AuthState = {
@@ -75,6 +76,7 @@ const initialState: AuthState = {
     apiError: null,
     successMessage: "",
     authPageImage: authPageImage1,
+    userIdAfterSignup: "",
 };
 
 
@@ -103,6 +105,9 @@ const authSlice = createSlice({
         },
         setRouteFromLogin: (state, action: PayloadAction<boolean>) => {
             state.routeFromLogin = action.payload;
+        },
+        setUserIdAfterSignup: (state, action: PayloadAction<string>) => {
+            state.userIdAfterSignup = action.payload;
         },
         setSignupData: (state, action: PayloadAction<Partial<SignupData>>) => {
             state.signupData = { ...state.signupData!, ...action.payload };
@@ -151,5 +156,5 @@ export function useAutoClearSuccessMessage() {
     }, [location.pathname]); 
 }
 
-export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
+export const { setTopicQuestion, setSignupFlow, setAuthPageImage,setUserIdAfterSignup, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
 export default authSlice.reducer;

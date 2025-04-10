@@ -3,6 +3,7 @@ import { BaseTable } from "../../base-table";
 import { columns, IAdminSessionHistory } from "./columns";
 // import data from "./data.json";
 import { useSessionHistory } from "@/hooks/auth";
+import { tokenManager } from "@/lib/utils";
 
 
 export type DataInterface = {
@@ -59,8 +60,9 @@ export function formatTime(time?: string): string {
 }
 
 const SessionHistoryTable = () => {
-    const { data, error, isLoading } = useSessionHistory() as { data: { results: IAdminSessionHistory[] } | null; error: any; isLoading: boolean };
+    const {data, error, isLoading } = useSessionHistory() as { data: { results: IAdminSessionHistory[] } | null; error: any; isLoading: boolean };
         console.log(data)
+        const token = tokenManager.getToken();
         const adminSessionHistoryData = useMemo<DataInterface[]>(() =>
             data?.results?.map((item: any) => ({
                 id: item.id || "N/A",
@@ -68,8 +70,9 @@ const SessionHistoryTable = () => {
                 sessionType: capitalizeWords(item.session_type || "Unknown Type"),
                 date: formatDate(item.date),
                 duration: formatTime(item.duration),
+                userProfile: item.full_name || "Unknown User",
             })) || [],
-            [data]
+            [data, token]
         );
     // const adminSessionHistoryData = useMemo<IAdminSessionHistory[]>(() => JSON.parse(JSON.stringify(data)), []);
 

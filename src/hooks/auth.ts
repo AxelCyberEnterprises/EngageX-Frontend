@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from "@/lib/api";
+import { apiGet, apiPatch, apiPost } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import {
   setEmailForPasswordReset,
   setSignupFlow,
   setSuccessMessage,
+  setUserIdAfterSignup,
 } from "@/store/slices/authSlice";
 
 export function useSignup() {
@@ -21,13 +22,41 @@ export function useSignup() {
     }) => {
       return await apiPost("/users/users/", data);
     },
-    onSuccess: async (data) => {
+    onSuccess: async (data:any) => {
       console.log(data);
+      setUserIdAfterSignup(data?.id);
       // dispatch(login(data));
       dispatch(setSignupFlow("confirmation"));
     },
     onError: (error) => {
       console.error(error);
+    },
+  });
+}
+
+interface AuthQuestionData {
+  userId: string; // ensure you pass this when calling the mutation
+  user_intent: string;
+  purpose: string;
+}
+
+export function useAddAuthQuestion() {
+  // const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationKey: ["addAuthQuestion"],
+    mutationFn: async ({ userId, user_intent, purpose }: AuthQuestionData) => {
+      return await apiPatch(`/users/users/${userId}`, { user_intent, purpose });
+    },
+    onSuccess: () => {
+      console.log("Auth question added successfully.");
+      // dispatch(setSignupFlow("login"));
+      navigate("../Tutorial")
+
+    },
+    onError: (error: any) => {
+      console.error("Failed to add auth question:", error.message);
     },
   });
 }

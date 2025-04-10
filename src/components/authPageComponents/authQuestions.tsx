@@ -4,15 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/index";
 import { setAuthPageImage, setSignupData } from "../../store/slices/authSlice";
 import { welcomeMessage } from "@/components/layouts/userAuth";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg"
+import { useAddAuthQuestion } from "@/hooks/auth";
 
 const AuthQuestions: React.FC = () => {
     const [selectedOptions, setSelectedOptions] = useState<{ plan?: string; role?: string }>({});
     const signupData = useSelector((state: RootState) => state.auth.signupData);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const questions = useSelector((state: RootState) => state.auth.questions);
         const location = useLocation()
                 useEffect(()=>{
@@ -42,11 +42,18 @@ const AuthQuestions: React.FC = () => {
             );
         }
     };
+    const userIdAfterSignup = useSelector((state: RootState) => state.auth.userIdAfterSignup);
+    const {mutate: addAuthQuestion} = useAddAuthQuestion()
     const handleContinue = () => {
         if (!selectedOptions.plan || !selectedOptions.role) {
             return;
         }
-        navigate("../Tutorial");
+addAuthQuestion({
+    userId: userIdAfterSignup,
+    user_intent: selectedOptions.role,
+    purpose: selectedOptions.plan,})
+
+        // navigate("../Tutorial");
     };
 
     return (
