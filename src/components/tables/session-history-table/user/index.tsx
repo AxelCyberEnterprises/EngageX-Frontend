@@ -3,6 +3,7 @@ import { BaseTable } from "../../base-table";
 import { columns as userSessionColumns, IUserSessionHistory } from "./columns";
 
 import { useSessionHistory } from "@/hooks/auth";
+import { tokenManager } from "@/lib/utils";
 
 export type DataInterface = {
     id: string;
@@ -56,9 +57,10 @@ export function formatTime(time?: string): string {
     }
 }
 
+
 const SessionHistoryTable = () => {
     const { data, error, isLoading } = useSessionHistory() as { data: { results: IUserSessionHistory[] } | null; error: any; isLoading: boolean };
-    
+    const token = tokenManager.getToken();
     const userSessionHistoryData = useMemo<DataInterface[]>(() =>
         data?.results?.map((item: any) => ({
             id: item.id || "N/A",
@@ -67,7 +69,7 @@ const SessionHistoryTable = () => {
             date: formatDate(item.date),
             duration: formatTime(item.duration),
         })) || [],
-        [data]
+        [data, token]
     );
     
     console.log(userSessionHistoryData);

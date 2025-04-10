@@ -12,6 +12,7 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { useLogin } from "@/hooks/auth";
 import { useDispatch } from "react-redux";
 import { setAuthPageImage } from "@/store/slices/authSlice";
+import googleIcon from "@/assets/images/svgs/google-icon.svg";
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
 
 const loginSchema = z.object({
@@ -42,6 +43,8 @@ const Login: React.FC = () => {
                         useEffect(()=>{
                             dispatch(setAuthPageImage(authPageImage1))
                         },[location.pathname])
+
+                        const handleGoogleLogin = () => {}
 
     return (
         <div className="login-container font-[Inter] sm:w-10/12 px-1 sm:mx-auto flex flex-col justify-center h-[100dvh] md:overflow-y-hidden max-md:pl-0 max-lg:pl-5">
@@ -126,6 +129,18 @@ const Login: React.FC = () => {
                     Forgot Password
                 </Link>
             </section>
+              <div className="relative w-full sm:w-3/4 mx-auto font-[Inter] text-center my-5 ">
+                            <div className="absolute top-1/2 transform -translate-y-1/2 w-full border-b border-gray-300 z-10"></div>
+                            <span className="relative z-20 bg-white px-3">OR</span>
+                        </div>
+                        <button
+                            onClick={handleGoogleLogin}
+                            className="flex w-full bg-transparent hover:scale-[1.03] duration-300 border border-[#d0d5dda2] font-[Montserrat] py-2.5 text-black p-4 rounded-lg sm:w-3/4 mx-auto  justify-center gap-4"
+                        >
+                            <img src={googleIcon} className="w-[20px]" alt="" />
+                            <p>Sign up with Google</p>
+                        </button>
+
 
             <div className="w-full mt-1">
                 <p className="flex items-center text-sm text-muted-foreground gap-1 justify-center">
