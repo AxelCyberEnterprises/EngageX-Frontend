@@ -25,7 +25,7 @@ import UserAnalytics from "../pages/Dashboard/User/Analytics";
 import UserDashboardHome from "../pages/Dashboard/User/Index";
 import UserSessionReport from "../pages/Dashboard/User/SessionReport";
 import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
-import UserSettings from "../pages/Dashboard/User/Settings";
+import UserSettings from "../pages/Dashboard/User/UserSettings";
 import UserSessionHistory from "../pages/Dashboard/User/UserSessionHistory";
 import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
@@ -41,6 +41,7 @@ import CookiePolicy from "../pages/CookiePolicy";
 import TermsOfService from "../pages/TermsOfService";
 import PerformanceImprovement from "@/pages/Dashboard/User/PerformanceImprovement";
 import Press from "@/pages/Press/Press";
+import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector(
@@ -104,7 +105,7 @@ function AdminDashboardRoutes() {
             <Route path="session-history" element={<AdminSessionHistory />} />
             <Route path="session-history/:id" element={<AdminSessionReport />} />
             <Route path="analytics" element={<UserAnalytics />} />
-            <Route path="settings" element={<UserSettings />} />
+            <Route path="settings" element={<AdminSettings />} />
             <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
         </Routes>
     );

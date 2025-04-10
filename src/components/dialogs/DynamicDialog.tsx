@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import { RootState } from "@/store";
+import { RootState, useAppDispatch } from "@/store";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 
 const DynamicDialog = () => {
@@ -10,7 +10,7 @@ const DynamicDialog = () => {
         data: { children, classMap, description, title },
         isOpen,
     } = useSelector((state: RootState) => state.dynamicDialog);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleOpenChange = useCallback(
         (open: boolean) => {

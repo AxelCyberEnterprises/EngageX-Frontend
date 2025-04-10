@@ -5,6 +5,7 @@ import TopNav from "../dashboard/TopNav";
 import DynamicDialog from "../dialogs/DynamicDialog";
 
 import { ReactNode } from "react";
+import { Toaster } from "../ui/sonner";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
     return (
@@ -29,6 +30,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
                     <div className="flex-1 overflow-y-auto scrollbar-hide">
                         {children}
                         <DynamicDialog />
+                        <Toaster toastOptions={{ classNames: {content: "size-full"} }} />
                     </div>
                 </SidebarInset>
             </div>

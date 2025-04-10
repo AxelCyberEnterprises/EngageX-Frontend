@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -47,7 +47,7 @@ const AccountSecurity: React.FC<AccountSecurityProps> = ({
     },
     mode: "onChange"
   });
-
+  const [isEditMode, setIsEditMode] = useState(false);
   const onSubmit = (data: FormValues) => {
     onSave(data);
   };
@@ -63,7 +63,10 @@ const AccountSecurity: React.FC<AccountSecurityProps> = ({
           <div className="flex gap-2 mt-4 sm:mt-0">
             <Button
               variant="outline"
-              onClick={onCancel}
+              onClick={()=>{
+                onCancel();
+                setIsEditMode(true);
+              }}
               className="border-[#D0D5DD] text-[#6F7C8E] sm:flex hidden"
             >
               Cancel
@@ -71,7 +74,9 @@ const AccountSecurity: React.FC<AccountSecurityProps> = ({
             <Button
               variant="default"
               className="flex items-center gap-2"
-              onClick={onCancel}
+              onClick={()=>{
+                setIsEditMode(true);
+              }}
             >
               <img
                 src={settings}
@@ -103,6 +108,7 @@ const AccountSecurity: React.FC<AccountSecurityProps> = ({
                         <Input
                           type="password"
                           {...field}
+                          disabled={!isEditMode}
                           className="w-full shadow-none focus-visible:ring-0 focus:shadow-none active:shadow-none text-[#252A39] font-normal"
                         />
                       </FormControl>
@@ -123,6 +129,7 @@ const AccountSecurity: React.FC<AccountSecurityProps> = ({
                         <Input
                           type="password"
                           {...field}
+                          disabled={!isEditMode}
                           className="w-full shadow-none focus-visible:ring-0 focus:shadow-none active:shadow-none text-[#252A39] font-normal"
                         />
                       </FormControl>
@@ -143,6 +150,7 @@ const AccountSecurity: React.FC<AccountSecurityProps> = ({
                         <Input
                           type="password"
                           {...field}
+                          disabled={!isEditMode}
                           className={`w-full shadow-none focus-visible:ring-0 focus:shadow-none active:shadow-none text-[#252A39] font-normal ${form.formState.errors.confirmPassword
                             ? 'border-red-500'
                             : field.value && field.value === form.getValues('newPassword')
@@ -170,6 +178,7 @@ const AccountSecurity: React.FC<AccountSecurityProps> = ({
                     <FormControl>
                       <Switch
                         checked={field.value}
+                        disabled={!isEditMode}
                         onCheckedChange={field.onChange}
                         className="p-0 justify-start w-8 [&_[data-slot='switch-thumb']]:size-4"
                       />

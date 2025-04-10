@@ -8,9 +8,9 @@ interface IPDFViewerProps extends HTMLAttributes<HTMLElement> {
     file: File;
 }
 
-const PDFViewer = ({ file }: IPDFViewerProps) => {
-    pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).toString();
 
+const PDFViewer = ({ file }: IPDFViewerProps) => {
     return (
         <Document
             file={file}

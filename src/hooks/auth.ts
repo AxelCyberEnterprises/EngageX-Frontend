@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import {
+  // AuthUser,
   login,
   setEmailForPasswordReset,
   setSignupFlow,
@@ -61,13 +62,15 @@ export function useAddAuthQuestion() {
   });
 }
 
-interface LoginResponse {
+
+export interface LoginResponse {
   data: {
     is_admin: boolean;
     token: string;
     email: string;
     first_name: string | null;
     last_name: string | null;
+    id: number;
   };
 }
 

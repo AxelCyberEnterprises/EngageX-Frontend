@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useFluctuatingNumber = (baseValue: number, interval = 500) => {
+const useFluctuatingNumber = (baseValue: number, interval = 2000) => {
     const [value, setValue] = useState(baseValue);
 
     useEffect(() => {

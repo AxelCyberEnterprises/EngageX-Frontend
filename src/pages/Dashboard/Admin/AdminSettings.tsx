@@ -10,13 +10,17 @@ import NotificationSettings from "@/components/dashboard/Notification";
 import AccountSecurity from "@/components/dashboard/AccountSecurity";
 import Credits from "@/components/dashboard/Credits";
 import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
-const Settings: React.FC = () => {
+const AdminSettings: React.FC = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   // const [showFailureModal, setShowFailureModal] = useState(false);
   const [planSuccessModal, setPlanSuccessModal] = useState(false);
   const [planFailureModal, setPlanFailureModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const sectionFromUrl = searchParams.get("section");
   const notificationCount = 4;
@@ -26,7 +30,7 @@ const Settings: React.FC = () => {
     "Account & Security",
     "Credits",
   ];
-
+  console.log(user);
   useEffect(() => {
     if (sectionFromUrl) {
       const newIndex = sectionItems.indexOf(sectionFromUrl);
@@ -111,10 +115,10 @@ const Settings: React.FC = () => {
       />
       <ActionModal
         show={planFailureModal}
-        onClose={() => setPlanSuccessModal(false)}
+        onClose={() => setPlanFailureModal(false)}
         icon={circleCheck}
-        head="Payment Successful"
-        message="Your credit has been successfully processed! Thank you for your transaction."
+        head="Payment Failed"
+        message="Your credit was not processed! Try again later."
         cta="Go to Home"
         ctaClassName="border border-[#D5D7DA] text-[#FFFFFF]"
       />
@@ -147,9 +151,8 @@ const Settings: React.FC = () => {
               <div
                 key={index}
                 onClick={() => handleSectionChange(index)}
-                className={`relative cursor-pointer flex items-center gap-2 py-4 transition-colors duration-600 ${
-                  activeIndex === index ? "text-[#252A39]" : "text-[#6F7C8E]"
-                }`}
+                className={`relative cursor-pointer flex items-center gap-2 py-4 transition-colors duration-600 ${activeIndex === index ? "text-[#252A39]" : "text-[#6F7C8E]"
+                  }`}
               >
                 {item}
                 {item === "Notifications & Reminders" && (
@@ -171,8 +174,14 @@ const Settings: React.FC = () => {
               onSubmit={handlePersonalInfo}
               initialData={initialData}
               credits={102}
-              onCancel={() => {}}
+              onCancel={() => {
+                setIsEditMode(false);
+              }}
               isLoading={false}
+              isEditable={isEditMode}
+              enableEdit={() => {
+                setIsEditMode(true);
+              }}
             />
           )}
           {activeIndex === 1 && (
@@ -203,4 +212,4 @@ const Settings: React.FC = () => {
   );
 };
 
-export default Settings;
+export default AdminSettings;

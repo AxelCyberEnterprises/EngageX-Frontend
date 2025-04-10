@@ -48,7 +48,7 @@ const PitchPractice: React.FC = () => {
     useEffect(() => {
         if (!sessionId) return;
 
-        const ws = new WebSocket(`ws://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
+        const ws = new WebSocket(`wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
         socket.current = ws;
 
         ws.onopen = () => {
