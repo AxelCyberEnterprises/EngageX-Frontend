@@ -40,7 +40,7 @@ export interface LoginResponse {
     email: string;
     first_name: string | null;
     last_name: string | null;
-    id: number;
+    user_id: number;
   };
 }
 
