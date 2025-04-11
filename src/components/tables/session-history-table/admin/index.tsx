@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { BaseTable } from "../../base-table";
-import { columns, IAdminSessionHistory } from "./columns";
+import { columns } from "./columns";
 // import data from "./data.json";
 import { useSessionHistory } from "@/hooks/auth";
 
@@ -58,7 +58,7 @@ export function formatTime(time?: string): string {
 }
 
 const SessionHistoryTable = () => {
-    const { data, error, isLoading } = useSessionHistory() as { data: { results: IAdminSessionHistory[] } | null; error: any; isLoading: boolean };
+    const { data, error, isLoading } = useSessionHistory();
         console.log(data)
         const adminSessionHistoryData = useMemo<DataInterface[]>(() =>
             data?.results?.map((item: any) => ({

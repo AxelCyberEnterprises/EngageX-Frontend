@@ -1,5 +1,5 @@
-import PracticeSetUpControlsLayout from "@/components/form-layout/PracticeSetUpControlsLayout";
-import PracticeSetupLayout from "@/components/form-layout/PracticeSetupLayout";
+import PracticeSetUpControlsLayout from "@/components/forms/form-layouts/PracticeSetUpControlsLayout";
+import PracticeSetupLayout from "@/components/forms/form-layouts/PracticeSetupLayout";
 import { Form } from "@/components/ui/form";
 import { PresentationPracticeSchema } from "@/schemas/dashboard/user";
 import { RootState, useAppDispatch } from "@/store";
@@ -24,7 +24,7 @@ const PresentationPracticeForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PresentationPracticeSchema),
-         defaultValues: useMemo(() => ({ session_type: "presentation" }), []),
+        defaultValues: useMemo(() => ({ session_type: "presentation" }), []),
     });
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
-import { Button } from "../ui/button";
-import PDFDocument from "../widgets/pdf-viewer/PDFDocument";
-import PDFPage from "../widgets/pdf-viewer/PDFPage";
+import { Button } from "../../ui/button";
+import PDFDocument from "../../widgets/pdf-viewer/PDFDocument";
+import PDFPage from "../../widgets/pdf-viewer/PDFPage";
 
 interface ISlidePreviewSectionProps extends HTMLAttributes<HTMLElement> {
     activeSlideIndex: number;

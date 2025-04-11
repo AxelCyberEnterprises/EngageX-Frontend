@@ -210,8 +210,8 @@ function Benefits() {
           <div className="space-y-4">
             <h6 className=" font-montreal">Support of a certified coach.</h6>
             <p className="text-dark-electric-blue">
-              We give you access to Distinguished Toastmasters (DTM) and ICF
-              certified coaches to help aid your growth
+              We give you access to award-wining, certified career, speech and
+              communication coaches.
             </p>
           </div>
         </div>

@@ -17,8 +17,8 @@ function Hero() {
               Step into the future of public speaking, pitching, and
               presentations with EngageX™, a training platform designed to
               enhance your confidence, delivery, and audience engagement using
-              cutting edge technology combined with AI and real life ICF
-              certified coaches.
+              cutting edge technology combined with AI and award-winning
+              coaches.
             </p>
           </div>
           <Link to="/dashboard/user/">
