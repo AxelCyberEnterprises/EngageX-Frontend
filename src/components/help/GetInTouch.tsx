@@ -118,13 +118,13 @@ const GetInTouch: React.FC<modalProps> = ({ isOpen, setIsOpen }) => {
                                 <p>
                                     Or email us at{" "}
                                     <span>
-                                        <a className="hover:underline" href="mailto:engagex@info.com">
-                                            engagex@info.com
+                                        <a className="hover:underline" href="mailto:info@engagexai.io">
+                                            info@engagexai.io
                                         </a>
                                     </span>
                                 </p>
                             </div>
-                            <div className="w-full flex sm:flex-row flex-col gap-2">
+                            <div className="w-full grid sm:grid-cols-2 grid-cols-1 gap-2">
                                 <DialogClose className="flex-1" asChild>
                                     <button
                                         className="bg-transparent rounded-lg text-[#414651] font-semibold py-3.5 hover:bg-transparent border"
@@ -133,9 +133,9 @@ const GetInTouch: React.FC<modalProps> = ({ isOpen, setIsOpen }) => {
                                         Cancel
                                     </button>
                                 </DialogClose>
-                                <button className="flex-1 rounded-lg py-3.5 font-semibold" type="submit">
+                                <a className="bg-[#262B3A] flex justify-center rounded-lg py-3.5 font-semibold text-white" href="mailto:info@engagexai.io">
                                     Send mail
-                                </button>
+                                </a>
                             </div>
                         </form>
                     </Form>

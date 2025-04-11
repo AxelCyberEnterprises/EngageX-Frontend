@@ -1,19 +1,18 @@
-import StartSession from "@/components/dialogs/dialog-contents/StartSession";
+import StartPublicSpeakingSession from "@/components/dialogs/dialog-contents/start-session/StartPublicSpeakingSession";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { publicSpeakingVEOptions } from "@/config/form-field-options";
-import { PublicSpeakingSchema } from "@/schemas/public-speaking";
-import { setValues } from "@/store/slices/dashboard/user/publicSpeakingFormSlice";
+import { PublicSpeakingSchema } from "@/schemas/dashboard/user";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { z } from "zod";
-import GoalsSection from "../../form-sections/GoalsSection";
-import SessionNameSection from "../../form-sections/SessionNameSection";
-import VirtualEnvironmentSection from "../../form-sections/VirtualEnvironmentSection";
+import GoalsSection from "../form-sections/GoalsSection";
+import SessionNameSection from "../form-sections/SessionNameSection";
+import VirtualEnvironmentSection from "../form-sections/VirtualEnvironmentSection";
 import InputSpeakerNotesSection from "./InputSpeakerNotesSection";
 import TimeAllocationSection from "./TimeAllocationSection";
 
@@ -24,21 +23,12 @@ const PublicSpeakingForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PublicSpeakingSchema),
+        defaultValues: useMemo(() => ({ session_type: "public" }), []),
     });
-
-    const handlePublicSpeakingFormSubmit = useCallback(
-        (values: FormType) => {
-            dispatch(setValues(values));
-        },
-        [dispatch],
-    );
 
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(handlePublicSpeakingFormSubmit)}
-                className="flex lg:flex-row flex-col lg:gap-10 gap-6"
-            >
+            <form className="flex lg:flex-row flex-col lg:gap-10 gap-6">
                 <section className="flex-1 space-y-12">
                     <SessionNameSection {...{ form }} />
                     <GoalsSection {...{ form }} />
@@ -54,7 +44,7 @@ const PublicSpeakingForm = () => {
                     <div className="flex items-center justify-between">
                         <p>Enable AI Generated Questions</p>
                         <Switch
-                            onCheckedChange={(checked) => form.setValue("enableAiGeneratedQuestions", checked)}
+                            onCheckedChange={(checked) => form.setValue("allow_ai_questions", checked)}
                             className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
                         />
                     </div>
@@ -63,11 +53,11 @@ const PublicSpeakingForm = () => {
                     <Button
                         type="button"
                         variant="outline"
-                        className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal md:w-fit w-full md:h-9 h-11"
+                        className="hidden text-gunmetal hover:text-gunmetal border-gunmetal font-normal md:w-fit w-full md:h-9 h-11"
                     >
                         Save as Draft
                     </Button>
-                    <div className="md:w-fit w-full flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center md:gap-x-4">
+                    <div className="md:ml-auto md:w-fit w-full flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center md:gap-x-4">
                         <Button
                             type="button"
                             className="bg-green-sheen hover:bg-green-sheen/80 font-normal md:w-fit w-full md:h-9 h-11 transition"
@@ -75,7 +65,13 @@ const PublicSpeakingForm = () => {
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession />,
+                                        children: (
+                                            <StartPublicSpeakingSession
+                                                initiationType="skip"
+                                                setValue={form.setValue}
+                                                handleSubmit={form.handleSubmit}
+                                            />
+                                        ),
                                     }),
                                 )
                             }
@@ -84,12 +80,17 @@ const PublicSpeakingForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            className="bg-[#D4D6DF] hover:bg-[#D4D6DF]/80 text-gunmetal font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            className="bg-gunmetal hover:bg-gunmetal/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
                                     openDialog({
                                         key: "start-session",
-                                        children: <StartSession {...{ form, handlePublicSpeakingFormSubmit }} />,
+                                        children: (
+                                            <StartPublicSpeakingSession
+                                                initiationType="start"
+                                                handleSubmit={form.handleSubmit}
+                                            />
+                                        ),
                                     }),
                                 )
                             }

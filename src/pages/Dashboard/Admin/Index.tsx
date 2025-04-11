@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import ShadAreaChart from "@/components/dashboard/ShadAreaChart";
 import RecentSessions from "../../../components/dashboard/RecentSessionsTable";
 import ShadDonutChart from "@/components/dashboard/ShadDonutChart";
+import { useDashboardData } from "@/hooks/auth";
+import { UseQueryResult } from "@tanstack/react-query";
+import { Session } from "../../../components/dashboard/RecentSessionsTable";
+import { Loader } from "lucide-react";
+import { capitalizeWords, formatDate, formatTime } from "@/components/tables/session-history-table/admin";
 
 const AdminDashboardHome: React.FC = () => {
+    // type Session = {
+    //     id: string;
+    //     name: string;
+    //     // Add other properties of a session here
+    // };
+
+    const { data, isLoading } = useDashboardData() as UseQueryResult<
+        { recent_sessions: Session[]; active_users_count: number; inactive_users_count: number; today_new_users_count: number },
+        Error
+    >;
+    console.log("unprocessed", data);
+    const recentData = useMemo(
+        () =>
+            data?.recent_sessions?.map((item: any) => ({
+                id: item.id || "N/A",
+                sessionName: capitalizeWords(item.session_name || "Unknown Session"),
+                sessionType: capitalizeWords(item.session_type_display || "Unknown Type"),
+                date: formatDate(item.date),
+                duration: formatTime(item.formatted_duration), // Keep duration as a number
+            })) || [],
+        [data?.recent_sessions],
+    );
+
+    console.log(data);
+    console.log(recentData);
     const cardsData = [
         {
             icon: (
@@ -20,6 +50,7 @@ const AdminDashboardHome: React.FC = () => {
                 </svg>
             ),
             title: "Total New Sessions",
+            key: "total_new_sessions_count",
             value: 10,
             direction: "up",
             percent: 1.7,
@@ -33,6 +64,7 @@ const AdminDashboardHome: React.FC = () => {
                     />
                 </svg>
             ),
+            key: "",
             title: "Pitch Sessions",
             value: 2,
             direction: "down",
@@ -115,14 +147,27 @@ const AdminDashboardHome: React.FC = () => {
     };
 
     const donutChartData = [
-        { name: "ActiveUsers", value: 908, fill: "#252A39" },
-        { name: "InactiveUsers", value: 92, fill: "#B9BCC8" },
+        { name: "ActiveUsers", value: Number(data?.active_users_count), fill: "#252A39" },
+        { name: "InactiveUsers", value: Number(data?.inactive_users_count), fill: "#B9BCC8" },
     ];
 
     const donutChartColors = {
         ActiveUsers: "#252A39",
         InactiveUsers: "#B9BCC8",
     };
+    // console.log(data?.recent_sessions)
+
+    const totalUsers = Number(data?.active_users_count) + Number(data?.inactive_users_count);
+    const userPercentage = parseFloat(((Number(data?.today_new_users_count) / totalUsers) * 100).toFixed(1));
+
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <Loader />
+            </div>
+        );
+    }
 
     return (
         <div className="admin__dashboard__index py-3 px-4 bg-ghost-white">
@@ -146,7 +191,7 @@ const AdminDashboardHome: React.FC = () => {
                                 {card.icon}
                                 <p className="ms-2.5 gunmetal">{card.title}</p>
                             </div>
-                            <h4 className="gunmetal mb-5.5">{card.value}</h4>
+                            <h4 className="gunmetal mb-5.5">{16}</h4>
                             <div className="flex items-center">
                                 <div className="flex items-center me-2">
                                     {card.direction === "up" ? (
@@ -233,7 +278,7 @@ const AdminDashboardHome: React.FC = () => {
             <div className="flex flex-wrap lg:items-stretch">
                 <div className="w-full lg:w-6/9 lg:pe-2 mb-4 mt-3 shad__table">
                     <div className="dash__card px-5 py-4 rounded-[8px]">
-                        <RecentSessions />
+                        {data?.recent_sessions && <RecentSessions data={recentData} />}
                     </div>
                 </div>
 
@@ -252,7 +297,7 @@ const AdminDashboardHome: React.FC = () => {
                                 {/* total users  */}
                                 <div className="flex justify-between items-center mb-2.5">
                                     <div className="flex gap-2 items-center">
-                                        <h4 className="gunmetal">1024</h4>
+                                        <h4 className="gunmetal">{totalUsers}</h4>
                                         <p className="auro__metal">Total Users</p>
                                     </div>
                                     <div className="flex items-center me-2">
@@ -268,7 +313,7 @@ const AdminDashboardHome: React.FC = () => {
                                                 fill="#07A042"
                                             />
                                         </svg>
-                                        <p style={{ color: "#07A042" }}>1.7%</p>
+                                        <p style={{ color: "#07A042" }}>{userPercentage}%</p>
                                     </div>
                                 </div>
 
@@ -279,7 +324,7 @@ const AdminDashboardHome: React.FC = () => {
                                         <p className="auro__metal">Active Users</p>
                                     </div>
                                     <div className="flex items-center me-2">
-                                        <p className="gunmetal">908</p>
+                                        <p className="gunmetal">{data?.active_users_count}</p>
                                     </div>
                                 </div>
 
@@ -290,7 +335,7 @@ const AdminDashboardHome: React.FC = () => {
                                         <p className="auro__metal">Inactive Users</p>
                                     </div>
                                     <div className="flex items-center me-2">
-                                        <p className="gunmetal">92</p>
+                                        <p className="gunmetal">{data?.inactive_users_count}</p>
                                     </div>
                                 </div>
                             </div>

@@ -9,31 +9,14 @@ import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import { Button } from "@/components/ui/button";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
-import axios from "axios";
-import { tokenManager } from "@/lib/utils";
+import { useDashboardData } from "@/hooks/auth";
 
 const UserDashboardHome: React.FC = () => {
-  const token = tokenManager.getToken();
-  useEffect(() => {
-    console.log(token);
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.engagexai.io/sessions/dashboard/",
-          {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          }
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const {data} = useDashboardData()
 
-    fetchData();
-  }, [token]);
+  useEffect(()=>{
+    console.log(data)
+  }, [])
   const score = 89;
 
   const cardsData = [
@@ -352,9 +335,11 @@ const UserDashboardHome: React.FC = () => {
                   <option value="monthly">Past Month</option>
                   <option value="yearly">Past Year</option>
                 </select>
+                <Link to="progress-tracking?section=Performance+Analysis">
                 <small className="underline cursor-pointer gunmetal">
                   View All
                 </small>
+                </Link>
               </div>
             </div>
 
@@ -368,9 +353,11 @@ const UserDashboardHome: React.FC = () => {
         <div className="w-full lg:w-3/9 lg:ps-2 mb-3 lg:mb-10">
           <div className="goals p-5 rounded-[12px]">
             <p className="chinese__black big mb-3">Your goals & achievments</p>
+            <Link to="progress-tracking">
             <small className="underline gunmetal cursor-pointer">
               View All
             </small>
+            </Link>
 
             <div className="progress__div relative flex flex-col items-center w-full mt-7 mb-6">
               <SemiCircleProgress percent={0.8} color="#7387FF" />
@@ -408,7 +395,7 @@ const UserDashboardHome: React.FC = () => {
               ))}
             </div>
 
-            <Link to="#">
+            <Link to="progress-tracking">
               <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3 w-full mt-6">
                 View Goals
               </Button>

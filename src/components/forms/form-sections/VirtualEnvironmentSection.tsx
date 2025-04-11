@@ -27,7 +27,7 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
             <div>
                 <ControlledFieldWrapper
                     control={form.control}
-                    name="virtualEnvironment"
+                    name="virtual_environment"
                     render={({ field }) => (
                         <FormItem className="space-y-3">
                             <FormControl>
@@ -43,9 +43,9 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
                                             </FormControl>
                                             <FormLabel className="cursor-pointer">
                                                 <div
-                                                    className={cn("relative rounded-lg isolate", {
+                                                    className={cn("w-full relative rounded-lg isolate", {
                                                         "outline-4 outline-medium-sea-green":
-                                                            form.watch("virtualEnvironment") === value,
+                                                            form.watch("virtual_environment") === value,
                                                     })}
                                                 >
                                                     <img
@@ -61,7 +61,7 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
                                                             "bg-medium-sea-green text-white p-1 size-fit absolute top-0 right-0 rounded-bl-xs hidden",
                                                             {
                                                                 "z-10 block":
-                                                                    form.watch("virtualEnvironment") === value,
+                                                                    form.watch("virtual_environment") === value,
                                                             },
                                                         )}
                                                     >

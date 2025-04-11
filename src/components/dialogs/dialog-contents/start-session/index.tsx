@@ -1,29 +1,11 @@
-import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { PlayCircle } from "lucide-react";
-import { HTMLAttributes, useCallback } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { ReactNode } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
-interface IStartSessionProps extends HTMLAttributes<HTMLDivElement> {
-    form?: UseFormReturn<FormType>;
-    handlePublicSpeakingFormSubmit?: (values: FormType) => void;
-}
-
-const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionProps) => {
+const StartSession = ({ children }: { children: ReactNode }) => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const handleProceed = useCallback(() => {
-        if (form && handlePublicSpeakingFormSubmit) {
-            form.handleSubmit(handlePublicSpeakingFormSubmit)();
-        }
-
-        dispatch(closeDialog());
-        navigate("/sessions/pitch-practice-session");
-    }, [dispatch, form, handlePublicSpeakingFormSubmit, navigate]);
 
     return (
         <div className="flex flex-col justify-between">
@@ -47,9 +29,7 @@ const StartSession = ({ form, handlePublicSpeakingFormSubmit }: IStartSessionPro
                 >
                     Cancel
                 </Button>
-                <Button className="bg-gunmetal font-normal w-full h-11" onClick={handleProceed}>
-                    Proceed
-                </Button>
+                {children}
             </div>
         </div>
     );

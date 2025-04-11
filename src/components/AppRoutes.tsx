@@ -32,7 +32,7 @@ import UserAnalytics from "../pages/Dashboard/User/Analytics";
 import UserDashboardHome from "../pages/Dashboard/User/Index";
 import UserSessionReport from "../pages/Dashboard/User/SessionReport";
 import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
-import UserSettings from "../pages/Dashboard/User/Settings";
+import UserSettings from "../pages/Dashboard/User/UserSettings";
 import UserSessionHistory from "../pages/Dashboard/User/UserSessionHistory";
 import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
@@ -48,6 +48,7 @@ import CookiePolicy from "../pages/CookiePolicy";
 import TermsOfService from "../pages/TermsOfService";
 import PerformanceImprovement from "@/pages/Dashboard/User/PerformanceImprovement";
 import Press from "@/pages/Press/Press";
+import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
 import CancellationPolicy from "@/pages/CancellationPolicy";
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -120,7 +121,7 @@ function AdminDashboardRoutes() {
       <Route path="session-history" element={<AdminSessionHistory />} />
       <Route path="session-history/:id" element={<AdminSessionReport />} />
       <Route path="analytics" element={<UserAnalytics />} />
-      <Route path="settings" element={<UserSettings />} />
+      <Route path="settings" element={<AdminSettings />} />
       <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
     </Routes>
   );
@@ -129,13 +130,16 @@ function AdminDashboardRoutes() {
 function SessionRoutes() {
   return (
     <Routes>
-      <Route path="pitch-practice-session" element={<PitchPracticeSession />} />
       <Route
-        path="public-speaking-session"
+        path="pitch-practice-session/:id"
+        element={<PitchPracticeSession />}
+      />
+      <Route
+        path="public-speaking-session/:id"
         element={<PublicSpeakingSession />}
       />
       <Route
-        path="presentation-practice-session"
+        path="presentation-practice-session/:id"
         element={<PresentationPracticeSession />}
       />
       <Route path="*" element={<Navigate replace to="/dashboard/user" />} />

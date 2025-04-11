@@ -74,6 +74,7 @@ const Signup: React.FC = () => {
                 email: data.email,
                 password: data.password,
                 confirmPassword: data.confirmPassword,
+                
             }))
         signup(newData);
     };
@@ -81,7 +82,7 @@ const Signup: React.FC = () => {
 
      useEffect(() => {
                 if (error) {
-                    form.setError("firstName", {
+                    form.setError("confirmPassword", {
                         type: "manual",
                         message: (error.message || "Verification failed. Please try again."),
                     });
@@ -261,6 +262,7 @@ const Signup: React.FC = () => {
 
                     <Button
                         type="submit"
+                         name="submit"
                         isLoading={isPending}
                         className="rounded-lg font-[Montserrat] bg-[#262b3a] hover:bg-[#262b3ada] py-6"
                     >

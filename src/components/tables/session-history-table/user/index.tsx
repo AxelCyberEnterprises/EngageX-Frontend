@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { BaseTable } from "../../base-table";
-import { columns as userSessionColumns, IUserSessionHistory } from "./columns";
+import { columns as userSessionColumns } from "./columns";
 
 import { useSessionHistory } from "@/hooks/auth";
 
@@ -57,7 +57,7 @@ export function formatTime(time?: string): string {
 }
 
 const SessionHistoryTable = () => {
-    const { data, error, isLoading } = useSessionHistory() as { data: { results: IUserSessionHistory[] } | null; error: any; isLoading: boolean };
+    const { data, error, isLoading } = useSessionHistory();
     
     const userSessionHistoryData = useMemo<DataInterface[]>(() =>
         data?.results?.map((item: any) => ({
