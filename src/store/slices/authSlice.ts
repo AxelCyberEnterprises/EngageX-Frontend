@@ -29,7 +29,7 @@ export interface AuthUser {
     email: string;
     first_name: string | null;
     last_name: string | null;
-    id: number;
+    user_id: number;
 }
 
 interface AuthState {
