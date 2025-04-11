@@ -7,6 +7,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { handleDialog } from "@/store/slices/performance_improvement_slice";
+import { Link } from "react-router-dom";
 
 function SessionConfirmationDialog() {
   const dispatch = useDispatch();
@@ -104,9 +105,11 @@ function SessionConfirmationDialog() {
               >
                 Back
               </button>
-              <button className="rounded-2xl px-10 py-2 h-12">
-                Begin Session
-              </button>
+              <Link to="/dashboard/user/pitch-practice">
+                <button className="rounded-2xl px-10 py-2 h-12">
+                  Begin Session
+                </button>
+              </Link>
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>

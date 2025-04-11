@@ -1,46 +1,46 @@
 import { Link } from "react-router-dom";
 import FeaturesSectionCard from "./FeaturesSectionCard";
-import FeatureCardFiveSVG from "./svgs/FeatureCardFiveSVG";
-import FeatureCardFourSVG from "./svgs/FeatureCardFourSVG";
-import FeatureCardOneSVG from "./svgs/FeatureCardOneSVG";
-import FeatureCardSixSVG from "./svgs/FeatureCardSixSVG";
-import FeatureCardThreeSVG from "./svgs/FeatureCardThreeSVG";
-import FeatureCardTwoSVG from "./svgs/FeatureCardTwoSVG";
 
 function FeaturesSection() {
   let features = [
     {
-      svg: <FeatureCardOneSVG />,
+      className: "",
+      img: "./assets/featuresimg1.png",
       title: "Prompt and cue card system.",
       content:
         "Get a heads up on your next speaking point and be better prepared to deliver the best way possible.",
     },
     {
-      svg: <FeatureCardTwoSVG />,
+      className: "pt-6",
+      img: "./assets/featuresimg2.png",
       title: "Speaker analytics and self-assessment tools.",
       content:
         "Live analysis and feedback to your speech powered by unparalleled AI technology.",
     },
     {
-      svg: <FeatureCardThreeSVG />,
+      className: "",
+      img: "./assets/featuresimg3.png",
       title: "Realistic environment enhancements.",
       content:
         "Immersive speaking rooms that give you a taste of the real thing even including reactions from your audience and listeners.",
     },
     {
-      svg: <FeatureCardFourSVG />,
+      className: "",
+      img: "./assets/featuresimg4.png",
       title: "Progress tracking for improvement.",
       content:
         "We enable you to be aware of your progress and stay goal oriented while you train.",
     },
     {
-      svg: <FeatureCardFiveSVG />,
+      className: "",
+      img: "./assets/featuresimg5.png",
       title: "Post speech feedback summary.",
       content:
         "In-depth analysis ensuring you can give your best the next time by understanding what you need to do better in detail.",
     },
     {
-      svg: <FeatureCardSixSVG />,
+      className: "pt-6",
+      img: "./assets/featuresimg6.png",
       title: "Speech progress & phase indicators.",
       content:
         "Know where you are in the journey of your delivery so you can flow with an awareness of how much time you take, every time you train.",

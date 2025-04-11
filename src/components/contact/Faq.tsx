@@ -1,5 +1,6 @@
 import { useState } from "react";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 interface FaqItem {
   question: string;
@@ -28,7 +29,7 @@ const faqs: FaqItem[] = [
   },
   {
     question: "What is your cancellation policy?",
-    answer: "Please note that our cancellation policy does not include refunds",
+    answer: "Please checkout our cancellation policy page for information",
   },
   {
     question: "How does billing work?",
@@ -98,18 +99,36 @@ function Faq() {
                   {faq.question}
                 </p>
               </div>
-              {openIndex === idx && (
-                <p
-                  className={clsx(
-                    "mt-6 ml-11 transition-all duration-300",
-                    openIndex === idx
-                      ? "opacity-100 max-h-40"
-                      : "opacity-0 max-h-0 overflow-hidden"
-                  )}
-                >
-                  {faq.answer}
-                </p>
-              )}
+              {openIndex === idx &&
+                (idx != 4 ? (
+                  <p
+                    className={clsx(
+                      "mt-6 ml-11 transition-all duration-300",
+                      openIndex === idx
+                        ? "opacity-100 max-h-40"
+                        : "opacity-0 max-h-0 overflow-hidden"
+                    )}
+                  >
+                    {faq.answer}
+                  </p>
+                ) : (
+                  <p
+                    className={clsx(
+                      "mt-6 ml-11 transition-all duration-300",
+                      openIndex === idx
+                        ? "opacity-100 max-h-40"
+                        : "opacity-0 max-h-0 overflow-hidden"
+                    )}
+                  >
+                    Please checkout our{" "}
+                    <Link to="/cancellation-policy">
+                      <span className="underline underline-offset-2">
+                        cancellation policy page
+                      </span>
+                    </Link>{" "}
+                    for information
+                  </p>
+                ))}
             </div>
           ))}
         </div>
