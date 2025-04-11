@@ -9,8 +9,8 @@ import { Plus, UploadCloud } from "lucide-react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import { HTMLAttributes, useCallback, useId, useMemo } from "react";
 import { pdfjs } from "react-pdf";
-import PDFDocument from "../widgets/pdf-viewer/PDFDocument";
-import PDFPage from "../widgets/pdf-viewer/PDFPage";
+import PDFDocument from "../../widgets/pdf-viewer/PDFDocument";
+import PDFPage from "../../widgets/pdf-viewer/PDFPage";
 
 interface IUploadSlideSectionProps extends HTMLAttributes<HTMLElement> {
     activeSlideIndex: number;

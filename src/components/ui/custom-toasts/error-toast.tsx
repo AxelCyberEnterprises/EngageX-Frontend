@@ -25,10 +25,7 @@ const ErrorToast = ({ className, heading, description, action }: IErrorToastProp
             </div>
             <Button
                 variant={action?.variant ? action.variant : "outline"}
-                className={cn(
-                    "shrink-0 text-gunmetal hover:text-gunmetal border-gunmetal",
-                    action && action.className,
-                )}
+                className={cn("shrink-0 text-gunmetal hover:text-gunmetal border-gunmetal", action && action.className)}
                 onClick={() => (action?.onClick ? action.onClick() : toast.dismiss())}
             >
                 {action ? action.label : "Close"}

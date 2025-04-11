@@ -1,5 +1,5 @@
-import SlidePreviewSection from "@/components/form-sections/SlidePreviewSection";
-import VirtualEnvironmentSection from "@/components/form-sections/VirtualEnvironmentSection";
+import SlidePreviewSection from "@/components/forms/form-sections/SlidePreviewSection";
+import VirtualEnvironmentSection from "@/components/forms/form-sections/VirtualEnvironmentSection";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { practicesVEOptions } from "@/config/form-field-options";

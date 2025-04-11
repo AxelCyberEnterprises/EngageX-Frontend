@@ -1,12 +1,14 @@
 import { FormType as PitchPracticeFormType } from "@/components/forms/PitchPracticeForm";
 import { FormType as PresentationPracticeFormType } from "@/components/forms/PresentationPracticeForm";
 import { Button } from "@/components/ui/button";
+import { useSessionHistory } from "@/hooks/auth";
+import { useCreatePracticeSession } from "@/hooks/mutations/dashboard/user";
 import { capitalize } from "@mui/material";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import StartSession from ".";
 
-type FormType = PitchPracticeFormType | PresentationPracticeFormType;
+export type FormType = PitchPracticeFormType | PresentationPracticeFormType;
 interface IStartPracticeSetupSessionProps extends HTMLAttributes<HTMLDivElement> {
     initiationType: "skip" | "start";
     sessionType: "presentation" | "pitch";
@@ -20,20 +22,38 @@ const StartPracticeSetupSession = ({
     setValue,
     handleSubmit,
 }: IStartPracticeSetupSessionProps) => {
-    const handleSessionSetupSubmit = useCallback((values: FormType) => {
-        console.log("Session Setup Submit Values: ", values);
-    }, []);
+    const { mutate: createPracticeSession, isPending, } = useCreatePracticeSession({ sessionType });
+    const { data } = useSessionHistory();
+
+    const handleSessionSetupSubmit = useCallback(
+        (values: FormType) => {
+            const payload = {
+                ...values,
+                goals: values.goals.map(({ goal }) => goal),
+                slide: values.slides?.pop()?.preview,
+            };
+            delete payload.slides;
+
+            createPracticeSession(payload);
+        },
+        [createPracticeSession],
+    );
 
     const handleProceed = useCallback(() => {
-        if (setValue && initiationType === "skip") setValue("session_name", `${capitalize(sessionType)} Speaking`); //todo: fetch sessions and use append length++ to the name
+        if (setValue && initiationType === "skip") {
+            const { count } = data!;
+
+            setValue("session_name", `${capitalize(sessionType)} Practice Session ${count + 1}`);
+        }
 
         handleSubmit(handleSessionSetupSubmit)();
-    }, [handleSessionSetupSubmit, handleSubmit, initiationType, sessionType, setValue]);
+    }, [data, handleSessionSetupSubmit, handleSubmit, initiationType, sessionType, setValue]);
 
     return (
         <StartSession>
             <Button
-                // isLoading={isPending}
+                disabled={isPending}
+                isLoading={isPending}
                 className="bg-gunmetal hover:bg-gunmetal/90 font-normal w-full h-11"
                 onClick={handleProceed}
             >

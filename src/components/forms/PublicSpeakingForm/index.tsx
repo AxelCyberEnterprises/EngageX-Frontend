@@ -10,9 +10,9 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { z } from "zod";
-import GoalsSection from "../../form-sections/GoalsSection";
-import SessionNameSection from "../../form-sections/SessionNameSection";
-import VirtualEnvironmentSection from "../../form-sections/VirtualEnvironmentSection";
+import GoalsSection from "../form-sections/GoalsSection";
+import SessionNameSection from "../form-sections/SessionNameSection";
+import VirtualEnvironmentSection from "../form-sections/VirtualEnvironmentSection";
 import InputSpeakerNotesSection from "./InputSpeakerNotesSection";
 import TimeAllocationSection from "./TimeAllocationSection";
 

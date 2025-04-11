@@ -114,9 +114,9 @@ function AdminDashboardRoutes() {
 function SessionRoutes() {
     return (
         <Routes>
-            <Route path="pitch-practice-session" element={<PitchPracticeSession />} />
+            <Route path="pitch-practice-session/:id" element={<PitchPracticeSession />} />
             <Route path="public-speaking-session/:id" element={<PublicSpeakingSession />} />
-            <Route path="presentation-practice-session" element={<PresentationPracticeSession />} />
+            <Route path="presentation-practice-session/:id" element={<PresentationPracticeSession />} />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
