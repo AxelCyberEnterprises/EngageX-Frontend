@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const BaseSessionSetupSchema = z.object({
+export const BaseSessionSetupSchema = z.object({
     session_name: z.string({ required_error: "Session name is required" }),
     session_type: z.enum(["pitch", "public", "presentation"]),
     goals: z.array(
@@ -17,17 +17,21 @@ const BaseSessionSetupSchema = z.object({
 export const PublicSpeakingSchema = BaseSessionSetupSchema;
 
 export const PitchPracticeSchema = BaseSessionSetupSchema.extend({
-    slides: z.array(
-        z.object({
-            preview: z.string(),
-        }),
-    ),
+    slides: z
+        .array(
+            z.object({
+                preview: z.string(),
+            }),
+        )
+        .optional(),
 });
 
 export const PresentationPracticeSchema = BaseSessionSetupSchema.extend({
-    slides: z.array(
-        z.object({
-            preview: z.string(),
-        }),
-    ),
+    slides: z
+        .array(
+            z.object({
+                preview: z.string(),
+            }),
+        )
+        .optional(),
 });

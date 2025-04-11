@@ -5,11 +5,11 @@ import { ArrowLeft, Settings } from "lucide-react";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import FeatureWalkthrough from "../dialogs/dialog-contents/FeatureWalkthrough";
-import StartPracticeSetupSession from "../dialogs/dialog-contents/start-session/StartPracticeSetupSession";
+import FeatureWalkthrough from "../../dialogs/dialog-contents/FeatureWalkthrough";
+import StartPracticeSetupSession from "../../dialogs/dialog-contents/start-session/StartPracticeSetupSession";
+import { Button } from "../../ui/button";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "../../ui/drawer";
 import SlidePreviewAndSettingsSection from "../form-sections/SlidePreviewAndSettingsSection";
-import { Button } from "../ui/button";
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 
 interface IPracticeSetUpControlsLayout extends HTMLAttributes<HTMLDivElement> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
