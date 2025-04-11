@@ -57,32 +57,42 @@ const ProgressTracking: React.FC = () => {
 
   const cardData = [
     {
-      title: 'Master Your Voice',
+      title: 'Vocal Varity',
       wordRate: '85% pitch score',
       percentage: 60
     },
     {
-      title: 'Impact Maker',
+      title: 'Captured Impact',
       wordRate: '85% impact score',
       percentage: 80
     },
     {
-      title: 'Transformative Speaker',
+      title: 'Emotional Impact',
       wordRate: '85% speaker',
       percentage: 40
     },
     {
-      title: 'Crystal Clear',
+      title: 'Body Language',
       wordRate: '85% clarity score',
       percentage: 60
     },
     {
-      title: 'Concise Communicator',
+      title: 'Transformative Communicaion',
       wordRate: '85% brevity score',
       percentage: 80
     },
     {
-      title: 'Body Language Master',
+      title: 'Audience Engagement',
+      wordRate: '85% posture',
+      percentage: 40
+    },
+    {
+      title: 'Structure & Clarity',
+      wordRate: '85% posture',
+      percentage: 40
+    },
+    {
+      title: 'Language & Word Choice',
       wordRate: '85% posture',
       percentage: 40
     }
@@ -91,7 +101,7 @@ const ProgressTracking: React.FC = () => {
   const achievementData: Achievement[] = [
     {
       id: 1,
-      title: "Master Your Voice",
+      title: "Vocal Varity Mastery",
       level: 1,
       score: 3,
       total: 10,
@@ -99,7 +109,7 @@ const ProgressTracking: React.FC = () => {
     },
     {
       id: 2,
-      title: "Impact Maker",
+      title: "Captured Impact Mastery",
       level: 2,
       score: 5,
       total: 10,
@@ -107,7 +117,7 @@ const ProgressTracking: React.FC = () => {
     },
     {
       id: 3,
-      title: "Transformative Speaker",
+      title: "Emotional Impact Mastery",
       level: 3,
       score: 10,
       total: 10,
@@ -115,7 +125,7 @@ const ProgressTracking: React.FC = () => {
     },
     {
       id: 4,
-      title: "Crystal Clear",
+      title: "Body Language Mastery",
       level: 2,
       score: 6,
       total: 10,
@@ -123,7 +133,7 @@ const ProgressTracking: React.FC = () => {
     },
     {
       id: 5,
-      title: "Concise Communicator",
+      title: "Transformative Communicaion Mastery",
       level: 2,
       score: 7,
       total: 10,
@@ -131,7 +141,23 @@ const ProgressTracking: React.FC = () => {
     },
     {
       id: 6,
-      title: "Body Language Master",
+      title: "Audience Engagement Mastery",
+      level: 3,
+      score: 8,
+      total: 10,
+      note: "Achieve a body posture score of 85"
+    },
+    {
+      id: 6,
+      title: "Structure & Clarity Mastery",
+      level: 2,
+      score: 7,
+      total: 10,
+      note: "Achieve a brevity score of 85"
+    },
+    {
+      id: 7,
+      title: "Language & Word Choice Mastery",
       level: 3,
       score: 8,
       total: 10,
@@ -407,7 +433,7 @@ const ProgressTracking: React.FC = () => {
         {activeIndex === 0 && <div>
           <section className='flex justify-between md:items-start items-center gap-5 mb-6 sm:mt-0 mt-4'>
             <div>
-              <h3 className="text-xl font-medium">Active Goals</h3>
+              <h3 className="text-xl font-medium">Goal Standards for EngageX</h3>
               <p className="text-sm text-[#6F7C8E]">Here’s a quick overview of your active goals </p>
             </div>
             <Button
@@ -428,13 +454,13 @@ const ProgressTracking: React.FC = () => {
               <Card key={index} className='gap-0 px-4 py-4 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]'>
                 <div className='flex justify-between items-center mb-4'>
                   <h4 className='lg:text-lg text-base text-[#333333]'>{item.title}</h4>
-                  <p className='text-sm text-[#6F7C8E]'>{item.wordRate}</p>
+                  {/* <p className='text-sm text-[#6F7C8E]'>{item.wordRate}</p> */}
                 </div>
                 <SegmentedProgressBar
                   percent={item.percentage}
                   color={getProgressBarColorCard(item.percentage)}
                   divisions={10}
-                  className='!h-1.5'
+                  height='0.375rem'
                 />
                 <p className='text-[#252A39D9] mt-3'>{item.percentage}% complete</p>
               </Card>
@@ -467,7 +493,7 @@ const ProgressTracking: React.FC = () => {
                       percent={getPercentage(item.score, item.total)}
                       color={getProgressBarColor(item.score)}
                       divisions={10}
-                      className='!h-1.5'
+                      className='h-1.5'
                     />
                     <p className='text-[#252A39D9] mt-1 sm:text-sm text-xs'>{item.note}</p>
                   </Card>
@@ -475,7 +501,7 @@ const ProgressTracking: React.FC = () => {
               ))}
             </div>
             <div className='border border-[#E0E0E0] rounded-[12px] p-5 h-fit'>
-              <h4 className='text-[#252A39] lg:text-lg text-base'>Streak Statistics</h4>
+              <h4 className='text-[#252A39] lg:text-lg text-base'>Daily Progress Tracker</h4>
               <p className='text-[#6F7C8E] text-sm'>Display streaks of  goal progress</p>
               <div className='grid grid-cols-1 md:gap-x-6'>
                 {streakStats.map((item) => (
