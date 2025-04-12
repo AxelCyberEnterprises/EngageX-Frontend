@@ -113,9 +113,10 @@ function Intro() {
               </svg>
             </div>
             <div className="space-y-4">
-              <h6 className="font-montreal">Interactive audience feedback</h6>
+              <h6 className="font-montreal">Interactive audience simulation</h6>
               <p className="">
-                AI-powered audience simulations that react in real time
+                Get AI-generated audience feedback using realistic audience
+                simulations.
               </p>
             </div>
           </div>

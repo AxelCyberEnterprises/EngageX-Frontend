@@ -9,8 +9,8 @@ interface Params {
 
 function PressCard({ post }: Params) {
   return (
-    <div className="w-[25rem] space-y-6">
-      <div className="h-[14rem] w-[25rem] relative overflow-clip object-cover">
+    <div className="w-full lg:w-[25rem] space-y-6">
+      <div className="h-[14rem] w-full lg:w-[25rem] relative overflow-clip object-cover">
         <img
           src={post.img}
           className="absolute h-full w-full object-cover"

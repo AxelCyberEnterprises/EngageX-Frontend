@@ -94,7 +94,8 @@ function Benefits() {
           <div className="space-y-4">
             <h6 className=" font-montreal">Real-time insights</h6>
             <p className="text-dark-electric-blue">
-              Get immediate feedback on audience engagement and sentiment
+              Gain immediate feedback on audience engagement, gold-standard
+              public speaking strategies, and personal goal attainment.
             </p>
           </div>
         </div>
@@ -210,8 +211,8 @@ function Benefits() {
           <div className="space-y-4">
             <h6 className=" font-montreal">Support of a certified coach.</h6>
             <p className="text-dark-electric-blue">
-              We give you access to award-wining, certified career, speech and
-              communication coaches.
+              We provide access to the industry's best speech and career coaches
+              to support your professional growth.
             </p>
           </div>
         </div>
