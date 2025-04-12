@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,57 +19,67 @@ import {
   handleSelectedScreen,
 } from "@/store/slices/performance_improvement_slice";
 import clsx from "clsx";
+import { useSessionHistory } from "@/hooks/auth";
 
 interface Sessions {
-  title: string;
+  session_name: string;
   completion_percentage: number;
   date: string;
-  time: string;
+  duration: string;
   new_sequence_name: string;
   is_active: boolean;
 }
 
-const sessionsData: Sessions[] = [
-  {
-    title: "Pitch Presenation Session",
-    completion_percentage: 80,
-    date: "February 22, 2025",
-    time: "11:59 am",
-    new_sequence_name: "",
-    is_active: false,
-  },
-  {
-    title: "Pitch Presenation Session",
-    completion_percentage: 0,
-    date: "February 22, 2025",
-    time: "11:59 am",
-    new_sequence_name: "",
-    is_active: true,
-  },
-  {
-    title: "Idea Presenation Session",
-    completion_percentage: 0,
-    date: "February 22, 2025",
-    time: "11:59 am",
-    new_sequence_name: "",
-    is_active: false,
-  },
-  {
-    title: "Keynote Speaking Session",
-    completion_percentage: 0,
-    date: "February 22, 2025",
-    time: "11:59 am",
-    new_sequence_name: "",
-    is_active: false,
-  },
-];
+// const sessionsData: Sessions[] = [
+//   {
+//     title: "Pitch Presenation Session",
+//     completion_percentage: 80,
+//     date: "February 22, 2025",
+//     time: "11:59 am",
+//     new_sequence_name: "",
+//     is_active: false,
+//   },
+//   {
+//     title: "Pitch Presenation Session",
+//     completion_percentage: 0,
+//     date: "February 22, 2025",
+//     time: "11:59 am",
+//     new_sequence_name: "",
+//     is_active: true,
+//   },
+//   {
+//     title: "Idea Presenation Session",
+//     completion_percentage: 0,
+//     date: "February 22, 2025",
+//     time: "11:59 am",
+//     new_sequence_name: "",
+//     is_active: false,
+//   },
+//   {
+//     title: "Keynote Speaking Session",
+//     completion_percentage: 0,
+//     date: "February 22, 2025",
+//     time: "11:59 am",
+//     new_sequence_name: "",
+//     is_active: false,
+//   },
+// ];
 
 function NewPerformanceImprovementDialog() {
-  const [sessions, setSessions] = useState(sessionsData);
+  const { data: sessionData } = useSessionHistory();
+  const [sessions, setSessions] = useState<Sessions[]>([]);
   const dispatch = useDispatch();
   const { dialog, selected_screen } = useSelector(
     (state: RootState) => state.performance_improvment
   );
+
+  useEffect(() => {
+    if (!sessionData) return;
+    let sessions = (sessionData as any).results as Sessions[];
+    setSessions(sessions);
+  }, [sessionData]);
+
+  console.log("session: ", sessionData);
 
   const changeActive = (idx: number) => {
     setSessions((prevSessions) =>
@@ -88,12 +98,12 @@ function NewPerformanceImprovementDialog() {
           <div
             onClick={() => dispatch(handleSelectedScreen(PIScreens.NEW_PIS))}
             className={clsx(
-              "flex items-center space-x-4 p-4 justify-between py-6 h-full w-full border rounded-2xl border-dark-gray overflow-clip",
+              "flex items-center space-x-4 text-left p-4 justify-between py-6 h-full w-full border rounded-2xl border-dark-gray overflow-clip",
               selected_screen == PIScreens.NEW_PIS &&
                 "bg-alice-blue cursor-pointer"
             )}
           >
-            <div className="flex flex-col">
+            <div className="flex text-left flex-col">
               <small className="small">
                 New Performance Improvement Sequence
               </small>
@@ -122,7 +132,7 @@ function NewPerformanceImprovementDialog() {
         <AlertDialogContent className="max-h-[35rem] border-0 p-0 overflow-clip overflow-y-auto">
           <AlertDialogHeader>
             <AlertDialogTitle className="pb-4 p-4 font-medium sticky top-0 bg-white">
-              <div className="flex justify-between gap-4">
+              <div className="flex justify-between text-left gap-4">
                 <p className="big">
                   Create a New Performance Improvement Sequence
                 </p>
@@ -174,7 +184,7 @@ function NewPerformanceImprovementDialog() {
                 </svg>
 
                 <input
-                  className="outline-none border-0"
+                  className="outline-none border-0 text-black"
                   placeholder="Search session name"
                 />
               </div>
@@ -194,17 +204,17 @@ function NewPerformanceImprovementDialog() {
                         : "border border-gray"
                     )}
                   >
-                    <div className="space-y-1">
-                      <p className="text-black">{session.title}</p>
+                    <div className="space-y-1 text-left">
+                      <p className="text-black">{session.session_name}</p>
                       <div className="flex divide-x gap-2">
                         <small className="small pr-2">{session.date}</small>
-                        <small className="small">{session.time}</small>
+                        <small className="small">{session.duration}</small>
                       </div>
                     </div>
                     <h6>{session.completion_percentage}%</h6>
                   </div>
                   {session.is_active && (
-                    <div className="space-y-2">
+                    <div className="space-y-2 text-left">
                       <small className="text-[#A06821]">
                         Enter New Sequence Name
                       </small>
@@ -218,10 +228,9 @@ function NewPerformanceImprovementDialog() {
               ))}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="w-full flex mx-4 items-start justify-start px-4 pb-8">
-            {/* Instead of nesting, open the second dialog via state */}
+          <AlertDialogFooter className="w-full sticky border-2 bottom-0 bg-white items-center flex mx-4 justify-start px-4 py-0 h-20">
             <AlertDialogAction
-              className="mt-3 relative px-10 py-2 h-12 left-0 mx-4 border-2"
+              className="px-10 py-2 h-12 mx-4"
               onClick={() =>
                 dispatch(
                   handleDialog({

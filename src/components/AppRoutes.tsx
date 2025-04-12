@@ -42,14 +42,15 @@ import TermsOfService from "../pages/TermsOfService";
 import PerformanceImprovement from "@/pages/Dashboard/User/PerformanceImprovement";
 import Press from "@/pages/Press/Press";
 import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
+import CancellationPolicy from "@/pages/CancellationPolicy";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (state: any) => state.auth.isAuthenticated,
+        (state: any) => state.auth.isAuthenticated
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const isUser = useSelector((state: any) => state.auth.user);
+    const isUser = useSelector((state: any) => state.auth.user)?.is_admin === false;
 
     const location = useLocation();
 
@@ -179,6 +180,7 @@ export default function AppRoutes() {
                 <Route path="pricing" element={<Pricing />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="terms-of-service" element={<TermsOfService />} />
+                <Route path="cancellation-policy" element={<CancellationPolicy />} />
                 <Route path="press" element={<Press />} />
                 <Route
                     path="auth/*"

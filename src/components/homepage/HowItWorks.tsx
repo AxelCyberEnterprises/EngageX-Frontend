@@ -21,8 +21,8 @@ function HowItWorks() {
 
         <div className="text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
-            Simple steps to speaking <br />
-            success
+            Simple Steps to Speaking <br />
+            Success
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             A simple way to use EngageX™
@@ -39,8 +39,8 @@ function HowItWorks() {
             <div className="space-y-4">
               <h6 className="font-montreal">Sign up</h6>
               <p className="small text-dark-electric-blue">
-                Create your profile and select your focus: public speaking or
-                presentation
+                Create your personal profile and select your speaking focus,
+                i.e. pitch, presentation, or public speaking + storytelling.
               </p>
             </div>
           </div>
@@ -54,7 +54,9 @@ function HowItWorks() {
             <div className="space-y-4">
               <h6 className="font-montreal">Set up your session</h6>
               <p className="small text-dark-electric-blue">
-                Upload slides, outline your phases, or choose from our templates
+                If your speaking engagement involves a presentation deck, feel
+                free to upload your slides and acknowledge the confidentiality
+                agreement/NDA.
               </p>
             </div>
           </div>
@@ -70,7 +72,8 @@ function HowItWorks() {
                 Practice in a realistic virtual room
               </h6>
               <p className="small text-dark-electric-blue">
-                Engage with dynamic AI-powered audience reactions
+                Begin your engagement with dynamic audience simulations and
+                AI-powered audience feedback.
               </p>
             </div>
           </div>
@@ -86,8 +89,8 @@ function HowItWorks() {
             <div className="space-y-4">
               <h6 className="font-montreal">Review & improve</h6>
               <p className="small text-dark-electric-blue">
-                Analyze detailed feedback and rewatch key moments to refine your
-                skills
+                Analyze detailed video feedback and download key moments to
+                rewatch and refine your skills.
               </p>
             </div>
           </div>
@@ -96,20 +99,6 @@ function HowItWorks() {
         <video className="lg:h-[29rem] mt-20 lg:mt-0 rounded-xl" controls>
           <source src="./assets/intovid.mp4" type="video/mp4" />
         </video>
-
-        {/* <div className="h-[40rem] w-full lg:w-1/2 hidden lg:block rounded-3xl overflow-clip relative">
-          <img
-            src="./assets/videopc.png"
-            className="absolute h-full w-full object-cover top-0 right-0"
-          />
-        </div> */}
-
-        {/* <div className="h-[509px] w-full mt-[80px] lg:hidden rounded-3xl overflow-clip relative">
-          <img
-            src="./assets/videomb.png"
-            className="absolute h-full w-full object-cover top-0 right-0"
-          />
-        </div> */}
       </div>
     </section>
   );

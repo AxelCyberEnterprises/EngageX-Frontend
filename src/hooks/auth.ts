@@ -30,14 +30,14 @@ export function useSignup() {
 }
 
 export interface LoginResponse {
-    data: {
-        is_admin: boolean;
-        token: string;
-        email: string;
-        first_name: string | null;
-        last_name: string | null;
-        id: number;
-    };
+  data: {
+    is_admin: boolean;
+    token: string;
+    email: string;
+    first_name: string | null;
+    last_name: string | null;
+    user_id: number;
+  };
 }
 
 export function useLogin() {

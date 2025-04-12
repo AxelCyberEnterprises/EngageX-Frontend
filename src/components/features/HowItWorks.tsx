@@ -13,13 +13,13 @@ function HowItWorks() {
     {
       title: "AI progress tracking for pitch improvement",
       content:
-        "Our AI progress tracking for public speaking Improvement is a cutting-edge solution for individuals and teams to help refine their pitch delivery. Every session is automatically recorded, allowing you to improve your performance. Whether for business, sales, or public speaking, this tool ensures continuous improvement and success",
+        "Our AI progress tracking for public speaking improvement is a cutting-edge solution for individuals and teams to refine their pitch delivery. Whether for business, sales, or investor opportunity pitches, this tool ensures continuous improvement and success",
       img: "./assets/HowItWorksImg2.png",
     },
     {
       title: "Feedback score dashboard",
       content:
-        "Get a snapshot of overall feedback scores and analyzed metrics to understand strengths and areas for improvement. Interpretation of feedback patterns and customer satisfaction levels. Showing steps to enhance feedback scores and improve user experience",
+        "Get a snapshot of overall feedback scores and analyzed metrics to understand strengths and areas for improvement. Interpretation of feedback patterns and customer satisfaction levels. Session reporting will outline steps to enhance feedback scores and improve user performance.",
       img: "./assets/HowItWorksImg3.png",
     },
   ];
