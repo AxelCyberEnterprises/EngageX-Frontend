@@ -3,16 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { publicSpeakingVEOptions } from "@/config/form-field-options";
-import { PublicSpeakingSchema } from "@/schemas/public-speaking";
+import { PublicSpeakingSchema } from "@/schemas/dashboard/user";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { z } from "zod";
-import GoalsSection from "../../form-sections/GoalsSection";
-import SessionNameSection from "../../form-sections/SessionNameSection";
-import VirtualEnvironmentSection from "../../form-sections/VirtualEnvironmentSection";
+import GoalsSection from "../form-sections/GoalsSection";
+import SessionNameSection from "../form-sections/SessionNameSection";
+import VirtualEnvironmentSection from "../form-sections/VirtualEnvironmentSection";
 import InputSpeakerNotesSection from "./InputSpeakerNotesSection";
 import TimeAllocationSection from "./TimeAllocationSection";
 
@@ -53,11 +53,11 @@ const PublicSpeakingForm = () => {
                     <Button
                         type="button"
                         variant="outline"
-                        className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal md:w-fit w-full md:h-9 h-11"
+                        className="hidden text-gunmetal hover:text-gunmetal border-gunmetal font-normal md:w-fit w-full md:h-9 h-11"
                     >
                         Save as Draft
                     </Button>
-                    <div className="md:w-fit w-full flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center md:gap-x-4">
+                    <div className="md:ml-auto md:w-fit w-full flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center md:gap-x-4">
                         <Button
                             type="button"
                             className="bg-green-sheen hover:bg-green-sheen/80 font-normal md:w-fit w-full md:h-9 h-11 transition"

@@ -6,15 +6,15 @@ function Hero() {
         <h6 className="text-[#475467]">
           For press enquiries, please contact{" "}
           <span className="text-gunmetal underline underline-offset-4">
-            engageX@thecareerdoctorllc.com
+            info@engagexai.io
           </span>
         </h6>
       </div>
-      <div className="flex gap-10">
-        <div className="h-[20rem] min-w-[33rem] relative ">
+      <div className="flex flex-col lg:flex-row gap-10">
+        <div className="h-[20rem] w-full lg:min-w-[33rem] relative object-contain">
           <img
             src="./assets/pressimg1.png"
-            className="h-full w-full absolutee object-center"
+            className="h-full w-full absolute object-contain"
           />
         </div>
         <div className="space-y-4">

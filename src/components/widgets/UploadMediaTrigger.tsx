@@ -1,7 +1,9 @@
-import { cn, convertFileToDataUrl, isFileWithPreview } from "@/lib/utils";
+import { cn, convertFileToDataUrl } from "@/lib/utils";
 import { HTMLAttributes, useCallback, useEffect } from "react";
 import Dropzone, { DropzoneProps, FileRejection } from "react-dropzone";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
+import { toast } from "sonner";
+import ErrorToast from "../ui/custom-toasts/error-toast";
 
 type IUploadMediaTriggerProps<T extends FieldValues, K extends Path<T>> = HTMLAttributes<HTMLElement> & {
     accept?: DropzoneProps["accept"];
@@ -14,25 +16,45 @@ export type IFilesWithPreview = {
 }[];
 
 const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
-    accept = { "image/*": [".png", ".gif", ".jpeg", ".jpg"], "application/pdf": [".pdf"] },
+    accept = { "application/*": [".pdf", ".ppt", ".pptx"] },
     className,
     children,
     name,
 }: IUploadMediaTriggerProps<T, K>) => {
-    const { register, unregister, setValue, watch } = useFormContext();
-    const files = watch(name) as IFilesWithPreview | undefined;
+    const { register, unregister, setValue } = useFormContext();
 
     const handleDrop = useCallback(
         async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
             if (rejectedFiles.length > 0) {
-                rejectedFiles.forEach(({ file }) => {
-                    console.error(`File ${file.name} was rejected`);
-                });
+                const [
+                    {
+                        errors: [error],
+                    },
+                ] = rejectedFiles;
+
+                if (error.code === "file-invalid-type") {
+                    toast(
+                        <ErrorToast
+                            {...{
+                                heading: "Invalid file type",
+                                description: error.message.replace(" application/*,", ""),
+                            }}
+                        />,
+                    );
+                } else if (error.code === "too-many-files") {
+                    toast(
+                        <ErrorToast
+                            {...{
+                                heading: "Too many files",
+                                description: "Please upload only one file",
+                            }}
+                        />,
+                    );
+                }
             }
 
             const newFiles = await Promise.all(
                 acceptedFiles.map(async (file) => ({
-                    file,
                     preview: await convertFileToDataUrl(file),
                 })),
             );
@@ -49,19 +71,8 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
         };
     }, [register, unregister, name]);
 
-    useEffect(() => {
-        return () => {
-            if (!files) return;
-            files.forEach((file) => {
-                if (isFileWithPreview(file)) {
-                    URL.revokeObjectURL(file.preview);
-                }
-            });
-        };
-    }, [files]);
-
     return (
-        <Dropzone accept={accept} onDrop={handleDrop}>
+        <Dropzone accept={accept} maxFiles={1} onDrop={handleDrop}>
             {({ getRootProps, getInputProps }) => (
                 <div {...getRootProps()} className={cn(className)}>
                     <input {...getInputProps()} />

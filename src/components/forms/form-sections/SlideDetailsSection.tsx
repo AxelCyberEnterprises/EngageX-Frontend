@@ -1,26 +1,39 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
 import FeatureWalkthrough from "@/components/dialogs/dialog-contents/FeatureWalkthrough";
-import GoalsSection from "@/components/form-sections/GoalsSection";
-import SessionNameSection from "@/components/form-sections/SessionNameSection";
+import GoalsSection from "@/components/forms/form-sections/GoalsSection";
+import SessionNameSection from "@/components/forms/form-sections/SessionNameSection";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import PDFViewer from "@/components/widgets/pdf-viewer";
-import { cn, convertDataUrlToFile, isDataUrlPdf } from "@/lib/utils";
-import { RootState, useAppDispatch } from "@/store";
+import { cn, convertDataUrlToFile } from "@/lib/utils";
+import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useId, useMemo } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { FormType } from ".";
+import PDFDocument from "../../widgets/pdf-viewer/PDFDocument";
+import PDFPage from "../../widgets/pdf-viewer/PDFPage";
 
 interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
-    form: UseFormReturn<FormType>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form: UseFormReturn<any>;
+    activeSlideIndex: number;
+    slidePreviews: string[];
+    numSlides: number;
 }
 
-const SlideDetailsSection = ({ className, form }: ISlideDetailsSectionProps) => {
-    const { activeSlideIndex, slidePreviews } = useSelector((state: RootState) => state.pitchPractice);
-    const activeSlide = slidePreviews[activeSlideIndex];
+const SlideDetailsSection = ({
+    className,
+    form,
+    activeSlideIndex,
+    slidePreviews,
+    numSlides,
+}: ISlideDetailsSectionProps) => {
+    const slideId = useId();
+    const [slidePreview] = useMemo(() => slidePreviews, [slidePreviews]);
+    const slidePreviewFile = useMemo(
+        () => (slidePreview ? convertDataUrlToFile(slidePreview, `Slide-${slideId}`) : null),
+        [slideId, slidePreview],
+    );
     const dispatch = useAppDispatch();
 
     return (
@@ -51,21 +64,12 @@ const SlideDetailsSection = ({ className, form }: ISlideDetailsSectionProps) => 
                 </div>
                 <Separator />
                 <div className="space-y-5 lg:pl-4 md:pr-4">
-                    <p className="lg:hidden block text-sm font-medium">
-                        You can proceed to your practice session without uploading slides.
-                    </p>
                     <h6 className="text-lg">Slide {activeSlideIndex + 1}</h6>
                     <div className="w-auto h-90 rounded-lg overflow-hidden">
-                        {activeSlide ? (
-                            <>
-                                {isDataUrlPdf(activeSlide) ? (
-                                    <PDFViewer
-                                        file={convertDataUrlToFile(activeSlide, `Slide-${activeSlideIndex + 1}`)}
-                                    />
-                                ) : (
-                                    <img src={activeSlide} alt="" className="object-cover size-full rounded-lg" />
-                                )}
-                            </>
+                        {numSlides > 0 ? (
+                            <PDFDocument file={slidePreviewFile}>
+                                {numSlides > 0 && <PDFPage pageNumber={activeSlideIndex + 1} />}
+                            </PDFDocument>
                         ) : (
                             <div className="size-full grid place-content-center bg-ghost-white text-primary-base rounded-lg border border-bright-gray">
                                 <span>Upload slide to get started</span>
@@ -75,7 +79,7 @@ const SlideDetailsSection = ({ className, form }: ISlideDetailsSectionProps) => 
                     <div className="space-y-6">
                         <ControlledFieldWrapper
                             control={form.control}
-                            name={`slidesNotes.${activeSlideIndex}`}
+                            name="notes"
                             label="Slide Note"
                             render={({ field }) => (
                                 <Textarea

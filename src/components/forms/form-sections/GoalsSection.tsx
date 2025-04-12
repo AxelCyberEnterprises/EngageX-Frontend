@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Plus, Trash2 } from "lucide-react";
 import { HTMLAttributes, useCallback, useState } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
-import { Label } from "../ui/label";
+import { Label } from "../../ui/label";
 
 interface IGoalsSectionProps extends HTMLAttributes<HTMLElement> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

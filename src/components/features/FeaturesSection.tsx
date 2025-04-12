@@ -1,49 +1,49 @@
 import { Link } from "react-router-dom";
 import FeaturesSectionCard from "./FeaturesSectionCard";
-import FeatureCardFiveSVG from "./svgs/FeatureCardFiveSVG";
-import FeatureCardFourSVG from "./svgs/FeatureCardFourSVG";
-import FeatureCardOneSVG from "./svgs/FeatureCardOneSVG";
-import FeatureCardSixSVG from "./svgs/FeatureCardSixSVG";
-import FeatureCardThreeSVG from "./svgs/FeatureCardThreeSVG";
-import FeatureCardTwoSVG from "./svgs/FeatureCardTwoSVG";
 
 function FeaturesSection() {
   let features = [
     {
-      svg: <FeatureCardOneSVG />,
-      title: "Prompt and cue card system.",
+      className: "",
+      img: "./assets/featuresimg1.png",
+      title: "Offers prompt and cue card system",
       content:
-        "Get a heads up on your next speaking point and be better prepared to deliver the best way possible.",
+        "Stay prepared with a preview of your next speaking point for a confident delivery",
     },
     {
-      svg: <FeatureCardTwoSVG />,
-      title: "Speaker analytics and self-assessment tools.",
+      className: "pt-6",
+      img: "./assets/featuresimg2.png",
+      title: "Speaker analytics and self-assessment tools",
       content:
-        "Live analysis and feedback to your speech powered by unparalleled AI technology.",
+        "Real-time analysis and feedback on your speech, powered by unparalleled AI technology.",
     },
     {
-      svg: <FeatureCardThreeSVG />,
-      title: "Realistic environment enhancements.",
+      className: "",
+      img: "./assets/featuresimg3.png",
+      title: "Realistic speaking room simulations",
       content:
-        "Immersive speaking rooms that give you a taste of the real thing even including reactions from your audience and listeners.",
+        "Immersive speaking rooms that give you a taste of the real thing even including reactions from your audience and listeners",
     },
     {
-      svg: <FeatureCardFourSVG />,
-      title: "Progress tracking for improvement.",
+      className: "",
+      img: "./assets/featuresimg4.png",
+      title: "Progress tracking for improvement",
       content:
-        "We enable you to be aware of your progress and stay goal oriented while you train.",
+        "We enable you to be aware of your progress and stay goal oriented while you train",
     },
     {
-      svg: <FeatureCardFiveSVG />,
-      title: "Post speech feedback summary.",
+      className: "",
+      img: "./assets/featuresimg5.png",
+      title: "Post session feedback reporting",
       content:
-        "In-depth analysis ensuring you can give your best the next time by understanding what you need to do better in detail.",
+        "We provide in-depth analysis to ensure you give your best in every session by understanding where you need to improve",
     },
     {
-      svg: <FeatureCardSixSVG />,
-      title: "Speech progress & phase indicators.",
+      className: "pt-6",
+      img: "./assets/featuresimg6.png",
+      title: " Speech progress & phase indicator alerts",
       content:
-        "Know where you are in the journey of your delivery so you can flow with an awareness of how much time you take, every time you train.",
+        "Keep track of your speaking journey, maintain your flow, and monitor the timing of every session as you train",
     },
   ];
   return (
