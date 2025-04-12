@@ -25,7 +25,7 @@ const PublicSpeaking: React.FC = () => {
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
     const navigate = useNavigate();
-    const time = 10; // in minutes
+    const time = 5; // in minutes
     const isLargeScreen = useMediaQuery({ minWidth: 1024 }); // Tailwind's lg breakpoint
 
     const StopStreaming = () => {
