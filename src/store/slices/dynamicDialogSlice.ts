@@ -33,7 +33,6 @@ const dynamicDialogSlice = createSlice({
         },
         closeDialog: (state) => {
             state.isOpen = false;
-            state.data = DEFAULT_DATA;
         },
     },
 });
