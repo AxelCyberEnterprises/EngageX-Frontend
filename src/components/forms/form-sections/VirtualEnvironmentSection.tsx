@@ -1,5 +1,5 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
-import { FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
@@ -74,7 +74,6 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
                                     ))}
                                 </RadioGroup>
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
