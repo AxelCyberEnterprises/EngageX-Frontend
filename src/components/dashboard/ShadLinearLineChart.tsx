@@ -33,7 +33,10 @@ const CustomLegend = (props: LegendProps) => {
 
 export default function ShadLinearLineChart({ data, colors }: Props) {
     const chartConfig = Object.keys(colors).reduce((acc, key) => {
-        acc[key] = { label: key.charAt(0).toUpperCase() + key.slice(1), color: colors[key] };
+        acc[key] = {
+            label: key.replace(/([a-z])([A-Z])/g, "$1 $2"),
+            color: colors[key],
+        };
         return acc;
     }, {} as ChartConfig);
 

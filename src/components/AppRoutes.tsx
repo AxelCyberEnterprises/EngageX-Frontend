@@ -49,7 +49,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
         (state: any) => state.auth.isAuthenticated,
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const isUser = useSelector((state: any) => state.auth.user);
+    const isUser = useSelector((state: any) => state.auth.user)?.is_admin === false;
 
     const location = useLocation();
 
