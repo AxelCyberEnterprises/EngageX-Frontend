@@ -222,3 +222,31 @@ export function useSessionHistoryById(id: string) {
         queryFn: () => apiGet(`/sessions/sessions/${id}/`),
     });
 }
+
+
+export function useContactUs({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void;
+  onError?: () => void;
+}) {
+  return useMutation({
+    mutationKey: ["contact-us"],
+    mutationFn: async (data: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      message: string;
+      agreed_to_policy: boolean;
+    }) => {
+      return await apiPost("/users/contact-us/", data);
+    },
+    onSuccess: () => {
+      if (onSuccess) onSuccess();
+    },
+    onError: () => {
+      if (onError) onError();
+    },
+  });
+}

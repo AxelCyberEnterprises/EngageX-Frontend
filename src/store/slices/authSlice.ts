@@ -46,6 +46,7 @@ interface AuthState {
     successMessage: string | null;
     authPageImage: string;
     userIdAfterSignup: string;
+    contactStatus: string;
 }
 
 const storedUser = localStorage.getItem("user");
@@ -87,6 +88,7 @@ const initialState: AuthState = {
     successMessage: "",
     authPageImage: authPageImage1,
     userIdAfterSignup: "",
+    contactStatus: "",
 };
 
 
@@ -109,6 +111,9 @@ const authSlice = createSlice({
         },
         setSignupFlow: (state, action: PayloadAction<string>) => {
             state.signupFlow = action.payload;
+        },
+        setContactStatus: (state, action: PayloadAction<string>) => {
+            state.contactStatus = action.payload;
         },
         setAuthPageImage: (state, action: PayloadAction<string>) => {
             state.authPageImage = action.payload;
@@ -168,5 +173,5 @@ export function useAutoClearSuccessMessage() {
     }, [location.pathname]);
 }
 
-export const { setTopicQuestion, setSignupFlow, setAuthPageImage,setUserIdAfterSignup, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
+export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setContactStatus, setUserIdAfterSignup, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
 export default authSlice.reducer;
