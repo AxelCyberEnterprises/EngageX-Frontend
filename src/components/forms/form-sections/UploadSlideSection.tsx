@@ -14,8 +14,9 @@ import PDFPage from "../../widgets/pdf-viewer/PDFPage";
 
 interface IUploadSlideSectionProps extends HTMLAttributes<HTMLElement> {
     activeSlideIndex: number;
-    slidePreviews: string[];
     numSlides: number;
+    sessionType: "presentation" | "pitch";
+    slidePreviews: string[];
     setActiveSlideIndex: (index: number) => UnknownAction;
     setNumSlides: (numSlides: number) => UnknownAction;
 }
@@ -25,8 +26,9 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.m
 const UploadSlideSection = ({
     className,
     activeSlideIndex,
-    slidePreviews,
     numSlides,
+    sessionType,
+    slidePreviews,
     setActiveSlideIndex,
     setNumSlides,
 }: IUploadSlideSectionProps) => {
@@ -57,7 +59,10 @@ const UploadSlideSection = ({
             <section className={cn("lg:flex flex-col hidden gap-y-4", className)}>
                 <h6 className="text-lg">Upload slides</h6>
                 <div className="space-y-2">
-                    <p className="font-medium">You can proceed to your practice session without uploading slides.</p>
+                    <p className="text-sm">
+                        You have the option to upload your slides or proceed to {sessionType} practice without uploading
+                        your slides to the platform.
+                    </p>
                     <UploadMediaTrigger
                         name="slides"
                         className="flex flex-col gap-y-3 p-4 items-center bg-ghost-white text-sm text-independence rounded-lg"
