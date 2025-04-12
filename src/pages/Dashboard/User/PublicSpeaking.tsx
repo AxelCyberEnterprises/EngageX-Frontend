@@ -13,7 +13,7 @@ const PublicSpeaking = () => {
 
     return (
         <section className="flex flex-col gap-y-8 px-4 pt-4 pb-[15vh]">
-            <div className="flex md:flex-col flex-row md:gap-y-3 md:justify-normal justify-between md:items-stretch items-start">
+            <div className="flex md:flex-col flex-row md:gap-y-3 gap-x-3 md:items-stretch items-start">
                 <div className="flex items-center justify-between">
                     <Button
                         className="bg-transparent hover:bg-transparent text-gunmetal shadow-none px-0 has-[>svg]:px-0 py-0 size-fit"
@@ -66,7 +66,7 @@ const PublicSpeaking = () => {
                         Continue with Draft
                     </Button>
                 </div>
-                <Button className="md:hidden inline-flex bg-transparent hover:bg-transparent size-fit px-0 py-0">
+                <Button className="hidden inlineflex bg-transparent hover:bg-transparent size-fit px-0 py-0">
                     <img src={LicenseDraft} alt="" width={24} height={24} className="size-6" />
                 </Button>
             </div>
