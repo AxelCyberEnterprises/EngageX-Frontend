@@ -19,7 +19,8 @@ function FAQs() {
     },
     {
       question: "Can I change my plan later?",
-      answer: "Yes, once your current plan session has been used or expire",
+      answer:
+        "Yes, your plan is eligible to be upgraded or downgraded to any plan you choose once your sessions have been utilized or have expired",
     },
     {
       question: "What is your cancellation policy?",
@@ -49,7 +50,7 @@ function FAQs() {
               fill="#4C5C75"
             />
           </svg>
-          <p className="small">PRICING</p>
+          <p className="small">FAQ</p>
         </div>
         <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
           <h4 className="h-max font-montreal leading-snug">
@@ -67,15 +68,33 @@ function FAQs() {
       </div>
 
       <div className="flex flex-wrap justify-center gap-12">
-        {faqs.map((faq, idx) => (
-          <div
-            key={idx}
-            className="flex-1 min-w-[300px] text-center max-w-[33%] space-y-2"
-          >
-            <p className="big font-montreal">{faq.question}</p>
-            <p className="text-dark-electric-blue">{faq.answer}</p>
-          </div>
-        ))}
+        {faqs.map((faq, idx) =>
+          idx != 4 ? (
+            <div
+              key={idx}
+              className="flex-1 min-w-[300px] text-center max-w-[33%] space-y-2"
+            >
+              <p className="big font-montreal">{faq.question}</p>
+              <p className="text-dark-electric-blue">{faq.answer}</p>
+            </div>
+          ) : (
+            <div
+              key={idx}
+              className="flex-1 min-w-[300px] text-center max-w-[33%] space-y-2"
+            >
+              <p className="big font-montreal">{faq.question}</p>
+              <p className="text-dark-electric-blue">
+                Please refer to our{" "}
+                <Link to="/cancellation-policy">
+                  <span className="underline underline-offset-2">
+                    Cancellation Policy
+                  </span>
+                </Link>{" "}
+                for full details
+              </p>
+            </div>
+          )
+        )}
       </div>
     </section>
   );

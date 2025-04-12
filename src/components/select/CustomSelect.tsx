@@ -17,14 +17,12 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-// Option type
 export interface SelectOption {
   value: string;
   label: string;
   icon?: any;
 }
 
-// Props for the reusable select
 interface SearchableSelectProps {
   label?: string;
   defaultValue?: string;
@@ -52,8 +50,14 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
   const [popoverWidth, setPopoverWidth] = useState<string | null>(null);
 
   useEffect(() => {
+    if (defaultValue !== undefined) {
+      setValue(defaultValue);
+    }
+  }, [defaultValue]);
+
+  useEffect(() => {
     if (triggerRef.current) {
-      setPopoverWidth(`min-w-[${triggerRef.current.offsetWidth}px]`); // Set the width of the popover based on the trigger width
+      setPopoverWidth(`min-w-[${triggerRef.current.offsetWidth}px]`);
     }
   }, [open]);
 

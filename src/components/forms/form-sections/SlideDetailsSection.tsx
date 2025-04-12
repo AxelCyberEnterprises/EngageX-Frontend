@@ -1,7 +1,7 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
 import FeatureWalkthrough from "@/components/dialogs/dialog-contents/FeatureWalkthrough";
-import GoalsSection from "@/components/form-sections/GoalsSection";
-import SessionNameSection from "@/components/form-sections/SessionNameSection";
+import GoalsSection from "@/components/forms/form-sections/GoalsSection";
+import SessionNameSection from "@/components/forms/form-sections/SessionNameSection";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,8 +10,8 @@ import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { HTMLAttributes, useId, useMemo } from "react";
 import { UseFormReturn } from "react-hook-form";
-import PDFDocument from "../widgets/pdf-viewer/PDFDocument";
-import PDFPage from "../widgets/pdf-viewer/PDFPage";
+import PDFDocument from "../../widgets/pdf-viewer/PDFDocument";
+import PDFPage from "../../widgets/pdf-viewer/PDFPage";
 
 interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

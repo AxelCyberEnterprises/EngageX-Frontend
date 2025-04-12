@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import PricingCard from "./PricingCard";
 
 function Pricing({ subtext }: { subtext?: string }) {
@@ -25,7 +24,6 @@ function Pricing({ subtext }: { subtext?: string }) {
       contents: [
         "Great for those seeking impactful meeting engagement and improvement in targeted communication goals",
         "Suitable for all professional levels looking to level up their speaking presence",
-        "Focuses on specific areas like message clarity, audience connection, and confidence-building",
         "Ideal for professionals preparing for team meetings, client conversations, or leadership interactions",
       ],
       button_text: "Choose growth plan",
@@ -40,8 +38,8 @@ function Pricing({ subtext }: { subtext?: string }) {
       contents: [
         "Fantastic for professionals looking to make measurable progress over time",
         "Covers all four core areas: pitch, presentation, public speaking, and storytelling",
-        "Covers all four core areas: pitch, presentation, public speaking, and storytelling",
-        "Great for preparing for key events such as panels, conferences, or investor meetings",
+        "Great for preparing for keynote speaking engagements, pitch presentations, panels, conferences, or investor meetings.",
+        // "Great for preparing for key events such as panels, conferences, or investor meetings",
         "Offers a structured path with feedback and strategies to elevate your overall communication impact",
       ],
       button_text: "Go pro",
@@ -92,7 +90,7 @@ function Pricing({ subtext }: { subtext?: string }) {
           <p className="text-dark-electric-blue leading-normal">
             {subtext
               ? subtext
-              : "Brief introduction highlighting the flexibility of pricing plans to cater to different professional needs"}
+              : "A high-level overview highlighting the flexibility of pricing plans to cater to different professional speaking needs."}
           </p>
         </div>
       </div>
@@ -106,12 +104,16 @@ function Pricing({ subtext }: { subtext?: string }) {
       <div className="flex flex-col lg:flex-row relative justify-between overflow-clip w-full pl-10 py-12  lg:h-max lg:py-12 bg-[#6F7C8E] rounded-2xl text-white">
         <div className="h-full lg:w-[50%]">
           <div className="lg:w-full pr-[30px] lg:pr-0">
-            <h4 className="font-montreal">Enterprise & team plans</h4>
+            <h4 className="font-montreal">Enterprise & Team Plans</h4>
             <p className="mt-4 font-montserrat">
-              For teams or departments with more than 10 individuals, we offer a
-              customized enterprise plan designed for seamless multi-user access
+              For organizations with more than 10 individuals, we offer a
+              customized enterprise plan designed for seamless multi-user
+              access.
             </p>
-            <Link to="/contact">
+            <a
+              href="https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching?month=2025-04"
+              target="_blank"
+            >
               <button className="flex gap-2 font-montserrat mt-10 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-lg">
                 <p>Book a consultation!</p>
                 <svg
@@ -128,7 +130,7 @@ function Pricing({ subtext }: { subtext?: string }) {
                   />
                 </svg>
               </button>
-            </Link>
+            </a>
           </div>
         </div>
         <img
