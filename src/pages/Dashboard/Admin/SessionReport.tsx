@@ -194,8 +194,8 @@ const PitchSessionReport: React.FC = () => {
 
             <section className="px-4 lg:px-8">
                 <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
-                    <h5 className="mb-4">Performance Analytics</h5>
-                    <h6 className="mb-6">Vocal Variety</h6>
+                    <h5 className="mb-6">Performance Analytics</h5>
+                    <h6 className="mb-3">Vocal Variety</h6>
 
                     <div className="flex flex-wrap gap-4">
                         {variety.map((item, index) => (
@@ -217,8 +217,8 @@ const PitchSessionReport: React.FC = () => {
                         ))}
                     </div>
 
-                    <div className="mt-7">
-                        <h6 className="mb-5">Delivery and Structure Metrics</h6>
+                    <div className="mt-8">
+                        <h6 className="mb-3">Delivery and Structure Metrics</h6>
 
                         {deliveryMetrics.map((metric, index) => (
                             <div key={index} className="flex flex-wrap w-full mb-3 items-center">
@@ -236,7 +236,7 @@ const PitchSessionReport: React.FC = () => {
                         ))}
                     </div>
 
-                    <h6 className="my-6">Body Language</h6>
+                    <h6 className="mt-8 mb-3">Body Language</h6>
 
                     <div className="flex flex-wrap gap-4">
                         {variety2.map((item, index) => (
@@ -258,8 +258,8 @@ const PitchSessionReport: React.FC = () => {
                         ))}
                     </div>
 
-                    <div className="mt-7">
-                        <h6 className="mb-5">Language and word choice</h6>
+                    <div className="mt-8">
+                        <h6 className="mb-3">Language and word choice</h6>
 
                         {deliveryMetrics2.map((metric, index) => (
                             <div key={index} className="flex flex-wrap w-full mb-3 items-center">
