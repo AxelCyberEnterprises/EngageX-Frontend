@@ -71,8 +71,8 @@ function Testiomonial() {
             Loved by aspiring speakers and industry leaders alike
           </h4>
           <p className="text-dark-electric-blue leading-normal">
-            Track progress, receive actionable feedback, and captivate your
-            audience like never before.
+            Hear directly from leaders who have tested and experienced the
+            platform firsthand.
           </p>
         </div>
       </div>

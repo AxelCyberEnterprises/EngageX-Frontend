@@ -25,7 +25,8 @@ const faqs: FaqItem[] = [
   },
   {
     question: "Can I change my plan later?",
-    answer: "Yes, once your current plan session has been used or expire",
+    answer:
+      "Yes, your plan is eligible to be upgraded or downgraded to any plan you choose once your sessions have been utilized or have expired.",
   },
   {
     question: "What is your cancellation policy?",
@@ -115,13 +116,13 @@ function Faq() {
                       : "opacity-0 max-h-0 overflow-hidden"
                   )}
                 >
-                  Please checkout our{" "}
+                  Please refer to our{" "}
                   <Link to="/cancellation-policy">
                     <span className="underline underline-offset-2">
-                      cancellation policy page
+                      Cancellation Policy
                     </span>
                   </Link>{" "}
-                  for information
+                  for full details
                 </p>
               ))}
           </div>
