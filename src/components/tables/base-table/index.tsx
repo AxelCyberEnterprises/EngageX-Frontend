@@ -22,6 +22,7 @@ import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 import { setSessionId } from "@/store/slices/sessionSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import SessionHistorySkeleton from "@/components/skeletons/SessionHistorySkeleton";
 
 interface BaseTableProps<TData, TValue> {
     id?: string;
@@ -102,15 +103,7 @@ export function BaseTable<TData, TValue>({
         const rows = pagination.pageSize;
         return (
             <>
-                {Array.from({ length: rows }).map((_, i) => (
-                    <TableRow key={`skeleton-row-${i}`}>
-                        {columns.map((_, j) => (
-                            <TableCell key={`skeleton-cell-${i}-${j}`}>
-                                <Skeleton className="h-6 w-full" />
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                ))}
+              <SessionHistorySkeleton rows={rows} columns={columns}/>
             </>
         );
     };
