@@ -105,7 +105,7 @@ const ProgressTracking: React.FC = () => {
       level: 1,
       score: 3,
       total: 10,
-      note: "Achieve a pitch variability score of 85%"
+      note: "Measures pitch, tone, pace, and pauses to keep delivery dynamic and engaging."
     },
     {
       id: 2,
@@ -113,7 +113,7 @@ const ProgressTracking: React.FC = () => {
       level: 2,
       score: 5,
       total: 10,
-      note: "Achieve a impact score of 85%"
+      note: "Measures how strongly the message resonates with the audience overall."
     },
     {
       id: 3,
@@ -121,7 +121,7 @@ const ProgressTracking: React.FC = () => {
       level: 3,
       score: 10,
       total: 10,
-      note: "Achieve a transformative potential score of 85%"
+      note: "Measures how well the speaker evokes emotions like joy, sadness, or fear."
     },
     {
       id: 4,
@@ -129,15 +129,15 @@ const ProgressTracking: React.FC = () => {
       level: 2,
       score: 6,
       total: 10,
-      note: "Achieve a clarity score of 85"
+      note: "Measures body posture, body motion and hand gestures that keeps the audience engaged."
     },
     {
       id: 5,
-      title: "Transformative Communicaion Mastery",
+      title: "Transformative Communication Mastery",
       level: 2,
       score: 7,
       total: 10,
-      note: "Achieve a brevity score of 85"
+      note: "Measures how the message inspires change or shifts thinking."
     },
     {
       id: 6,
@@ -145,26 +145,25 @@ const ProgressTracking: React.FC = () => {
       level: 3,
       score: 8,
       total: 10,
-      note: "Achieve a body posture score of 85"
+      note: "Measures how much the audience reacts or participates in response."
     },
     {
-      id: 6,
+      id: 7,
       title: "Structure & Clarity Mastery",
       level: 2,
       score: 7,
       total: 10,
-      note: "Achieve a brevity score of 85"
+      note: "Measures how clearly and logically ideas are organized and expressed."
     },
     {
-      id: 7,
+      id: 8,
       title: "Language & Word Choice Mastery",
       level: 3,
       score: 8,
       total: 10,
-      note: "Achieve a body posture score of 85"
+      note: "Measures clarity, grammar, and avoidance of filler or weak language."
     }
   ];
-
 
   const streakStats = [
     {
