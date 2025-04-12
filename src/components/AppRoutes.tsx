@@ -59,7 +59,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
 
     // Redirect users trying to access the wrong dashboard
     if (location.pathname.startsWith("/dashboard")) {
-        if (isUser && location.pathname.startsWith("/dashboard/admin")) {
+        if (isUser.is_admin === false && location.pathname.startsWith("/dashboard/admin")) {
             return <Navigate replace to="/dashboard/user" />;
         }
         if (!isUser && location.pathname.startsWith("/dashboard/user")) {

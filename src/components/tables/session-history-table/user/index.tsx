@@ -65,7 +65,7 @@ const SessionHistoryTable = () => {
         data?.results?.map((item: any) => ({
             id: item.id || "N/A",
             sessionName: capitalizeWords(item.session_name || "Unknown Session"),
-            sessionType: capitalizeWords(item.session_type || "Unknown Type"),
+            sessionType: capitalizeWords(item.session_type_display || "Unknown Type"),
             date: formatDate(item.date),
             duration: formatTime(item.duration),
         })) || [],
