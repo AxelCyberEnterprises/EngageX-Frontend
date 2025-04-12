@@ -45,6 +45,8 @@ interface AuthState {
     apiError: string | null;
     successMessage: string | null;
     authPageImage: string;
+    userIdAfterSignup: string;
+    contactStatus: string;
 }
 
 const storedUser = localStorage.getItem("user");
@@ -85,6 +87,8 @@ const initialState: AuthState = {
     apiError: null,
     successMessage: "",
     authPageImage: authPageImage1,
+    userIdAfterSignup: "",
+    contactStatus: "",
 };
 
 
@@ -108,11 +112,17 @@ const authSlice = createSlice({
         setSignupFlow: (state, action: PayloadAction<string>) => {
             state.signupFlow = action.payload;
         },
+        setContactStatus: (state, action: PayloadAction<string>) => {
+            state.contactStatus = action.payload;
+        },
         setAuthPageImage: (state, action: PayloadAction<string>) => {
             state.authPageImage = action.payload;
         },
         setRouteFromLogin: (state, action: PayloadAction<boolean>) => {
             state.routeFromLogin = action.payload;
+        },
+        setUserIdAfterSignup: (state, action: PayloadAction<string>) => {
+            state.userIdAfterSignup = action.payload;
         },
         setSignupData: (state, action: PayloadAction<Partial<SignupData>>) => {
             state.signupData = { ...state.signupData!, ...action.payload };
@@ -163,5 +173,5 @@ export function useAutoClearSuccessMessage() {
     }, [location.pathname]);
 }
 
-export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
+export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setContactStatus, setUserIdAfterSignup, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,14 +1,16 @@
-import { apiGet, apiPost } from "@/lib/api";
+import { apiGet, apiPatch, apiPost } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 import {
     // AuthUser,
     login,
     setEmailForPasswordReset,
     setSignupFlow,
     setSuccessMessage,
+    setUserIdAfterSignup,
 } from "@/store/slices/authSlice";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+
 import { IGETSessionsResponse } from "./mutations/dashboard/types";
 
 export function useSignup() {
@@ -18,8 +20,9 @@ export function useSignup() {
         mutationFn: async (data: { first_name: string; last_name: string; email: string; password: string }) => {
             return await apiPost("/users/users/", data);
         },
-        onSuccess: async (data) => {
+        onSuccess: async (data: any) => {
             console.log(data);
+            setUserIdAfterSignup(data?.id);
             // dispatch(login(data));
             dispatch(setSignupFlow("confirmation"));
         },
@@ -29,15 +32,41 @@ export function useSignup() {
     });
 }
 
+interface AuthQuestionData {
+    userId: string; // ensure you pass this when calling the mutation
+    user_intent: string;
+    purpose: string;
+}
+
+export function useAddAuthQuestion() {
+    // const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationKey: ["addAuthQuestion"],
+        mutationFn: async ({ userId, user_intent, purpose }: AuthQuestionData) => {
+            return await apiPatch(`/users/users/${userId}`, { user_intent, purpose });
+        },
+        onSuccess: () => {
+            console.log("Auth question added successfully.");
+            // dispatch(setSignupFlow("login"));
+            navigate("../Tutorial");
+        },
+        onError: (error: any) => {
+            console.error("Failed to add auth question:", error.message);
+        },
+    });
+}
+
 export interface LoginResponse {
-  data: {
-    is_admin: boolean;
-    token: string;
-    email: string;
-    first_name: string | null;
-    last_name: string | null;
-    user_id: number;
-  };
+    data: {
+        is_admin: boolean;
+        token: string;
+        email: string;
+        first_name: string | null;
+        last_name: string | null;
+        user_id: number;
+    };
 }
 
 export function useLogin() {
@@ -192,4 +221,32 @@ export function useSessionHistoryById(id: string) {
         queryKey: ["sessionHistoryById", id],
         queryFn: () => apiGet(`/sessions/sessions/${id}/`),
     });
+}
+
+
+export function useContactUs({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void;
+  onError?: () => void;
+}) {
+  return useMutation({
+    mutationKey: ["contact-us"],
+    mutationFn: async (data: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      message: string;
+      agreed_to_policy: boolean;
+    }) => {
+      return await apiPost("/users/contact-us/", data);
+    },
+    onSuccess: () => {
+      if (onSuccess) onSuccess();
+    },
+    onError: () => {
+      if (onError) onError();
+    },
+  });
 }
