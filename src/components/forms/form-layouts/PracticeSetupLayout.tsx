@@ -26,7 +26,14 @@ const PracticeSetupLayout = ({
     return (
         <div className="flex items-start">
             <UploadSlideSection
-                {...{ activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
+                {...{
+                    activeSlideIndex,
+                    slidePreviews,
+                    sessionType: form.getValues("session_type"),
+                    numSlides,
+                    setActiveSlideIndex,
+                    setNumSlides,
+                }}
                 className="flex-1 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] md:pb-[20vh] pb-[25vh] border-x border-bright-gray"
             />
             <SlideDetailsSection
@@ -34,7 +41,7 @@ const PracticeSetupLayout = ({
                 className="flex-3 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar lg:pb-[15vh] md:pb-[20vh] pb-[25vh]"
             />
             <SlidePreviewAndSettingsSection
-                {...{ form, activeSlideIndex, slidePreviews }}
+                {...{ form }}
                 className="md:flex hidden flex-1 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] md:pb-[20vh] pb-[25vh] border-x border-bright-gray"
             />
         </div>

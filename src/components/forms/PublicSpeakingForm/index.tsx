@@ -38,11 +38,11 @@ const PublicSpeakingForm = () => {
                 <section className="space-y-6">
                     <VirtualEnvironmentSection
                         {...{ form }}
-                        className="[&_[data-slot='form-label']>div]:md:w-85 [&_[data-slot='form-label']>div]:w-full [&_[data-slot='form-label']>div]:h-37.5"
+                        className="[&_[data-slot='form-label']>div]:h-38"
                         options={publicSpeakingVEOptions}
                     />
-                    <div className="flex items-center justify-between">
-                        <p>Enable AI Generated Questions</p>
+                    <div className="flex items-start justify-between gap-x-8">
+                        <p>Enable AI Audience Generated Session Questions</p>
                         <Switch
                             onCheckedChange={(checked) => form.setValue("allow_ai_questions", checked)}
                             className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"

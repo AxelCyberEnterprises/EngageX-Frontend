@@ -14,34 +14,25 @@ import SlidePreviewAndSettingsSection from "../form-sections/SlidePreviewAndSett
 interface IPracticeSetUpControlsLayout extends HTMLAttributes<HTMLDivElement> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     form: UseFormReturn<any>;
-    activeSlideIndex: number;
-    slidePreviews: string[];
-    sessionType: "presentation" | "pitch";
 }
 
-const PracticeSetUpControlsLayout = ({
-    children,
-    form,
-    activeSlideIndex,
-    slidePreviews,
-    sessionType,
-}: IPracticeSetUpControlsLayout) => {
+const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsLayout) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     return (
         <div className="flex flex-col">
-            <div className="lg:hidden flex md:flex-row flex-col md:gap-y-0 gap-y-4 items-start justify-between py-3 border-b border-bright-gray md:mb-0 mb-4">
+            <div className="lg:hidden flex md:flex-row flex-col md:gap-y-0 gap-y-5 items-start justify-between py-3 border-b border-bright-gray md:mb-0 mb-4">
                 <div className="flex items-start gap-x-3">
                     <Button
                         type="button"
-                        className="bg-transparent hover:bg-transparent text-gunmetal shadow-none px-0 has-[>svg]:px-0 size-fit"
+                        className="bg-transparent hover:bg-transparent text-gunmetal shadow-none px-0 has-[>svg]:px-0 py-0 size-fit"
                         onClick={() => navigate(-1)}
                     >
-                        <ArrowLeft className="size-4" />
+                        <ArrowLeft className="md:size-4 size-5" />
                     </Button>
-                    <div className="flex flex-col">
-                        <h6 className="text-lg">{capitalize(sessionType)} Setup</h6>
+                    <div className="flex flex-col gap-y-2">
+                        <h5>{capitalize(form.getValues("session_type"))} Setup</h5>
                         <div className="flex items-center gap-x-1 text-sm font-medium">
                             <span>Need help setting up?</span>
                             <Button
@@ -73,15 +64,12 @@ const PracticeSetUpControlsLayout = ({
                                 <span className="md:inline hidden">Slide Settings</span>
                             </Button>
                         </DrawerTrigger>
-                        <DrawerContent>
+                        <DrawerContent className="border-bright-gray">
                             <DrawerHeader className="sr-only">
                                 <DrawerTitle>Slide Preview</DrawerTitle>
                                 <DrawerDescription>Slide Preview</DrawerDescription>
                             </DrawerHeader>
-                            <SlidePreviewAndSettingsSection
-                                {...{ form, activeSlideIndex, slidePreviews }}
-                                className="px-4"
-                            />
+                            <SlidePreviewAndSettingsSection {...{ form }} className="p-4 pb-8" />
                         </DrawerContent>
                     </Drawer>
                     <Button
@@ -101,7 +89,7 @@ const PracticeSetUpControlsLayout = ({
                                     children: (
                                         <StartPracticeSetupSession
                                             initiationType="skip"
-                                            sessionType={sessionType}
+                                            sessionType={form.getValues("session_type")}
                                             setValue={form.setValue}
                                             handleSubmit={form.handleSubmit}
                                         />
@@ -122,7 +110,7 @@ const PracticeSetUpControlsLayout = ({
                                     children: (
                                         <StartPracticeSetupSession
                                             initiationType="start"
-                                            sessionType={sessionType}
+                                            sessionType={form.getValues("session_type")}
                                             handleSubmit={form.handleSubmit}
                                         />
                                     ),
@@ -161,7 +149,7 @@ const PracticeSetUpControlsLayout = ({
                                     children: (
                                         <StartPracticeSetupSession
                                             initiationType="skip"
-                                            sessionType={sessionType}
+                                            sessionType={form.getValues("session_type")}
                                             setValue={form.setValue}
                                             handleSubmit={form.handleSubmit}
                                         />
@@ -182,7 +170,7 @@ const PracticeSetUpControlsLayout = ({
                                     children: (
                                         <StartPracticeSetupSession
                                             initiationType="start"
-                                            sessionType={sessionType}
+                                            sessionType={form.getValues("session_type")}
                                             handleSubmit={form.handleSubmit}
                                         />
                                     ),
