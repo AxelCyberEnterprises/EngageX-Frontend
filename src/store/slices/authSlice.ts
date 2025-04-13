@@ -9,7 +9,7 @@ import { LoginResponse } from "@/hooks/auth";
 interface Question {
     id: number;
     question: string;
-    content: { contentId: number; plan?: string; role?: string }[];
+    content: { contentId: number; plan?: string; role?: string, apiName: string; }[];
 }
 
 interface SignupData {
@@ -47,6 +47,7 @@ interface AuthState {
     authPageImage: string;
     userIdAfterSignup: string;
     contactStatus: string;
+    otpSent: boolean;
 }
 
 const storedUser = localStorage.getItem("user");
@@ -56,28 +57,28 @@ const initialState: AuthState = {
             id: 1,
             question: "What do you plan on doing?",
             content: [
-                { contentId: 1, plan: "Pitch" },
-                { contentId: 2, plan: "Present" },
-                { contentId: 3, plan: "Speak" },
+                { contentId: 1, plan: "Pitch", apiName: "pitch" },
+                { contentId: 2, plan: "Present", apiName: "presenting" },
+                { contentId: 3, plan: "Speak", apiName: "public_speaking" },
             ],
         },
         {
             id: 2,
             question: "What role are you?",
             content: [
-                { contentId: 1, role: "Early Career Professional" },
-                { contentId: 2, role: "Mid-level Professionals" },
-                { contentId: 3, role: "Sales Professionals" },
-                { contentId: 4, role: "C-suites" },
-                { contentId: 5, role: "Entrepreneurs" },
-                { contentId: 6, role: "Major League Sports Athlete" },
-                { contentId: 7, role: "Major League Sports Executive" },
+                { contentId: 1, role: "Early Career Professional", apiName: "early" },
+                { contentId: 2, role: "Mid-level Professionals", apiName: "mid" },
+                { contentId: 3, role: "Sales Professionals", apiName: "sales" },
+                { contentId: 4, role: "C-suites", apiName: "c_suite" },
+                { contentId: 5, role: "Entrepreneurs", apiName: "entrepreneurs" },
+                { contentId: 6, role: "Major League Sports Athlete", apiName: "athlete" },
+                { contentId: 7, role: "Major League Sports Executive", apiName: "executive" },
             ],
         },
     ],
     topicQuestion: "What do you plan on doing?",
 
-    signupFlow: "signup",
+    signupFlow: "authQuestions",
     routeFromLogin: false,
     signupData: null, // Stores signup details
     user: storedUser ? JSON.parse(storedUser) as AuthUser : null,
@@ -89,6 +90,7 @@ const initialState: AuthState = {
     authPageImage: authPageImage1,
     userIdAfterSignup: "",
     contactStatus: "",
+    otpSent: false,
 };
 
 
@@ -120,6 +122,9 @@ const authSlice = createSlice({
         },
         setRouteFromLogin: (state, action: PayloadAction<boolean>) => {
             state.routeFromLogin = action.payload;
+        },
+        setOtpSent: (state, action: PayloadAction<boolean>) => {
+            state.otpSent = action.payload;
         },
         setUserIdAfterSignup: (state, action: PayloadAction<string>) => {
             state.userIdAfterSignup = action.payload;
@@ -173,5 +178,5 @@ export function useAutoClearSuccessMessage() {
     }, [location.pathname]);
 }
 
-export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setContactStatus, setUserIdAfterSignup, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
+export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setOtpSent, setContactStatus, setUserIdAfterSignup, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
 export default authSlice.reducer;

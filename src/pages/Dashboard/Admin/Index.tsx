@@ -6,7 +6,6 @@ import ShadDonutChart from "@/components/dashboard/ShadDonutChart";
 import { useDashboardData } from "@/hooks/auth";
 import { UseQueryResult } from "@tanstack/react-query";
 import { Session } from "../../../components/dashboard/RecentSessionsTable";
-import { Skeleton } from "@/components/ui/skeleton";
 import { capitalizeWords, formatDate, formatTime } from "@/components/tables/session-history-table/admin";
 import AdminDashboardSkeleton from "@/components/skeletons/AdminDashboardSkeleton";
 
