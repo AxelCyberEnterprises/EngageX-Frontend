@@ -70,18 +70,16 @@ const PitchSessionReport: React.FC = () => {
             title: "Transformative Communication",
             rating: 70,
         },
+        {
+            title: "Emotional Impact",
+            rating: 70,
+        },
     ];
 
     const variety2 = [
-        // {
-        //     bg: "bg-sunray/15",
-        //     title: "Impact",
-        //     percent: 80,
-        //     rating: "Excellent",
-        // },
         {
             bg: "bg-alice-blue",
-            title: "Body Posture",
+            title: "Posture",
             percent: 80,
             rating: "Excellent",
         },
@@ -93,7 +91,7 @@ const PitchSessionReport: React.FC = () => {
         },
         {
             bg: "bg-seashell",
-            title: "Gestures",
+            title: "Hand Gestures",
             percent: 80,
             rating: "Excellent",
         },
@@ -192,17 +190,16 @@ const PitchSessionReport: React.FC = () => {
                 </div>
 
                 <p className="text-independence mb-3">
-                    This is a comprehensive report of the session you just concluded. it includes insights on the goals
-                    you set for yourself as well as the industry standards deemed by EngageX the personal goals you set
-                    for yourself
+                    This comprehensive report summarizes the session you just completed. It covers the goals you set for
+                    yourself, the industry standards defined by EngageX™, and your personal objectives.
                 </p>
             </section>
 
             <section className="px-4 lg:px-8 py-4">
-                <div className="flex flex-wrap md:flex-col-reverse lg:flex-row w-full items-stretch">
-                    <div className="w-full lg:w-7/12 lg:pe-2 mb-4 md:mb-0">
+                <div className="flex md:flex-row w-full items-stretch gap-3">
+                    <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                         <div className="border-1 border-bright-gray rounded-xl p-4">
-                            <h6 className="mb-3">Engagement</h6>
+                            <h6 className="mb-3">Audience engagement</h6>
                             <ShadLinearLineChart data={chartData} colors={chartColors} />
                         </div>
                     </div>
@@ -213,11 +210,10 @@ const PitchSessionReport: React.FC = () => {
                             <div className="relative w-full h-70 flex flex-col items-center pt-10">
                                 <SemiCircleProgress percent={0.88} color={"#262B3A"} />
 
-                                <div className="absolute bottom-16 text-center">
-                                    <h4 className="mb-4">88%</h4>
-                                    <div className="bg-medium-sea-green text-white rounded-lg px-4 py-2">
-                                        <p>EXCELLENT</p>
-                                    </div>
+                            <div className="absolute bottom-16 text-center">
+                                <h4 className="mb-4">88%</h4>
+                                <div className="bg-medium-sea-green text-white rounded-lg px-4 py-2">
+                                    <p>EXCELLENT</p>
                                 </div>
                             </div>
                         </div>
@@ -227,8 +223,8 @@ const PitchSessionReport: React.FC = () => {
 
             <section className="px-4 lg:px-8">
                 <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
-                    <h5 className="mb-4">Performance Analytics</h5>
-                    <h6 className="mb-6">Vocal Variety</h6>
+                    <h5 className="mb-6">Performance Analytics</h5>
+                    <h6 className="mb-3">Vocal Variety</h6>
 
                     <div className="flex flex-wrap gap-4">
                         {variety.map((item, index) => (
@@ -250,8 +246,8 @@ const PitchSessionReport: React.FC = () => {
                         ))}
                     </div>
 
-                    <div className="mt-7">
-                        <h6 className="mb-5">Delivery and Structure Metrics</h6>
+                    <div className="mt-8">
+                        <h6 className="mb-3">Delivery and Structure Metrics</h6>
 
                         {deliveryMetrics.map((metric, index) => (
                             <div key={index} className="flex flex-wrap w-full mb-3 items-center">
@@ -269,7 +265,7 @@ const PitchSessionReport: React.FC = () => {
                         ))}
                     </div>
 
-                    <h6 className="my-6">Body Language</h6>
+                    <h6 className="mt-8 mb-3">Body Language</h6>
 
                     <div className="flex flex-wrap gap-4">
                         {variety2.map((item, index) => (
@@ -291,8 +287,8 @@ const PitchSessionReport: React.FC = () => {
                         ))}
                     </div>
 
-                    <div className="mt-7">
-                        <h6 className="mb-5">Language and word choice</h6>
+                    <div className="mt-8">
+                        <h6 className="mb-3">Language and word choice</h6>
 
                         {deliveryMetrics2.map((metric, index) => (
                             <div key={index} className="flex flex-wrap w-full mb-3 items-center">
@@ -314,9 +310,9 @@ const PitchSessionReport: React.FC = () => {
 
             <section className="px-4 lg:px-8 py-4">
                 <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
-                    <div className="flex flex-col gap-6 lg:flex-row">
+                    <div className="flex flex-col gap-6 md:flex-row">
                         <div>
-                            <h5 className="mb-5">Session Feedback Analysis</h5>
+                            <h5 className="mb-5">Personal Goal Summary Feedback</h5>
                             <p className="text-independence">Session feedback summary</p>
                             <div className="p-4 rounded-md border-bright-gray border-1 w-full">
                                 <p>

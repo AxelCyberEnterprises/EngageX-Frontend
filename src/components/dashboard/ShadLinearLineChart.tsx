@@ -13,6 +13,10 @@ type Props = {
     colors: Record<string, string>;
 };
 
+function splitCamelCase(input: string): string {
+    return input.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
+
 const CustomLegend = (props: LegendProps) => {
     const { payload } = props;
     if (!payload) return null;
@@ -23,7 +27,7 @@ const CustomLegend = (props: LegendProps) => {
                 <div key={index} className="flex items-center gap-2">
                     <div className="w-1.5 h-4 rounded-xs" style={{ backgroundColor: entry.color }} />
                     <span className="text-sm" style={{ color: entry.color }}>
-                        {entry.value}
+                        {splitCamelCase(entry.value as string)}
                     </span>
                 </div>
             ))}
