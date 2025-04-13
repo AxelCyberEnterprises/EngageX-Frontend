@@ -41,7 +41,7 @@ const PitchPracticeForm = () => {
     return (
         <Form {...form}>
             <form>
-                <PracticeSetUpControlsLayout {...{ form, activeSlideIndex, slidePreviews, sessionType: "pitch" }}>
+                <PracticeSetUpControlsLayout {...{ form }}>
                     <PracticeSetupLayout
                         {...{ form, activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
                     />

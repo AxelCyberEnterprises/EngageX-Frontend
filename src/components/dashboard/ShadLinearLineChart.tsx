@@ -13,6 +13,10 @@ type Props = {
     colors: Record<string, string>;
 };
 
+function splitCamelCase(input: string): string {
+    return input.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
+
 const CustomLegend = (props: LegendProps) => {
     const { payload } = props;
     if (!payload) return null;
@@ -23,7 +27,7 @@ const CustomLegend = (props: LegendProps) => {
                 <div key={index} className="flex items-center gap-2">
                     <div className="w-1.5 h-4 rounded-xs" style={{ backgroundColor: entry.color }} />
                     <span className="text-sm" style={{ color: entry.color }}>
-                        {entry.value}
+                        {splitCamelCase(entry.value as string)}
                     </span>
                 </div>
             ))}
@@ -33,7 +37,10 @@ const CustomLegend = (props: LegendProps) => {
 
 export default function ShadLinearLineChart({ data, colors }: Props) {
     const chartConfig = Object.keys(colors).reduce((acc, key) => {
-        acc[key] = { label: key.charAt(0).toUpperCase() + key.slice(1), color: colors[key] };
+        acc[key] = {
+            label: key.replace(/([a-z])([A-Z])/g, "$1 $2"),
+            color: colors[key],
+        };
         return acc;
     }, {} as ChartConfig);
 

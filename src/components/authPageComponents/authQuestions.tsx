@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/index";
 import { setAuthPageImage, setSignupData } from "../../store/slices/authSlice";
 import { welcomeMessage } from "@/components/layouts/userAuth";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg"
 
 const AuthQuestions: React.FC = () => {
-    const [selectedOptions, setSelectedOptions] = useState<{ plan?: string; role?: string }>({});
+    const [selectedOptions, setSelectedOptions] = useState<{ plan?: string; role?: string, apiName?:string; }>({});
     const signupData = useSelector((state: RootState) => state.auth.signupData);
 
     const dispatch = useDispatch();
@@ -42,12 +42,26 @@ const AuthQuestions: React.FC = () => {
             );
         }
     };
+    
+    // const {mutate: addAuthQuestion} = useAddAuthQuestion()
     const handleContinue = () => {
         if (!selectedOptions.plan || !selectedOptions.role) {
             return;
         }
+    
+       
+    
+        localStorage.setItem(
+            "userQuestions",
+            JSON.stringify({
+                plan: selectedOptions.apiName,
+                role: selectedOptions.apiName,
+            })
+        );
+    
         navigate("../Tutorial");
     };
+    
 
     return (
         <div className="flex flex-col my-5 md:justify-center md:pt-12 scrollbar-hide overflow-y-auto scroll-smooth h-[100dvh] md:pb-10  lg:w-4/5 md:mx-auto max-lg:p-5">
