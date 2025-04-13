@@ -204,11 +204,10 @@ const PitchSessionReport: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="md:mb-4 lg:mb-0 w-full lg:w-5/12 lg:ps-2 flex flex-col md:flex-row lg:flex-col justify-between h-full lg:space-y-5 md:space-x-4 space-y-4">
-                        <div className="border-1 border-bright-gray rounded-xl p-4 w-full md:w-1/2 lg:w-full lg:me-0">
-                            <h6 className="mb-3">Overall ⁠Captured Impact</h6>
-                            <div className="relative w-full h-70 flex flex-col items-center pt-10">
-                                <SemiCircleProgress percent={0.88} color={"#262B3A"} />
+                    <div className="border-1 border-bright-gray rounded-xl p-4 w-full md:w-5/12 lg:me-0">
+                        <h6 className="mb-3">Overall captured impact</h6>
+                        <div className="relative w-full h-70 flex flex-col items-center pt-10">
+                            <SemiCircleProgress percent={0.88} color={"#262B3A"} />
 
                             <div className="absolute bottom-16 text-center">
                                 <h4 className="mb-4">88%</h4>
