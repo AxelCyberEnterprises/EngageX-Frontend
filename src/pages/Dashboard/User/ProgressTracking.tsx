@@ -59,7 +59,7 @@ const ProgressTracking: React.FC = () => {
     {
       title: 'Vocal Variety',
       wordRate: '85% pitch score',
-      percentage: 60
+      percentage: 100
     },
     {
       title: 'Captured Impact',
@@ -69,22 +69,22 @@ const ProgressTracking: React.FC = () => {
     {
       title: 'Emotional Impact',
       wordRate: '85% speaker',
-      percentage: 40
+      percentage: 45
     },
     {
       title: 'Body Language',
       wordRate: '85% clarity score',
-      percentage: 60
+      percentage: 100
     },
     {
       title: 'Transformative Communicaion',
       wordRate: '85% brevity score',
-      percentage: 80
+      percentage: 100
     },
     {
       title: 'Audience Engagement',
       wordRate: '85% posture',
-      percentage: 40
+      percentage: 85
     },
     {
       title: 'Structure & Clarity',
