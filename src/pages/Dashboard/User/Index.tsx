@@ -9,7 +9,9 @@ import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import { Button } from "@/components/ui/button";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
-import { useDashboardData } from "@/hooks/auth";
+import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const UserDashboardHome: React.FC = () => {
   const {data} = useDashboardData()
@@ -17,6 +19,22 @@ const UserDashboardHome: React.FC = () => {
   useEffect(()=>{
     console.log(data)
   }, [])
+
+const {mutate: authQuestions} = useAddAuthQuestion()
+const userIdAfterSignup = useSelector((state: RootState) => state.auth.userIdAfterSignup);
+const userQuestions = JSON.parse(localStorage.getItem("userQuestions") || "{}");
+
+console.log(typeof userQuestions.role)
+  useEffect(() => {
+    if (userQuestions.plan && userQuestions.role) {
+
+      authQuestions({
+        userId: userIdAfterSignup,
+        user_intent: userQuestions.role,
+        purpose: userQuestions.plan,
+      });
+    }
+  },[])
   const score = 89;
 
   const cardsData = [
@@ -215,7 +233,7 @@ const UserDashboardHome: React.FC = () => {
       ),
       title: "Audience Engagement",
       percent: 85,
-      color: "#64BA9F", //leave
+      color: "#64BA9F",
     },
     {
       icon: (
