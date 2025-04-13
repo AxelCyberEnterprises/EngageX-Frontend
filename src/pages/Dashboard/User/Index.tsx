@@ -430,7 +430,7 @@ console.log(typeof userQuestions.role)
               <SemiCircleProgress percent={0.8} color="#7387FF" />
               <h2 className="pt-20 mb-2">🎊</h2>
               <p className="mb-3">5 goals completed</p>
-              <h2 className="mb-3">3/8</h2>
+              <h2 className="mb-3">5/8</h2>
               <p className="gunmetal text-center">
                 Yay! you’ve achieved most of your goals
               </p>
