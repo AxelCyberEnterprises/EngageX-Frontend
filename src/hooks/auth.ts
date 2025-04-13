@@ -6,6 +6,7 @@ import {
     // AuthUser,
     login,
     setEmailForPasswordReset,
+    setOtpSent,
     setSignupFlow,
     setSuccessMessage,
     setUserIdAfterSignup,
@@ -22,7 +23,7 @@ export function useSignup() {
         },
         onSuccess: async (data: any) => {
             console.log(data);
-            setUserIdAfterSignup(data?.id);
+            dispatch(setUserIdAfterSignup(data?.id));
             // dispatch(login(data));
             dispatch(setSignupFlow("confirmation"));
         },
@@ -40,17 +41,17 @@ interface AuthQuestionData {
 
 export function useAddAuthQuestion() {
     // const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     return useMutation({
         mutationKey: ["addAuthQuestion"],
         mutationFn: async ({ userId, user_intent, purpose }: AuthQuestionData) => {
-            return await apiPatch(`/users/users/${userId}`, { user_intent, purpose });
+            console.log(userId, user_intent, purpose);
+            return await apiPatch(`/users/users/3/`, { user_intent: "early", purpose: "public_speaking" });
         },
         onSuccess: () => {
             console.log("Auth question added successfully.");
             // dispatch(setSignupFlow("login"));
-            navigate("../Tutorial");
+            // navigate("../Tutorial");
         },
         onError: (error: any) => {
             console.error("Failed to add auth question:", error.message);
@@ -124,6 +125,7 @@ export function useForgotPassword() {
         onSuccess: () => {
             console.log("Password reset link sent.");
             navigate("../reset-password");
+            dispatch(setOtpSent(true));
         },
         onError: (error) => {
             console.error(error || "Failed to send OTP. Please try again.");

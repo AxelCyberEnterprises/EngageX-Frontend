@@ -80,7 +80,7 @@ const ForgotPassword: React.FC = () => {
                             isLoading={isPending}
                             className="text-white flex items-center justify-center flex-[4.5] bg-[#262b3a] hover:bg-[#262b3ada] h-auto py-4 rounded-lg"
                         >
-                            Get reset link
+                            Get OTP
                         </Button>
                     </div>
                 </form>

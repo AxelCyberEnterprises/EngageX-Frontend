@@ -62,7 +62,7 @@ export function BaseTable<TData, TValue>({
     const [rowSelection, setRowSelection] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = localStorage.getItem('user') === 'true';
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const table = useReactTable({
         data,
@@ -155,7 +155,7 @@ export function BaseTable<TData, TValue>({
                                         const rowData = row.original as { id?: string };
                                         if (rowData.id) {
                                             dispatch(setSessionId(rowData.id));
-                                            navigate(`/dashboard/${user ? "user" : "admin"}/session-history/${rowData.id}`);
+                                            navigate(`/dashboard/${user.is_admin ? "admin":"user"}/session-history/${rowData.id}`);
                                         }
                                     }}
                                     data-state={row.getIsSelected() && "selected"}
