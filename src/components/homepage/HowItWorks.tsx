@@ -33,7 +33,7 @@ function HowItWorks() {
       <div className="flex flex-col lg:flex-row w-full lg:justify-between items-center gap-x-20">
         <div className="lg:w-[35%]">
           <div className="flex gap-x-8 items-center">
-            <div className="w-10 h-10 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
+            <div className="w-16 h-16 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
               <p>1</p>
             </div>
             <div className="space-y-4">
@@ -44,11 +44,11 @@ function HowItWorks() {
               </p>
             </div>
           </div>
-          <div className=" relative h-20 z-10 w-10 flex items-center justify-center">
-            <img src="./assets/divider.png" className="h-[7.8rem]" alt="" />
+          <div className=" relative h-20 z-10 w-16 flex items-center justify-center">
+            <img src="./assets/divider.png" className="h-[8rem]" alt="" />
           </div>
           <div className="flex gap-x-8 items-center">
-            <div className="w-10 h-10 aspect-square gap-[8px] bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
+            <div className="w-16 h-16 aspect-square gap-[8px] bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
               <p>2</p>
             </div>
             <div className="space-y-4">
@@ -60,11 +60,11 @@ function HowItWorks() {
               </p>
             </div>
           </div>
-          <div className=" relative h-20 z-10 w-10 flex items-center justify-center">
-            <img src="./assets/divider.png" className="h-[7.8rem]" alt="" />
+          <div className=" relative h-20 z-10 w-16 flex items-center justify-center">
+            <img src="./assets/divider.png" className="h-[8rem]" alt="" />
           </div>
           <div className="flex gap-x-8 items-center">
-            <div className="w-10 h-10 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
+            <div className="w-16 h-16 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
               <p>3</p>
             </div>
             <div className="space-y-4">
@@ -77,14 +77,12 @@ function HowItWorks() {
               </p>
             </div>
           </div>
-          <div className=" relative h-20 z-10 w-10 flex items-center justify-center">
-            <img src="./assets/divider.png" className="h-[7.8rem]" alt="" />
+          <div className=" relative h-20 z-10 w-16 flex items-center justify-center">
+            <img src="./assets/divider.png" className="h-[8rem]" alt="" />
           </div>
           <div className="flex gap-x-8 items-center">
-            <div className="w-10 h-10 relative">
-              <div className="w-10 h-10 aspect-square absolute  z-30 bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
-                <p>4</p>
-              </div>
+            <div className="w-16 h-16 aspect-square bg-gunmetal/50 flex items-center justify-center text-white rounded-full">
+              <p>4</p>
             </div>
             <div className="space-y-4">
               <h6 className="font-montreal">Review & improve</h6>
@@ -97,7 +95,10 @@ function HowItWorks() {
         </div>
 
         <video className="lg:h-[29rem] mt-20 lg:mt-0 rounded-xl" controls>
-          <source src="./assets/intovid.mp4" type="video/mp4" />
+          <source
+            src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/introvid.mp4"
+            type="video/mp4"
+          />
         </video>
       </div>
     </section>
