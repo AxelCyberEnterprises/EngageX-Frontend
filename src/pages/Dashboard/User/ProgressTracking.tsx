@@ -433,7 +433,7 @@ const ProgressTracking: React.FC = () => {
         {activeIndex === 0 && <div>
           <section className='flex justify-between md:items-start items-center gap-5 mb-6 sm:mt-0 mt-4'>
             <div>
-              <h3 className="text-xl font-medium">Gold Standards for EngageX™ </h3>
+              <h3 className="text-xl font-medium">Gold Standard for EngageX™ </h3>
               <p className="text-sm text-[#6F7C8E]">Here’s a quick overview of your active goals </p>
             </div>
             <Button

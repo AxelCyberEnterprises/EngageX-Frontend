@@ -170,7 +170,7 @@ const ProgressTracking: React.FC = () => {
     {
       icon: diamond,
       number: "15",
-      text: "Day Streak"
+      text: "Day Growth"
     },
     // {
     //   icon: ruby,
@@ -433,7 +433,7 @@ const ProgressTracking: React.FC = () => {
         {activeIndex === 0 && <div>
           <section className='flex justify-between md:items-start items-center gap-5 mb-6 sm:mt-0 mt-4'>
             <div>
-              <h3 className="text-xl font-medium">Gold Standards for EngageX™ </h3>
+              <h3 className="text-xl font-medium">Gold Standard for EngageX™ </h3>
               <p className="text-sm text-[#6F7C8E]">Here’s a quick overview of your active goals </p>
             </div>
             <Button
@@ -502,7 +502,7 @@ const ProgressTracking: React.FC = () => {
             </div>
             <div className='border border-[#E0E0E0] rounded-[12px] p-5 h-fit'>
               <h4 className='text-[#252A39] lg:text-lg text-base'>Daily Progress Tracker</h4>
-              <p className='text-[#6F7C8E] text-sm'>Display streaks of  goal progress</p>
+              <p className='text-[#6F7C8E] text-sm'>Display daily progress tracker</p>
               <div className='grid grid-cols-1 md:gap-x-6'>
                 {streakStats.map((item) => (
                   <div className='border border-[#E0E0E0] p-3 flex gap-3 rounded-[12px] mt-4 mb-2'>
