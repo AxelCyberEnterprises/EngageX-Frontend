@@ -15,7 +15,7 @@ function FeaturesSection() {
       img: "./assets/featuresimg2.png",
       title: "Speaker analytics and self-assessment tools",
       content:
-        "Real-time analysis and feedback on your speech, powered by unparalleled AI technology.",
+        "Real-time analysis and feedback on your speech, powered by unparalleled AI technology",
     },
     {
       className: "",

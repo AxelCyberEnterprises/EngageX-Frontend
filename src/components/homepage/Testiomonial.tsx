@@ -32,7 +32,7 @@ function Testiomonial() {
       img: "./assets/testimonialImg2.jpeg",
       text:
         "“EngageX™ helped me own my narrative. Now, every interview, every post, every connection reflects who I truly am both on and off the field.”",
-      subtext: "— Pro Athlete & Brand Builder",
+      subtext: "- Pro Athlete & Brand Builder",
       color: "#6F7C8E",
       text_color: "",
     },
@@ -72,7 +72,7 @@ function Testiomonial() {
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             Hear directly from leaders who have tested and experienced the
-            platform firsthand.
+            platform firsthand
           </p>
         </div>
       </div>
