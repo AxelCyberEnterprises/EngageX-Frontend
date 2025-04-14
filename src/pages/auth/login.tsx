@@ -106,7 +106,7 @@ const Login: React.FC = () => {
                         Login
                     </Button>
 
-                    {error && <p className="text-sm text-red-500 text-center">{error.message}</p>}
+                    {error && <p className="text-sm text-red-500 -mt-2 text-center">Invalid email or password.</p>}
                 </form>
             </Form>
 

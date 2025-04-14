@@ -211,7 +211,7 @@ const Signup: React.FC = () => {
                                         />
                                         <Button
                                             type="button"
-                                            className="absolute right-1 top-1/2 bg-transparent hover:bg-transparent text-[#b7b7b7] transform -translate-y-1/2"
+                                            className="absolute right-1 shadow-none top-1/2 bg-transparent hover:bg-transparent text-[#b7b7b7] transform -translate-y-1/2"
                                             onClick={() => setShowPassword(!showPassword)}
                                         >
                                             {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -248,7 +248,7 @@ const Signup: React.FC = () => {
                                         />
                                         <Button
                                             type="button"
-                                            className="absolute right-1 top-1/2 bg-transparent hover:bg-transparent text-[#b7b7b7] transform -translate-y-1/2"
+                                            className="absolute right-1 top-1/2 shadow-none bg-transparent hover:bg-transparent text-[#b7b7b7] transform -translate-y-1/2"
                                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                         >
                                             {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}

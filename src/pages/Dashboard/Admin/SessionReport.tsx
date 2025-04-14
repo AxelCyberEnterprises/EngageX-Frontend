@@ -171,13 +171,13 @@ const PitchSessionReport: React.FC = () => {
                 <div className="flex md:flex-row w-full items-stretch gap-3">
                     <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                         <div className="border-1 border-bright-gray rounded-xl p-4">
-                            <h6 className="mb-3">Audience engagement</h6>
+                            <h6 className="mb-3">Audience Engagement</h6>
                             <ShadLinearLineChart data={chartData} colors={chartColors} />
                         </div>
                     </div>
 
                     <div className="border-1 border-bright-gray rounded-xl p-4 w-full md:w-5/12 lg:me-0">
-                        <h6 className="mb-3">Overall captured impact</h6>
+                        <h6 className="mb-3">Overall Captured Impact</h6>
                         <div className="relative w-full h-70 flex flex-col items-center pt-10">
                             <SemiCircleProgress percent={0.88} color={"#262B3A"} />
 
@@ -283,7 +283,7 @@ const PitchSessionReport: React.FC = () => {
                 <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
                     <div className="flex flex-col gap-6 md:flex-row">
                         <div>
-                            <h5 className="mb-5">Personal Goal Summary Feedback</h5>
+                            <h5 className="mb-5">Personal Goal Summary</h5>
                             <p className="text-independence">Session feedback summary</p>
                             <div className="p-4 rounded-md border-bright-gray border-1 w-full">
                                 <p>
