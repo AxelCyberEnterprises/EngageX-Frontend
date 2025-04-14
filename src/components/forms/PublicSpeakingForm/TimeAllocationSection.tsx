@@ -12,7 +12,7 @@ const TimeAllocationSection = () => {
                     <Clock className="size-4" />
                     <span className="text-sm text-independence">Total Time</span>
                 </div>
-                <span className="text-sm text-green-sheen">30 minutes</span>
+                <span className="text-sm text-green-sheen">5 minutes</span>
             </div>
         </section>
     );
