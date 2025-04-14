@@ -175,7 +175,7 @@ function ChartTooltipContent({
         className
       )}
     >
-      {!nestLabel ? tooltipLabel : null}
+     <span className="flex gap-1 "> {!nestLabel ? (tooltipLabel ) : null} {!nestLabel ? " mins" : null}</span>
       <div className="grid gap-1.5">
         {payload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`
@@ -224,10 +224,10 @@ function ChartTooltipContent({
                       nestLabel ? "items-end" : "items-center"
                     )}
                   >
-                    <div className="grid gap-1.5">
+                    <div className="grid gap-1.5 mr-3">
                       {nestLabel ? tooltipLabel : null}
                       <span className="text-muted-foreground">
-                        {itemConfig?.label || item.name}
+                        {itemConfig?.label || item.name} {item.name === "Trigger"? "Response" : null}
                       </span>
                     </div>
                     {item.value && (
