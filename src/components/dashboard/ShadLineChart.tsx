@@ -23,7 +23,7 @@ const CustomLegend = (props: LegendProps) => {
                 <div key={index} className="flex items-center gap-2">
                     <div className="w-1.5 h-4 rounded-xs" style={{ backgroundColor: entry.color }} />
                     <span className="text-sm" style={{ color: entry.color }}>
-                        {entry.value}
+                        {entry.value === "Trigger" ? "Trigger Response" : entry.value}
                     </span>
                 </div>
             ))}

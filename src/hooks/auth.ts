@@ -144,7 +144,7 @@ export function useResetPassword() {
     const navigate = useNavigate();
     return useMutation({
         mutationKey: ["resetPassword"],
-        mutationFn: async (data: { otp: string; new_password: string; email: string }) => {
+        mutationFn: async (data: { otp: string; new_password: string; email: string, confirm_new_password: string; }) => {
             return await apiPost<ResetPasswordResponse>("/users/auth/password-reset-confirm/", data);
         },
         onSuccess: () => {
