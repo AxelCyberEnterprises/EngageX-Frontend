@@ -191,7 +191,7 @@ const PitchSessionReport: React.FC = () => {
 
                 <p className="text-independence mb-3">
                     This comprehensive report summarizes the session you just completed. It covers the goals you set for
-                    yourself, the industry standards defined by EngageX™, and your personal objectives.
+                    yourself, the industry standards defined by EngageX™ and your personal objectives.
                 </p>
             </section>
 

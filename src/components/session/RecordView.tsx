@@ -67,12 +67,12 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
             // Stop after `duration` minutes
             timerRef.current = setTimeout(stopRecordingLoop, duration * 60 * 1000);
 
-            // Loop every 10s: stop current recorder and start a new one
+            // Loop every 7s: stop current recorder and start a new one
             intervalRef.current = setInterval(() => {
                 if (recorderRef.current?.state === "recording") {
                     recorderRef.current.stop(); // triggers `ondataavailable`
                 }
-            }, 10000);
+            }, 7000);
         } catch (error) {
             console.error("Failed to start recording:", error);
             onStop();
