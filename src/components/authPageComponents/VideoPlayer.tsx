@@ -11,6 +11,7 @@ interface VideoPlayerProps {
     autoPlay?: boolean;
     loop?: boolean;
     showPauseOverlay?: boolean;
+    hideControls?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -22,6 +23,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     autoPlay = false,
     loop = false,
     showPauseOverlay = true,
+    hideControls = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -29,7 +31,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const [progress, setProgress] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
     const [showControls, setShowControls] = useState<boolean>(false);
-    const [isMuted, setIsMuted] = useState<boolean>(false);
+    const [isMuted, setIsMuted] = useState<boolean>(autoPlay && hideControls);
     const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState<boolean>(false);
 
@@ -201,8 +203,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         <div
             ref={containerRef}
             className={`relative ${width} ${height} ${className} overflow-hidden group`}
-            onMouseEnter={() => setShowControls(true)}
-            onMouseLeave={() => setShowControls(false)}
+            onMouseEnter={() => !hideControls && setShowControls(true)}
+            onMouseLeave={() => !hideControls && setShowControls(false)}
             onKeyDown={handleKeyDown}
             tabIndex={0}
         >
@@ -247,17 +249,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 </div>
             )}
 
-            {(showControls || !isPlaying) && (
+            {!hideControls && (showControls || !isPlaying) && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-300">
-                    <div 
-                        className="progress-container h-2 w-full bg-gray-600 rounded-full mb-3 cursor-pointer" 
+                    <div
+                        className="progress-container h-2 w-full bg-gray-600 rounded-full mb-3 cursor-pointer"
                         onClick={handleSeek}
                         onMouseDown={handleSeekMouseDown}
                         onMouseUp={handleSeekMouseUp}
                         onMouseMove={handleSeekMouseMove}
                     >
                         <div className="h-full bg-[#64BA9E] rounded-full relative" style={{ width: `${progress}%` }}>
-                            <div 
+                            <div
                                 className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/2 w-3 h-3 bg-white rounded-full"
                                 onMouseDown={handleSeekMouseDown}
                             ></div>

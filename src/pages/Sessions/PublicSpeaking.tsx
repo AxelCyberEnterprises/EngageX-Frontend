@@ -2,14 +2,13 @@
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
-import audience from "../../assets/images/pngs/audience.png";
 import questionImage from "../../assets/images/pngs/question-image.png";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import VoiceAnalytics from "@/components/session/VoiceAnalytics";
 import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
 import VideoStreamer from "@/components/session/RecordView";
 import EngagementMetrics from "@/components/session/EngagementMetrics";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import alert from "../../assets/images/svgs/alert.svg";
 import TimerComponent from "@/components/session/TimerComponent";
@@ -17,6 +16,8 @@ import { useMediaQuery } from "react-responsive";
 import MobileEngagementMetrics from "@/components/session/MobileEngagementMetrics";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import { useEffect } from "react";
+import { useEndSession } from "@/hooks/sessions";
+import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
 
 const PublicSpeaking: React.FC = () => {
     const [stop, setStop] = useState(false);
@@ -24,19 +25,25 @@ const PublicSpeaking: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
-    const navigate = useNavigate();
     const time = 5; // in minutes
     const isLargeScreen = useMediaQuery({ minWidth: 1024 }); // Tailwind's lg breakpoint
 
-    const StopStreaming = () => {
+    const stopTimer = (duration?: any) => {
+        console.log(duration);
+        setDuration(duration);
         setStop(true);
-        navigate("/dashboard/user/session-history/1");
     };
+
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
+    const [duration, setDuration] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
+    const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
+    const [videoUrl, setVideoUrl] = useState(
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Curiosity.mp4",
+    );
 
     useEffect(() => {
         if (id) {
@@ -63,8 +70,10 @@ const PublicSpeaking: React.FC = () => {
 
                 if (parsed.type === "question") {
                     setQuestionDialogOpen(true);
-                } else if (parsed.type === "realtime_feedback") {
+                } else if (parsed.type === "full_analysis_update") {
                     setFeedback(parsed);
+                } else if (parsed.type === "window_emotion_update") {
+                    setVideoUrl(parsed.emotion_s3_url);
                 }
             } catch (e) {
                 console.error("Invalid JSON from server:", e);
@@ -102,7 +111,12 @@ const PublicSpeaking: React.FC = () => {
                         <p>CC Key Point 2</p>
                     </div>
                     <div className="mb-3">
-                        <PublicSpeakingTimer minutes={time} start={startTimer} />
+                        <PublicSpeakingTimer
+                            minutes={time}
+                            start={startTimer}
+                            stop={stop}
+                            onStop={(duration) => stopTimer(duration)}
+                        />
                     </div>
                 </div>
             </section>
@@ -150,28 +164,90 @@ const PublicSpeaking: React.FC = () => {
                 </DialogContent>
             </Dialog>
 
+            {/* end session dialog  */}
+            <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
+                        <DialogTitle className="text-primary-blue text-left">End a session</DialogTitle>
+                        <DialogDescription className="text-auro-metal-saurus text-left">
+                            You are about to end a session, you will be sent to the session analysis report page and you
+                            will no longer be able to continue this session
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex gap-2 w-full">
+                        <Button
+                            className="bg-white hover:bg-white/90 border border-gray w-full text-primary-blue"
+                            onClick={() => setDialogOneOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button className="bg-jelly-bean hover:bg-jelly-bean/90 w-full" onClick={() => stopTimer()}>
+                            End
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            {/* session ended dialog  */}
+            <Dialog open={isDialogTwoOpen} onOpenChange={setDialogTwoOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
+                        <DialogTitle className="text-primary-blue text-left">Session ended</DialogTitle>
+                        {duration && parseInt(duration.split(":")[0], 10) !== time ? (
+                            <DialogDescription className="text-auro-metal-saurus text-left">
+                                Great job! You completed the session within the allocated time. Kindly proceed by
+                                clicking next to view your result.
+                            </DialogDescription>
+                        ) : (
+                            <DialogDescription className="text-auro-metal-saurus text-left">
+                                Looks like you ran out of time, kindly proceed by clicking next to view your result.
+                            </DialogDescription>
+                        )}
+                    </DialogHeader>
+                    <div className="w-full">
+                        <Button
+                            className="bg-primary-blue hover:bg-primary-blue/90 w-full"
+                            isLoading={isPending}
+                            onClick={() => endSession()}
+                        >
+                            Next
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
             <section className="flex flex-wrap md:flex-row-reverse lg:flex-row">
                 {/* left side  */}
                 <div className="w-full hidden md:block gap-4 md:w-3/12 md:px-8 lg:pe-4 py-4">
                     <VoiceAnalytics
-                        percent1={feedback ? feedback.volume : 0}
-                        percent2={feedback ? feedback.clarity : 0}
-                        percent3={feedback ? feedback.pace : 0}
+                        percent1={feedback ? feedback.analysis.Scores["Volume Score"] : 0}
+                        percent2={feedback ? feedback.analysis.Feedback.Clarity : 0}
+                        percent3={feedback ? feedback.analysis.Scores["Pace Score"] : 0}
                     />
 
                     <EngagementMetrics
-                        percent1={feedback ? feedback.impact : 0}
-                        percent2={feedback ? feedback.engagement : 0}
-                        percent3={feedback ? feedback.transformative_potential : 0}
+                        percent1={feedback ? feedback.analysis.Feedback.Impact : 0}
+                        percent2={feedback ? feedback.analysis.Feedback.Engagement : 0}
+                        percent3={feedback ? feedback.analysis.Feedback["Transformative Potential"] : 0}
                     />
                 </div>
 
                 {/* middle side  */}
                 <div className="w-full md:w-9/12 lg:w-6/12 md:px-8 lg:pe-4 py-4">
                     <div className="">
-                        <div className="rounded-xl w-full h-120 relative">
+                        <div className="rounded-xl w-full md:h-120 h-80 relative">
                             <h6 className="ps-4 md:ps-0 mb-3">Live Audience</h6>
-                            <img src={audience} alt="audience" className="w-full h-full object-cover rounded-xl" />
+                            <VideoPlayer
+                                height="h-full"
+                                width="w-full"
+                                src={videoUrl}
+                                autoPlay={true}
+                                loop={true}
+                                showPauseOverlay={false}
+                                hideControls={true}
+                            />
                             {!isLargeScreen && (
                                 <div
                                     className="py-5 lg:hidden block rounded-xl w-50 h-30 md:w-80 md:h-50 absolute bottom-0 right-3 md:right-10"
@@ -202,32 +278,6 @@ const PublicSpeaking: React.FC = () => {
                             >
                                 <SquareArrowUpRight className="me-1" /> End Session
                             </Button>
-                            <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
-                                        <DialogTitle className="text-primary-blue text-left">End a session</DialogTitle>
-                                        <DialogDescription className="text-auro-metal-saurus text-left">
-                                            You are about to End a Session, you will be sent to the Session Analysis
-                                            Report page and you will no longer be able to continue this session
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="flex gap-2 w-full">
-                                        <Button
-                                            className="bg-white hover:bg-white/90 border border-gray w-full text-primary-blue"
-                                            onClick={() => setDialogOneOpen(false)}
-                                        >
-                                            Cancel
-                                        </Button>
-                                        <Button
-                                            className="bg-jelly-bean hover:bg-jelly-bean/90 w-full"
-                                            onClick={() => StopStreaming()}
-                                        >
-                                            End
-                                        </Button>
-                                    </div>
-                                </DialogContent>
-                            </Dialog>
                         </div>
 
                         {/* tablet and mobile notes  */}
@@ -267,39 +317,22 @@ const PublicSpeaking: React.FC = () => {
                         </div>
                     </div>
                 )}
-                <Dialog open={isDialogTwoOpen} onOpenChange={setDialogTwoOpen}>
-                    <DialogContent>
-                        <DialogHeader>
-                            <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
-                            <DialogTitle className="text-primary-blue text-left">Session ended</DialogTitle>
-                            <DialogDescription className="text-auro-metal-saurus text-left">
-                                Looks like you ran out of time, kindly proceed by clicking next to view your result
-                            </DialogDescription>
-                        </DialogHeader>
-                        <div className="w-full">
-                            <Button
-                                className="bg-primary-blue hover:bg-primary-blue/90 w-full"
-                                onClick={() => StopStreaming()}
-                            >
-                                Next
-                            </Button>
-                        </div>
-                    </DialogContent>
-                </Dialog>
 
                 {/* right side mobile */}
                 <div className="px-4 md:hidden w-full mb-5 ">
                     <div className="border-1 border-bright-gray py-5 px-3 rounded-md">
                         <MobileVoiceAnalytics
-                            impact={feedback ? feedback.curiosity : 0}
-                            engagement={feedback ? feedback.engagement : 0}
-                            transformativePotential={feedback ? feedback.transformative_potential : 0}
+                            impact={feedback ? feedback.analysis.Feedback.Impact : 0}
+                            engagement={feedback ? feedback.analysis.Feedback.Engagement : 0}
+                            transformativePotential={
+                                feedback ? feedback.analysis.Feedback["Transformative Potential"] : 0
+                            }
                         />
 
                         <MobileEngagementMetrics
-                            impact={feedback ? feedback.impact : 0}
-                            volume={feedback ? feedback.volume : 0}
-                            pace={feedback ? feedback.pace : 0}
+                            impact={feedback ? feedback.analysis.Feedback.Impact : 0}
+                            volume={feedback ? feedback.analysis.Scores["Volume Score"] : 0}
+                            pace={feedback ? feedback.analysis.Scores["Pace Score"] : 0}
                         />
                     </div>
                 </div>
