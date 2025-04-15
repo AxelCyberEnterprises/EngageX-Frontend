@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import circleCheck from '../../../assets/images/svgs/circle-check.svg';
 import circleExclamation from '../../../assets/images/svgs/circle-exclamation.svg';
-import menuWhite from '../../../assets/images/svgs/menu-white.svg';
+// import menuWhite from '../../../assets/images/svgs/menu-white.svg';
 import trophy from '../../../assets/images/svgs/trophy.svg';
 import starAward from '../../../assets/images/svgs/star-award.svg';
 import diamond from '../../../assets/images/pngs/diamond.png';
@@ -59,7 +59,7 @@ const ProgressTracking: React.FC = () => {
     {
       title: 'Vocal Variety',
       wordRate: '85% pitch score',
-      percentage: 60
+      percentage: 20
     },
     {
       title: 'Overall ⁠Captured Impact',
@@ -103,7 +103,7 @@ const ProgressTracking: React.FC = () => {
       id: 1,
       title: "Vocal Variety Mastery",
       level: 1,
-      score: 3,
+      score: 2,
       total: 10,
       note: "Pitch, tone, pace, and pauses."
     },
@@ -164,13 +164,13 @@ const ProgressTracking: React.FC = () => {
       note: "Avoid filler words and use good grammar."
     }
   ];
-  
+
 
   const streakStats = [
     {
       icon: diamond,
       number: "15",
-      text: "Day Streak"
+      text: "Day Growth"
     },
     // {
     //   icon: ruby,
@@ -433,10 +433,10 @@ const ProgressTracking: React.FC = () => {
         {activeIndex === 0 && <div>
           <section className='flex justify-between md:items-start items-center gap-5 mb-6 sm:mt-0 mt-4'>
             <div>
-              <h3 className="text-xl font-medium">Gold Standards for EngageX™ </h3>
+              <h3 className="text-xl font-medium">Gold Standard for EngageX™ </h3>
               <p className="text-sm text-[#6F7C8E]">Here’s a quick overview of your active goals </p>
             </div>
-            <Button
+            {/* <Button
               type="button"
               onClick={() => { }}
               className="w-auto text-white px-6 bg-[#252A39]"
@@ -447,7 +447,7 @@ const ProgressTracking: React.FC = () => {
                 className="w-5 h-5 sm:text-base text-sm"
               />
               View all goals
-            </Button>
+            </Button> */}
           </section>
           <section className='grid lg:grid-cols-3 grid-cols-1 md:gap-6 gap-4'>
             {cardData.map((item, index) => (
@@ -465,6 +465,20 @@ const ProgressTracking: React.FC = () => {
                 <p className='text-[#252A39D9] mt-3'>{item.percentage}% complete</p>
               </Card>
             ))}
+            <Card className='gap-0 px-4 py-4 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914] flex flex-col justify-between'>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-lg text-base text-[#C1C2B4]'>Level 1</h4>
+                <h4 className='lg:text-lg text-base text-[#C1C2B4]'>0 - 3</h4>
+              </div>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-lg text-base text-[#ECB25E]'>Level 2</h4>
+                <h4 className='lg:text-lg text-base text-[#ECB25E]'>4 - 7</h4>
+              </div>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-lg text-base text-[#64BA9F]'>Level 3</h4>
+                <h4 className='lg:text-lg text-base text-[#64BA9F]'>8 - 10</h4>
+              </div>
+            </Card>
           </section>
           <section className='grid lg:grid-cols-[2fr_3fr] grid-cols-1 lg:gap-4 md:gap-10 gap-6 lg:mt-6 md:mt-10 mt-6 mb-12'>
             <div className='gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]'>
@@ -502,7 +516,7 @@ const ProgressTracking: React.FC = () => {
             </div>
             <div className='border border-[#E0E0E0] rounded-[12px] p-5 h-fit'>
               <h4 className='text-[#252A39] lg:text-lg text-base'>Daily Progress Tracker</h4>
-              <p className='text-[#6F7C8E] text-sm'>Display streaks of  goal progress</p>
+              <p className='text-[#6F7C8E] text-sm'>Display daily progress tracker</p>
               <div className='grid grid-cols-1 md:gap-x-6'>
                 {streakStats.map((item) => (
                   <div className='border border-[#E0E0E0] p-3 flex gap-3 rounded-[12px] mt-4 mb-2'>
