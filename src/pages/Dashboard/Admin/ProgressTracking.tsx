@@ -59,7 +59,7 @@ const ProgressTracking: React.FC = () => {
     {
       title: 'Vocal Variety',
       wordRate: '85% pitch score',
-      percentage: 60
+      percentage: 20
     },
     {
       title: 'Overall ⁠Captured Impact',
@@ -103,7 +103,7 @@ const ProgressTracking: React.FC = () => {
       id: 1,
       title: "Vocal Variety Mastery",
       level: 1,
-      score: 3,
+      score: 2,
       total: 10,
       note: "Pitch, tone, pace, and pauses."
     },
@@ -164,7 +164,7 @@ const ProgressTracking: React.FC = () => {
       note: "Avoid filler words and use good grammar."
     }
   ];
-  
+
 
   const streakStats = [
     {
@@ -436,7 +436,7 @@ const ProgressTracking: React.FC = () => {
               <h3 className="text-xl font-medium">Gold Standard for EngageX™ </h3>
               <p className="text-sm text-[#6F7C8E]">Here’s a quick overview of your active goals </p>
             </div>
-            <Button
+            {/* <Button
               type="button"
               onClick={() => { }}
               className="w-auto text-white px-6 bg-[#252A39]"
@@ -447,7 +447,7 @@ const ProgressTracking: React.FC = () => {
                 className="w-5 h-5 sm:text-base text-sm"
               />
               View all goals
-            </Button>
+            </Button> */}
           </section>
           <section className='grid lg:grid-cols-3 grid-cols-1 md:gap-6 gap-4'>
             {cardData.map((item, index) => (
@@ -465,6 +465,20 @@ const ProgressTracking: React.FC = () => {
                 <p className='text-[#252A39D9] mt-3'>{item.percentage}% complete</p>
               </Card>
             ))}
+            <Card className='gap-0 px-4 py-4 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914] flex flex-col justify-between'>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-lg text-base text-[#C1C2B4]'>Level 1</h4>
+                <h4 className='lg:text-lg text-base text-[#C1C2B4]'>0 - 3</h4>
+              </div>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-lg text-base text-[#ECB25E]'>Level 2</h4>
+                <h4 className='lg:text-lg text-base text-[#ECB25E]'>4 - 7</h4>
+              </div>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-lg text-base text-[#64BA9F]'>Level 3</h4>
+                <h4 className='lg:text-lg text-base text-[#64BA9F]'>8 - 10</h4>
+              </div>
+            </Card>
           </section>
           <section className='grid lg:grid-cols-[2fr_3fr] grid-cols-1 lg:gap-4 md:gap-10 gap-6 lg:mt-6 md:mt-10 mt-6 mb-12'>
             <div className='gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]'>
