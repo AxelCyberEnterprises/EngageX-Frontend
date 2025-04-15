@@ -220,7 +220,7 @@ const PublicSpeaking: React.FC = () => {
 
             <section className="flex flex-wrap md:flex-row-reverse lg:flex-row">
                 {/* left side  */}
-                <div className="w-full hidden md:block gap-4 md:w-3/12 md:px-8 lg:pe-4 py-4">
+                <div className="w-full hidden md:block gap-4 md:w-3/12 lg:w-2/11 md:px-8 lg:pe-0 py-4">
                     <VoiceAnalytics
                         percent1={feedback ? feedback.analysis.Scores["Volume Score"] : 0}
                         percent2={feedback ? feedback.analysis.Feedback.Clarity : 0}
@@ -235,7 +235,7 @@ const PublicSpeaking: React.FC = () => {
                 </div>
 
                 {/* middle side  */}
-                <div className="w-full md:w-9/12 lg:w-6/12 md:px-8 lg:pe-4 py-4">
+                <div className="w-full md:w-9/12 lg:w-6/11 md:px-8 lg:pe-4 py-4">
                     <div className="">
                         <div className="rounded-xl w-full md:h-120 h-80 relative">
                             <h6 className="ps-4 md:ps-0 mb-3">Live Audience</h6>
@@ -290,7 +290,7 @@ const PublicSpeaking: React.FC = () => {
 
                 {/* right side large screens  */}
                 {isLargeScreen && (
-                    <div className="right__side w-full hidden lg:block md:w-3/12 lg:w-3/12 px-8 lg:ps-4 py-4">
+                    <div className="right__side w-full hidden lg:block md:w-3/12 lg:w-3/11 px-8 lg:ps-4 py-4">
                         <div
                             className="py-5 hidden lg:block rounded-xl w-full h-50 relative"
                             style={{
@@ -299,7 +299,7 @@ const PublicSpeaking: React.FC = () => {
                                 backgroundPosition: "center",
                             }}
                         >
-                            <div className="w-32 h-18 absolute top-3 left-25.5">
+                            <div className="w-32 h-18 absolute top-3 left-25.5 lg:w-34 lg:h-20 lg:top-1 lg:left-29.5">
                                 <VideoStreamer
                                     duration={time}
                                     stop={stop}
