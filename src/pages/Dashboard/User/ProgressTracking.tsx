@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import circleCheck from '../../../assets/images/svgs/circle-check.svg';
 import circleExclamation from '../../../assets/images/svgs/circle-exclamation.svg';
-import menuWhite from '../../../assets/images/svgs/menu-white.svg';
+// import menuWhite from '../../../assets/images/svgs/menu-white.svg';
 import trophy from '../../../assets/images/svgs/trophy.svg';
 import starAward from '../../../assets/images/svgs/star-award.svg';
 import diamond from '../../../assets/images/pngs/diamond.png';
