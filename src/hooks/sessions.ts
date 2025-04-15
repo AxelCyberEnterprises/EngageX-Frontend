@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { apiPatch, apiPost } from "@/lib/api";
+import { apiPost } from "@/lib/api";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 
@@ -9,9 +9,7 @@ export function useEndSession(sessionId: string | undefined, duration: any) {
     return useMutation({
         mutationKey: ["endSession"],
         mutationFn: async () => {
-            await apiPatch("/sessions/sessions/", { duration: duration });
-
-            await apiPost(`/sessions/sessions-report/${sessionId}`, { session_id: sessionId });
+            await apiPost(`/sessions/sessions-report/${sessionId}/`, { duration: duration });
         },
         onSuccess: () => {
             console.log("Session ended and posted successfully.");
@@ -19,6 +17,7 @@ export function useEndSession(sessionId: string | undefined, duration: any) {
         },
         onError: (error) => {
             console.error("End session failed:", error);
+            navigate(`/dashboard/user/session-history/${sessionId}`);
         },
     });
 }
