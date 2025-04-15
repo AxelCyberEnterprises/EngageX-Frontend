@@ -45,12 +45,10 @@ const AccountSecurity: React.FC = () => {
   });
   const [isEditMode, setIsEditMode] = useState(false);
   const onSubmit = (data: FormValues) => {
-    console.log(data);
     const formattedData = {
       current_password: data.currentPassword,
-      new_password: data.newPassword,
-      re_password: data.newPassword,
       password: data.newPassword,
+      confirm_password: data.newPassword
     }
     mutate(formattedData);
   };
@@ -60,6 +58,7 @@ const AccountSecurity: React.FC = () => {
       toast.error('Error updating password!')
     } else if (isSuccess) {
       toast.info('Password updated successfully')
+      form.reset();
     }
   }, [isError, isPending, isSuccess])
 
