@@ -201,6 +201,11 @@ const PitchSessionReport: React.FC = () => {
                         <div className="border-1 border-bright-gray rounded-xl p-4">
                             <h6 className="mb-3">Audience Engagement</h6>
                             <ShadLinearLineChart data={chartData} colors={chartColors} />
+                            <p className="mt-2">
+                                <span className="text-medium-sea-green">Trigger Response</span> is the audience’s
+                                engagement, where a trigger evokes the audience to respond in some shape or form as a
+                                reaction to the information they’ve heard.
+                            </p>
                         </div>
                     </div>
 
