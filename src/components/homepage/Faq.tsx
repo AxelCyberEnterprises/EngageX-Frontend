@@ -55,11 +55,11 @@ function Faq() {
 
         <div className="lg:w-[70%] text-wrap space-y-4">
           <h4 className="h-max font-montreal leading-snug">
-            Got questions? We've got answers.
+            Got questions? We've got answers
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             Track progress, receive actionable feedback, and captivate your
-            audience like never before.
+            audience like never before
           </p>
         </div>
       </div>

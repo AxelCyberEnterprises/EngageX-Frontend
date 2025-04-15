@@ -15,7 +15,7 @@ function PrivacyPolicy() {
               Welcome to EngageX™. Your privacy is important to us. This Privacy
               Policy explains how we collect, use, and protect your personal
               information when you use our AI-powered public speaking and
-              presentation training platform.
+              presentation training platform
             </p>
           </div>
           <div className="space-y-6">
@@ -24,17 +24,17 @@ function PrivacyPolicy() {
               <p>When using EngageX™, we may collect:</p>
               <p className="mt-5 font-medium">Personal Information:</p>
               <p className="big mt-1">
-                Name, email address, and account details.
+                Name, email address, and account details
               </p>
               <p className="big font-medium mt-2">Session Data:</p>{" "}
               <p className="big mt-1">
                 Audio analysis for AI-driven feedback (not stored beyond 24
-                hours).
+                hours)
               </p>
               <p className="big font-medium mt-2">Usage Information: </p>
               <p className="big mt-1">
                 Browser type, device information, and interaction data for
-                improving user experience.
+                improving user experience
               </p>
             </p>
           </div>
@@ -45,19 +45,19 @@ function PrivacyPolicy() {
             <div className="big">
               <p className="big">EngageX™ processes collected data to:</p>
               <p className="mt-5 big">
-                Provide AI-generated feedback on speech performance.
+                Provide AI-generated feedback on speech performance
               </p>
               <p className="flex big items-center gap-x-3 pl-4 mt-3">
                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                Improve platform accuracy and user experience.
+                Improve platform accuracy and user experience
               </p>{" "}
               <p className="flex big items-center gap-x-3 pl-4">
                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                Enable users to download session recordings for personal review.
+                Enable users to download session recordings for personal review
               </p>
               <p className="flex big items-center gap-x-3 pl-4">
                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                Ensure compliance with security and legal obligations.
+                Ensure compliance with security and legal obligations
               </p>
             </div>
           </div>
@@ -69,16 +69,16 @@ function PrivacyPolicy() {
               <p className="big">EngageX™ processes collected data to:</p>
               <p className="flex big items-center gap-x-3 pl-4 mt-3">
                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                EngageX™ does not permanently store your session recordings.
+                EngageX™ does not permanently store your session recordings
               </p>
               <p className="flex big items-center gap-x-3 pl-4">
                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
                 All session recordings are deleted after 24 hours unless
-                downloaded.
+                downloaded
               </p>
               <p className="flex big items-center gap-x-3 pl-4">
                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
-                We use encryption and security measures to protect your data.
+                We use encryption and security measures to protect your data
               </p>
             </div>
           </div>
@@ -94,7 +94,7 @@ function PrivacyPolicy() {
               <p className="flex big items-center gap-x-3 pl-4 mt-3">
                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
                 When legally required (e.g., government or law enforcement
-                requests).
+                requests)
               </p>
               <p className="flex big items-center gap-x-3 pl-4">
                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
@@ -105,15 +105,15 @@ function PrivacyPolicy() {
           <div className="space-y-6">
             <h4 className="text-black font-montreal">Your Rights & Control</h4>
             <div className="big">
-              <p className="font-medium">Access & Deletion:</p>
-              <p>
+              <p className="font-medium big">Access & Deletion:</p>
+              <p className="big">
                 You can request access to your stored personal data or its
-                deletion.
+                deletion
               </p>
-              <p className="font-medium mt-2">Session Recordings:</p>
-              <p>
+              <p className="font-medium mt-2 big">Session Recordings:</p>
+              <p className="big">
                 Once downloaded, EngageX™ is not responsible for security
-                breaches or misuse.
+                breaches or misuse
               </p>
             </div>
           </div>
@@ -123,7 +123,7 @@ function PrivacyPolicy() {
             </h4>
             <p className="big">
               We may update this Privacy Policy from time to time. Continued use
-              of EngageX™ signifies acceptance of any revisions.
+              of EngageX™ signifies acceptance of any revisions
             </p>
           </div>
           <div className="space-y-6">

@@ -35,7 +35,7 @@ function Hero() {
           AI-powered environment tailored for leaders, presenters, and
           entrepreneurs to refine their communication, captivate audiences, and
           elevate their influence and get the bonus of real-time guidance from
-          an expert coach
+          an expert coach.
         </p>
         <Link to="/dashboard/user/">
           <button className="flex gap-4 mt-10 mx-auto lg:mx-0 w-full lg:w-max py-3 px-8 items-center justify-center rounded-lg">
@@ -71,11 +71,11 @@ function Hero() {
             />
           </div>
         </div>
-        <div className="w-full flex relative h-[17rem] lg:h-min  justify-center">
+        <div className="w-full flex relative h-[17rem] lg:h-min justify-center">
           {/* <HeroSVG /> */}
           <img
             src="./assets/homepathimg.png"
-            className="absolute w-[40rem] bottom-[6.1rem] lg:bottom-14 mr-20"
+            className="absolute w-[40rem] bottom-[9.7rem] lg:bottom-[9.5rem] mr-16"
             alt=""
           />
         </div>

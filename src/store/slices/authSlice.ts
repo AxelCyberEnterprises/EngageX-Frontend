@@ -78,7 +78,7 @@ const initialState: AuthState = {
     ],
     topicQuestion: "What do you plan on doing?",
 
-    signupFlow: "authQuestions",
+    signupFlow: "signup",
     routeFromLogin: false,
     signupData: null, // Stores signup details
     user: storedUser ? JSON.parse(storedUser) as AuthUser : null,

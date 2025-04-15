@@ -40,7 +40,7 @@ function HowItWorks() {
               <h6 className="font-montreal">Sign up</h6>
               <p className="small text-dark-electric-blue">
                 Create your personal profile and select your speaking focus,
-                i.e. pitch, presentation, or public speaking + storytelling.
+                i.e. pitch, presentation, or public speaking + storytelling
               </p>
             </div>
           </div>
@@ -56,7 +56,7 @@ function HowItWorks() {
               <p className="small text-dark-electric-blue">
                 If your speaking engagement involves a presentation deck, feel
                 free to upload your slides and acknowledge the confidentiality
-                agreement/NDA.
+                agreement/NDA
               </p>
             </div>
           </div>
@@ -73,7 +73,7 @@ function HowItWorks() {
               </h6>
               <p className="small text-dark-electric-blue">
                 Begin your engagement with dynamic audience simulations and
-                AI-powered audience feedback.
+                AI-powered audience feedback
               </p>
             </div>
           </div>
@@ -88,7 +88,7 @@ function HowItWorks() {
               <h6 className="font-montreal">Review & improve</h6>
               <p className="small text-dark-electric-blue">
                 Analyze detailed video feedback and download key moments to
-                rewatch and refine your skills.
+                rewatch and refine your skills
               </p>
             </div>
           </div>

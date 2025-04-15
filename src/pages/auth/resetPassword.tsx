@@ -45,17 +45,18 @@ const ResetPassword: React.FC = () => {
             email: emailForPasswordReset,
             otp: values.otp,
             new_password: values.password,
+            confirm_new_password: values.confirmPassword,
         });
     };
 
-    useEffect(() => {
-        if (error) {
-            form.setError("otp", {
-                type: "manual",
-                message: error.message || "Failed to reset password. Try again.",
-            });
-        }
-    }, [error]);
+    // useEffect(() => {
+    //     if (error) {
+    //         form.setError("otp", {
+    //             type: "manual",
+    //             message: error.message || "Failed to reset password. Try again.",
+    //         });
+    //     }
+    // }, [error]);
 
     useAutoClearSuccessMessage();
      const location = useLocation()
@@ -157,6 +158,7 @@ const ResetPassword: React.FC = () => {
                     </Button>
                 </form>
             </Form>
+            {error && (error.message)}
         </div>
     );
 };

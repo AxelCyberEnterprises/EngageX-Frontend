@@ -38,7 +38,7 @@ function Pricing({ subtext }: { subtext?: string }) {
       contents: [
         "Fantastic for professionals looking to make measurable progress over time",
         "Covers all four core areas: pitch, presentation, public speaking, and storytelling",
-        "Great for preparing for keynote speaking engagements, pitch presentations, panels, conferences, or investor meetings.",
+        "Great for preparing for keynote speaking engagements, pitch presentations, panels, conferences, or investor meetings",
         // "Great for preparing for key events such as panels, conferences, or investor meetings",
         "Offers a structured path with feedback and strategies to elevate your overall communication impact",
       ],
@@ -90,7 +90,7 @@ function Pricing({ subtext }: { subtext?: string }) {
           <p className="text-dark-electric-blue leading-normal">
             {subtext
               ? subtext
-              : "A high-level overview highlighting the flexibility of pricing plans to cater to different professional speaking needs."}
+              : "A high-level overview highlighting the flexibility of pricing plans to cater to different professional speaking needs"}
           </p>
         </div>
       </div>
@@ -107,8 +107,7 @@ function Pricing({ subtext }: { subtext?: string }) {
             <h4 className="font-montreal">Enterprise & Team Plans</h4>
             <p className="mt-4 font-montserrat">
               For organizations with more than 10 individuals, we offer a
-              customized enterprise plan designed for seamless multi-user
-              access.
+              customized enterprise plan designed for seamless multi-user access
             </p>
             <a
               href="https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching?month=2025-04"
