@@ -73,22 +73,22 @@ const SafetyPrivacy: React.FC = () => {
                   practice, and AI-generated feedback. You agree to:
                 </p>
                 <ul className="leading-8 list-disc">
-                  <li> Use the platform only for its intended purpose.</li>
-                  <li> Respect the integrity of AI-generated evaluations.</li>
+                  <li> Use the platform only for its intended purpose</li>
+                  <li> Respect the integrity of AI-generated evaluations</li>
                   <li>
                     {" "}
                     Maintain professionalism and avoid offensive or unlawful
-                    content.
+                    content
                   </li>
                   <li>
                     {" "}
                     Refrain from attempting to reverse-engineer, manipulate, or
-                    misuse AI-generated insights.
+                    misuse AI-generated insights
                   </li>
                 </ul>
                 <p className="my-2">
                   We reserve the right to suspend or terminate accounts that
-                  violate these policies.
+                  violate these policies
                 </p>
               </li>
 
@@ -97,57 +97,57 @@ const SafetyPrivacy: React.FC = () => {
 
                 <p className="my-2">
                   EngageX™ utilizes AI-powered systems to analyze your speech
-                  and provide feedback.
+                  and provide feedback
                 </p>
                 <ul className="leading-8 list-disc">
                   <li>
                     {" "}
                     AI-generated feedback is advisory only and does not
-                    constitute professional coaching.
+                    constitute professional coaching
                   </li>
                   <li>
                     {" "}
                     AI does not store your session content for learning
-                    purposes—only for generating feedback.
+                    purposes—only for generating feedback
                   </li>
                   <li>
                     {" "}
                     While we analyze vocal patterns to improve evaluations, this
                     is strictly for enhancing session accuracy and not for
-                    long-term AI model training.
+                    long-term AI model training
                   </li>
                 </ul>
 
                 <p className="my-2">
                   EngageX™ is not responsible for any decisions made based on AI
-                  feedback.
+                  feedback
                 </p>
               </li>
 
               <li className="my-12">
                 <span className="mb-2">Confidentiality of Personal Data</span>
 
-                <p className="my-2">Your privacy is our priority.</p>
+                <p className="my-2">Your privacy is our priority</p>
 
                 <ul className="leading-8 list-disc">
                   <li>
                     EngageX™ does not share personal information, session
                     recordings, or analytics with third parties, except where
-                    required by law.
+                    required by law
                   </li>
                   <li>
                     Data collected is used only to generate your session
-                    feedback and is not stored for AI training.
+                    feedback and is not stored for AI training
                   </li>
                   <li>
                     After 24 hours, all session recordings are automatically
-                    deleted from our systems.
+                    deleted from our systems
                   </li>
                 </ul>
 
                 <p className="my-2">
                   Once a session recording is downloaded by you, EngageX™ is not
-                  liable for its confidentiality, security, or misuse.
+                  liable for its confidentiality, security, or misuse
                 </p>
               </li>
 
@@ -163,20 +163,20 @@ const SafetyPrivacy: React.FC = () => {
                 <ul className="leading-8 list-disc">
                   <li>
                     Coaching & Evaluation: Your session recordings may be shared
-                    with a coach of your choosing for feedback.
+                    with a coach of your choosing for feedback
                   </li>
                   <li>
                     Limited Storage: EngageX™ stores session recordings for 24
-                    hours only before permanent deletion.
+                    hours only before permanent deletion
                   </li>
                   <li>
                     User Responsibility: Once downloaded, EngageX™ is not
-                    responsible for data security, loss, or compromise.
+                    responsible for data security, loss, or compromise
                   </li>
                 </ul>
                 <p className="my-2">
                   You accept full responsibility for the storage and usage of
-                  downloaded session recordings.
+                  downloaded session recordings
                 </p>
               </li>
 
@@ -184,20 +184,18 @@ const SafetyPrivacy: React.FC = () => {
                 <span className="mb-2">Legal & Liability Protection</span>
 
                 <p className="my-2">
-                  EngageX™ is provided "as is" without warranties of any kind.
+                  EngageX™ is provided "as is" without warranties of any kind
                 </p>
                 <p className="my-2">EngageX™ is not liable for any:</p>
                 <ul className="leading-8 ml-2 list-disc">
-                  <li>Misinterpretation of AI feedback.</li>
-                  <li>Data loss due to expired session storage.</li>
-                  <li>Third-party misuse of downloaded content.</li>
-                  <li>
-                    Performance outcomes based on our platform’s analysis.
-                  </li>
+                  <li>Misinterpretation of AI feedback</li>
+                  <li>Data loss due to expired session storage</li>
+                  <li>Third-party misuse of downloaded content</li>
+                  <li>Performance outcomes based on our platform's analysis</li>
                 </ul>
                 <p className="my-2">
                   By using EngageX™, you waive the right to frivolous lawsuits
-                  or claims seeking damages beyond platform usage fees.
+                  or claims seeking damages beyond platform usage fees
                 </p>
               </li>
             </ol>

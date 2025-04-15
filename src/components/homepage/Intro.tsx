@@ -116,7 +116,7 @@ function Intro() {
               <h6 className="font-montreal">Interactive audience simulation</h6>
               <p className="">
                 Get AI-generated audience feedback using realistic audience
-                simulations.
+                simulations
               </p>
             </div>
           </div>

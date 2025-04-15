@@ -10,7 +10,7 @@ function Hero() {
           </h1>
           <p className="text-[#475467]">
             Fill out the form and our friendly team would get back to you
-            shortly.
+            shortly
           </p>
         </div>
 
@@ -249,7 +249,6 @@ function Hero() {
             <span className="underline">
               <Link to="/privacy-policy">privacy policy</Link>
             </span>
-            .
           </label>
         </div>
 

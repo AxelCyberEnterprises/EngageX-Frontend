@@ -60,7 +60,7 @@ function FAQs() {
             For further questions,{" "}
             <Link to="/contact">
               <span className="underline underline-offset-4 text-gunmetal">
-                reach out to us.
+                reach out to us
               </span>
             </Link>
           </p>

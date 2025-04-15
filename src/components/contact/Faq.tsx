@@ -63,7 +63,7 @@ function Faq() {
           </h4>
           <p className="text-dark-electric-blue leading-normal">
             Track progress, receive actionable feedback, and
-            <br /> captivate your audience like never before.
+            <br /> captivate your audience like never before
           </p>
         </div>
       </div>

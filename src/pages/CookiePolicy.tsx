@@ -15,7 +15,7 @@ function CookiePolicy() {
               EngageX™ ("we," "us," or "our") is committed to protecting your
               privacy and ensuring transparency regarding how we use cookies and
               similar technologies. This Cookie Policy explains what cookies
-              are, how we use them, and your choices regarding their use.
+              are, how we use them, and your choices regarding their use
             </p>
           </div>
           <div className="space-y-6">
@@ -24,7 +24,7 @@ function CookiePolicy() {
               Cookies are small text files stored on your device when you visit
               a website. They help us enhance your user experience by
               remembering preferences, analyzing website traffic, and enabling
-              platform functionalities.
+              platform functionalities
             </p>
           </div>
           <div className="space-y-6">
@@ -36,20 +36,19 @@ function CookiePolicy() {
               <p className="big">
                 Essential Cookies: These are necessary for the platform to
                 function properly, including user authentication, security, and
-                accessibility.
+                accessibility
               </p>
               <p className="big">
                 Analytical Cookies: We use these to track user behavior, measure
-                platform performance, and improve our services.
+                platform performance, and improve our services
               </p>
               <p className="big">
                 Functional Cookies: These enable personalized settings such as
-                language preferences and saved presentations.
+                language preferences and saved presentations
               </p>
               <p className="big">
                 Advertising Cookies: We may use third-party cookies to deliver
-                relevant advertisements based on your interactions with
-                EngageX™.
+                relevant advertisements based on your interactions with EngageX™
               </p>
             </p>
           </div>
@@ -59,7 +58,7 @@ function CookiePolicy() {
               We may allow third-party services (e.g., analytics providers,
               advertising networks) to place cookies on your device to help us
               improve our services and marketing strategies. These third parties
-              have their own privacy policies governing their use of cookies.
+              have their own privacy policies governing their use of cookies
             </p>
           </div>
           <div className="space-y-6">
@@ -74,7 +73,7 @@ function CookiePolicy() {
               <p className="big">Set preferences for certain websites</p>
               <p className="big">
                 Please note that disabling certain cookies may affect the
-                functionality of EngageX™.
+                functionality of EngageX™
               </p>
             </div>
           </div>
@@ -86,7 +85,7 @@ function CookiePolicy() {
             <p className="big">
               We may update this Cookie Policy from time to time to reflect
               changes in our practices or applicable regulations. Please review
-              this policy periodically.
+              this policy periodically
             </p>
           </div>
           <div className="space-y-6">
