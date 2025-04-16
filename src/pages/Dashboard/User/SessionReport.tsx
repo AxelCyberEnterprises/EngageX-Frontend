@@ -1,14 +1,14 @@
-import { ArrowLeft, Download, UserRound } from "lucide-react";
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import ShadLinearLineChart from "@/components/dashboard/ShadLinearLineChart";
-import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
 import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
+import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
+import ShadLinearLineChart from "@/components/dashboard/ShadLinearLineChart";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ArrowLeft, Download, UserRound } from "lucide-react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import avatar from "../../../assets/images/pngs/avater.png";
+import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
@@ -363,10 +363,13 @@ const PitchSessionReport: React.FC = () => {
                 </div>
 
                 <div className="w-full flex flex-wrap gap-3 justify-end mt-8">
-                    <Button className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray">
+                    <Button
+                        className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray"
+                        onClick={() => navigate(-1)}
+                    >
                         View session history
                     </Button>
-                    <Button className="flex gap-1 py-5 bg-primary-blue hover:bg-primary-blue/90">
+                    <Button className="flex gap-1 py-5 bg-primary-blue hover:bg-primary-blue/90" onClick={() => navigate("../public-speaking")}>
                         Start new session
                     </Button>
                 </div>

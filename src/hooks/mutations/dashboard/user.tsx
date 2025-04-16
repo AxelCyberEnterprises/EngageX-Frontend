@@ -5,7 +5,7 @@ import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { IPOSTSessionPayload } from "./types";
+import { IPOSTSessionPayload } from "../../types";
 
 export function useCreatePublicSpeakingSession() {
     const navigate = useNavigate();
