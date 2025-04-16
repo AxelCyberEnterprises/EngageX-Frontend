@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -44,6 +45,26 @@ const PublicSpeaking: React.FC = () => {
     const [videoUrl, setVideoUrl] = useState(
         "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Curiosity.mp4",
     );
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [elapsed, setElapsed] = useState(0);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+
+        if (startTimer) {
+            interval = setInterval(() => {
+                setElapsed((prev) => prev + 1);
+            }, 1000);
+        }
+
+        return () => clearInterval(interval);
+    }, [startTimer]);
+
+    useEffect(() => {
+        if (elapsed >= 30 && !isExpanded) {
+            setIsExpanded(true);
+        }
+    }, [elapsed]);
 
     useEffect(() => {
         if (id) {
@@ -235,7 +256,7 @@ const PublicSpeaking: React.FC = () => {
                 </div>
 
                 {/* middle side  */}
-                <div className="w-full md:w-9/12 lg:w-6/11 md:px-8 lg:pe-4 py-4">
+                <div className="w-full md:w-9/12 lg:w-7/11 lg:flex-1 md:px-8 lg:pe-4 py-4">
                     <div className="">
                         <div className="rounded-xl w-full md:h-120 h-80 relative">
                             <h6 className="ps-4 md:ps-0 mb-3">Live Audience</h6>
@@ -247,6 +268,9 @@ const PublicSpeaking: React.FC = () => {
                                 loop={true}
                                 showPauseOverlay={false}
                                 hideControls={true}
+                                border="rounded-2xl"
+                                pauseOnClick={false}
+                                preload={true}
                             />
                             {!isLargeScreen && (
                                 <div
@@ -257,7 +281,13 @@ const PublicSpeaking: React.FC = () => {
                                         backgroundPosition: "center",
                                     }}
                                 >
-                                    <div className="w-20 h-12 md:w-32 md:h-18 absolute top-1 left-17.5 md:top-3 md:left-27.5">
+                                    <div
+                                        className={`absolute transition-all duration-500 ${
+                                            isExpanded
+                                                ? "top-0 left-0 w-full h-full"
+                                                : "w-20 h-12 md:w-32 md:h-18 absolute top-1 left-17.5 md:top-3 md:left-27.5"
+                                        }`}
+                                    >
                                         <VideoStreamer
                                             duration={time}
                                             stop={stop}
@@ -265,6 +295,7 @@ const PublicSpeaking: React.FC = () => {
                                             onStart={() => setStartTimer(true)}
                                             ws={socket.current}
                                             isWsReady={isSocketConnected}
+                                            border={isExpanded ? "rounded-2xl" : ""}
                                         />
                                     </div>
                                 </div>
@@ -290,16 +321,22 @@ const PublicSpeaking: React.FC = () => {
 
                 {/* right side large screens  */}
                 {isLargeScreen && (
-                    <div className="right__side w-full hidden lg:block md:w-3/12 lg:w-3/11 px-8 lg:ps-4 py-4">
+                    <div className="right__side w-full hidden lg:block md:w-3/12 lg:w-75 px-8 lg:ps-4 py-4">
                         <div
-                            className="py-5 hidden lg:block rounded-xl w-full h-50 relative"
+                            className="py-5 hidden lg:block rounded-xl w-full h-40 relative"
                             style={{
                                 backgroundImage: `url(${xpImg})`,
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
                             }}
                         >
-                            <div className="w-32 h-18 absolute top-3 left-25.5 lg:w-34 lg:h-20 lg:top-1 lg:left-29.5">
+                            <div
+                                className={`absolute transition-all duration-500 ${
+                                    isExpanded
+                                        ? "top-0 left-0 w-full h-full"
+                                        : "w-32 h-18 top-3 left-[6.375rem] lg:w-28 lg:h-15 lg:top-2 lg:left-[5.125rem]"
+                                }`}
+                            >
                                 <VideoStreamer
                                     duration={time}
                                     stop={stop}
@@ -307,6 +344,7 @@ const PublicSpeaking: React.FC = () => {
                                     onStart={() => setStartTimer(true)}
                                     ws={socket.current}
                                     isWsReady={isSocketConnected}
+                                    border={isExpanded ? "rounded-2xl" : ""}
                                 />
                             </div>
                         </div>

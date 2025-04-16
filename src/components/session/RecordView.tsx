@@ -8,9 +8,10 @@ interface VideoStreamerProps {
     onStop: () => void;
     ws: WebSocket | null;
     isWsReady: boolean;
+    border?: string;
 }
 
-const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop, ws, isWsReady }) => {
+const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop, ws, isWsReady, border }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isRecording, setIsRecording] = useState(false);
     const streamRef = useRef<MediaStream | null>(null);
@@ -128,7 +129,7 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
         onStop();
     };
 
-    return <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />;
+    return <video ref={videoRef} className={`w-full h-full object-cover ${border}`} autoPlay playsInline muted />;
 };
 
 export default VideoStreamer;
