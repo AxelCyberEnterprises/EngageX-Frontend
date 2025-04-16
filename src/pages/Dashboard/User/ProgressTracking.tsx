@@ -465,23 +465,44 @@ const ProgressTracking: React.FC = () => {
                 <p className='text-[#252A39D9] mt-3'>{item.percentage}% complete</p>
               </Card>
             ))}
-            <Card className='gap-0 px-4 py-4 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914] flex flex-col justify-between'>
+            <div className='gap-0 px-4 py-4 rounded-[12px] flex bg-sidebar flex-col justify-between'>
               <div className='flex justify-between items-center mb-4'>
                 <h4 className='lg:text-xl text-base text-[#C1C2B4]'>Level 1</h4>
-                <hr className='w-[50%] border-t-2 text-[#C1C2B4]'/>
+                <div className='w-[50%]'>
+                  <SegmentedProgressBar
+                    percent={30}
+                    color='#C1C2B4'
+                    divisions={10}
+                    height='0.375rem'
+                  />
+                </div>
                 <h4 className='lg:text-xl text-base text-[#C1C2B4]'>0 - 3</h4>
               </div>
               <div className='flex justify-between items-center mb-4'>
                 <h4 className='lg:text-xl text-base text-[#ECB25E]'>Level 2</h4>
-                <hr className='w-[50%] border-t-2 text-[#ECB25E]'/>
+                <div className='w-[50%]'>
+                  <SegmentedProgressBar
+                    percent={50}
+                    color='#ECB25E'
+                    divisions={10}
+                    height='0.375rem'
+                  />
+                </div>
                 <h4 className='lg:text-xl text-base text-[#ECB25E]'>4 - 7</h4>
               </div>
               <div className='flex justify-between items-center mb-4'>
                 <h4 className='lg:text-xl text-base text-[#64BA9F]'>Level 3</h4>
-                <hr className='w-[50%] border-t-2 text-[#64BA9F]'/>
+                <div className='w-[50%]'>
+                  <SegmentedProgressBar
+                    percent={100}
+                    color='#64BA9F'
+                    divisions={10}
+                    height='0.375rem'
+                  />
+                </div>
                 <h4 className='lg:text-xl text-base text-[#64BA9F]'>8 - 10</h4>
               </div>
-            </Card>
+            </div>
           </section>
           <section className='grid lg:grid-cols-[2fr_3fr] grid-cols-1 lg:gap-4 md:gap-10 gap-6 lg:mt-6 md:mt-10 mt-6 mb-12'>
             <div className='gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]'>
