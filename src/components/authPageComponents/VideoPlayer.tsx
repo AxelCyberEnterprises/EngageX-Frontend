@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // src/components/VideoPlayer.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { FaCompress, FaExpand } from "react-icons/fa";
@@ -12,6 +13,9 @@ interface VideoPlayerProps {
     loop?: boolean;
     showPauseOverlay?: boolean;
     hideControls?: boolean;
+    border?: string;
+    pauseOnClick?: boolean;
+    preload?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -24,6 +28,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     loop = false,
     showPauseOverlay = true,
     hideControls = false,
+    border = "",
+    pauseOnClick = true,
+    preload = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -34,6 +41,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const [isMuted, setIsMuted] = useState<boolean>(autoPlay && hideControls);
     const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState<boolean>(false);
+    const [activeSrc, setActiveSrc] = useState(src); // Currently visible
+    const [preloadedSrc, setPreloadedSrc] = useState<string | null>(null); // Hidden, loading
 
     const togglePlay = (): void => {
         if (videoRef.current) {
@@ -53,6 +62,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
 
     const handleVideoClick = (): void => {
+        if (!pauseOnClick) return;
         togglePlay();
     };
 
@@ -106,6 +116,33 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             document.exitFullscreen?.();
         }
     };
+
+    useEffect(() => {
+        if (!preload || src === activeSrc) return;
+
+        const tempVideo = document.createElement("video");
+        tempVideo.src = src;
+        tempVideo.preload = "auto";
+
+        const handleLoaded = () => {
+            setPreloadedSrc(src); // It’s ready to swap
+        };
+
+        tempVideo.addEventListener("loadeddata", handleLoaded);
+
+        return () => {
+            tempVideo.removeEventListener("loadeddata", handleLoaded);
+            tempVideo.src = "";
+            tempVideo.load();
+        };
+    }, [src, preload, activeSrc]);
+
+    useEffect(() => {
+        if (preloadedSrc && preloadedSrc !== activeSrc) {
+            setActiveSrc(preloadedSrc);
+            setPreloadedSrc(null); // Reset
+        }
+    }, [preloadedSrc, activeSrc]);
 
     useEffect(() => {
         const videoElement = videoRef.current;
@@ -170,7 +207,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
         const handleMouseMove = (e: MouseEvent) => {
             if (isDragging && containerRef.current) {
-                const progressBar = containerRef.current.querySelector('.progress-container');
+                const progressBar = containerRef.current.querySelector(".progress-container");
                 if (progressBar) {
                     const rect = progressBar.getBoundingClientRect();
                     const pos = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
@@ -183,13 +220,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         };
 
         if (isDragging) {
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
         }
 
         return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
         };
     }, [isDragging]);
 
@@ -210,9 +247,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         >
             <video
                 ref={videoRef}
-                src={src}
+                src={activeSrc}
                 poster={poster}
-                className="block w-full h-full object-cover cursor-pointer"
+                className={`block w-full h-full object-cover cursor-pointer ${border}`}
                 onClick={handleVideoClick}
                 controls={false}
                 playsInline

@@ -29,7 +29,7 @@ const PitchPractice: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(true);
-    const time = 1; // in minutes
+    const time = 15; // in minutes
     const slides = [
         "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
         "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
