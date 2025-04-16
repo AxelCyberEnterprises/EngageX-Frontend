@@ -41,8 +41,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const [isMuted, setIsMuted] = useState<boolean>(autoPlay && hideControls);
     const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState<boolean>(false);
-    const [activeSrc, setActiveSrc] = useState(src); // Currently visible
-    const [preloadedSrc, setPreloadedSrc] = useState<string | null>(null); // Hidden, loading
+    const [currentSrc, setCurrentSrc] = useState<string>(src);
 
     const togglePlay = (): void => {
         if (videoRef.current) {
@@ -118,14 +117,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
 
     useEffect(() => {
-        if (!preload || src === activeSrc) return;
+        if (!preload || src === currentSrc) {
+            setCurrentSrc(src); // immediate swap if preload is false or same src
+            return;
+        }
 
         const tempVideo = document.createElement("video");
         tempVideo.src = src;
         tempVideo.preload = "auto";
 
         const handleLoaded = () => {
-            setPreloadedSrc(src); // It’s ready to swap
+            setCurrentSrc(src); // update when preloaded
         };
 
         tempVideo.addEventListener("loadeddata", handleLoaded);
@@ -135,14 +137,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             tempVideo.src = "";
             tempVideo.load();
         };
-    }, [src, preload, activeSrc]);
-
-    useEffect(() => {
-        if (preloadedSrc && preloadedSrc !== activeSrc) {
-            setActiveSrc(preloadedSrc);
-            setPreloadedSrc(null); // Reset
-        }
-    }, [preloadedSrc, activeSrc]);
+    }, [src, preload]);
 
     useEffect(() => {
         const videoElement = videoRef.current;
@@ -152,14 +147,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             setDuration(videoElement.duration);
         };
 
-        const handlePlay = () => {
-            setIsPlaying(true);
-        };
-
-        const handlePause = () => {
-            setIsPlaying(false);
-        };
-
+        const handlePlay = () => setIsPlaying(true);
+        const handlePause = () => setIsPlaying(false);
         const handleEnded = () => {
             setIsPlaying(false);
             setProgress(100);
@@ -184,7 +173,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             videoElement.removeEventListener("pause", handlePause);
             videoElement.removeEventListener("ended", handleEnded);
         };
-    }, [src, autoPlay]);
+    }, [currentSrc, autoPlay]); // ⬅️ changed from [src, autoPlay]
 
     useEffect(() => {
         const handleFullscreenChange = () => {
@@ -247,7 +236,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         >
             <video
                 ref={videoRef}
-                src={activeSrc}
+                src={currentSrc}
                 poster={poster}
                 className={`block w-full h-full object-cover cursor-pointer ${border}`}
                 onClick={handleVideoClick}

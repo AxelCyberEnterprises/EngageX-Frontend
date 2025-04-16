@@ -84,16 +84,14 @@ const PublicSpeaking: React.FC = () => {
         };
 
         ws.onmessage = (event) => {
-            console.log("Message received from server:", event.data);
             try {
                 const parsed = JSON.parse(event.data);
-                console.log("Parsed message:", parsed);
-
                 if (parsed.type === "question") {
                     setQuestionDialogOpen(true);
                 } else if (parsed.type === "full_analysis_update") {
                     setFeedback(parsed);
                 } else if (parsed.type === "window_emotion_update") {
+                    console.log(parsed);
                     setVideoUrl(parsed.emotion_s3_url);
                 }
             } catch (e) {
