@@ -54,9 +54,8 @@ export function useUpdateUserProfile() {
 
 interface SetPassword {
   current_password: string;
-  new_password: string;
-  re_password: string;
   password: string;
+  confirm_password: string;
 }
 
 export function useUpdatePassword() {

@@ -32,13 +32,13 @@ function Benefits() {
 
       <div className="space-y-6 hidden lg:block">
         <div className="flex w-full text-gunmetal gap-x-10">
-          <div className="w-1/3 py-5 px-8 border rounded-xl border-[#79A2FF40]">
+          <div className="w-1/3 py-5  px-8 border rounded-xl border-[#79A2FF40]">
             <p className="big">Feature</p>
           </div>
-          <div className="w-1/3 py-5 px-8 border rounded-xl border-[#79A2FF40]">
-            <p className="big">Traditional method</p>
+          <div className="w-1/3 py-5 px-8 border flex items-center justify-center rounded-xl border-[#79A2FF40]">
+            <p className="big">Competitors</p>
           </div>
-          <div className="w-1/3 py-5 px-8 border rounded-xl border-[#79A2FF40]">
+          <div className="w-1/3 py-5 px-8 flex items-center justify-center  border rounded-xl border-[#79A2FF40]">
             <svg
               width="100"
               height="24"
@@ -79,37 +79,50 @@ function Benefits() {
         <div className="font-montserrat bg-gunmetal text-white p-5 rounded-3xl">
           <div className="flex w-full gap-x-10">
             <div className="w-1/3 py-4">
-              <p className="big border-b border-b-white/10 h-[9rem]">
-                Powered by advanced AI models, including AI-generated audience
-                simulations, videos, and dynamic reporting
+              <p className="big border-b border-b-white/10 h-[3rem]">
+                Realistic audience simulations
               </p>
-              <p className="big border-b border-b-white/10 h-[14rem] flex items-center">
-                Offers a more robust and comprehensive reporting system, going
-                beyond basic metrics to include audience engagement, emotional
-                impact, transformative communication, and more
+              <p className="big border-b border-b-white/10 h-[5rem] flex items-center">
+                AI-powered real-time feedback
               </p>
-              <p className="big border-b border-b-white/10 h-[9rem] flex items-center">
-                Feedback comes from a combination of AI insights and external
-                professional coaches, not limited to an internal team
+              <p className="big border-b border-b-white/10 h-[5rem] flex items-center">
+                Deep speaker impact analytics
               </p>
-              <p className="big h-[9rem] border-b border-b-white/10 flex items-center">
-                Specifically designed for navigating corporate, professional,
-                and entrepreneurial speaking environments
+              <p className="big h-[5rem] border-b border-b-white/10 flex items-center">
+                Professional coach feedback
+              </p>
+              <p className="big h-[5rem] border-b border-b-white/10 flex items-center">
+                Flexible virtual environments
+              </p>
+              <p className="big h-[5rem] border-b border-b-white/10 flex items-center">
+                Progress tracking
+              </p>
+              <p className="big h-[5rem] border-b border-b-white/10 flex items-center">
+                Tailored for professional speakings
               </p>
               {/* <p className="big h-16 flex items-end pb-2">Progress tracking</p> */}
             </div>
             <div className="w-2/3 bg-white h-full divide-x py-4 flex rounded-2xl">
               <div className="flex-1 w-full flex flex-col items-center">
-                <div className="h-[9rem] flex items-center">
+                <div className="h-[3rem] flex items-center">
                   <BenefitCancelSVG />
                 </div>
-                <div className="h-[14rem] flex items-center">
+                <div className="h-[5rem] flex items-center">
                   <BenefitCancelSVG />
                 </div>
-                <div className="h-[9rem] flex items-center">
+                <div className="h-[5rem] flex items-center">
                   <BenefitCancelSVG />
                 </div>
-                <div className="h-[9rem] flex items-center">
+                <div className="h-[5rem] flex items-center">
+                  <BenefitCancelSVG />
+                </div>
+                <div className="h-[5rem] flex items-center">
+                  <BenefitCancelSVG />
+                </div>
+                <div className="h-[5rem] flex items-center">
+                  <BenefitCancelSVG />
+                </div>
+                <div className="h-[5rem] flex items-center">
                   <BenefitCancelSVG />
                 </div>
                 {/* <div className="h-16 flex items-center">
@@ -117,21 +130,27 @@ function Benefits() {
                 </div> */}
               </div>
               <div className="flex-1 w-full flex flex-col items-center">
-                <div className="h-[9rem] flex items-center">
+                <div className="h-[3rem] flex items-center">
                   <BenefitCheckedSVG />
                 </div>
-                <div className="h-[14rem] flex items-center">
+                <div className="h-[5rem] flex items-center">
                   <BenefitCheckedSVG />
                 </div>
-                <div className="h-[9rem] flex items-center">
+                <div className="h-[5rem] flex items-center">
                   <BenefitCheckedSVG />
                 </div>
-                <div className="h-[9rem] flex items-center">
+                <div className="h-[5rem] flex items-center">
                   <BenefitCheckedSVG />
                 </div>
-                {/* <div className="h-16 flex items-center">
+                <div className="h-[5rem] flex items-center">
                   <BenefitCheckedSVG />
-                </div> */}
+                </div>
+                <div className="h-[5rem] flex items-center">
+                  <BenefitCheckedSVG />
+                </div>
+                <div className="h-[5rem] flex items-center">
+                  <BenefitCheckedSVG />
+                </div>
               </div>
             </div>
           </div>
@@ -140,62 +159,90 @@ function Benefits() {
 
       <div className="lg:hidden font-montserrat">
         <div className="flex justify-between items-center">
-          <p className="border-r pr-2 w-[35%] font-medium flex items-start h-[3rem] text-[#262B3A]">
+          <p className="border-r pr-2 w-[35%] font-medium flex items-center h-max text-[#262B3A]">
             Feature
           </p>
-          <p className="border-r pl-2 font-medium w-[40%] flex justify-center text-center items-start h-[3rem] text-[#262B3A]">
-            other methods
+          <p className="border-r pl-2 font-medium w-[40%] flex justify-center text-center items-center h-max text-[#262B3A]">
+            Competitors
           </p>
-          <div className="w-full pl-2 flex-1 flex h-[3rem] relative justify-center items-start">
+          <div className="w-full pl-2 flex-1 flex h-max relative justify-center items-center">
             <img src="./assets/logoalt.png" className="h-4" alt="" />
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <p className="border-r w-[35%] pr-2 flex items-center h-[17rem] text-[#262B3A]">
-            Powered by advanced AI models, including AI-generated audience
-            simulations, videos, and dynamic reporting
+          <p className="border-r w-[35%] pr-2 flex items-center h-[7rem] text-[#262B3A]">
+            Realistic audience simulations
           </p>
-          <div className="pl-2 h-[17rem] border-r flex w-[40%] justify-center items-center">
+          <div className="pl-2 h-[7rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
           </div>
-          <div className="pl-2 h-[17rem] flex flex-1 justify-center items-center">
+          <div className="pl-2 h-[7rem] flex flex-1 justify-center items-center">
             <BenefitCheckedSVG />
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <p className="border-r w-[35%] pr-2 flex items-center h-[25rem] text-[#262B3A]">
-            Offers a more robust and comprehensive reporting system, going
-            beyond basic metrics to include audience engagement, emotional
-            impact, transformative communication, and more
+          <p className="border-r w-[35%] pr-2 flex items-center h-[7rem] text-[#262B3A]">
+            AI-powered real-time feedback
           </p>
-          <div className="pl-2 h-[25rem] border-r flex w-[40%] justify-center items-center">
+          <div className="pl-2 h-[7rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
           </div>
-          <div className="pl-2 h-[25rem] flex flex-1 justify-center items-center">
+          <div className="pl-2 h-[7rem] flex flex-1 justify-center items-center">
             <BenefitCheckedSVG />
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <p className="border-r w-[35%] pr-2 flex items-center h-[15rem] text-[#262B3A]">
-            Feedback comes from a combination of AI insights and external
-            professional coaches, not limited to an internal team
+          <p className="border-r w-[35%] pr-2 flex items-center h-[7rem] text-[#262B3A]">
+            Deep speaker impact analytics
           </p>
-          <div className="pl-2 h-[15rem] border-r flex w-[40%] justify-center items-center">
+          <div className="pl-2 h-[7rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
           </div>
-          <div className="pl-2 h-[15rem] flex flex-1 justify-center items-center">
+          <div className="pl-2 h-[7rem] flex flex-1 justify-center items-center">
             <BenefitCheckedSVG />
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <p className="border-r w-[35%] pr-2 flex items-center h-[15rem] text-[#262B3A]">
-            Specifically designed for navigating corporate, professional, and
-            entrepreneurial speaking environments
+          <p className="border-r w-[35%] pr-2 flex items-center h-[7rem] text-[#262B3A]">
+            Professional coach feedback
           </p>
-          <div className="pl-2 h-[15rem] border-r flex w-[40%] justify-center items-center">
+          <div className="pl-2 h-[7rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
           </div>
-          <div className="pl-2 h-[15rem] flex flex-1 justify-center items-center">
+          <div className="pl-2 h-[7rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[7rem] text-[#262B3A]">
+            Flexible virtual environments
+          </p>
+          <div className="pl-2 h-[7rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[7rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[7rem] text-[#262B3A]">
+            Progress tracking
+          </p>
+          <div className="pl-2 h-[7rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[7rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[7rem] text-[#262B3A]">
+            Tailored for professional speaking
+          </p>
+          <div className="pl-2 h-[7rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[7rem] flex flex-1 justify-center items-center">
             <BenefitCheckedSVG />
           </div>
         </div>

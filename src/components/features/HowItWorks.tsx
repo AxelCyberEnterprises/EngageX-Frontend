@@ -19,7 +19,7 @@ function HowItWorks() {
     {
       title: "Feedback score dashboard",
       content:
-        "Get a snapshot of overall feedback scores and analyzed metrics to understand strengths and areas for improvement. Interpretation of feedback patterns and customer satisfaction levels. Session reporting will outline steps to enhance feedback scores and improve user performance.",
+        "Get a snapshot of overall feedback scores and analyzed metrics to understand strengths and areas for improvement. Interpretation of feedback patterns and customer satisfaction levels. Session reporting will outline steps to enhance feedback scores and improve user performance",
       img: "./assets/HowItWorksImg3.png",
     },
   ];

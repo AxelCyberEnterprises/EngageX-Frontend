@@ -8,9 +8,10 @@ interface VideoStreamerProps {
     onStop: () => void;
     ws: WebSocket | null;
     isWsReady: boolean;
+    border?: string;
 }
 
-const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop, ws, isWsReady }) => {
+const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop, ws, isWsReady, border }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isRecording, setIsRecording] = useState(false);
     const streamRef = useRef<MediaStream | null>(null);
@@ -67,12 +68,12 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
             // Stop after `duration` minutes
             timerRef.current = setTimeout(stopRecordingLoop, duration * 60 * 1000);
 
-            // Loop every 10s: stop current recorder and start a new one
+            // Loop every 7s: stop current recorder and start a new one
             intervalRef.current = setInterval(() => {
                 if (recorderRef.current?.state === "recording") {
                     recorderRef.current.stop(); // triggers `ondataavailable`
                 }
-            }, 10000);
+            }, 7000);
         } catch (error) {
             console.error("Failed to start recording:", error);
             onStop();
@@ -128,7 +129,7 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
         onStop();
     };
 
-    return <video ref={videoRef} className="w-full h-full object-cover" autoPlay playsInline muted />;
+    return <video ref={videoRef} className={`w-full h-full object-cover ${border}`} autoPlay playsInline muted />;
 };
 
 export default VideoStreamer;

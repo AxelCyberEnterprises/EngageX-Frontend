@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { setAuthPageImage, setSuccessMessage, useAutoClearSuccessMessage } from "@/store/slices/authSlice";
+import { setAuthPageImage, setOtpSent, setSuccessMessage, useAutoClearSuccessMessage } from "@/store/slices/authSlice";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { useResetPassword } from "@/hooks/auth";
 import { useLocation } from "react-router-dom";
 import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg";
+import OtpSentToast from "@/components/ui/OtpSentToast";
 
 const ResetPasswordSchema = z
     .object({
@@ -28,7 +29,7 @@ const ResetPassword: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const emailForPasswordReset = useSelector((state: RootState) => state.auth.emailForPasswordReset);
-    const successMessage = useSelector((state: RootState) => state.auth.successMessage);
+    const otpSent = useSelector((state: RootState) => state.auth.otpSent);
     const dispatch = useDispatch();
 
     const form = useForm({
@@ -44,17 +45,18 @@ const ResetPassword: React.FC = () => {
             email: emailForPasswordReset,
             otp: values.otp,
             new_password: values.password,
+            confirm_new_password: values.confirmPassword,
         });
     };
 
-    useEffect(() => {
-        if (error) {
-            form.setError("otp", {
-                type: "manual",
-                message: error.message || "Failed to reset password. Try again.",
-            });
-        }
-    }, [error]);
+    // useEffect(() => {
+    //     if (error) {
+    //         form.setError("otp", {
+    //             type: "manual",
+    //             message: error.message || "Failed to reset password. Try again.",
+    //         });
+    //     }
+    // }, [error]);
 
     useAutoClearSuccessMessage();
      const location = useLocation()
@@ -68,6 +70,8 @@ const ResetPassword: React.FC = () => {
             <p className="text-center font-[Inter] text-[#667085]">
                 Your new password must be different from the previous one.
             </p>
+            <OtpSentToast show={otpSent} onClose={() => dispatch(setOtpSent(false))} />
+
 
             <Form {...form}>
                 <form
@@ -154,7 +158,7 @@ const ResetPassword: React.FC = () => {
                     </Button>
                 </form>
             </Form>
-            {successMessage && <p className="text-center font-[Inter] text-green-500 text-sm">{successMessage}</p>}
+            {error && (error.message)}
         </div>
     );
 };

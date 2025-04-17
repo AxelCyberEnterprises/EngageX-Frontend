@@ -3,11 +3,12 @@ import {
     // AuthUser,
     login,
     setEmailForPasswordReset,
+    setOtpSent,
     setSignupFlow,
     setSuccessMessage,
     setUserIdAfterSignup,
 } from "@/store/slices/authSlice";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
@@ -22,7 +23,7 @@ export function useSignup() {
         },
         onSuccess: async (data: any) => {
             console.log(data);
-            setUserIdAfterSignup(data?.id);
+            dispatch(setUserIdAfterSignup(data?.id));
             // dispatch(login(data));
             dispatch(setSignupFlow("confirmation"));
         },
@@ -40,17 +41,17 @@ interface AuthQuestionData {
 
 export function useAddAuthQuestion() {
     // const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     return useMutation({
         mutationKey: ["addAuthQuestion"],
         mutationFn: async ({ userId, user_intent, purpose }: AuthQuestionData) => {
-            return await apiPatch(`/users/users/${userId}`, { user_intent, purpose });
+            console.log(userId, user_intent, purpose);
+            return await apiPatch(`/users/users/3/`, { user_intent: "early", purpose: "public_speaking" });
         },
         onSuccess: () => {
             console.log("Auth question added successfully.");
             // dispatch(setSignupFlow("login"));
-            navigate("../Tutorial");
+            // navigate("../Tutorial");
         },
         onError: (error: any) => {
             console.error("Failed to add auth question:", error.message);
@@ -124,6 +125,7 @@ export function useForgotPassword() {
         onSuccess: () => {
             console.log("Password reset link sent.");
             navigate("../reset-password");
+            dispatch(setOtpSent(true));
         },
         onError: (error) => {
             console.error(error || "Failed to send OTP. Please try again.");
@@ -142,7 +144,12 @@ export function useResetPassword() {
     const navigate = useNavigate();
     return useMutation({
         mutationKey: ["resetPassword"],
-        mutationFn: async (data: { otp: string; new_password: string; email: string }) => {
+        mutationFn: async (data: {
+            otp: string;
+            new_password: string;
+            email: string;
+            confirm_new_password: string;
+        }) => {
             return await apiPost<ResetPasswordResponse>("/users/auth/password-reset-confirm/", data);
         },
         onSuccess: () => {
@@ -210,12 +217,14 @@ export function useDashboardData() {
     });
 }
 
-export function useSessionHistory() {
+export function useSessionHistory(page = 1) {
     return useQuery({
-        queryKey: ["sessionHistory"],
-        queryFn: () => apiGet<IGETSessionsResponse>("/sessions/sessions/"),
+        queryKey: ["sessionHistory", page],
+        queryFn: () => apiGet<IGETSessionsResponse>(`/sessions/sessions/?page=${page}`),
+        placeholderData: keepPreviousData,
     });
 }
+
 export function useSessionHistoryById(id: string) {
     return useQuery({
         queryKey: ["sessionHistoryById", id],

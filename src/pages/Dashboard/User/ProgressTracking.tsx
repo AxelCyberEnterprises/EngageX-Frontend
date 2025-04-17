@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import circleCheck from '../../../assets/images/svgs/circle-check.svg';
 import circleExclamation from '../../../assets/images/svgs/circle-exclamation.svg';
-import menuWhite from '../../../assets/images/svgs/menu-white.svg';
+// import menuWhite from '../../../assets/images/svgs/menu-white.svg';
 import trophy from '../../../assets/images/svgs/trophy.svg';
 import starAward from '../../../assets/images/svgs/star-award.svg';
 import diamond from '../../../assets/images/pngs/diamond.png';
@@ -59,10 +59,10 @@ const ProgressTracking: React.FC = () => {
     {
       title: 'Vocal Variety',
       wordRate: '85% pitch score',
-      percentage: 100
+      percentage: 20
     },
     {
-      title: 'Captured Impact',
+      title: 'Overall ⁠Captured Impact',
       wordRate: '85% impact score',
       percentage: 80
     },
@@ -103,17 +103,17 @@ const ProgressTracking: React.FC = () => {
       id: 1,
       title: "Vocal Variety Mastery",
       level: 1,
-      score: 3,
+      score: 2,
       total: 10,
-      note: "Measures pitch, tone, pace, and pauses to keep delivery dynamic and engaging."
+      note: "Pitch, tone, pace, and pauses."
     },
     {
       id: 2,
-      title: "Captured Impact Mastery",
+      title: "Overall Captured Impact Mastery",
       level: 2,
       score: 5,
       total: 10,
-      note: "Measures how strongly the message resonates with the audience overall."
+      note: "The impact of the overall speech."
     },
     {
       id: 3,
@@ -121,7 +121,7 @@ const ProgressTracking: React.FC = () => {
       level: 3,
       score: 10,
       total: 10,
-      note: "Measures how well the speaker evokes emotions like joy, sadness, or fear."
+      note: "Compels to the audience's emotions."
     },
     {
       id: 4,
@@ -129,7 +129,7 @@ const ProgressTracking: React.FC = () => {
       level: 2,
       score: 6,
       total: 10,
-      note: "Measures body posture, body motion and hand gestures that keeps the audience engaged."
+      note: "Body posture, motion and hand gestures."
     },
     {
       id: 5,
@@ -137,7 +137,7 @@ const ProgressTracking: React.FC = () => {
       level: 2,
       score: 7,
       total: 10,
-      note: "Measures how the message inspires change or shifts thinking."
+      note: "Inspires change or shifts thinking."
     },
     {
       id: 6,
@@ -145,7 +145,7 @@ const ProgressTracking: React.FC = () => {
       level: 3,
       score: 8,
       total: 10,
-      note: "Measures how much the audience reacts or participates in response."
+      note: "Triggers the audience to respond."
     },
     {
       id: 7,
@@ -153,7 +153,7 @@ const ProgressTracking: React.FC = () => {
       level: 2,
       score: 7,
       total: 10,
-      note: "Measures how clearly and logically ideas are organized and expressed."
+      note: "How clearly ideas are organized and expressed."
     },
     {
       id: 8,
@@ -161,15 +161,16 @@ const ProgressTracking: React.FC = () => {
       level: 3,
       score: 8,
       total: 10,
-      note: "Measures clarity, grammar, and avoidance of filler or weak language."
+      note: "Avoid filler words and use good grammar."
     }
   ];
+
 
   const streakStats = [
     {
       icon: diamond,
       number: "15",
-      text: "Day Streak"
+      text: "Day Growth"
     },
     // {
     //   icon: ruby,
@@ -432,10 +433,10 @@ const ProgressTracking: React.FC = () => {
         {activeIndex === 0 && <div>
           <section className='flex justify-between md:items-start items-center gap-5 mb-6 sm:mt-0 mt-4'>
             <div>
-              <h3 className="text-xl font-medium">Goal Standards for EngageX™ </h3>
+              <h3 className="text-xl font-medium">Gold Standard for EngageX™ </h3>
               <p className="text-sm text-[#6F7C8E]">Here’s a quick overview of your active goals </p>
             </div>
-            <Button
+            {/* <Button
               type="button"
               onClick={() => { }}
               className="w-auto text-white px-6 bg-[#252A39]"
@@ -446,7 +447,7 @@ const ProgressTracking: React.FC = () => {
                 className="w-5 h-5 sm:text-base text-sm"
               />
               View all goals
-            </Button>
+            </Button> */}
           </section>
           <section className='grid lg:grid-cols-3 grid-cols-1 md:gap-6 gap-4'>
             {cardData.map((item, index) => (
@@ -464,6 +465,44 @@ const ProgressTracking: React.FC = () => {
                 <p className='text-[#252A39D9] mt-3'>{item.percentage}% complete</p>
               </Card>
             ))}
+            <div className='gap-0 px-4 py-4 rounded-[12px] flex bg-sidebar flex-col justify-between'>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-xl text-base text-[#C1C2B4]'>Level 1</h4>
+                <div className='w-[50%]'>
+                  <SegmentedProgressBar
+                    percent={30}
+                    color='#C1C2B4'
+                    divisions={10}
+                    height='0.375rem'
+                  />
+                </div>
+                <h4 className='lg:text-xl text-base text-[#C1C2B4]'>0 - 3</h4>
+              </div>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-xl text-base text-[#ECB25E]'>Level 2</h4>
+                <div className='w-[50%]'>
+                  <SegmentedProgressBar
+                    percent={50}
+                    color='#ECB25E'
+                    divisions={10}
+                    height='0.375rem'
+                  />
+                </div>
+                <h4 className='lg:text-xl text-base text-[#ECB25E]'>4 - 7</h4>
+              </div>
+              <div className='flex justify-between items-center mb-4'>
+                <h4 className='lg:text-xl text-base text-[#64BA9F]'>Level 3</h4>
+                <div className='w-[50%]'>
+                  <SegmentedProgressBar
+                    percent={100}
+                    color='#64BA9F'
+                    divisions={10}
+                    height='0.375rem'
+                  />
+                </div>
+                <h4 className='lg:text-xl text-base text-[#64BA9F]'>8 - 10</h4>
+              </div>
+            </div>
           </section>
           <section className='grid lg:grid-cols-[2fr_3fr] grid-cols-1 lg:gap-4 md:gap-10 gap-6 lg:mt-6 md:mt-10 mt-6 mb-12'>
             <div className='gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]'>
@@ -501,7 +540,7 @@ const ProgressTracking: React.FC = () => {
             </div>
             <div className='border border-[#E0E0E0] rounded-[12px] p-5 h-fit'>
               <h4 className='text-[#252A39] lg:text-lg text-base'>Daily Progress Tracker</h4>
-              <p className='text-[#6F7C8E] text-sm'>Display streaks of  goal progress</p>
+              <p className='text-[#6F7C8E] text-sm'>Display daily progress tracker</p>
               <div className='grid grid-cols-1 md:gap-x-6'>
                 {streakStats.map((item) => (
                   <div className='border border-[#E0E0E0] p-3 flex gap-3 rounded-[12px] mt-4 mb-2'>

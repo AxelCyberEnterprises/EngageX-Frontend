@@ -9,7 +9,7 @@ import CountdownTimer from "@/components/session/CountdownTimer";
 import TimerProgressBar from "@/components/session/TimerProgressBar";
 import presentationRoom from "../../assets/images/pngs/presentation-practice-room.png";
 import VideoStreamer from "@/components/session/RecordView";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import alert from "../../assets/images/svgs/alert.svg";
@@ -21,6 +21,7 @@ import ImageSlider, {
     SlideProgress,
     NextSlideImage,
 } from "@/components/session/SlidesPreviewer";
+import { useEndSession } from "@/hooks/sessions";
 
 const PitchPractice: React.FC = () => {
     const [stop, setStop] = useState(false);
@@ -28,7 +29,6 @@ const PitchPractice: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(true);
-    const navigate = useNavigate();
     const time = 15; // in minutes
     const slides = [
         "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
@@ -42,22 +42,25 @@ const PitchPractice: React.FC = () => {
         "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
         "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
     ];
-    
+
     const { currentSlide, totalSlides, durationPerSlide } = useImageSlider({
         images: slides,
         minutes: time,
     });
 
-    const StopStreaming = () => {
+    const stopTimer = (duration?: any) => {
+        console.log(duration);
+        setDuration(duration);
         setStop(true);
-        navigate("/dashboard/user/session-history/1");
     };
-    
+
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
+    const [duration, setDuration] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
+    const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
 
     console.log(feedback);
 
@@ -159,16 +162,49 @@ const PitchPractice: React.FC = () => {
                     <DialogHeader>
                         <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
                         <DialogTitle className="text-primary-blue text-left">Session ended</DialogTitle>
-                        <DialogDescription className="text-auro-metal-saurus text-left">
-                            Looks like you ran out of time, kindly proceed by clicking next to view your result
-                        </DialogDescription>
+                        {duration && parseInt(duration.split(":")[0], 10) !== time ? (
+                            <DialogDescription className="text-auro-metal-saurus text-left">
+                                Great job! You completed the session within the allocated time. Kindly proceed by
+                                clicking next to view your result.
+                            </DialogDescription>
+                        ) : (
+                            <DialogDescription className="text-auro-metal-saurus text-left">
+                                Looks like you ran out of time, kindly proceed by clicking next to view your result.
+                            </DialogDescription>
+                        )}
                     </DialogHeader>
                     <div className="w-full">
                         <Button
                             className="bg-primary-blue hover:bg-primary-blue/90 w-full"
-                            onClick={() => StopStreaming()}
+                            isLoading={isPending}
+                            onClick={() => endSession()}
                         >
                             Next
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            {/* end session dialog  */}
+            <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
+                        <DialogTitle className="text-primary-blue text-left">End a session</DialogTitle>
+                        <DialogDescription className="text-auro-metal-saurus text-left">
+                            You are about to end a session, you will be sent to the session analysis report page and you
+                            will no longer be able to continue this session
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex gap-2 w-full">
+                        <Button
+                            className="bg-white hover:bg-white/90 border border-gray w-full text-primary-blue"
+                            onClick={() => setDialogOneOpen(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button className="bg-jelly-bean hover:bg-jelly-bean/90 w-full" onClick={() => stopTimer()}>
+                            End
                         </Button>
                     </div>
                 </DialogContent>
@@ -184,7 +220,12 @@ const PitchPractice: React.FC = () => {
                     </Button>
                     <h4 className="mb-4">Q1 Sales Presentation Practice</h4>
                     <div className="mb-3">
-                        <TimerProgressBar minutes={time} />
+                        <TimerProgressBar
+                            minutes={time}
+                            start={startTimer}
+                            stop={stop}
+                            onStop={(duration) => stopTimer(duration)}
+                        />
                     </div>
                     <SlideProgress currentSlide={currentSlide} totalSlides={totalSlides} />
                 </div>
@@ -264,33 +305,6 @@ const PitchPractice: React.FC = () => {
                         >
                             <SquareArrowUpRight className="me-1" /> End Session
                         </Button>
-
-                        <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
-                                    <DialogTitle className="text-primary-blue text-left">End a session</DialogTitle>
-                                    <DialogDescription className="text-auro-metal-saurus text-left">
-                                        You are about to End a Session, you will be sent to the Session Analysis Report
-                                        page and you will no longer be able to continue this session
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <div className="flex gap-2 w-full">
-                                    <Button
-                                        className="bg-white hover:bg-white/90 border border-gray w-full text-primary-blue"
-                                        onClick={() => setDialogOneOpen(false)}
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        className="bg-jelly-bean hover:bg-jelly-bean/90 w-full"
-                                        onClick={() => StopStreaming()}
-                                    >
-                                        End
-                                    </Button>
-                                </div>
-                            </DialogContent>
-                        </Dialog>
                     </div>
                 </div>
 

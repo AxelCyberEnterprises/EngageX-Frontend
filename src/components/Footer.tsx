@@ -197,7 +197,7 @@ function Footer() {
       </div>
 
       <div className="border-t border-t-alice-blue flex flex-col lg:flex-row space-y-4 lg:space-y-0 py-6 justify-between text-white">
-        <p>© 2025 EngageX™ - Career Doctor LLC all right reserved.</p>
+        <p>© 2025 EngageX™ - Career Doctor LLC all right reserved</p>
         <div className="flex items-center gap-4"></div>
       </div>
     </section>
