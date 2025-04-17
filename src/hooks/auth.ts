@@ -1,7 +1,4 @@
 import { apiGet, apiPatch, apiPost } from "@/lib/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
 import {
     // AuthUser,
     login,
@@ -11,6 +8,9 @@ import {
     setSuccessMessage,
     setUserIdAfterSignup,
 } from "@/store/slices/authSlice";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 import { IGETSessionsResponse } from "./mutations/dashboard/types";
 
@@ -144,7 +144,12 @@ export function useResetPassword() {
     const navigate = useNavigate();
     return useMutation({
         mutationKey: ["resetPassword"],
-        mutationFn: async (data: { otp: string; new_password: string; email: string, confirm_new_password: string; }) => {
+        mutationFn: async (data: {
+            otp: string;
+            new_password: string;
+            email: string;
+            confirm_new_password: string;
+        }) => {
             return await apiPost<ResetPasswordResponse>("/users/auth/password-reset-confirm/", data);
         },
         onSuccess: () => {
@@ -212,12 +217,14 @@ export function useDashboardData() {
     });
 }
 
-export function useSessionHistory() {
+export function useSessionHistory(page = 1) {
     return useQuery({
-        queryKey: ["sessionHistory"],
-        queryFn: () => apiGet<IGETSessionsResponse>("/sessions/sessions/"),
+        queryKey: ["sessionHistory", page],
+        queryFn: () => apiGet<IGETSessionsResponse>(`/sessions/sessions/?page=${page}`),
+        placeholderData: keepPreviousData,
     });
 }
+
 export function useSessionHistoryById(id: string) {
     return useQuery({
         queryKey: ["sessionHistoryById", id],
@@ -225,30 +232,23 @@ export function useSessionHistoryById(id: string) {
     });
 }
 
-
-export function useContactUs({
-  onSuccess,
-  onError,
-}: {
-  onSuccess?: () => void;
-  onError?: () => void;
-}) {
-  return useMutation({
-    mutationKey: ["contact-us"],
-    mutationFn: async (data: {
-      first_name: string;
-      last_name: string;
-      email: string;
-      message: string;
-      agreed_to_policy: boolean;
-    }) => {
-      return await apiPost("/users/contact-us/", data);
-    },
-    onSuccess: () => {
-      if (onSuccess) onSuccess();
-    },
-    onError: () => {
-      if (onError) onError();
-    },
-  });
+export function useContactUs({ onSuccess, onError }: { onSuccess?: () => void; onError?: () => void }) {
+    return useMutation({
+        mutationKey: ["contact-us"],
+        mutationFn: async (data: {
+            first_name: string;
+            last_name: string;
+            email: string;
+            message: string;
+            agreed_to_policy: boolean;
+        }) => {
+            return await apiPost("/users/contact-us/", data);
+        },
+        onSuccess: () => {
+            if (onSuccess) onSuccess();
+        },
+        onError: () => {
+            if (onError) onError();
+        },
+    });
 }
