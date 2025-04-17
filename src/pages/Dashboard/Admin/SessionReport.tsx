@@ -209,7 +209,6 @@ const PitchSessionReport: React.FC = () => {
                                         <FullCircleProgress
                                             percent={item.percent}
                                             color={"#64BA9F"}
-                                            text={item.rating}
                                         />
                                     </div>
                                 </div>
@@ -250,7 +249,6 @@ const PitchSessionReport: React.FC = () => {
                                         <FullCircleProgress
                                             percent={item.percent}
                                             color={"#64BA9F"}
-                                            text={item.rating}
                                         />
                                     </div>
                                 </div>
