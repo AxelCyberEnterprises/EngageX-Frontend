@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ErrorToast from "@/components/ui/custom-toasts/error-toast";
-import { apiPost } from "@/lib/api";
+import { apiGet, apiPost } from "@/lib/api";
 import { useAppDispatch } from "@/store";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { IPOSTSessionPayload } from "@/types/sessions";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import { IPOSTSessionPayload } from "./types";
 
 export function useCreatePublicSpeakingSession() {
     const navigate = useNavigate();
@@ -61,6 +62,34 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
                     }}
                 />,
             );
+        },
+    });
+}
+
+export function useEndSession(sessionId: string | undefined, duration: any) {
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationKey: ["endSession"],
+        mutationFn: async () => {
+            await apiPost(`/sessions/sessions-report/${sessionId}/`, { duration: duration });
+        },
+        onSuccess: () => {
+            console.log("Session ended and posted successfully.");
+            navigate(`/dashboard/user/session-history/${sessionId}`);
+        },
+        onError: (error) => {
+            console.error("End session failed:", error);
+            navigate(`/dashboard/user/session-history/${sessionId}`);
+        },
+    });
+}
+
+export function useGetSessionReport(sessionId: string | undefined) {
+    return useQuery({
+        queryKey: ["getSessionReport"],
+        queryFn: async () => {
+            return await apiGet(`/sessions/sessions/${sessionId}/report/`);
         },
     });
 }
