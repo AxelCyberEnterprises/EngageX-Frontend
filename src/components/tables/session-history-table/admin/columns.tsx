@@ -12,9 +12,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import BaseTableColumnHeader from "../../base-table/BaseTableColumnHeader";
 
 export type IAdminSessionHistory = {
-    id: string;
+    id: string | number;
     sessionName: string;
-    sessionType: "Pitch Practice" | "Client Meeting" | "Team Sync" | "Workshop" | "Demo Day";
+    sessionType: string;
     date: string;
     duration: string;
     userProfile: string;

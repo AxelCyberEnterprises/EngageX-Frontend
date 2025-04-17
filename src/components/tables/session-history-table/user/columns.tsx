@@ -12,7 +12,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import BaseTableColumnHeader from "../../base-table/BaseTableColumnHeader";
 
 export type IUserSessionHistory = {
-    id: number;
+    id: string | number;
     sessionName: string;
     sessionType: string;
     date: string;
@@ -20,7 +20,6 @@ export type IUserSessionHistory = {
 };
 
 export const columns: ColumnDef<IUserSessionHistory>[] = [
-
     // {
     //     id: "select",
     //     header: ({ table }) => (
@@ -93,4 +92,3 @@ export const columns: ColumnDef<IUserSessionHistory>[] = [
     //     },
     // },
 ];
-

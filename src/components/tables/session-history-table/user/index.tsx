@@ -67,11 +67,11 @@ const SessionHistoryTable = () => {
     const userSessionHistoryData = useMemo(
         () =>
             data?.results?.map((item) => ({
-                id: item.id,
+                id: item.id || "N/A",
                 sessionName: capitalizeWords(item.session_name || "Unknown Session"),
                 sessionType: capitalizeWords(item.session_type_display || "Unknown Type"),
                 date: formatDate(item.date),
-                duration: "Unknown Duration",
+                duration: formatTime(item.duration?.toString()),
             })) || [],
         [data?.results],
     );
@@ -80,11 +80,11 @@ const SessionHistoryTable = () => {
         <BaseTable
             columns={userSessionColumns}
             data={userSessionHistoryData}
+            count={data?.count}
             pagination={pagination}
             setPagination={setPagination}
             error={error}
             isLoading={isLoading}
-            count={data?.count}
         />
     );
 };
