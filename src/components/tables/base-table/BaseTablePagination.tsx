@@ -10,21 +10,20 @@ interface IBaseTablePaginationProps<TData> {
 const BaseTablePagination = <TData,>({ table, totalCount }: IBaseTablePaginationProps<TData>) => {
     const currentPage = table.getState().pagination.pageIndex + 1;
     const pageCount = table.getPageCount();
-    
+
     // Calculate the range of items being shown
-    const startItem = (table.getState().pagination.pageIndex * table.getState().pagination.pageSize) + 1;
+    const startItem = table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1;
     const endItem = Math.min(
         (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-        totalCount ?? table.getFilteredRowModel().rows.length
+        totalCount ?? table.getFilteredRowModel().rows.length,
     );
 
     return (
         <div className="flex md:flex-row flex-col-reverse md:gap-y-0 gap-y-4 items-center justify-between w-full">
             <p className="whitespace-nowrap text-gunmetal text-sm">
-                {totalCount !== undefined 
+                {totalCount !== undefined
                     ? `Showing ${startItem}-${endItem} of ${totalCount}`
-                    : `Showing page ${currentPage} of ${pageCount}`
-                }
+                    : `Showing page ${currentPage} of ${pageCount}`}
             </p>
             <div className="flex items-center justify-end gap-x-3">
                 <Button
@@ -47,11 +46,11 @@ const BaseTablePagination = <TData,>({ table, totalCount }: IBaseTablePagination
                     hidePrevButton
                     sx={{
                         "& .MuiPaginationItem-root": { color: "var(--color-gunmetal)" },
-                        "& .Mui-selected": { 
+                        "& .Mui-selected": {
                             backgroundColor: "var(--color-bright-gray)",
                             "&:hover": {
                                 backgroundColor: "var(--color-bright-gray)",
-                            }
+                            },
                         },
                     }}
                 />
