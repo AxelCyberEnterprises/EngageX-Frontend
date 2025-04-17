@@ -1,6 +1,4 @@
 import React from 'react';
-import calendar from '../../assets/images/svgs/calendar.svg';
-import ShadSelect from './Select';
 import PresentationMetricsTable from '../tables/performance-metric-table/user';
 import { columnsTwo } from "@/components/tables/performance-metric-table/user/columnsTwo";
 import { dataTwo } from "@/components/tables/performance-metric-table/user/dataTwo";
@@ -19,9 +17,10 @@ interface SessionData {
   insights: KeyInsight[];
 }
 
+// interface SessionComparisonResultsProps {
+// }
+
 const SessionComparisonResults: React.FC = () => {
-  // const [selectedSequence1, setSelectedSequence1] = useState<string>("");
-  // const [selectedSequence2, setSelectedSequence2] = useState<string>("");
   const session1: SessionData = {
     id: "1",
     title: "Initial Keynote Practice",
@@ -54,46 +53,6 @@ const SessionComparisonResults: React.FC = () => {
     ]
   };
 
-  const sequenceOptions1 = [
-    {
-      value: "initial",
-      label: "Feb 10 - Initial Practice",
-    },
-    {
-      value: "midpoint",
-      label: "Feb 24 - Midpoint Practice",
-    },
-    {
-      value: "final",
-      label: "Mar 10 - Final Practice",
-    }
-  ];
-
-  const sequenceOptions2 = [
-    {
-      value: "initial",
-      label: "Feb 10 - Initial Practice",
-    },
-    {
-      value: "midpoint",
-      label: "Feb 24 - Midpoint Practice",
-    },
-    {
-      value: "final",
-      label: "Mar 10 - Final Practice",
-    }
-  ];
-
-  const handleSelectSequence1 = (sequence: string) => {
-    console.log('Selected sequence:', sequence);
-    // setSelectedSequence1(sequence);
-  };
-
-  const handleSelectSequence2 = (sequence: string) => {
-    console.log('Selected sequence:', sequence);
-    // setSelectedSequence2(sequence);
-  };
-
   const getScoreBackgroundColor = (score: number) => {
     if (score >= 80) return 'bg-[#e6f7e6]'; // Light green
     if (score >= 60) return 'bg-[#f9e8d4]'; // Light orange
@@ -104,16 +63,6 @@ const SessionComparisonResults: React.FC = () => {
     <div className="w-full mt-10">
       <div className="grid grid-cols-1 md:grid-cols-2 md:gap-[10%] gap-12 mb-6">
         <div className='flex flex-col gap-6'>
-          <div>
-            <label className="block text-[#252A39] mb-2">Select an Improvement Sequence</label>
-            <ShadSelect
-              options={sequenceOptions1}
-              onChange={handleSelectSequence1}
-              placeholder="Select Sequence"
-              className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto  focus:shadow-none active:shadow-none w-full'
-              icon={calendar}
-            />
-          </div>
           <div>
             <div className="border border-[#E0E0E0] rounded-lg p-6">
               <h2 className="text-xl font-medium text-[#252A39] mb-2">{session1.title}</h2>
@@ -163,16 +112,6 @@ const SessionComparisonResults: React.FC = () => {
         </div>
 
         <div className='flex flex-col gap-6'>
-          <div>
-            <label className="block text-[#252A39] mb-2">Select an Improvement Sequence</label>
-            <ShadSelect
-              options={sequenceOptions2}
-              onChange={handleSelectSequence2}
-              placeholder="Select Sequence"
-              className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto  focus:shadow-none active:shadow-none w-full'
-              icon={calendar}
-            />
-          </div>
           <div className="border border-[#E0E0E0] rounded-lg p-6">
             <h2 className="text-xl font-medium text-[#252A39] mb-2">{session2.title}</h2>
             <p className="text-[#6F7C8E] mb-6">{session2.dateRange} • {session2.duration}</p>
