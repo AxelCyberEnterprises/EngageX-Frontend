@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { apiPost } from "@/lib/api";
-import { useMutation } from "@tanstack/react-query";
+import { apiGet, apiPost } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 
 export function useEndSession(sessionId: string | undefined, duration: any) {
@@ -18,6 +18,15 @@ export function useEndSession(sessionId: string | undefined, duration: any) {
         onError: (error) => {
             console.error("End session failed:", error);
             navigate(`/dashboard/user/session-history/${sessionId}`);
+        },
+    });
+}
+
+export function useGetSessionReport(sessionId: string | undefined) {
+    return useQuery({
+        queryKey: ["getSessionReport"],
+        queryFn: async () => {
+            return await apiGet(`/sessions/sessions/${sessionId}/report/`);
         },
     });
 }

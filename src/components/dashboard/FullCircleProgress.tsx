@@ -3,10 +3,9 @@ import React from "react";
 interface FullCircleProgressProps {
     percent: number; // Value between 0 and 1 (e.g., 0.75 for 75%)
     color: string; // Stroke color of the progress bar
-    text?: string; // Text displayed in the center
 }
 
-const FullCircleProgress: React.FC<FullCircleProgressProps> = ({ percent, color, text }) => {
+const FullCircleProgress: React.FC<FullCircleProgressProps> = ({ percent, color }) => {
     const radius = 40; // Radius of the circle
     const strokeWidth = 5;
     const circumference = 2 * Math.PI * radius; // Total length of the circle
@@ -43,7 +42,7 @@ const FullCircleProgress: React.FC<FullCircleProgressProps> = ({ percent, color,
             </svg>
 
             {/* Centered Text */}
-            <div className="absolute text-xs font-semibold">{text}</div>
+            <div className="absolute text-xs font-semibold">{percent >= 80 ? "Excellent" : percent >= 50 ? "Good" : "Satisfactory"}</div>
         </div>
     );
 };
