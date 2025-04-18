@@ -26,6 +26,7 @@ import {
   formatDate,
   formatTime,
 } from "@/components/tables/session-history-table/admin";
+import { toast } from "sonner";
 
 interface Sessions {
   session_name: string;
@@ -51,6 +52,14 @@ function NewPerformanceImprovementDialog() {
   const { data, error, isLoading } = useSessionHistory(
     pagination.pageIndex + 1
   );
+
+  if (isLoading) {
+    console.log("loading data...");
+  }
+
+  if (error) {
+    toast.error("Can't load data at this time.");
+  }
 
   const userSessionHistoryData: Sessions[] = useMemo(
     () =>
