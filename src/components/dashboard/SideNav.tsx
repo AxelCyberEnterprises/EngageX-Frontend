@@ -567,7 +567,7 @@ const SideNav: React.FC = () => {
   ];
 
   return (
-    <Sidebar className="side__nav py-5 px-4">
+    <Sidebar className="side__nav text-white py-5 px-4">
       <SidebarHeader className="py-7 lg:py-3 px-4">
         <Link to="/">
           <img src={logo} alt="EngageX™ Logo" className="w-8/12 px-3 lg:px-0" />
@@ -612,7 +612,7 @@ const SideNav: React.FC = () => {
             <Link
               to={link.path}
               key={index}
-              className={`link flex items-center w-full py-2 px-3 mb-0.5 ${
+              className={`link flex text-white items-center w-full py-2 px-3 mb-0.5 ${
                 location.pathname === link.path ? "active" : ""
               }`}
             >
@@ -625,7 +625,7 @@ const SideNav: React.FC = () => {
             <Link
               to={link.path}
               key={index}
-              className={`link flex items-center w-full py-2 px-3 mb-0.5 ${
+              className={`link flex text-white items-center w-full py-2 px-3 mb-0.5 ${
                 location.pathname === link.path ? "active" : ""
               }`}
             >
@@ -635,7 +635,7 @@ const SideNav: React.FC = () => {
           ))}
       </SidebarContent>
 
-      <SidebarFooter className="bottom__links w-full p-0">
+      <SidebarFooter className="bottom__links text-white w-full p-0">
         {lastSegment === "user" &&  userBottomLinks.map((link, index) => (
           <Link
             to={link.path}
