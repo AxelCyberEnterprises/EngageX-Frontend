@@ -1,74 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import download from '../../../assets/images/svgs/download-dark.svg';
-import trendUpIcon from '../../../assets/images/svgs/trend-up.svg';
 import calendar from '../../../assets/images/svgs/calendar.svg';
 import ShadSelect from '@/components/dashboard/Select';
-import { useSearchParams } from 'react-router-dom';
+// import { useSearchParams } from 'react-router-dom';
 import SessionComparisonResults from '@/components/dashboard/SessionComparison';
-import SequenceSelector, { Sequence } from '@/components/dashboard/SequenceSelect';
+
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
 
-interface SequenceItem {
-  id: string;
-  title: string;
-  startDate: string;
-  lastUpdated: string;
-  totalCompleted: number;
-  inProgress?: number;
-  sessions?: SessionItem[];
-}
+// interface SequenceItem {
+//   id: string;
+//   title: string;
+//   startDate: string;
+//   lastUpdated: string;
+//   totalCompleted: number;
+//   inProgress?: number;
+//   sessions?: SessionItem[];
+// }
 
-interface SessionItem {
-  id: string;
-  name: string;
-  date: string;
-  duration: string;
-}
+// interface SessionItem {
+//   id: string;
+//   name: string;
+//   date: string;
+//   duration: string;
+// }
 
 const SessionComparison: React.FC = () => {
   const sectionItems = ["view", "comparison"];
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sectionFromUrl = searchParams.get("section");
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const sectionFromUrl = searchParams.get("section");
   const [activeSection, setActiveSection] = useState(sectionItems[0]);
-  const [selectedSequence, setSelectedSequence] = useState<Sequence>();
   const [selectedSequence1, setSelectedSequence1] = useState<string>("");
   const [selectedSequence2, setSelectedSequence2] = useState<string>("");
-
-  const sequences: SequenceItem[] = [
-    {
-      id: "1",
-      title: "Keynote Delivery Refinement",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      sessions: [
-        { id: "1", name: "Sequence 1", date: "Feb 12, 2025", duration: "12 Mins" },
-        { id: "2", name: "Sequence 2", date: "Feb 12, 2025", duration: "5 mins" },
-        { id: "3", name: "Sequence 3", date: "Feb 12, 2025", duration: "5 mins" },
-        { id: "4", name: "Sequence 4", date: "Feb 20, 2025", duration: "12 Mins" },
-        { id: "5", name: "Sequence 5", date: "Feb 20, 2025", duration: "12 Mins" }
-      ]
-    },
-    {
-      id: "2",
-      title: "Pitch Mastery Programme",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1
-    },
-    {
-      id: "3",
-      title: "Presentation Programme",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1
-    }
-  ];
 
   const sequenceOptions1 = [
     {
@@ -113,37 +78,28 @@ const SessionComparison: React.FC = () => {
     setSelectedSequence2(sequence);
   };
 
-  const handleNewSession = (sequenceId: number | string) => {
-    console.log('New session for sequence:', sequenceId);
-  };
-
   const handleCompareSequences = (section: string) => {
     console.log('Comparing sequences:', selectedSequence1, selectedSequence2);
     handleSectionChange(section);
   };
 
-  useEffect(() => {
-    if (sectionFromUrl) {
-      const index = sectionItems.findIndex((item) => item.toLowerCase() === sectionFromUrl.toLowerCase());
-      if (index !== -1) {
-        setActiveSection(sectionItems[index]);
-      }
-    }
-  }, [sectionFromUrl]);
+  // useEffect(() => {
+  //   if (sectionFromUrl) {
+  //     const index = sectionItems.findIndex((item) => item.toLowerCase() === sectionFromUrl.toLowerCase());
+  //     if (index !== -1) {
+  //       setActiveSection(sectionItems[index]);
+  //     }
+  //   }
+  // }, [sectionFromUrl]);
 
-  useEffect(() => {
-    setSearchParams({ section: activeSection });
-  }, [activeSection, setSearchParams]);
+  // useEffect(() => {
+  //   setSearchParams({ section: activeSection });
+  // }, [activeSection, setSearchParams]);
 
   const handleSectionChange = (section: string) => {
     if (sectionItems.includes(section)) {
       setActiveSection(section);
     }
-  };
-
-  const handleSelectSequence = (sequence: Sequence) => {
-    console.log("Selected sequence:", sequence);
-    setSelectedSequence(sequence);
   };
 
   const handleDownloadReport = () => {
@@ -162,7 +118,8 @@ const SessionComparison: React.FC = () => {
       html2pdf().set(opt).from(element).save();
     }
   };
-
+console.log(selectedSequence1)
+console.log(activeSection);
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-2">
@@ -181,36 +138,29 @@ const SessionComparison: React.FC = () => {
         </Button>
       </div>
 
-      {activeSection === 'view' && <section>
-        <SequenceSelector
-          sequences={sequences}
-          onNewSession={handleNewSession}
-          onSelectSequence={handleSelectSequence}
-          trendUpIcon={trendUpIcon}
-        />
-
+      <section>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-[10%]">
           <div>
-            <h3 className="mb-2 text-[#252A39] text-lg font-medium">Select an Improvement Sequence</h3>
+            <h3 className="mb-2 text-[#252A39] text-lg font-medium">Select a Session</h3>
             <ShadSelect
               options={sequenceOptions1}
               onChange={handleSelectSequence1}
               placeholder="Select Sequence"
               className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full'
               icon={calendar}
-              disabled={!selectedSequence}
+              // disabled={!selectedSequence}
             />
           </div>
 
           <div>
-            <h3 className="mb-2 text-[#252A39] text-lg font-medium">Select an Improvement Sequence</h3>
+            <h3 className="mb-2 text-[#252A39] text-lg font-medium">Select a Session</h3>
             <ShadSelect
               options={sequenceOptions2.filter(option => option.value !== selectedSequence1)}
               onChange={handleSelectSequence2}
               placeholder="Select Sequence"
               className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full'
               icon={calendar}
-              disabled={!selectedSequence}
+              // disabled={!selectedSequence}
             />
           </div>
         </div>
@@ -224,9 +174,9 @@ const SessionComparison: React.FC = () => {
             Compare Sessions
           </Button>
         </div>
-      </section>}
+      </section>
 
-      {activeSection === 'comparison' &&
+      {activeSection === 'comparison' && selectedSequence1 && selectedSequence2 &&
         <section>
           <SessionComparisonResults />
         </section>
