@@ -40,7 +40,7 @@ function SessionConfirmationDialog() {
                 </span>
               </small>
               <p className="xs text-[#A06821]">
-                You are about to use 3 credits
+                You are about to use 1 credits
               </p>
             </div>
           </div>
