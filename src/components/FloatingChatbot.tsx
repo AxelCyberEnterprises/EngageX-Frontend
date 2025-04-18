@@ -14,7 +14,7 @@ function FloatingChatbot() {
       {showVideo && (
         <div>
           <video
-            className="h-[29rem] bg-white object-cover w-[25rem] fixed right-32 bottom-10 rounded-xl"
+            className="h-[19rem] bg-white object-cover w-[15rem] fixed right-32 bottom-10 rounded-xl"
             controls
           >
             <source

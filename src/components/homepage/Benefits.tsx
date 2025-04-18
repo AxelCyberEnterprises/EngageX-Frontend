@@ -65,10 +65,11 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Confidence & mastery</h6>
+            {/* <h6 className=" font-montreal">Confidence & mastery</h6> */}
             <p className="text-dark-electric-blue">
-              Perfect your tone, pace, and delivery through personalized
-              feedback
+              Receive real-time feedback on live presentations and accompanying
+              slide decks, with tools to compare sessions and track progress
+              over time
             </p>
           </div>
         </div>
@@ -92,10 +93,11 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Real-time insights</h6>
+            {/* <h6 className=" font-montreal">Real-time insights</h6> */}
             <p className="text-dark-electric-blue">
-              Gain immediate feedback on audience engagement, gold-standard
-              public speaking strategies, and personal goal attainment
+              Benefit from a hybrid generative AI and real-life certified
+              coaching feedback model; combining data-driven insights with human
+              expertise for personalized, actionable guidance
             </p>
           </div>
         </div>
@@ -131,10 +133,10 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Comprehensive analytics</h6>
+            {/* <h6 className=" font-montreal">Comprehensive analytics</h6> */}
             <p className="text-dark-electric-blue">
-              Track your progress with detailed session reports and playback
-              features
+              Track standout performance metrics aligned with industry-leading
+              benchmarks to drive measurable impact
             </p>
           </div>
         </div>
@@ -170,10 +172,10 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal"> Goal-oriented practice</h6>
+            {/* <h6 className=" font-montreal"> Goal-oriented practice</h6> */}
             <p className="text-dark-electric-blue">
-              Set milestones, achieve badges, and grow your speaking skills
-              systematically
+              Gain expert feedback on a range of sales presentations and
+              prospective client pitches to strengthen delivery and outcomes
             </p>
           </div>
         </div>
@@ -209,10 +211,11 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">Support of a certified coach</h6>
+            {/* <h6 className=" font-montreal">Support of a certified coach</h6> */}
             <p className="text-dark-electric-blue">
-              We provide access to the industry's best speech and career coaches
-              to support your professional growth
+              Inspire thousands with impactful delivery - perfect for role
+              models, public figures, and industry giants seeking to lead with
+              influence and authenticity
             </p>
           </div>
         </div>
@@ -248,12 +251,127 @@ function Benefits() {
             </svg>
           </div>
           <div className="space-y-4">
-            <h6 className=" font-montreal">
+            {/* <h6 className=" font-montreal">
               Session improvement functionality
-            </h6>
+            </h6> */}
             <p className="text-dark-electric-blue">
-              Seamlessly improve on the exact same speaking exercise you worked
-              on in the past
+              Deliver storytelling at its finest by refining skills in
+              transformative communication, presence, and emotional connection
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-x-10 w-full border border-[#EBF1FF] items-center py-8 px-9 rounded-2xl bg-[#EBF1FF]">
+          <div className="p-3 flex items-center justify-center rounded-full bg-gunmetal">
+            <svg
+              width="15"
+              height="16"
+              viewBox="0 0 15 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4.68757 9.87527L5.83882 6.42152C5.86772 6.33532 5.92297 6.26039 5.99677 6.2073C6.07056 6.15421 6.15917 6.12565 6.25007 6.12565C6.34098 6.12565 6.42959 6.15421 6.50338 6.2073C6.57718 6.26039 6.63243 6.33532 6.66132 6.42152L7.81257 9.87527M9.68757 6.12527V9.87527M5.31257 8.62527H7.18757M8.85632 13.5565C11.4713 13.3834 13.5538 11.2709 13.7251 8.61902C13.7582 8.10027 13.7582 7.56277 13.7251 7.04402C13.5538 4.39277 11.4713 2.28152 8.85632 2.10714C7.95314 2.04762 7.04701 2.04762 6.14383 2.10714C3.52883 2.28089 1.44633 4.39277 1.27508 7.04464C1.24197 7.56912 1.24197 8.09516 1.27508 8.61964C1.33758 9.58527 1.76445 10.4796 2.26758 11.2346C2.55945 11.7628 2.36695 12.4221 2.06258 12.999C1.84383 13.4146 1.73383 13.6221 1.82195 13.7721C1.90945 13.9221 2.10633 13.9271 2.49945 13.9365C3.27758 13.9553 3.80195 13.7353 4.2182 13.4284C4.45383 13.254 4.57195 13.1671 4.6532 13.1571C4.73445 13.1471 4.89508 13.2134 5.21508 13.3446C5.50258 13.4634 5.83695 13.5365 6.1432 13.5571C7.03383 13.6159 7.96382 13.6153 8.85632 13.5565Z"
+                stroke="white"
+                stroke-width="0.9375"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div className="space-y-4">
+            {/* <h6 className=" font-montreal">
+              Session improvement functionality
+            </h6> */}
+            <p className="text-dark-electric-blue">
+              Access distinct communication verticals that provide niche
+              differentiation and targeted development
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-x-10 w-full border border-[#EBF1FF] items-center py-8 px-9 rounded-2xl bg-[#EBF1FF]">
+          <div className="p-3 flex items-center justify-center rounded-full bg-gunmetal">
+            <svg
+              width="15"
+              height="16"
+              viewBox="0 0 15 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.125 13.625H6.25C4.1875 13.625 3.15625 13.625 2.51563 12.9844C1.875 12.3438 1.875 11.3125 1.875 9.25V2.375M4.99813 11.1244C7.20563 11.1244 11.82 10.2094 11.6856 4.52063M10.3056 5.52688L11.4825 4.34125C11.5112 4.31227 11.5454 4.28923 11.583 4.27345C11.6206 4.25767 11.661 4.24946 11.7018 4.24929C11.7426 4.24911 11.783 4.25698 11.8208 4.27244C11.8586 4.2879 11.8929 4.31064 11.9219 4.33938L13.1231 5.52688"
+                stroke="white"
+                stroke-width="0.9375"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div className="space-y-4">
+            {/* <h6 className=" font-montreal">
+              Session improvement functionality
+            </h6> */}
+            <p className="text-dark-electric-blue">
+              Experience competitive self-mastery with every session, tailored
+              to each communication vertical to encourage growth, confidence,
+              and consistency
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-x-10 w-full border border-[#EBF1FF] items-center py-8 px-9 rounded-2xl bg-[#EBF1FF]">
+          <div className="p-3 flex items-center justify-center rounded-full bg-gunmetal">
+            <svg
+              width="15"
+              height="16"
+              viewBox="0 0 15 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.625 6.06625L10.7037 6.00125C12.0262 4.91 12.6875 4.36438 13.2187 4.62813C13.75 4.89125 13.75 5.765 13.75 7.51125V8.48875C13.75 10.235 13.75 11.1088 13.2187 11.3719C12.6875 11.635 12.0262 11.09 10.7037 9.99875L10.625 9.93375M1.25 7.375C1.25 5.3125 1.25 4.28125 1.89063 3.64063C2.53125 3 3.5625 3 5.625 3H6.25C8.3125 3 9.34375 3 9.98438 3.64063C10.625 4.28125 10.625 5.3125 10.625 7.375V8.625C10.625 10.6875 10.625 11.7188 9.98438 12.3594C9.34375 13 8.3125 13 6.25 13H5.625C3.5625 13 2.53125 13 1.89063 12.3594C1.25 11.7188 1.25 10.6875 1.25 8.625V7.375ZM8.125 6.4375C8.125 6.95527 7.70527 7.375 7.1875 7.375C6.66973 7.375 6.25 6.95527 6.25 6.4375C6.25 5.91973 6.66973 5.5 7.1875 5.5C7.70527 5.5 8.125 5.91973 8.125 6.4375Z"
+                stroke="white"
+                stroke-width="0.9375"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div className="space-y-4">
+            {/* <h6 className=" font-montreal">
+              Session improvement functionality
+            </h6> */}
+            <p className="text-dark-electric-blue">
+              Practice in immersive, lifelike environments with dynamic 3D
+              animation reactionary videos and a variety of virtual rooms to
+              choose from
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-x-10 w-full border border-[#EBF1FF] items-center py-8 px-9 rounded-2xl bg-[#EBF1FF]">
+          <div className="p-3 flex items-center justify-center rounded-full bg-gunmetal">
+            <svg
+              width="15"
+              height="16"
+              viewBox="0 0 15 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.50188 4.89938V9.30562M7.50188 9.30562C7.70563 9.30812 7.90625 9.16812 8.055 8.9975L9.04875 7.88312M7.50188 9.30562C7.30563 9.30312 7.10562 9.16375 6.94812 8.99688L5.95 7.88375M4.99187 11.15H9.99187M1.5625 8C1.5625 5.20125 1.5625 3.80125 2.43188 2.93188C3.30125 2.0625 4.70062 2.0625 7.5 2.0625C10.2988 2.0625 11.6987 2.0625 12.5681 2.93188C13.4375 3.80125 13.4375 5.20062 13.4375 8C13.4375 10.7988 13.4375 12.1987 12.5681 13.0681C11.6987 13.9375 10.2994 13.9375 7.5 13.9375C4.70125 13.9375 3.30125 13.9375 2.43188 13.0681C1.5625 12.1987 1.5625 10.7994 1.5625 8Z"
+                stroke="white"
+                stroke-width="0.9375"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div className="space-y-4">
+            {/* <h6 className=" font-montreal">
+              Session improvement functionality
+            </h6> */}
+            <p className="text-dark-electric-blue">
+              Download audio and video recordings along with personalized
+              comprehensive performance feedback reports for continuous
+              improvement
             </p>
           </div>
         </div>
