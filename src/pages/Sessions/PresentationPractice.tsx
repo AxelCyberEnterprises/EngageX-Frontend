@@ -81,7 +81,7 @@ const PresentationPractice: React.FC = () => {
             .then((images) => {
                 setSlides(images);
                 console.log(images);
-                
+                localStorage.removeItem("slides");
             })
             .catch((err) => {
                 console.error("Error converting PDF to images:", err);
