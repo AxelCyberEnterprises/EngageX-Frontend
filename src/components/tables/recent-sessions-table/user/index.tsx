@@ -7,12 +7,14 @@ interface RecentSessionsTableProps {
   data: Session[];
   pageSize?: number;
   hidePagination?: boolean;
+  loadingRecentSessions?: boolean;
 }
 
 export const RecentSessionsTable = ({ 
   data, 
   pageSize = 5,
-  hidePagination
+  hidePagination,
+  loadingRecentSessions
 }: RecentSessionsTableProps) => {
   return (
     <BaseTable
@@ -23,6 +25,7 @@ export const RecentSessionsTable = ({
       tableHeaderItemClassName="text-gray-600 font-medium text-sm"
       tableContainerClassName="border-none"
       hidePagination={hidePagination}
+      isLoading={loadingRecentSessions}
     />
   );
 };

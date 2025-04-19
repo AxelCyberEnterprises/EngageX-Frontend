@@ -26,7 +26,7 @@ import StatsCardSection from "@/components/dashboard/StatusCard";
 import ShadLineChart from "@/components/dashboard/ShadLineChart";
 import PresentationMetricsTable from "@/components/tables/performance-metric-table/user";
 import { RecentSessionsTable } from "@/components/tables/recent-sessions-table/user";
-import { sessions } from "@/components/tables/recent-sessions-table/user/data";
+import { Session } from "@/components/tables/recent-sessions-table/user/data";
 import { useSearchParams } from "react-router-dom";
 import { columns } from "@/components/tables/performance-metric-table/user/columns";
 import { data } from "@/components/tables/performance-metric-table/user/data";
@@ -34,6 +34,10 @@ import SequenceSelector, {
   Sequence,
 } from "@/components/dashboard/SequenceSelect";
 import RecentAchievementsModal from "@/components/modals/modalVariants/RecentAchievementsModal";
+import { useGoalsAndAchievement } from "@/hooks/goalsAndAcheivement";
+import { useProgressTracking } from "@/hooks/progressTracking";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 interface Achievement {
   id: number;
@@ -57,46 +61,82 @@ const ProgressTracking: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
   const sectionItems = ["Goals & Achievements", "Performance Analysis"];
 
+  const {
+    data: goalsAndAchievement,
+    isLoading,
+    error: fetchGoalsAndAchievement,
+  } = useGoalsAndAchievement();
+  const {
+    data: progressTracking,
+    isLoading: progressTrackingLoading,
+    error: progressTrackingEerror,
+  } = useProgressTracking();
+
+  useEffect(() => {
+    if (fetchGoalsAndAchievement) {
+      toast.error(
+        "Failed to fetch goals and achievement: " +
+          (fetchGoalsAndAchievement.message || "Unknown error")
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (progressTrackingEerror) {
+      toast.error(
+        "Failed to fetch goals and achievement: " +
+          (progressTrackingEerror.message || "Unknown error")
+      );
+    }
+  }, []);
+
+  const getLevel = (score: number) => {
+    if (score >= 1 && score <= 3) return 1;
+    if (score >= 4 && score <= 7) return 2;
+    if (score >= 8 && score <= 10) return 3;
+    return 1;
+  };
+
   const cardData = [
     {
       title: "Vocal Variety",
       wordRate: "85% pitch score",
-      percentage: 20,
+      percentage: goalsAndAchievement?.vocal_variety ?? 0,
     },
     {
       title: "Overall ⁠Captured Impact",
       wordRate: "85% impact score",
-      percentage: 80,
+      percentage: goalsAndAchievement?.overall_captured_impact ?? 0,
     },
     {
       title: "Emotional Impact",
       wordRate: "85% speaker",
-      percentage: 40,
+      percentage: goalsAndAchievement?.emotional_impact ?? 0,
     },
     {
       title: "Body Language",
       wordRate: "85% clarity score",
-      percentage: 60,
+      percentage: goalsAndAchievement?.body_language ?? 0,
     },
     {
       title: "Transformative Communication",
       wordRate: "85% brevity score",
-      percentage: 80,
+      percentage: goalsAndAchievement?.transformative_communication ?? 0,
     },
     {
       title: "Audience Engagement",
       wordRate: "85% posture",
-      percentage: 40,
+      percentage: goalsAndAchievement?.audience_engagement ?? 0,
     },
     {
       title: "Structure & Clarity",
       wordRate: "85% posture",
-      percentage: 40,
+      percentage: goalsAndAchievement?.structure_and_clarity ?? 0,
     },
     {
       title: "Language & Word Choice",
       wordRate: "85% posture",
-      percentage: 40,
+      percentage: goalsAndAchievement?.language_and_word_choice ?? 0,
     },
   ];
 
@@ -104,64 +144,88 @@ const ProgressTracking: React.FC = () => {
     {
       id: 1,
       title: "Vocal Variety Mastery",
-      level: 1,
-      score: 2,
+      score: Math.round((goalsAndAchievement?.vocal_variety ?? 0) / 10),
+      level: getLevel(
+        Math.round((goalsAndAchievement?.vocal_variety ?? 0) / 10)
+      ),
       total: 10,
       note: "Pitch, tone, pace, and pauses.",
     },
     {
       id: 2,
       title: "Overall Captured Impact Mastery",
-      level: 2,
-      score: 5,
+      score: Math.round(
+        (goalsAndAchievement?.overall_captured_impact ?? 0) / 10
+      ),
+      level: getLevel(
+        Math.round((goalsAndAchievement?.overall_captured_impact ?? 0) / 10)
+      ),
       total: 10,
       note: "The impact of the overall speech.",
     },
     {
       id: 3,
       title: "Emotional Impact Mastery",
-      level: 3,
-      score: 10,
+      score: Math.round((goalsAndAchievement?.emotional_impact ?? 0) / 10),
+      level: getLevel(
+        Math.round((goalsAndAchievement?.emotional_impact ?? 0) / 10)
+      ),
       total: 10,
       note: "Compels to the audience's emotions.",
     },
     {
       id: 4,
       title: "Body Language Mastery",
-      level: 2,
-      score: 6,
+      score: Math.round((goalsAndAchievement?.body_language ?? 0) / 10),
+      level: getLevel(
+        Math.round((goalsAndAchievement?.body_language ?? 0) / 10)
+      ),
       total: 10,
       note: "Body posture, motion and hand gestures.",
     },
     {
       id: 5,
       title: "Transformative Communication Mastery",
-      level: 2,
-      score: 7,
+      score: Math.round(
+        (goalsAndAchievement?.transformative_communication ?? 0) / 10
+      ),
+      level: getLevel(
+        Math.round(
+          (goalsAndAchievement?.transformative_communication ?? 0) / 10
+        )
+      ),
       total: 10,
       note: "Inspires change or shifts thinking.",
     },
     {
       id: 6,
       title: "Audience Engagement Mastery",
-      level: 3,
-      score: 8,
+      score: Math.round((goalsAndAchievement?.audience_engagement ?? 0) / 10),
+      level: getLevel(
+        Math.round((goalsAndAchievement?.audience_engagement ?? 0) / 10)
+      ),
       total: 10,
       note: "Triggers the audience to respond.",
     },
     {
       id: 7,
       title: "Structure & Clarity Mastery",
-      level: 2,
-      score: 7,
+      score: Math.round((goalsAndAchievement?.structure_and_clarity ?? 0) / 10),
+      level: getLevel(
+        Math.round((goalsAndAchievement?.structure_and_clarity ?? 0) / 10)
+      ),
       total: 10,
       note: "How clearly ideas are organized and expressed.",
     },
     {
       id: 8,
       title: "Language & Word Choice Mastery",
-      level: 3,
-      score: 8,
+      score: Math.round(
+        (goalsAndAchievement?.language_and_word_choice ?? 0) / 10
+      ),
+      level: getLevel(
+        Math.round((goalsAndAchievement?.language_and_word_choice ?? 0) / 10)
+      ),
       total: 10,
       note: "Avoid filler words and use good grammar.",
     },
@@ -217,13 +281,6 @@ const ProgressTracking: React.FC = () => {
     return starAward;
   };
 
-  const getLevel = (score: number) => {
-    if (score >= 1 && score <= 3) return 1;
-    if (score >= 4 && score <= 7) return 2;
-    if (score >= 8 && score <= 10) return 3;
-    return 1;
-  };
-
   const getLevelColor = (score: number) => {
     if (score >= 1 && score <= 3) return "bg-[#C1C2B4]";
     if (score >= 4 && score <= 7) return "bg-[#ECB25E]";
@@ -236,7 +293,7 @@ const ProgressTracking: React.FC = () => {
       icon: micIcon,
       iconAlt: "Progress icon",
       title: "Speaking Time",
-      value: "12.5 hrs",
+      value: progressTracking?.overview_card.speaking_time || "0:00:00",
       subtext: "Total practice time",
       isPositive: true,
     },
@@ -244,69 +301,60 @@ const ProgressTracking: React.FC = () => {
       icon: tvIcon,
       iconAlt: "Performance icon",
       title: "Total Sessions",
-      value: "28",
+      value: progressTracking?.overview_card.total_session?.toString() || "0",
       subtext: "Completed sessions",
     },
     {
       icon: speakerIcon,
       iconAlt: "Content icon",
       title: "Vocal Range",
-      value: "85%",
+      value: `${Math.round(
+        progressTracking?.overview_card.vocal_variety || 0
+      )}%`,
       subtext: "Voice modulation score",
     },
     {
       icon: messageIcon,
       iconAlt: "Focus icon",
       title: "Clarity",
-      value: "92%",
+      value: `${Math.round(progressTracking?.overview_card.impact || 0)}%`,
       subtext: "Speech clarity score",
     },
   ];
 
-  const chartData = [
-    {
-      month: "January",
-      Impact: 186,
-      AudienceEngagement: 80,
-      Clarity: 33,
-      Confidence: 90,
-    },
-    {
-      month: "February",
-      Impact: 305,
-      AudienceEngagement: 200,
-      Clarity: 33,
-      Confidence: 100,
-    },
-    {
-      month: "March",
-      Impact: 237,
-      AudienceEngagement: 120,
-      Clarity: 33,
-      Confidence: 100,
-    },
-    {
-      month: "April",
-      Impact: 73,
-      AudienceEngagement: 190,
-      Clarity: 33,
-      Confidence: 100,
-    },
-    {
-      month: "May",
-      Impact: 209,
-      AudienceEngagement: 130,
-      Clarity: 33,
-      Confidence: 100,
-    },
-    {
-      month: "June",
-      Impact: 214,
-      AudienceEngagement: 140,
-      Clarity: 33,
-      Confidence: 100,
-    },
-  ];
+  const sessions: Session[] =
+    progressTracking?.recent_session.map((session: any) => {
+      // Format the date for display
+      const date = new Date(session.date);
+      const formattedDate = date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+
+      return {
+        id: session.id.toString(),
+        name: session.session_name,
+        date: formattedDate,
+        type: session.session_type_display,
+        duration: session.formatted_duration,
+        improvement: session.impact,
+      };
+    }) || [];
+
+  const chartData =
+    progressTracking?.graph_data.map((item: any) => {
+      const date = new Date(item.month);
+      const monthName = date.toLocaleString("default", { month: "long" });
+
+      return {
+        month: monthName,
+        Impact: item.impact,
+        AudienceEngagement: item.audience_engagement,
+        Clarity: item.clarity,
+        Confidence: 90,
+      };
+    }) || [];
 
   const chartColors = {
     Impact: "#252A39",
@@ -483,7 +531,7 @@ const ProgressTracking: React.FC = () => {
                   Gold Standard for EngageX™{" "}
                 </h3>
                 <p className="text-sm text-[#6F7C8E]">
-                  Here’s a quick overview of your active goals{" "}
+                  Here's a quick overview of your active goals{" "}
                 </p>
               </div>
               {/* <Button
@@ -499,153 +547,220 @@ const ProgressTracking: React.FC = () => {
               View all goals
             </Button> */}
             </section>
-            <section className="grid lg:grid-cols-3 grid-cols-1 md:gap-6 gap-4">
-              {cardData.map((item, index) => (
-                <Card
-                  key={index}
-                  className="gap-0 px-4 py-4 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]"
-                >
-                  <div className="flex justify-between items-center mb-4">
-                    <h4 className="lg:text-lg text-base text-[#333333]">
-                      {item.title}
-                    </h4>
-                    {/* <p className='text-sm text-[#6F7C8E]'>{item.wordRate}</p> */}
-                  </div>
-                  <SegmentedProgressBar
-                    percent={item.percentage}
-                    color={getProgressBarColorCard(item.percentage)}
-                    divisions={10}
-                    height="0.375rem"
-                  />
-                  <p className="text-[#252A39D9] mt-3">
-                    {item.percentage}% complete
-                  </p>
-                </Card>
-              ))}
-              <div className="gap-0 px-4 py-4 rounded-[12px] flex bg-sidebar flex-col justify-between">
-                <div className="flex justify-between items-center mb-4">
-                  <h4 className="lg:text-xl text-base text-[#C1C2B4]">
-                    Level 1
-                  </h4>
-                  <div className="w-[50%]">
-                    <SegmentedProgressBar
-                      percent={30}
-                      color="#C1C2B4"
-                      divisions={10}
-                      height="0.375rem"
-                    />
-                  </div>
-                  <h4 className="lg:text-xl text-base text-[#C1C2B4]">0 - 3</h4>
-                </div>
-                <div className="flex justify-between items-center mb-4">
-                  <h4 className="lg:text-xl text-base text-[#ECB25E]">
-                    Level 2
-                  </h4>
-                  <div className="w-[50%]">
-                    <SegmentedProgressBar
-                      percent={50}
-                      color="#ECB25E"
-                      divisions={10}
-                      height="0.375rem"
-                    />
-                  </div>
-                  <h4 className="lg:text-xl text-base text-[#ECB25E]">4 - 7</h4>
-                </div>
-                <div className="flex justify-between items-center mb-4">
-                  <h4 className="lg:text-xl text-base text-[#64BA9F]">
-                    Level 3
-                  </h4>
-                  <div className="w-[50%]">
-                    <SegmentedProgressBar
-                      percent={100}
-                      color="#64BA9F"
-                      divisions={10}
-                      height="0.375rem"
-                    />
-                  </div>
-                  <h4 className="lg:text-xl text-base text-[#64BA9F]">
-                    8 - 10
-                  </h4>
-                </div>
-              </div>
-            </section>
-            <section className="grid lg:grid-cols-[2fr_3fr] grid-cols-1 lg:gap-4 md:gap-10 gap-6 lg:mt-6 md:mt-10 mt-6 mb-12">
-              <div className="gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]">
-                <div className="flex justify-between gap-4 items-center">
-                  <div>
-                    <h3 className="text-[#252A39] lg:text-lg text-base lg:mt-0 mt-2">
-                      Recent Achievements
-                    </h3>
-                    <p className="sm:text-sm text-xs text-[#6F7C8E] py-2">
-                      Here’s a list your of your earned achievements
-                    </p>
-                  </div>
-                  <p
-                    onClick={() => setShowRecentAchievementsModal(true)}
-                    className="text-[#262B3A] border-b border-[#262B3A] sm:text-sm text-xs whitespace-nowrap cursor-pointer"
-                  >
-                    View All
-                  </p>
-                </div>
-                {achievementData.slice(0, 3).map((item) => (
-                  <div key={item.id} className="flex gap-3 mb-6 px-2">
-                    <div
-                      className={`flex flex-col items-center justify-between p-2 rounded-[6px] ${getLevelColor(
-                        item.score
-                      )}`}
-                    >
-                      <div className="bg-[#FFFFFF33] rounded-full w-[50px] h-[50px] grid place-content-center">
-                        <img src={getLevelImage(item.score)} alt="level icon" />
-                      </div>
-                      <p className="text-white text-xs whitespace-nowrap">
-                        LEVEL {getLevel(item.score)}
-                      </p>
-                    </div>
-
-                    <Card className="border-none shadow-none py-2 gap-2 w-full">
-                      <div className="flex justify-between items-center">
-                        <h4 className="lg:text-lg text-base text-[#333333]">
-                          {item.title}
+            {
+              <div>
+                {isLoading ? (
+                  <section className="grid lg:grid-cols-3 grid-cols-1 md:gap-6 gap-4">
+                    {Array(9)
+                      .fill(0)
+                      .map((_, index) => (
+                        <Card
+                          key={index}
+                          className="gap-0 px-4 py-4 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914] flex flex-col justify-between"
+                        >
+                          <div className="flex justify-between items-center mb-4">
+                            <Skeleton className="h-6 w-2/3" />
+                          </div>
+                          <Skeleton className="h-2 w-full mb-1" />
+                          <Skeleton className="h-2 w-1/2 mt-3" />
+                        </Card>
+                      ))}
+                  </section>
+                ) : (
+                  <section className="grid lg:grid-cols-3 grid-cols-1 md:gap-6 gap-4">
+                    {cardData.map((item, index) => (
+                      <Card
+                        key={index}
+                        className="gap-0 px-4 py-4 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914] flex flex-col justify-between"
+                      >
+                        <div className="flex justify-between items-center mb-4">
+                          <h4 className="lg:text-lg text-base text-[#333333]">
+                            {item.title}
+                          </h4>
+                          {/* <p className='text-sm text-[#6F7C8E]'>{item.wordRate}</p> */}
+                        </div>
+                        <SegmentedProgressBar
+                          percent={item.percentage}
+                          color={getProgressBarColorCard(item.percentage)}
+                          divisions={10}
+                          height="0.375rem"
+                        />
+                        <p className="text-[#252A39D9] mt-3">
+                          {item.percentage}% complete
+                        </p>
+                      </Card>
+                    ))}
+                    <div className="gap-0 px-4 py-4 rounded-[12px] flex bg-sidebar flex-col justify-between">
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="lg:text-xl text-base text-[#C1C2B4]">
+                          Level 1
                         </h4>
-                        <p className="text-sm text-[#6F7C8E]">
-                          {item.score}/{item.total}
-                        </p>
+                        <div className="w-[50%]">
+                          <SegmentedProgressBar
+                            percent={30}
+                            color="#C1C2B4"
+                            divisions={10}
+                            height="0.375rem"
+                          />
+                        </div>
+                        <h4 className="lg:text-xl text-base text-[#C1C2B4]">
+                          0 - 3
+                        </h4>
                       </div>
-                      <SegmentedProgressBar
-                        percent={getPercentage(item.score, item.total)}
-                        color={getProgressBarColor(item.score)}
-                        divisions={10}
-                        className="h-1.5"
-                      />
-                      <p className="text-[#252A39D9] mt-1 sm:text-sm text-xs">
-                        {item.note}
-                      </p>
-                    </Card>
-                  </div>
-                ))}
-              </div>
-              <div className="border border-[#E0E0E0] rounded-[12px] p-5 h-fit">
-                <h4 className="text-[#252A39] lg:text-lg text-base">
-                  Daily Progress Tracker
-                </h4>
-                <p className="text-[#6F7C8E] text-sm">
-                  Display daily progress tracker
-                </p>
-                <div className="grid grid-cols-1 md:gap-x-6">
-                  {streakStats.map((item) => (
-                    <div className="border border-[#E0E0E0] p-3 flex gap-3 rounded-[12px] mt-4 mb-2">
-                      <img src={item.icon} alt="diamond" className="h-fit" />
-                      <div>
-                        <p className="text-[#252A39]">{item.number}</p>
-                        <p className="text-[#6F7C8E] sm:text-base text-sm">
-                          {item.text}
-                        </p>
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="lg:text-xl text-base text-[#ECB25E]">
+                          Level 2
+                        </h4>
+                        <div className="w-[50%]">
+                          <SegmentedProgressBar
+                            percent={50}
+                            color="#ECB25E"
+                            divisions={10}
+                            height="0.375rem"
+                          />
+                        </div>
+                        <h4 className="lg:text-xl text-base text-[#ECB25E]">
+                          4 - 7
+                        </h4>
+                      </div>
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="lg:text-xl text-base text-[#64BA9F]">
+                          Level 3
+                        </h4>
+                        <div className="w-[50%]">
+                          <SegmentedProgressBar
+                            percent={100}
+                            color="#64BA9F"
+                            divisions={10}
+                            height="0.375rem"
+                          />
+                        </div>
+                        <h4 className="lg:text-xl text-base text-[#64BA9F]">
+                          8 - 10
+                        </h4>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </section>
+                )}
+                <section className="grid lg:grid-cols-[2fr_3fr] grid-cols-1 lg:gap-4 md:gap-10 gap-6 lg:mt-6 md:mt-10 mt-6 mb-12">
+                  {isLoading ? (
+                    <div className="gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]">
+                      <div className="flex justify-between gap-4 items-center">
+                        <div>
+                          <h3 className="text-[#252A39] lg:text-lg text-base lg:mt-0 mt-2">
+                            Recent Achievements
+                          </h3>
+                          <p className="sm:text-sm text-xs text-[#6F7C8E] py-2">
+                            Here's a list your of your earned achievements
+                          </p>
+                        </div>
+                        <Skeleton className="h-5 w-16" />
+                      </div>
+                      {Array(3)
+                        .fill(0)
+                        .map((_, index) => (
+                          <div key={index} className="flex gap-3 mb-6 px-2">
+                            <Skeleton className="h-20 w-16 rounded-md" />
+                            <Card className="border-none shadow-none py-2 gap-2 w-full">
+                              <div className="flex justify-between items-center">
+                                <Skeleton className="h-6 w-3/4" />
+                                <Skeleton className="h-4 w-10" />
+                              </div>
+                              <Skeleton className="h-2 w-full my-2" />
+                              <Skeleton className="h-4 w-3/4 mt-1" />
+                            </Card>
+                          </div>
+                        ))}
+                    </div>
+                  ) : (
+                    <div className="gap-0 px-4 py-2 rounded-[12px] border border-[#E0E0E0] shadow-[0px_2px_8px_0px_#252A3914]">
+                      <div className="flex justify-between gap-4 items-center">
+                        <div>
+                          <h3 className="text-[#252A39] lg:text-lg text-base lg:mt-0 mt-2">
+                            Recent Achievements
+                          </h3>
+                          <p className="sm:text-sm text-xs text-[#6F7C8E] py-2">
+                            Here’s a list your of your earned achievements
+                          </p>
+                        </div>
+                        <p
+                          onClick={() => setShowRecentAchievementsModal(true)}
+                          className="text-[#262B3A] border-b border-[#262B3A] sm:text-sm text-xs whitespace-nowrap cursor-pointer"
+                        >
+                          View All
+                        </p>
+                      </div>
+                      <div>
+                        {achievementData.slice(0, 3).map((item) => (
+                          <div key={item.id} className="flex gap-3 mb-6 px-2">
+                            <div
+                              className={`flex flex-col items-center justify-between p-2 rounded-[6px] ${getLevelColor(
+                                item.score
+                              )}`}
+                            >
+                              <div className="bg-[#FFFFFF33] rounded-full w-[50px] h-[50px] grid place-content-center">
+                                <img
+                                  src={getLevelImage(item.score)}
+                                  alt="level icon"
+                                />
+                              </div>
+                              <p className="text-white text-xs whitespace-nowrap">
+                                LEVEL {getLevel(item.score)}
+                              </p>
+                            </div>
+
+                            <Card className="border-none shadow-none py-2 gap-2 w-full">
+                              <div className="flex justify-between items-center">
+                                <h4 className="lg:text-lg text-base text-[#333333]">
+                                  {item.title}
+                                </h4>
+                                <p className="text-sm text-[#6F7C8E]">
+                                  {item.score}/{item.total}
+                                </p>
+                              </div>
+                              <SegmentedProgressBar
+                                percent={getPercentage(item.score, item.total)}
+                                color={getProgressBarColor(item.score)}
+                                divisions={10}
+                                className="h-1.5"
+                              />
+                              <p className="text-[#252A39D9] mt-1 sm:text-sm text-xs">
+                                {item.note}
+                              </p>
+                            </Card>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <div className="border border-[#E0E0E0] rounded-[12px] p-5 h-fit">
+                    <h4 className="text-[#252A39] lg:text-lg text-base">
+                      Daily Progress Tracker
+                    </h4>
+                    <p className="text-[#6F7C8E] text-sm">
+                      Display daily progress tracker
+                    </p>
+                    <div className="grid grid-cols-1 md:gap-x-6">
+                      {streakStats.map((item) => (
+                        <div className="border border-[#E0E0E0] p-3 flex gap-3 rounded-[12px] mt-4 mb-2">
+                          <img
+                            src={item.icon}
+                            alt="diamond"
+                            className="h-fit"
+                          />
+                          <div>
+                            <p className="text-[#252A39]">{item.number}</p>
+                            <p className="text-[#6F7C8E] sm:text-base text-sm">
+                              {item.text}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
               </div>
-            </section>
+            }
           </div>
         )}
 
@@ -657,12 +772,15 @@ const ProgressTracking: React.FC = () => {
                   Performance Overview
                 </h3>
                 <p className="text-sm text-[#6F7C8E] mt-1">
-                  Here’s a quick overview of your performance
+                  Here's a quick overview of your performance
                 </p>
               </div>
             </section>
             <section className="mt-10">
-              <StatsCardSection cards={performanceCardsData} />
+              <StatsCardSection
+                cards={performanceCardsData}
+                loadingCards={progressTrackingLoading}
+              />
             </section>
             <section className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-10">
               <div className="analytics sm:px-5 px-4 sm:py-7 py-5 h-fit rounded-[8px] border border-[#E4E7EC] shadow-none">
@@ -683,7 +801,11 @@ const ProgressTracking: React.FC = () => {
                 </div>
 
                 <div className="chart__div">
-                  <ShadLineChart data={chartData} colors={chartColors} />
+                  <ShadLineChart
+                    data={chartData}
+                    colors={chartColors}
+                    isLoading={progressTrackingLoading}
+                  />
                 </div>
               </div>
               <div className="pl-6 pt-4 rounded-lg border border-gray-200 bg-white shadow-none">
@@ -727,6 +849,7 @@ const ProgressTracking: React.FC = () => {
                 <RecentSessionsTable
                   data={filteredSessions}
                   hidePagination={true}
+                  loadingRecentSessions={progressTrackingLoading}
                 />
               </div>
             </section>
