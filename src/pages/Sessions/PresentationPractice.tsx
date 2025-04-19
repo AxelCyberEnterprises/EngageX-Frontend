@@ -18,6 +18,7 @@ import questionImage from "../../assets/images/pngs/question-image.png";
 import TimerComponent from "@/components/session/TimerComponent";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
 import { useEndSession } from "@/hooks/sessions";
+import { pdfToImages } from "@/lib/utils";
 
 const PresentationPractice: React.FC = () => {
     const [stop, setStop] = useState(false);
@@ -26,19 +27,7 @@ const PresentationPractice: React.FC = () => {
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
     const time = 15; // in minutes
-    const slides = [
-        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
-        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
-        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
-        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
-        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
-        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
-        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
-        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
-        "https://place.abh.ai/s3fs-public/placeholder/things2_640x480.jpeg",
-        "https://i.ytimg.com/vi/t5n07Ybz7yI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLD6TcPs-YpB8bJwfzZcwKeq8w2jxA",
-    ];
-
+    const [slides, setSlides] = useState<any[]>([])
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
@@ -77,6 +66,27 @@ const PresentationPractice: React.FC = () => {
     const triggerNextSlide = () => {
         sliderRef.current?.nextSlide();
     };
+
+    useEffect(() => {
+        const base64 = localStorage.getItem("slides");
+        if (!base64) return;
+
+        // Fetch the base64 PDF string and turn it into a Blob
+        fetch(base64)
+            .then((res) => res.blob())
+            .then((blob) => {
+                const file = new File([blob], "upload.pdf", { type: "application/pdf" });
+                return pdfToImages(file); // Convert PDF to images
+            })
+            .then((images) => {
+                setSlides(images);
+                console.log(images);
+                
+            })
+            .catch((err) => {
+                console.error("Error converting PDF to images:", err);
+            });
+    }, []);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -260,7 +270,7 @@ const PresentationPractice: React.FC = () => {
                             start={startTimer}
                             stop={stop}
                             onStop={(dur) => {
-                                stopTimer(dur, undefined)
+                                stopTimer(dur, undefined);
                             }}
                         />
                     </div>
@@ -295,7 +305,7 @@ const PresentationPractice: React.FC = () => {
                                     start={startTimer}
                                     stop={stop}
                                     onStop={(durationArr) => {
-                                        stopTimer(undefined, durationArr)
+                                        stopTimer(undefined, durationArr);
                                     }}
                                 />
                             </div>
@@ -322,12 +332,16 @@ const PresentationPractice: React.FC = () => {
                         <div className="w-2/3 rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5 hidden md:inline-block">
                             <div className="flex items-center justify-between">
                                 <div className="w-2/3 h-40">
-                                    {sliderRef.current?.nextSlideImage && (
+                                    {sliderRef.current?.nextSlideImage ? (
                                         <img
                                             src={sliderRef.current.nextSlideImage}
                                             alt="Next"
                                             className="w-full h-full object-cover rounded-lg"
                                         />
+                                    ) : (
+                                            <div className="w-full h-full bg-bright-gray rounded-lg flex justify-center items-center">
+                                                <p>No next slide</p>
+                                            </div>
                                     )}
                                 </div>
                                 <div className="flex flex-col gap-3 h-full justify-center">
