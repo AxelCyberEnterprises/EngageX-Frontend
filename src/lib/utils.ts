@@ -3,6 +3,9 @@ import { clsx, type ClassValue } from "clsx";
 import { eachMonthOfInterval, endOfYear, format, parseISO, startOfYear } from "date-fns";
 import Cookies from "js-cookie";
 import { twMerge } from "tailwind-merge";
+import * as pdfjsLib from "pdfjs-dist";
+// 👇 Manually specify the worker file location
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -153,4 +156,26 @@ export const convertDataUrlToFile = (dataUrl: string, filename: string): File =>
     }
 
     return new File([u8arr], filename, { type: mime });
+};
+
+export const pdfToImages = async (file: File): Promise<string[]> => {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+    const images: string[] = [];
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 2 });
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d")!;
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({ canvasContext: context, viewport }).promise;
+        images.push(canvas.toDataURL("image/png"));
+    }
+
+    return images;
 };

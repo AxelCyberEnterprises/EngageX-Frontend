@@ -1,7 +1,7 @@
 import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
 import { useSessionHistory } from "@/hooks/auth";
-import { useCreatePublicSpeakingSession } from "@/hooks/mutations/dashboard/user";
+import { useCreatePublicSpeakingSession } from "@/hooks/sessions";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import StartSession from ".";
