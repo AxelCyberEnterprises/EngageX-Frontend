@@ -86,7 +86,6 @@ const SessionComparison: React.FC = () => {
   
 
   const handleCompareSequences = (section: string) => {
-    console.log('Comparing sequences:', selectedSequence1, selectedSequence2);
     handleSectionChange(section);
   };
 

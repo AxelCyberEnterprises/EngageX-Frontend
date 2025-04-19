@@ -307,7 +307,7 @@ const ProgressTracking: React.FC = () => {
     return {
       month: monthName,
       Impact: item.impact,
-      AudienceEngagement: item.audience_engagement,
+      TriggerResponse: item.audience_engagement,
       Clarity: item.clarity,
       Confidence: 90
     };
@@ -315,7 +315,7 @@ const ProgressTracking: React.FC = () => {
 
   const chartColors = {
     Impact: "#252A39",
-    AudienceEngagement: "#64BA9F",
+    TriggerResponse: "#64BA9F",
     Clarity: '#40B869'
   };
 
@@ -402,7 +402,6 @@ const ProgressTracking: React.FC = () => {
     const sectionName = sectionItems[index].split("&")[0].trim();
     setActiveIndex(index);
     setSearchParams({ section: sectionName });
-    console.log('ggs')
   };
 
   useEffect(() => {
@@ -422,7 +421,6 @@ const ProgressTracking: React.FC = () => {
   }, [sectionFromUrl]);
 
   const handleSelectSequence = (sequence: Sequence) => {
-    console.log("Selected sequence:", sequence);
     setSelectedSequence(sequence);
   };
 

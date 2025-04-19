@@ -8,7 +8,7 @@ interface SessionComparisonResultsProps {
   session2: any;
 }
 
-const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({session1, session2}) => {
+const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ session1, session2 }) => {
 
   const getScoreBackgroundColor = (score: number) => {
     if (score >= 80) return 'bg-[#e6f7e6]'; // Light green
@@ -39,28 +39,32 @@ const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({sess
               <div className="mb-4">
                 <p className="text-green-600 mb-2">Strengths</p>
                 <ul className="space-y-2 text-sm">
-                  {session1.insights.filter((insight: any) => insight.type === 'strength').map(({insight, index}: any) => (
-                    <li key={index} className="flex items-start">
-                      <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                        <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span className="text-[#252A39]">{insight.text}</span>
-                    </li>
-                  ))}
+                  {session1.insights
+                    .filter((insight: any) => insight?.type === 'strength')
+                    .map((insight: any, index: number) => (
+                      <li key={index} className="flex items-start">
+                        <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                          <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[#252A39]">{insight?.text}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
 
               <div>
                 <p className="text-red-500 mb-2">Areas of Improvement</p>
                 <ul className="space-y-2 text-sm">
-                  {session1.insights.filter((insight: any) => insight.type === 'improvement').map(({insight, index}: any) => (
-                    <li key={index} className="flex items-start">
-                      <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span className="text-[#252A39]">{insight.text}</span>
-                    </li>
-                  ))}
+                  {session1.insights
+                    .filter((insight: any) => insight?.type === 'improvement')
+                    .map((insight: any, index: number) => (
+                      <li key={index} className="flex items-start">
+                        <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                          <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[#252A39]">{insight?.text}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -86,28 +90,32 @@ const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({sess
               <div className="mb-4">
                 <p className="text-green-600 mb-2">Strengths</p>
                 <ul className="space-y-2 text-sm">
-                  {session2.insights.filter((insight: any) => insight.type === 'strength').map(({insight, index}: any) => (
-                    <li key={index} className="flex items-start">
-                      <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                        <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span className="text-[#252A39]">{insight.text}</span>
-                    </li>
-                  ))}
+                  {session2.insights
+                    .filter((insight: any) => insight?.type === 'strength')
+                    .map((insight: any, index: number) => (
+                      <li key={index} className="flex items-start">
+                        <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                          <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[#252A39]">{insight?.text}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
 
               <div>
                 <p className="text-red-500 mb-2">Areas of Improvement</p>
                 <ul className="space-y-2 text-sm">
-                  {session2.insights.filter((insight: any) => insight.type === 'improvement').map(({insight, index}: any) => (
-                    <li key={index} className="flex items-start">
-                      <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span className="text-[#252A39]">{insight.text}</span>
-                    </li>
-                  ))}
+                  {session1.insights
+                    .filter((insight: any) => insight?.type === 'improvement')
+                    .map((insight: any, index: number) => (
+                      <li key={index} className="flex items-start">
+                        <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                          <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[#252A39]">{insight?.text}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
