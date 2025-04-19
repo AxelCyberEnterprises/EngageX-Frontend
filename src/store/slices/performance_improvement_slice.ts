@@ -118,9 +118,9 @@ interface PIData {
   active_screen: PIScreens;
   new_pis: {
     title: string;
-    completion_percentage: number;
+    impact: number;
     date: string;
-    time: string;
+    duration: string;
     new_sequence_name: string;
   };
   dialog: DialogState;
@@ -132,9 +132,9 @@ const initialState: PIData = {
   active_screen: PIScreens.DEFAULT,
   new_pis: {
     title: "",
-    completion_percentage: 0,
+    impact: 0,
     date: "",
-    time: "",
+    duration: "",
     new_sequence_name: "",
   },
   dialog: {
@@ -162,6 +162,24 @@ const PerformanceImprovementSlice = createSlice({
     handleDialog: (state, action: PayloadAction<{ dialog: DialogState }>) => {
       state.dialog = action.payload.dialog; // ✅ Ensure state is updated correctly
     },
+    updateNewPISData: (
+      state,
+      action: PayloadAction<{
+        title: string;
+        impact: number;
+        date: string;
+        duration: string;
+        new_sequence_name: string;
+      }>
+    ) => {
+      state.new_pis = {
+        title: action.payload.title,
+        impact: action.payload.impact,
+        date: action.payload.date,
+        duration: action.payload.duration,
+        new_sequence_name: action.payload.new_sequence_name,
+      };
+    },
     updateActiveExistingSession: (state, action: PayloadAction<number>) => {
       state.existing_sessions = state.existing_sessions.map((item, idx) => ({
         ...item,
@@ -176,5 +194,6 @@ export const {
   handleActiveScreen,
   handleSelectedScreen,
   updateActiveExistingSession,
+  updateNewPISData,
 } = PerformanceImprovementSlice.actions; // Export actions
 export default PerformanceImprovementSlice.reducer; // Export reducer

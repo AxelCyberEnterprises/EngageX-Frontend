@@ -1,7 +1,7 @@
 import { CartesianGrid, Line, LineChart, XAxis, YAxis, Legend, LegendProps } from "recharts";
-
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ChartData = {
     month: string;
@@ -11,6 +11,7 @@ type ChartData = {
 type Props = {
     data: ChartData[];
     colors: Record<string, string>;
+    isLoading?: boolean;
 };
 
 const CustomLegend = (props: LegendProps) => {
@@ -31,11 +32,34 @@ const CustomLegend = (props: LegendProps) => {
     );
 };
 
-export default function ShadLineChart({ data, colors }: Props) {
+export default function ShadLineChart({ data, colors, isLoading = false }: Props) {
     const chartConfig = Object.keys(colors).reduce((acc, key) => {
         acc[key] = { label: key.charAt(0).toUpperCase() + key.slice(1), color: colors[key] };
         return acc;
     }, {} as ChartConfig);
+
+    if (isLoading) {
+        return (
+            <Card className="bg-transparent shadow-none border-0 pb-0">
+                <CardContent className="px-0">
+                    <div className="w-full">
+                        <Skeleton className="h-6 w-32 mb-4" />
+                        <div className="space-y-2">
+                            <Skeleton className="h-[200px] w-full rounded-md" />
+                            <div className="flex justify-center gap-4 pt-4">
+                                {Object.keys(colors).map((idx: any) => (
+                                    <div key={idx} className="flex items-center gap-2">
+                                        <Skeleton className="w-1.5 h-4" />
+                                        <Skeleton className="h-4 w-16" />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <Card className="bg-transparent shadow-none border-0 pb-0">

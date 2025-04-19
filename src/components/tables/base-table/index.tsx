@@ -1,13 +1,16 @@
+import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
+import SessionHistorySkeleton from "@/components/skeletons/SessionHistorySkeleton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
+import { setSessionId } from "@/store/slices/sessionSlice";
 import {
     ColumnDef,
     ColumnFiltersState,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
-    getPaginationRowModel,
     getSortedRowModel,
     PaginationState,
     SortingState,
@@ -15,20 +18,19 @@ import {
     VisibilityState,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import BaseTablePagination from "./BaseTablePagination";
-import BaseTableToolbar from "./BaseTableToolbar";
-import { cn } from "@/lib/utils";
-import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
-import { setSessionId } from "@/store/slices/sessionSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import SessionHistorySkeleton from "@/components/skeletons/SessionHistorySkeleton";
+import BaseTablePagination from "./BaseTablePagination";
+import BaseTableToolbar from "./BaseTableToolbar";
 
 interface BaseTableProps<TData, TValue> {
     id?: string;
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    error?: any;
+    count?: number;
+    pagination?: PaginationState;
+    setPagination?: React.Dispatch<React.SetStateAction<PaginationState>>;
+    error?: Error | null;
     showToolBar?: boolean;
     tableHeaderClassName?: string;
     tableHeaderItemClassName?: string;
@@ -44,25 +46,24 @@ export function BaseTable<TData, TValue>({
     error,
     isLoading,
     data,
+    count,
+    pagination,
+    setPagination,
     showToolBar,
     tableHeaderClassName,
     tableHeaderItemClassName,
     tableContainerClassName,
     hidePagination,
-    pageSize = 20, // Default page size
     emptyState,
+    pageSize
 }: BaseTableProps<TData, TValue>) {
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: pageSize,
-    });
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     const table = useReactTable({
         data,
@@ -74,16 +75,16 @@ export function BaseTable<TData, TValue>({
             rowSelection,
             sorting,
         },
+        pageCount: Math.ceil(count ? count / (pagination?.pageSize || 20) : 0),
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
         onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
         onPaginationChange: setPagination,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
-        manualPagination: false, // Ensure automatic pagination
+        manualPagination: true,
     });
 
     const defaultEmptyState = (
@@ -100,10 +101,10 @@ export function BaseTable<TData, TValue>({
     );
 
     const TableSkeleton = () => {
-        const rows = pagination.pageSize;
+        const rows = data.length > 0 ? data.length : pagination?.pageSize || pageSize || 20;
         return (
             <>
-              <SessionHistorySkeleton rows={rows} columns={columns}/>
+                <SessionHistorySkeleton rows={rows} columns={columns} />
             </>
         );
     };
@@ -112,7 +113,9 @@ export function BaseTable<TData, TValue>({
         <div className="flex flex-col gap-y-6">
             {showToolBar && <BaseTableToolbar table={table} />}
 
-            <ScrollArea className={cn("rounded-t-md border border-bright-gray whitespace-nowrap", tableContainerClassName)}>
+            <ScrollArea
+                className={cn("rounded-t-md border border-bright-gray whitespace-nowrap", tableContainerClassName)}
+            >
                 <Table className="**:border-bright-gray">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -123,15 +126,16 @@ export function BaseTable<TData, TValue>({
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
                                         key={header.id}
-                                        className={cn("font-semibold px-4 py-2 align-baseline", tableHeaderItemClassName)}
+                                        className={cn(
+                                            "font-semibold px-4 py-2 align-baseline",
+                                            tableHeaderItemClassName,
+                                        )}
                                     >
-                                        {header.isPlaceholder
-                                            ? null
-                                            : (isLoading ? (
-                                                <Skeleton className="h-6 w-24" />
-                                            ) : (
-                                                flexRender(header.column.columnDef.header, header.getContext())
-                                            ))}
+                                        {header.isPlaceholder ? null : isLoading ? (
+                                            <Skeleton className="h-6 w-24" />
+                                        ) : (
+                                            flexRender(header.column.columnDef.header, header.getContext())
+                                        )}
                                     </TableHead>
                                 ))}
                             </TableRow>
@@ -155,7 +159,9 @@ export function BaseTable<TData, TValue>({
                                         const rowData = row.original as { id?: string };
                                         if (rowData.id) {
                                             dispatch(setSessionId(rowData.id));
-                                            navigate(`/dashboard/${user.is_admin ? "admin":"user"}/session-history/${rowData.id}`);
+                                            navigate(
+                                                `/dashboard/${user.is_admin ? "admin" : "user"}/session-history/${rowData.id}`,
+                                            );
                                         }
                                     }}
                                     data-state={row.getIsSelected() && "selected"}

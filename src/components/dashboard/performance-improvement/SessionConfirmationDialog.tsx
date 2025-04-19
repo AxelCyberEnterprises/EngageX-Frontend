@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 function SessionConfirmationDialog() {
   const dispatch = useDispatch();
   const dialog = useSelector(
-    (state: RootState) => state.performance_improvment.dialog
+    (state: RootState) => state.performance_improvement.dialog
   );
   return (
     <AlertDialog
@@ -40,7 +40,7 @@ function SessionConfirmationDialog() {
                 </span>
               </small>
               <p className="xs text-[#A06821]">
-                You are about to use 3 credits
+                You are about to use 1 credits
               </p>
             </div>
           </div>

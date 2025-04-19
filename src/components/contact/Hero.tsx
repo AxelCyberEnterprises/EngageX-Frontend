@@ -1,6 +1,42 @@
+import { useContactUs } from "@/hooks/auth";
 import { Link } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import clsx from "clsx";
+
+type FormValues = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  message: string;
+  agreed_to_policy: boolean;
+};
 
 function Hero() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormValues>();
+
+  const { mutate: contactUs, status } = useContactUs({
+    onSuccess: () => {
+      toast.success("Email sent successfully");
+      console.log("success");
+      reset();
+    },
+    onError: () => {
+      toast.error("Couldn't send email at the moment. Try again later");
+      console.log("error");
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    console.log("Form Data:", data);
+    contactUs(data);
+  };
+
   return (
     <section className="flex flex-col md:flex-row px-10 lg:px-20 gap-20 font-montserrat py-26">
       <div className="flex-1 flex flex-col justify-between gap-28">
@@ -212,19 +248,40 @@ function Hero() {
         </div>
       </div>
 
-      <div className="flex-1 space-y-8 p-6 lg:p-9 border border-[#D0D5DD] rounded-2xl">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex-1 space-y-8 p-6 lg:p-9 border border-[#D0D5DD] rounded-2xl"
+      >
         <div className="flex flex-wrap gap-6">
           <div className="space-y-4 w-full">
-            <label className="text-[#475467] small" htmlFor="firstname">
+            <label className="text-[#475467] small" htmlFor="first_name">
               First name
             </label>
-            <input type="text" placeholder="First name" className="mt-3" />
+            <input
+              type="text"
+              placeholder="First name"
+              className="mt-3 text-black"
+              {...register("first_name")}
+            />
+            {errors.first_name && (
+              <p className="text-red-500 text-sm">
+                {errors.first_name.message}
+              </p>
+            )}
           </div>
           <div className="space-y-4 w-full">
-            <label className="text-[#475467] small" htmlFor="lastname">
+            <label className="text-[#475467] small" htmlFor="last_name">
               Last name
             </label>
-            <input type="text" placeholder="Last name" className="mt-3" />
+            <input
+              type="text"
+              placeholder="Last name"
+              className="mt-3 text-black"
+              {...register("last_name")}
+            />
+            {errors.last_name && (
+              <p className="text-red-500 text-sm">{errors.last_name.message}</p>
+            )}
           </div>
         </div>
 
@@ -232,30 +289,63 @@ function Hero() {
           <label className="text-[#475467] small" htmlFor="email">
             Email
           </label>
-          <input type="email" placeholder="you@company.com" className="mt-3" />
+          <input
+            type="email"
+            placeholder="you@company.com"
+            className="mt-3 text-black"
+            {...register("email")}
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
+          )}
         </div>
 
         <div className="space-y-4">
           <label className="small" htmlFor="message">
             Message
           </label>
-          <textarea placeholder="" className="mt-3 h-[8rem]" />
+          <textarea
+            placeholder=""
+            className="mt-3 text-black h-[8rem]"
+            {...register("message")}
+          />
+          {errors.message && (
+            <p className="text-red-500 text-sm">{errors.message.message}</p>
+          )}
         </div>
 
         <div className="flex w-full">
-          <input className="h-6 w-6" type="checkbox" id="agree" name="agree" />
+          <input
+            className="h-6 w-6"
+            type="checkbox"
+            id="agree"
+            {...register("agreed_to_policy", {
+              required: "You must agree to continue",
+            })}
+          />
           <label htmlFor="agree" className="ml-4">
             You agree to our{" "}
             <span className="underline">
               <Link to="/privacy-policy">privacy policy</Link>
             </span>
           </label>
+          {errors.agreed_to_policy && (
+            <p className="text-red-500 text-sm">
+              {errors.agreed_to_policy.message}
+            </p>
+          )}
         </div>
 
-        <a href="mailto:info@engagexai.io">
-          <button className="w-full py-4 rounded-lg">Send message</button>
-        </a>
-      </div>
+        <button
+          type="submit"
+          className={clsx(
+            "w-full py-4 rounded-lg",
+            status == "pending" ? "bg-gray-400" : "bg-black"
+          )}
+        >
+          {status == "pending" ? "Mailing..." : "Send message"}
+        </button>
+      </form>
     </section>
   );
 }

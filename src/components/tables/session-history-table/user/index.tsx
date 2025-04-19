@@ -1,11 +1,12 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { BaseTable } from "../../base-table";
 import { columns as userSessionColumns } from "./columns";
 
 import { useSessionHistory } from "@/hooks/auth";
+import { PaginationState } from "@tanstack/react-table";
 
 export type DataInterface = {
-    id: string;
+    id: number;
     sessionName: string;
     sessionType: string;
     date: string;
@@ -57,25 +58,31 @@ export function formatTime(time?: string): string {
 }
 
 const SessionHistoryTable = () => {
-    const { data, error, isLoading } = useSessionHistory();
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 20,
+    });
+    const { data, error, isLoading } = useSessionHistory(pagination.pageIndex + 1);
 
-    const userSessionHistoryData = useMemo<DataInterface[]>(
+    const userSessionHistoryData = useMemo(
         () =>
-            data?.results?.map((item: any) => ({
+            data?.results?.map((item) => ({
                 id: item.id || "N/A",
                 sessionName: capitalizeWords(item.session_name || "Unknown Session"),
                 sessionType: capitalizeWords(item.session_type_display || "Unknown Type"),
                 date: formatDate(item.date),
-                duration: formatTime(item.duration),
+                duration: formatTime(item.duration?.toString()),
             })) || [],
-        [data],
+        [data?.results],
     );
 
-    console.log(userSessionHistoryData);
     return (
         <BaseTable
-            columns={userSessionColumns as any}
+            columns={userSessionColumns}
             data={userSessionHistoryData}
+            count={data?.count}
+            pagination={pagination}
+            setPagination={setPagination}
             error={error}
             isLoading={isLoading}
         />

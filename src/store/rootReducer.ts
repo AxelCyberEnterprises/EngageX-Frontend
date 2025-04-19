@@ -9,14 +9,14 @@ import dynamicDialogReducer from "./slices/dynamicDialogSlice";
 import sessionReducer from "./slices/sessionSlice";
 
 const rootReducer = combineReducers({
-    counter: counterReducer,
-    chat: chatSliceReducer,
-    auth: authReducer,
-    performance_improvment: PerformanceImprovementReducer,
-    dynamicDialog: dynamicDialogReducer,
-    pitchPractice: pitchPracticeReducer,
-    presentationPractice: presentationPracticeReducer,
-    session: sessionReducer,
+  counter: counterReducer,
+  chat: chatSliceReducer,
+  auth: authReducer,
+  performance_improvement: PerformanceImprovementReducer,
+  dynamicDialog: dynamicDialogReducer,
+  pitchPractice: pitchPracticeReducer,
+  presentationPractice: presentationPracticeReducer,
+  session: sessionReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
