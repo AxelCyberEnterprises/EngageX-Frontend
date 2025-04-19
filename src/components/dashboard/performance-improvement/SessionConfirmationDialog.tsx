@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 function SessionConfirmationDialog() {
   const dispatch = useDispatch();
   const dialog = useSelector(
-    (state: RootState) => state.performance_improvment.dialog
+    (state: RootState) => state.performance_improvement.dialog
   );
   return (
     <AlertDialog

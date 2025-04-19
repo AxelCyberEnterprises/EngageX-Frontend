@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 function PerformanceImprovement() {
   const { active_screen } = useSelector(
-    (state: RootState) => state.performance_improvment
+    (state: RootState) => state.performance_improvement
   );
   return (
     <main className="relative">

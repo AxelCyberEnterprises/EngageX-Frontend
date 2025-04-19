@@ -4,7 +4,7 @@ import Benefits from "../components/homepage/Benefits";
 import HowItWorks from "../components/homepage/HowItWorks";
 import Pricing from "../components/homepage/Pricing";
 import Faq from "../components/homepage/Faq";
-import Testiomonial from "../components/homepage/Testiomonial";
+import Testimonial from "../components/homepage/Testimonial";
 
 const HomePage: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ const HomePage: React.FC = () => {
       <HowItWorks />
       <Pricing />
       <Faq />
-      <Testiomonial />
+      <Testimonial />
     </main>
   );
 };
