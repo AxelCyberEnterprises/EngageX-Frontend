@@ -167,7 +167,7 @@ function ChartTooltipContent({
   }
 
   const nestLabel = payload.length === 1 && indicator !== "dot"
-
+  
   return (
     <div
       className={cn(
