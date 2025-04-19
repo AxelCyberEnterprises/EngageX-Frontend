@@ -11,7 +11,7 @@ import clsx from "clsx";
 function NewSession() {
   const dispatch = useDispatch();
   const { selected_screen, active_screen } = useSelector(
-    (state: RootState) => state.performance_improvment
+    (state: RootState) => state.performance_improvement
   );
   return (
     <section className="px-4 lg:px-10 space-y-4 font-montreal">
@@ -40,7 +40,7 @@ function NewSession() {
         >
           <div className="flex flex-col">
             <small className="small">
-              Exisiting Performance Improvement Sequence
+              Existing Performance Improvement Sequence
             </small>
             <small className="relative mt-2 text-[#6B7186]">
               Continue an existing Improvement on your performance in an

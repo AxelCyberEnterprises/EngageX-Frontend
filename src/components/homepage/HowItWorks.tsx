@@ -88,7 +88,7 @@ function HowItWorks() {
               <h6 className="font-montreal">Review & improve</h6>
               <p className="small text-dark-electric-blue">
                 Analyze detailed video feedback and download key moments to
-                rewatch and refine your skills
+                re-watch and refine your skills
               </p>
             </div>
           </div>
