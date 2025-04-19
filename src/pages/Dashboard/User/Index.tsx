@@ -416,9 +416,9 @@ const UserDashboardHome: React.FC = () => {
   }
   return (
     <div className="user__dashboard__index p-4 md:px-8">
-      <p className="independence mb-5">
+      {(score ?? 0) > 10 && (score ?? 0) <= 99 && <p className="independence mb-5">
         You’re making progress! Pick up where you left off
-      </p>
+      </p>}
 
       {/* cards */}
       <div className="flex flex-wrap -mx-2 items-stretch">
@@ -490,6 +490,7 @@ const UserDashboardHome: React.FC = () => {
                         </div>
                         <SegmentedProgressBar percent={score ?? 0} color="#40B869" divisions={5} />
                        {(score ?? 0) > 10 && <p className="dark__charcoal mt-6">✊Keep going! You’re improving!</p>}
+                       {(score ?? 0) === 100 && <p className="dark__charcoal mt-6">👏 Bravo! You’ve reached the finish line!</p>}
                     </div>
 
           {/* improve past session  */}
