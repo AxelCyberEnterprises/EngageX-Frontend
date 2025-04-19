@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
