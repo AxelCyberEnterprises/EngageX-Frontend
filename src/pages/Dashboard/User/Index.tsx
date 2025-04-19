@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import practiceBg from "../../../assets/images/jpegs/practice-bg.jpeg";
 import presentationBg from "../../../assets/images/jpegs/presentation-bg.jpeg";
@@ -10,16 +10,82 @@ import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 import { Button } from "@/components/ui/button";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
+import { UseQueryResult } from "@tanstack/react-query";
+
+interface DashboardData {
+    latest_session_score: number;
+    available_credit: number; // Added this property
+    goals_and_achievment: Array<{
+        audience_engagement: number;
+        body_language: number;
+        captured_impact: number;
+        emotional_impact: number;
+        language_and_word_choice: number;
+        structure_and_clarity: number;
+        transformative_communication: number;
+        vocal_variety: number;
+    }>;
+    performance_analytics?: Array<{
+        chunk_number: string;
+        impact: number;
+        trigger_response: number;
+        conviction: number;
+    }>;
+    // Add other properties of the `data` object here if needed
+}
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
 
 const UserDashboardHome: React.FC = () => {
-    const { data } = useDashboardData();
-
+    const { data, isLoading } = useDashboardData() as UseQueryResult<DashboardData, Error>;
+    const [goalsData, setGoalsData] = useState({
+        audience_engagement: 0,
+        body_language: 0,
+        captured_impact: 0,
+        emotional_impact: 0,
+        language_and_word_choice: 0,
+        structure_and_clarity: 0,
+        transformative_communication: 0,
+        vocal_variety: 0,
+    });
     useEffect(() => {
-        console.log(data);
-    }, []);
+        const defaultGoalData = {
+            audience_engagement: 0,
+            body_language: 0,
+            captured_impact: 0,
+            emotional_impact: 0,
+            language_and_word_choice: 0,
+            structure_and_clarity: 0,
+            transformative_communication: 0,
+            vocal_variety: 0,
+        };
 
+        if (
+            data?.goals_and_achievment &&
+            Array.isArray(data.goals_and_achievment) &&
+            data.goals_and_achievment.length > 0 &&
+            data.goals_and_achievment[0]
+        ) {
+            setGoalsData(data.goals_and_achievment[0]);
+        } else {
+            setGoalsData(defaultGoalData);
+        }
+
+        // console.log(goalsData);
+    }, [data]);
+
+    console.log(data);
+    const [goalFraction, setGoalFraction] = useState("0/0");
+    useEffect(() => {
+        const totalGoals = Object.keys(goalsData).length;
+        const goalsAt100 = Object.values(goalsData).filter((value) => value === 100).length;
+        const fraction = `${goalsAt100}/${totalGoals}`;
+        setGoalFraction(fraction);
+        console.log(`You have completed ${fraction} of your goals`);
+    }, [goalsData]);
+    console.log(goalFraction);
+    const [numerator, denominator] = goalFraction.split("/").map(Number);
     const { mutate: authQuestions } = useAddAuthQuestion();
     const userIdAfterSignup = useSelector((state: RootState) => state.auth.userIdAfterSignup);
     const userQuestions = JSON.parse(localStorage.getItem("userQuestions") || "{}");
@@ -34,7 +100,7 @@ const UserDashboardHome: React.FC = () => {
             });
         }
     }, []);
-    const score = 89;
+    const score = data?.latest_session_score;
 
     const cardsData = [
         {
@@ -101,6 +167,24 @@ const UserDashboardHome: React.FC = () => {
         },
     ];
 
+    const greenCheckSvg = (
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M9 4.5C9 2.01472 6.98528 0 4.5 0C2.01472 0 0 2.01472 0 4.5C0 6.98528 2.01472 9 4.5 9C2.01472 9 0 11.0147 0 13.5C0 15.9853 2.01472 18 4.5 18C6.98528 18 9 15.9853 9 13.5C9 15.9853 11.0147 18 13.5 18C15.9853 18 18 15.9853 18 13.5C18 11.0147 15.9853 9 13.5 9C15.9853 9 18 6.98528 18 4.5C18 2.01472 15.9853 0 13.5 0C11.0147 0 9 2.01472 9 4.5Z"
+                fill="#64BA9E"
+            />
+        </svg>
+    );
+
+   
+    const yellowSvg = (
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M9 4.5C9 2.01472 6.98528 0 4.5 0C2.01472 0 0 2.01472 0 4.5C0 6.98528 2.01472 9 4.5 9C2.01472 9 0 11.0147 0 13.5C0 15.9853 2.01472 18 4.5 18C6.98528 18 9 15.9853 9 13.5C9 15.9853 11.0147 18 13.5 18C15.9853 18 18 15.9853 18 13.5C18 11.0147 15.9853 9 13.5 9C15.9853 9 18 6.98528 18 4.5C18 2.01472 15.9853 0 13.5 0C11.0147 0 9 2.01472 9 4.5Z"
+                fill="#C29C81"
+            />
+        </svg>
+    );
     const goals = [
         {
             icon: (
@@ -131,11 +215,11 @@ const UserDashboardHome: React.FC = () => {
         {
             icon: (
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M9 4.5C9 2.01472 6.98528 0 4.5 0C2.01472 0 0 2.01472 0 4.5C0 6.98528 2.01472 9 4.5 9C2.01472 9 0 11.0147 0 13.5C0 15.9853 2.01472 18 4.5 18C6.98528 18 9 15.9853 9 13.5C9 15.9853 11.0147 18 13.5 18C15.9853 18 18 15.9853 18 13.5C18 11.0147 15.9853 9 13.5 9C15.9853 9 18 6.98528 18 4.5C18 2.01472 15.9853 0 13.5 0C11.0147 0 9 2.01472 9 4.5Z"
-                        fill="#C29C81"
-                    />
-                </svg>
+                <path
+                    d="M9 4.5C9 2.01472 6.98528 0 4.5 0C2.01472 0 0 2.01472 0 4.5C0 6.98528 2.01472 9 4.5 9C2.01472 9 0 11.0147 0 13.5C0 15.9853 2.01472 18 4.5 18C6.98528 18 9 15.9853 9 13.5C9 15.9853 11.0147 18 13.5 18C15.9853 18 18 15.9853 18 13.5C18 11.0147 15.9853 9 13.5 9C15.9853 9 18 6.98528 18 4.5C18 2.01472 15.9853 0 13.5 0C11.0147 0 9 2.01472 9 4.5Z"
+                    fill="#ECB25E"
+                />
+            </svg>
             ),
             title: "Emotional Impact",
             percent: 45,
@@ -189,7 +273,7 @@ const UserDashboardHome: React.FC = () => {
                     />
                 </svg>
             ),
-            title: "Structure & Clarity",
+            title: "Structure and Clarity",
             percent: 40,
             color: "#ECB25E",
         },
@@ -202,12 +286,28 @@ const UserDashboardHome: React.FC = () => {
                     />
                 </svg>
             ),
-            title: "Language & Word Choice",
+            title: "Language and Word Choice",
             percent: 40,
             color: "#ECB25E",
         },
     ];
 
+    const updatedGoals = goals.map(goal => {
+        const key = goal.title.toLowerCase().replace(/\s+/g, '_'); // e.g. "Audience Engagement" -> "audience_engagement"
+        return {
+          ...goal,
+          percent: goalsData[key as keyof typeof goalsData] ?? goal.percent, // use value from goalsData if exists
+        };
+      });
+
+    // Define the ChartData type
+    // interface ChartData {
+    //     month: string;
+    //     Impact: number;
+    //     Trigger: number;
+    //     Conviction: number;
+    // }
+    
     const chartData = [
         { month: "0", Impact: 186, Trigger: 80, Conviction: 90 },
         { month: "3", Impact: 305, Trigger: 200, Conviction: 100 },
@@ -217,12 +317,18 @@ const UserDashboardHome: React.FC = () => {
         { month: "15", Impact: 214, Trigger: 140, Conviction: 100 },
     ];
 
+    // const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
+    // console.log("newChartData: " , newChartData)    
+
     const chartColors = {
         Impact: "#252A39",
         Trigger: "#40B869",
         Conviction: "#F5B546",
     };
 
+    if(isLoading){
+        return <UserDashboardSkeleton />
+    }
     return (
         <div className="user__dashboard__index p-4 md:px-8">
             <p className="independence mb-5">You’re making progress! Pick up where you left off</p>
@@ -233,7 +339,7 @@ const UserDashboardHome: React.FC = () => {
                     <div className="index__card p-4 flex flex-col h-full justify-between rounded-[12px] relative overflow-hidden">
                         <img src={cardFlower} alt="card flower background" className="absolute top-0 right-0 h-1/2" />
                         <small className="independence mb-3.5">Session Credits</small>
-                        <h4 className="gunmetal mb-5.5">4</h4>
+                        <h4 className="gunmetal mb-5.5">{data?.available_credit}</h4>
                         <Link className="w-full" to={"/dashboard/user/settings?section=credits"}>
                             <button className="p-3 w-full rounded-md">Buy more sessions</button>
                         </Link>
@@ -277,8 +383,8 @@ const UserDashboardHome: React.FC = () => {
                             <p className="dark__charcoal">Public Speaking Score</p>
                             <p className="big">{score}%</p>
                         </div>
-                        <SegmentedProgressBar percent={score} color="#40B869" divisions={5} />
-                        <p className="dark__charcoal mt-6">✊Keep going! You’re improving!</p>
+                        <SegmentedProgressBar percent={score ?? 0} color="#40B869" divisions={5} />
+                       {(score ?? 0) > 10 && <p className="dark__charcoal mt-6">✊Keep going! You’re improving!</p>}
                     </div>
 
                     {/* improve past session  */}
@@ -313,11 +419,25 @@ const UserDashboardHome: React.FC = () => {
                         </div>
 
                         <div className="chart__div">
-                            <ShadLineChart data={chartData} colors={chartColors} />
+                            <ShadLineChart
+                                // data={newChartData
+                                //     .filter(Boolean)
+                                //     .flatMap((analytics) =>
+                                //         analytics?.map((item) => ({
+                                //             chunk_number: item.chunk_number,
+                                //             Impact: item.impact,
+                                //             Trigger: item.trigger_response,
+                                //             Conviction: item.conviction,
+                                //         })) || []
+                                //     )}
+                                data={chartData}
+                                colors={chartColors}
+                            />
                         </div>
                         <p className="text-sm text-muted-foreground mt-6">
-                             <span className="text-[#40B869]">Trigger Response</span> is the audience’s engagement, where a trigger evokes the audience to
-                            respond in some shape or form as a reaction to the information they’ve heard.
+                            <span className="text-[#40B869]">Trigger Response</span> is the audience’s engagement, where
+                            a trigger evokes the audience to respond in some shape or form as a reaction to the
+                            information they’ve heard.
                         </p>
                     </div>
                 </div>
@@ -331,18 +451,29 @@ const UserDashboardHome: React.FC = () => {
                         </Link>
 
                         <div className="progress__div relative flex flex-col items-center w-full mt-7 mb-6">
-                            <SemiCircleProgress percent={0.8} color="#7387FF" />
+                            <SemiCircleProgress percent={numerator / denominator} color="#7387FF" />
                             <h2 className="pt-20 mb-2">🎊</h2>
-                            <p className="mb-3">5 goals completed</p>
-                            <h2 className="mb-3">5/8</h2>
-                            <p className="gunmetal text-center">Yay! you’ve achieved most of your goals</p>
+                            <p className="mb-3">{numerator} goals completed</p>
+                            <h2 className="mb-3">{goalFraction}</h2>
+
+                            {numerator / denominator >= 5 / 8 && Number(goalFraction) < 8 / 8 && (
+                                <p className="gunmetal text-center">Yay! you’ve achieved most of your goals</p>
+                            )}
+                            {numerator / denominator === 8 / 8 && (
+                                <p className="gunmetal text-center">
+                                    Well done! You have completed 100% of your goals.
+                                </p>
+                            )}
+                            {numerator / denominator < 5 / 8 && (
+                                <p className="gunmetal text-center">You have completed {goalFraction} of your goals.</p>
+                            )}
                         </div>
 
                         <div className="progress__bars__div">
-                            {goals.map((goal, index) => (
+                            {updatedGoals?.map((goal, index) => (
                                 <div key={index} className="flex progress__bar__item mb-3 items-stretch justify-around">
                                     <div className="rounded-4xl w-12 icon__bg me-2 aspect-square flex items-center justify-center">
-                                        {goal.icon}
+                                        {goal.percent >= 80 ? greenCheckSvg : yellowSvg}
                                     </div>
                                     <div className="w-5/6 flex flex-col justify-between h-full">
                                         <div className="flex justify-between mb-2 mt-1.5 dark__charcoal">
@@ -352,7 +483,7 @@ const UserDashboardHome: React.FC = () => {
                                         <div className="mt-1">
                                             <SegmentedProgressBar
                                                 percent={goal.percent}
-                                                color={goal.color}
+                                                color={goal.percent >= 80 ? "#64BA9E" : goal.percent >= 10 ? "#ECB25E" : "#C29C81"}
                                                 divisions={10}
                                             />
                                         </div>
