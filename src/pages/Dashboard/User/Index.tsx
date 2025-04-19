@@ -573,7 +573,7 @@ const UserDashboardHome: React.FC = () => {
               <h2 className="mb-3">{goalFraction}</h2>
 
               {numerator / denominator >= 5 / 8 &&
-                Number(goalFraction) < 8 / 8 && (
+                numerator/denominator < 8 / 8 && (
                   <p className="gunmetal text-center">
                     Yay! you’ve achieved most of your goals
                   </p>
@@ -583,11 +583,11 @@ const UserDashboardHome: React.FC = () => {
                   Well done! You have completed 100% of your goals.
                 </p>
               )}
-              {numerator / denominator < 5 / 8 && (
+              {/* {numerator / denominator < 5 / 8 && numerator/denominator >= 1/8 && (
                 <p className="gunmetal text-center">
                   You have completed {goalFraction} of your goals.
                 </p>
-              )}
+              )} */}
             </div>
 
             <div className="progress__bars__div">
