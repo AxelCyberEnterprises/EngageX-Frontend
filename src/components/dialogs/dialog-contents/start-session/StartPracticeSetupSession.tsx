@@ -2,7 +2,7 @@ import { FormType as PitchPracticeFormType } from "@/components/forms/PitchPract
 import { FormType as PresentationPracticeFormType } from "@/components/forms/PresentationPracticeForm";
 import { Button } from "@/components/ui/button";
 import { useSessionHistory } from "@/hooks/auth";
-import { useCreatePracticeSession } from "@/hooks/mutations/dashboard/user";
+import { useCreatePracticeSession } from "@/hooks/sessions";
 import { capitalize } from "@mui/material";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -22,7 +22,7 @@ const StartPracticeSetupSession = ({
     setValue,
     handleSubmit,
 }: IStartPracticeSetupSessionProps) => {
-    const { mutate: createPracticeSession, isPending, } = useCreatePracticeSession({ sessionType });
+    const { mutate: createPracticeSession, isPending } = useCreatePracticeSession({ sessionType });
     const { data } = useSessionHistory();
 
     const handleSessionSetupSubmit = useCallback(
