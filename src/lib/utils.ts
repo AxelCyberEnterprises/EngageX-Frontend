@@ -4,8 +4,8 @@ import { eachMonthOfInterval, endOfYear, format, parseISO, startOfYear } from "d
 import Cookies from "js-cookie";
 import { twMerge } from "tailwind-merge";
 import * as pdfjsLib from "pdfjs-dist";
-// 👇 Manually specify the worker file location
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Set the worker source URL to the path of the worker script
+pdfjsLib.GlobalWorkerOptions.workerSrc = "pdfjs-dist/build/pdf.worker.min.js";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));

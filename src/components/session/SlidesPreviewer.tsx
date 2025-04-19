@@ -67,6 +67,11 @@ const SlidesPreviewer = forwardRef<SlidesPreviewerHandle, SlidesPreviewerProps>(
 
         // Move to next slide and reset timer
         const nextSlide = () => {
+            if (images.length === 0) return;
+
+            // Don't go to next slide if already on the last slide
+            if (currentSlide === images.length - 1) return;
+
             if (startTime) {
                 const timeSpent = Date.now() - startTime;
                 const minutes = Math.floor(timeSpent / 60000)
@@ -104,7 +109,7 @@ const SlidesPreviewer = forwardRef<SlidesPreviewerHandle, SlidesPreviewerProps>(
         useImperativeHandle(ref, () => ({
             nextSlide,
             currentSlideTime: currentDuration,
-            nextSlideImage: images.length > 0 ? images[(currentSlide + 1) % images.length] : null,
+            nextSlideImage: currentSlide < images.length - 1 ? images[currentSlide + 1] : null,
             slideProgress: {
                 current: currentSlide + 1,
                 total: images.length,
@@ -112,7 +117,7 @@ const SlidesPreviewer = forwardRef<SlidesPreviewerHandle, SlidesPreviewerProps>(
         }));
 
         return (
-            <div className="w-full h-full relative overflow-hidden">
+            <div className="w-full h-full relative overflow-hidden rounded-lg">
                 {/* Current Slide */}
                 {images.map((img, index) => (
                     <img
