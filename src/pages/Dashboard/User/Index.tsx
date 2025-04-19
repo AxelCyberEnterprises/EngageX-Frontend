@@ -381,7 +381,7 @@ const UserDashboardHome: React.FC = () => {
                         <p className="big mb-5">Your latest session score</p>
                         <div className="mb-2 flex justify-between">
                             <p className="dark__charcoal">Public Speaking Score</p>
-                            <p className="big">{score}%</p>
+                            <p className="big">{score ?? 0}%</p>
                         </div>
                         <SegmentedProgressBar percent={score ?? 0} color="#40B869" divisions={5} />
                        {(score ?? 0) > 10 && <p className="dark__charcoal mt-6">✊Keep going! You’re improving!</p>}
