@@ -16,7 +16,7 @@ type Testimonial = {
   text_color: string;
 };
 
-function Testiomonial() {
+function Testimonial() {
   let testimonials: Testimonial[] = [
     {
       svg: <TestimonialSVG />,
@@ -141,4 +141,4 @@ function Testiomonial() {
   );
 }
 
-export default Testiomonial;
+export default Testimonial;

@@ -1,10 +1,6 @@
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-
 function TermsOfService() {
   return (
     <main className="">
-      <Navbar />
       <div className="space-y-20 py-36 font-montserrat px-10 lg:px-20">
         <h1 className="text-center font-montreal">Our terms of service</h1>
         <div className="space-y-16 text-[#475467]">
@@ -147,8 +143,6 @@ function TermsOfService() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </main>
   );
 }

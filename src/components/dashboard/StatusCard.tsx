@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from "@/lib/utils";
+import { Skeleton } from '../ui/skeleton';
 
 interface StatCardProps {
   icon: string;
@@ -30,7 +31,7 @@ const StatCard: React.FC<StatCardProps> = ({
         <img src={icon} alt={iconAlt} className="w-5 h-5" />
         <span className="text-gray-700 text-sm font-medium">{title}</span>
       </div>
-      
+
       <div className="flex flex-col gap-1">
         <p className="sm:text-3xl text-2xl font-medium text-[#070D17]">
           {value}
@@ -44,14 +45,30 @@ const StatCard: React.FC<StatCardProps> = ({
 interface StatsCardSectionProps {
   cards: StatCardProps[];
   className?: string;
+  loadingCards?: boolean
 }
-
-const StatsCardSection: React.FC<StatsCardSectionProps> = ({ cards, className }) => {
+const StatsCardSection: React.FC<StatsCardSectionProps> = ({
+  cards,
+  className,
+  loadingCards = false
+}) => {
   return (
     <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4", className)}>
-      {cards.map((card, index) => (
-        <StatCard key={index} {...card} />
-      ))}
+      {loadingCards
+        ? Array(4).fill(0).map((_, index) => (
+          <div key={index} className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <Skeleton className="h-8 w-8 rounded-full" />
+              <Skeleton className="h-6 w-24" />
+            </div>
+            <Skeleton className="h-8 w-16 mb-2" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+        ))
+        : cards.map((card, index) => (
+          <StatCard key={index} {...card} />
+        ))
+      }
     </div>
   );
 };
