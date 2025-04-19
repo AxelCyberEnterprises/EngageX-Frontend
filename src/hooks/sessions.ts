@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 
 export function useEndSession(sessionId: string | undefined, duration: any, slidesDuration?: any) {
     const navigate = useNavigate();
-    console.log(slidesDuration);
     
     return useMutation({
         mutationKey: ["endSession"],
