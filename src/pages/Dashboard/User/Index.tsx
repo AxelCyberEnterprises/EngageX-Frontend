@@ -416,9 +416,9 @@ const UserDashboardHome: React.FC = () => {
   }
   return (
     <div className="user__dashboard__index p-4 md:px-8">
-      <p className="independence mb-5">
+      {(score ?? 0) > 10 && (score ?? 0) <= 99 && <p className="independence mb-5">
         You’re making progress! Pick up where you left off
-      </p>
+      </p>}
 
       {/* cards */}
       <div className="flex flex-wrap -mx-2 items-stretch">
@@ -479,26 +479,19 @@ const UserDashboardHome: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex flex-wrap">
-        <div className="w-full lg:w-6/9 lg:pe-2 mb-3">
-          {/* latest session score  */}
-          <div className="session__score w-full p-5 rounded-[12px]">
-            <p className="big mb-5">Your latest session score</p>
-            <div className="mb-2 flex justify-between">
-              <p className="dark__charcoal">Public Speaking Score</p>
-              <p className="big">{score}%</p>
-            </div>
-            <SegmentedProgressBar
-              percent={score ?? 0}
-              color="#40B869"
-              divisions={5}
-            />
-            {(score ?? 0) > 10 && (
-              <p className="dark__charcoal mt-6">
-                ✊Keep going! You’re improving!
-              </p>
-            )}
-          </div>
+            <div className="flex flex-wrap">
+                <div className="w-full lg:w-6/9 lg:pe-2 mb-3">
+                    {/* latest session score  */}
+                    <div className="session__score w-full p-5 rounded-[12px]">
+                        <p className="big mb-5">Your latest session score</p>
+                        <div className="mb-2 flex justify-between">
+                            <p className="dark__charcoal">Public Speaking Score</p>
+                            <p className="big">{score ?? 0}%</p>
+                        </div>
+                        <SegmentedProgressBar percent={score ?? 0} color="#40B869" divisions={5} />
+                       {(score ?? 0) > 10 && <p className="dark__charcoal mt-6">✊Keep going! You’re improving!</p>}
+                       {(score ?? 0) === 100 && <p className="dark__charcoal mt-6">👏 Bravo! You’ve reached the finish line!</p>}
+                    </div>
 
           {/* improve past session  */}
           <div
@@ -581,7 +574,7 @@ const UserDashboardHome: React.FC = () => {
               <h2 className="mb-3">{goalFraction}</h2>
 
               {numerator / denominator >= 5 / 8 &&
-                Number(goalFraction) < 8 / 8 && (
+                numerator/denominator < 8 / 8 && (
                   <p className="gunmetal text-center">
                     Yay! you’ve achieved most of your goals
                   </p>
@@ -591,11 +584,11 @@ const UserDashboardHome: React.FC = () => {
                   Well done! You have completed 100% of your goals.
                 </p>
               )}
-              {numerator / denominator < 5 / 8 && (
+              {/* {numerator / denominator < 5 / 8 && numerator/denominator >= 1/8 && (
                 <p className="gunmetal text-center">
                   You have completed {goalFraction} of your goals.
                 </p>
-              )}
+              )} */}
             </div>
 
             <div className="progress__bars__div">
