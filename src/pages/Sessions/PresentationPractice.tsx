@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SquareArrowUpRight, Volume2, MessageCircleMore, ChevronRight } from "lucide-react";
+import { SquareArrowUpRight, MessageCircleMore, ChevronRight } from "lucide-react";
 import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
 import EngagementMetrics from "@/components/session/VoiceAnalytics";
@@ -304,10 +304,6 @@ const PresentationPractice: React.FC = () => {
 
                     <div className="mt-3 px-4 md:px-0">
                         <div className="flex items-center justify-between md:justify-start">
-                            <div className="flex items-center">
-                                <Volume2 />
-                                <p className="ms-2">Audio Settings</p>
-                            </div>
                             <p className="ms-3 text-grey">
                                 <CountdownTimer minutes={time} />
                             </p>
