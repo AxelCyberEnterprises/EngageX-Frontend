@@ -15,7 +15,7 @@ import { UseQueryResult } from "@tanstack/react-query";
 interface DashboardData {
   latest_session_score: number;
   available_credit: number; // Added this property
-  goals_and_achievment: Array<{
+  goals_and_achievement: Array<{
     audience_engagement: number;
     body_language: number;
     captured_impact: number;
@@ -65,12 +65,12 @@ const UserDashboardHome: React.FC = () => {
     };
 
     if (
-      data?.goals_and_achievment &&
-      Array.isArray(data.goals_and_achievment) &&
-      data.goals_and_achievment.length > 0 &&
-      data.goals_and_achievment[0]
+      data?.goals_and_achievement &&
+      Array.isArray(data.goals_and_achievement) &&
+      data.goals_and_achievement.length > 0 &&
+      data.goals_and_achievement[0]
     ) {
-      setGoalsData(data.goals_and_achievment[0]);
+      setGoalsData(data.goals_and_achievement[0]);
     } else {
       setGoalsData(defaultGoalData);
     }

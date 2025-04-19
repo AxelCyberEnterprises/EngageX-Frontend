@@ -34,7 +34,7 @@ import SequenceSelector, {
   Sequence,
 } from "@/components/dashboard/SequenceSelect";
 import RecentAchievementsModal from "@/components/modals/modalVariants/RecentAchievementsModal";
-import { useGoalsAndAchievement } from "@/hooks/goalsAndAcheivement";
+import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
 import { useProgressTracking } from "@/hooks/progressTracking";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
