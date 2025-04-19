@@ -135,12 +135,12 @@ function Pricing({ subtext }: { subtext?: string }) {
         <img
           className="hidden lg:block h-[16rem] absolute right-0 bottom-0"
           src="./assets/product.png"
-          alt="engagex product image"
+          alt="EngageX™ product image"
         />
         <img
           className="lg:hidden mt-12"
           src="./assets/productmb.png"
-          alt="engagex product image"
+          alt="EngageX™ product image"
         />
       </div>
     </section>

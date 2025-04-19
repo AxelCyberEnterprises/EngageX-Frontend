@@ -42,7 +42,7 @@ function NewPerformanceImprovementDialog() {
   const [newSequenceName, setNewSequenceName] = useState("");
   const dispatch = useDispatch();
   const { dialog, selected_screen } = useSelector(
-    (state: RootState) => state.performance_improvment
+    (state: RootState) => state.performance_improvement
   );
   const [pagination, setPagination] = useState({
     pageIndex: 0,
