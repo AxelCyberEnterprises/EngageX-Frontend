@@ -65,7 +65,7 @@ export const columns: ColumnDef<Session, any>[] = [
   },
   {
     accessorKey: "improvement",
-    header: "Key Improvements",
+    header: "Key Impact Score",
     cell: ({ row }) => {
       const improvement = row.getValue("improvement") as number;
 

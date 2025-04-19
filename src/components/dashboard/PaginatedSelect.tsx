@@ -52,8 +52,6 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
     return '';
   });
 
-  console.log(options);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const totalPages = Math.ceil(options.length / itemsPerPage);
