@@ -55,6 +55,7 @@ export function BaseTable<TData, TValue>({
     tableContainerClassName,
     hidePagination,
     emptyState,
+    pageSize
 }: BaseTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -100,7 +101,7 @@ export function BaseTable<TData, TValue>({
     );
 
     const TableSkeleton = () => {
-        const rows = pagination?.pageSize || 20;
+        const rows = data.length > 0 ? data.length : pagination?.pageSize || pageSize || 20;
         return (
             <>
                 <SessionHistorySkeleton rows={rows} columns={columns} />

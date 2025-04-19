@@ -1,100 +1,94 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import download from '../../../assets/images/svgs/download-dark.svg';
 import calendar from '../../../assets/images/svgs/calendar.svg';
-import ShadSelect from '@/components/dashboard/Select';
-// import { useSearchParams } from 'react-router-dom';
 import SessionComparisonResults from '@/components/dashboard/SessionComparison';
 
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
+import { useSessionHistory } from '@/hooks/auth';
+import PaginatedSelect from '@/components/dashboard/PaginatedSelect';
 
-// interface SequenceItem {
-//   id: string;
-//   title: string;
-//   startDate: string;
-//   lastUpdated: string;
-//   totalCompleted: number;
-//   inProgress?: number;
-//   sessions?: SessionItem[];
-// }
+interface SessionData {
+  id: string;
+  title: string;
+  dateRange: string;
+  duration: string;
+  overallScore: number;
+  insights: KeyInsight[];
+}
 
-// interface SessionItem {
-//   id: string;
-//   name: string;
-//   date: string;
-//   duration: string;
-// }
+interface KeyInsight {
+  type: 'strength' | 'improvement';
+  text: string;
+}
 
 const SessionComparison: React.FC = () => {
   const sectionItems = ["view", "comparison"];
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const sectionFromUrl = searchParams.get("section");
+  const { data: sessionData } = useSessionHistory();
+
+  const sessionOptions = sessionData?.results?.map(session => {
+    const formattedDate = new Date(session.date).toLocaleDateString();
+    return {
+      value: session.id.toString(),
+      label: `${formattedDate} ${session.session_name || `Session ${session.id}`}`,
+    };
+  }) || [];
+
+  const handleSelectSession = (value: string) => {
+    setSelectedSequence1(value);
+  };
+
+  const handleSelectSession2 = (value: string) => {
+    setSelectedSequence2(value)
+  };
   const [activeSection, setActiveSection] = useState(sectionItems[0]);
   const [selectedSequence1, setSelectedSequence1] = useState<string>("");
   const [selectedSequence2, setSelectedSequence2] = useState<string>("");
+  const [session1, setSession1] = useState<any>();
+  const [session2, setSession2] = useState<any>();
 
-  const sequenceOptions1 = [
-    {
-      value: "initial",
-      label: "Feb 10 - Initial Practice",
-    },
-    {
-      value: "midpoint",
-      label: "Feb 24 - Midpoint Practice",
-    },
-    {
-      value: "final",
-      label: "Mar 10 - Final Practice",
-    }
-  ];
-
-  const sequenceOptions2 = [
-    {
-      value: "initial",
-      label: "Feb 10 - Initial Practice",
-    },
-    {
-      value: "midpoint",
-      label: "Feb 24 - Midpoint Practice",
-    },
-    {
-      value: "final",
-      label: "Mar 10 - Final Practice",
-    }
-  ];
-
-  const handleSelectSequence1 = (sequence: string) => {
-    console.log('Selected sequence:', sequence);
-    setSelectedSequence1(sequence);
-    if (sequence === selectedSequence2) {
-      setSelectedSequence2("");
-    }
+  const formatSessionData = (session: any): SessionData => {
+    const formattedDate = new Date(session.date).toLocaleDateString(undefined, {
+      year: 'numeric', month: 'short', day: 'numeric'
+    });
+  
+    const overallScore = Math.round(
+      (
+        session.overall_captured_impact +
+        session.vocal_variety +
+        session.emotional_impact +
+        session.body_language +
+        session.transformative_communication +
+        session.structure_and_clarity +
+        session.language_and_word_choice +
+        session.audience_engagement
+      ) / 8
+    );
+  
+    return {
+      id: session.id.toString(),
+      title: session.session_name || `Session ${session.id}`,
+      dateRange: formattedDate,
+      duration: session.duration ? session.duration.replace(/^00:/, '') : '0 min',
+      overallScore: overallScore,
+      insights: [
+        { type: 'strength', text: 'Strong structure and clarity' },
+        { type: 'strength', text: 'Good use of pauses' },
+        { type: 'strength', text: 'Clear body language' },
+        { type: 'improvement', text: 'Improve vocal variety' },
+        { type: 'improvement', text: 'Enhance emotional connection' },
+        { type: 'improvement', text: 'Use more powerful word choices' },
+      ]
+    };
   };
-
-  const handleSelectSequence2 = (sequence: string) => {
-    console.log('Selected sequence:', sequence);
-    setSelectedSequence2(sequence);
-  };
+  
 
   const handleCompareSequences = (section: string) => {
     console.log('Comparing sequences:', selectedSequence1, selectedSequence2);
     handleSectionChange(section);
   };
-
-  // useEffect(() => {
-  //   if (sectionFromUrl) {
-  //     const index = sectionItems.findIndex((item) => item.toLowerCase() === sectionFromUrl.toLowerCase());
-  //     if (index !== -1) {
-  //       setActiveSection(sectionItems[index]);
-  //     }
-  //   }
-  // }, [sectionFromUrl]);
-
-  // useEffect(() => {
-  //   setSearchParams({ section: activeSection });
-  // }, [activeSection, setSearchParams]);
 
   const handleSectionChange = (section: string) => {
     if (sectionItems.includes(section)) {
@@ -105,7 +99,7 @@ const SessionComparison: React.FC = () => {
   const handleDownloadReport = () => {
     console.log('Downloading report...');
 
-    const element = document.querySelector('.comparison-results-container'); // Add this class to your comparison results section
+    const element = document.querySelector('.comparison-results-container');
     const opt = {
       margin: 10,
       filename: 'session-comparison-report.pdf',
@@ -118,8 +112,22 @@ const SessionComparison: React.FC = () => {
       html2pdf().set(opt).from(element).save();
     }
   };
-console.log(selectedSequence1)
-console.log(activeSection);
+
+  useEffect(() => {
+    if (sessionData && selectedSequence1) {
+      const raw = sessionData.results.find(s => s.id.toString() === selectedSequence1);
+      if (raw) setSession1(formatSessionData(raw));
+    }
+  }, [selectedSequence1, sessionData]);
+  
+  useEffect(() => {
+    if (sessionData && selectedSequence2) {
+      const raw = sessionData.results.find(s => s.id.toString() === selectedSequence2);
+      if (raw) setSession2(formatSessionData(raw));
+    }
+  }, [selectedSequence2, sessionData]);
+  
+
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-2">
@@ -142,25 +150,25 @@ console.log(activeSection);
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-[10%]">
           <div>
             <h3 className="mb-2 text-[#252A39] text-lg font-medium">Select a Session</h3>
-            <ShadSelect
-              options={sequenceOptions1}
-              onChange={handleSelectSequence1}
-              placeholder="Select Sequence"
-              className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full'
+            <PaginatedSelect
+              options={sessionOptions}
+              onChange={handleSelectSession}
+              placeholder="Select Session"
+              className="rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full"
               icon={calendar}
-              // disabled={!selectedSequence}
+              itemsPerPage={5} // Adjust this number based on your UI needs
             />
           </div>
 
           <div>
             <h3 className="mb-2 text-[#252A39] text-lg font-medium">Select a Session</h3>
-            <ShadSelect
-              options={sequenceOptions2.filter(option => option.value !== selectedSequence1)}
-              onChange={handleSelectSequence2}
-              placeholder="Select Sequence"
-              className='rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full'
+            <PaginatedSelect
+              options={sessionOptions.filter(option => option.value !== selectedSequence1)}
+              onChange={handleSelectSession2}
+              placeholder="Select Session"
+              className="rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full"
               icon={calendar}
-              // disabled={!selectedSequence}
+              itemsPerPage={5} // Adjust this number based on your UI needs
             />
           </div>
         </div>
@@ -178,7 +186,7 @@ console.log(activeSection);
 
       {activeSection === 'comparison' && selectedSequence1 && selectedSequence2 &&
         <section>
-          <SessionComparisonResults />
+          <SessionComparisonResults session1={session1} session2={session2}/>
         </section>
       }
 
