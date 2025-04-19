@@ -59,6 +59,9 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
                 })),
             );
 
+            // Store uploaded slides in local storage
+            localStorage.setItem(name, newFiles[0].preview);
+            // Store the file in the form state
             setValue(name, newFiles as unknown as T[K], { shouldValidate: true });
         },
         [name, setValue],
