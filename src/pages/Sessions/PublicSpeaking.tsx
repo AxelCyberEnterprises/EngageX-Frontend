@@ -28,13 +28,6 @@ const PublicSpeaking: React.FC = () => {
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
     const time = 5; // in minutes
     const isLargeScreen = useMediaQuery({ minWidth: 1024 }); // Tailwind's lg breakpoint
-
-    const stopTimer = (duration?: any) => {
-        console.log(duration);
-        setDuration(duration);
-        setStop(true);
-    };
-
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
@@ -47,6 +40,12 @@ const PublicSpeaking: React.FC = () => {
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
+
+    const stopTimer = (duration?: any) => {
+        console.log(duration);
+        setDuration(duration);
+        setStop(true);
+    };
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
