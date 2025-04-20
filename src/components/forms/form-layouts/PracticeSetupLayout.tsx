@@ -24,7 +24,7 @@ const PracticeSetupLayout = ({
     setNumSlides,
 }: IPracticeSetupLayoutProps) => {
     return (
-        <div className="flex items-start">
+        <div className="flex items-start lg:h-auto h-screen">
             <UploadSlideSection
                 {...{
                     activeSlideIndex,
@@ -34,7 +34,7 @@ const PracticeSetupLayout = ({
                     setActiveSlideIndex,
                     setNumSlides,
                 }}
-                className="flex-1 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] md:pb-[20vh] pb-[25vh] border-x border-bright-gray"
+                className="flex-1 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] border-x border-bright-gray"
             />
             <SlideDetailsSection
                 {...{ form, activeSlideIndex, slidePreviews, numSlides }}
@@ -42,7 +42,7 @@ const PracticeSetupLayout = ({
             />
             <SlidePreviewAndSettingsSection
                 {...{ form }}
-                className="md:flex hidden flex-1 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] md:pb-[20vh] pb-[25vh] border-x border-bright-gray"
+                className="flex-1 lg:h-[calc(100vh-56.53px)] h-full lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] md:pb-[20vh] border-x border-bright-gray"
             />
         </div>
     );

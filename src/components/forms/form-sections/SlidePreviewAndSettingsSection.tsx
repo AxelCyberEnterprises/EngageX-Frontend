@@ -13,7 +13,7 @@ interface ISlidePreviewAndSettingsSectionProps extends HTMLAttributes<HTMLElemen
 
 const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSettingsSectionProps) => {
     return (
-        <section className={cn("flex flex-col gap-y-4", className)}>
+        <section className={cn("md:flex hidden flex-col gap-y-4", className)}>
             <>
                 <VirtualEnvironmentSection
                     {...{ form }}
