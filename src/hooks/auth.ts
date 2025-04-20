@@ -8,11 +8,10 @@ import {
     setSuccessMessage,
     setUserIdAfterSignup,
 } from "@/store/slices/authSlice";
+import { IGETSessionsResponse } from "@/types/sessions";
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-
-import { IGETSessionsResponse } from "./mutations/dashboard/types";
 
 export function useSignup() {
     const dispatch = useDispatch();
