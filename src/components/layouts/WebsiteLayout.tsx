@@ -3,10 +3,13 @@ import Navbar from "../Navbar";
 import Footer from "../Footer";
 import FloatingChatbot from "../FloatingChatbot";
 import { Toaster } from "sonner";
+import { useDispatch } from "react-redux";
+import { hide } from "@/store/slices/floatingChatbotSlice";
 
 function WebsiteLayout({ children }: { children: ReactNode }) {
+  const dispatch = useDispatch();
   return (
-    <div>
+    <div onClick={() => dispatch(hide())}>
       <Navbar />
       {children}
       <FloatingChatbot />
