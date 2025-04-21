@@ -17,7 +17,8 @@ export function useCreatePublicSpeakingSession() {
         mutationFn: async (data: IPOSTSessionPayload) => {
             localStorage.removeItem("sessionData");
             localStorage.setItem("sessionData", JSON.stringify(data));
-            return await apiPost<{ id: number }>("/sessions/sessions/", data);
+
+            return await apiPost<ISession>("/sessions/sessions/", data);
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
@@ -46,18 +47,14 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
     return useMutation({
         mutationKey: ["createPitchPracticeSession"],
         mutationFn: async (data: IPOSTSessionPayload) => {
-            // Store the payload in local storage for debugging purposes
-            localStorage.setItem("sessionPayload", JSON.stringify(data));
-
             localStorage.removeItem("sessionData");
             localStorage.setItem("sessionData", JSON.stringify(data));
+
             return await apiPost<ISession>(`/sessions/sessions/`, data);
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
-            navigate(
-                `/sessions/${sessionType}-practice-session/${data.id}?virtual_environment=${data.virtual_environment}`,
-            );
+            navigate(`/sessions/${sessionType}-practice-session/${data.id}`);
         },
         onError: (error) => {
             console.error("Error creating pitch practice session: ", error);
