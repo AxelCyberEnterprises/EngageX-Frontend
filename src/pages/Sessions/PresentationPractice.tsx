@@ -269,7 +269,7 @@ const PresentationPractice: React.FC = () => {
                     >
                         <SquareArrowUpRight className="me-1" /> End Session
                     </Button>
-                    <h4 className="mb-4">{ sessionData?.session_name }</h4>
+                    <h4 className="mb-4">{sessionData?.session_name}</h4>
                     <div className="mb-3">
                         <TimerProgressBar
                             minutes={time}
@@ -333,9 +333,7 @@ const PresentationPractice: React.FC = () => {
                     <div className="px-4 md:px-0 flex gap-3">
                         <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">
                             <h6 className="py-2">Speaker Notes</h6>
-                            <p className="text-grey">
-                                { sessionData?.notes ? sessionData?.notes : "No note added" }
-                            </p>
+                            <p className="text-grey">{sessionData?.notes ? sessionData?.notes : "No note added"}</p>
                         </div>
 
                         <div className="w-2/3 rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5 hidden md:inline-block">
@@ -348,9 +346,9 @@ const PresentationPractice: React.FC = () => {
                                             className="w-full h-full object-cover rounded-lg"
                                         />
                                     ) : (
-                                            <div className="w-full h-full bg-bright-gray rounded-lg flex justify-center items-center">
-                                                <p>No next slide</p>
-                                            </div>
+                                        <div className="w-full h-full bg-bright-gray rounded-lg flex justify-center items-center">
+                                            <p>No next slide</p>
+                                        </div>
                                     )}
                                 </div>
                                 <div className="flex flex-col gap-3 h-full justify-center">

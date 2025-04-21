@@ -97,6 +97,7 @@ const PublicSpeaking: React.FC = () => {
                 if (parsed.type === "question") {
                     setQuestionDialogOpen(true);
                 } else if (parsed.type === "full_analysis_update") {
+                    console.log(parsed);
                     setFeedback(parsed);
                 } else if (parsed.type === "window_emotion_update") {
                     console.log(parsed);
@@ -256,7 +257,7 @@ const PublicSpeaking: React.FC = () => {
 
                     <EngagementMetrics
                         percent1={feedback ? feedback.analysis.Feedback.Impact : 0}
-                        percent2={feedback ? feedback.analysis.Feedback.Engagement : 0}
+                        percent2={feedback ? feedback.analysis.Feedback["Trigger Response"] : 0}
                         percent3={feedback ? feedback.analysis.Feedback["Transformative Potential"] : 0}
                     />
                 </div>
