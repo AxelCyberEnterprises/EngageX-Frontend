@@ -28,7 +28,7 @@ interface DashboardData {
   performance_analytics?: Array<{
     chunk_number: string;
     impact: number;
-    trigger_response: number;
+    trigger_reponse: number;
     conviction: number;
   }>;
   // Add other properties of the `data` object here if needed
@@ -36,12 +36,22 @@ interface DashboardData {
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
+import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
 
 const UserDashboardHome: React.FC = () => {
   const { data, isLoading } = useDashboardData() as UseQueryResult<
     DashboardData,
     Error
   >;
+
+  console.log(data);
+  const {
+      data: goalsAndAchievement,
+      // isLoading: goalsLoading,
+      // error: fetchGoalsAndAchievement,
+    } = useGoalsAndAchievement();
+
+    console.log(goalsAndAchievement)
   const [goalsData, setGoalsData] = useState({
     audience_engagement: 0,
     body_language: 0,
@@ -78,7 +88,6 @@ const UserDashboardHome: React.FC = () => {
     // console.log(goalsData);
   }, [data]);
 
-  console.log(data);
   const [goalFraction, setGoalFraction] = useState("0/0");
   useEffect(() => {
     const totalGoals = Object.keys(goalsData).length;
@@ -393,17 +402,48 @@ const UserDashboardHome: React.FC = () => {
   //     Conviction: number;
   // }
 
-  const chartData = [
-    { month: "0", Impact: 186, Trigger: 80, Conviction: 90 },
-    { month: "3", Impact: 305, Trigger: 200, Conviction: 100 },
-    { month: "6", Impact: 237, Trigger: 120, Conviction: 100 },
-    { month: "9", Impact: 73, Trigger: 190, Conviction: 100 },
-    { month: "12", Impact: 209, Trigger: 130, Conviction: 100 },
-    { month: "15", Impact: 214, Trigger: 140, Conviction: 100 },
-  ];
+  // const chartData = [
+  //   { month: "0", Impact: 186, Trigger: 80, Conviction: 90 },
+  //   { month: "3", Impact: 305, Trigger: 200, Conviction: 100 },
+  //   { month: "6", Impact: 237, Trigger: 120, Conviction: 100 },
+  //   { month: "9", Impact: 73, Trigger: 190, Conviction: 100 },
+  //   { month: "12", Impact: 209, Trigger: 130, Conviction: 100 },
+  //   { month: "15", Impact: 214, Trigger: 140, Conviction: 100 },
+  // ];
 
-  // const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
-  // console.log("newChartData: " , newChartData)
+  const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
+  useEffect(() => {
+    console.log("newChartData: " , newChartData)
+    console.log(setNewChartData)
+
+  },[newChartData])
+
+  function applyChunkOffset(arr: Array<{ [key: string]: any }>, chunkSize = 7, offset = 4) {
+    return arr.map((item, index) => {
+      const chunkOffset = (index + offset) * chunkSize;
+      return {
+        ...item,
+        chunk_offset: chunkOffset, // you can name this anything
+        impact: item.impact,
+        trigger: item.trigger_reponse,
+        conviction: item.conviction,
+      };
+    });
+  }
+  const result:{
+    chunk_offset: number;
+    impact: number;
+    trigger: number;
+    conviction: number;
+  }[] = applyChunkOffset(
+    data?.performance_analytics?.filter(Boolean) || [],
+    7
+  );
+  
+
+  
+  console.log("result: ", result)
+  
 
   const chartColors = {
     Impact: "#252A39",
@@ -531,17 +571,23 @@ const UserDashboardHome: React.FC = () => {
 
             <div className="chart__div">
               <ShadLineChart
-                // data={newChartData
-                //     .filter(Boolean)
-                //     .flatMap((analytics) =>
-                //         analytics?.map((item) => ({
-                //             chunk_number: item.chunk_number,
-                //             Impact: item.impact,
-                //             Trigger: item.trigger_response,
-                //             Conviction: item.conviction,
-                //         })) || []
-                //     )}
-                data={chartData}
+            data={result
+  .filter(Boolean)
+  .map((item: {
+    chunk_offset: number;
+    impact: number;
+    trigger: number;
+    conviction: number;
+  }) => ({
+    month: item.chunk_offset,
+    Impact: item.impact,
+    Trigger: item.trigger,
+    Conviction: item.conviction,
+  }))
+}
+
+            
+                // data={chartData}
                 colors={chartColors}
               />
             </div>
