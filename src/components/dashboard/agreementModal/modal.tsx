@@ -334,7 +334,7 @@ function StepTwo({
             <p className="my-4">8. Contact Us</p>
             <p className="leading-7">
               For any privacy-related concerns, please contact{" "}
-              <a href="mailto:support@engagex.com">support@engagex.com</a>.
+              <a href="mailto:info@engagexai.io">info@engagexai.io</a>.
             </p>
           </div>
         </div>

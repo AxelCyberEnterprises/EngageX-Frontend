@@ -126,7 +126,7 @@ function PrivacyPolicy() {
             <h4 className="text-black font-montreal">Contact Us</h4>
             <p className="big">
               For any privacy-related concerns, please contact
-              <span className="font-medium ml-2">support@engagex.com</span>
+              <span className="font-medium ml-2">info@engagexai.io</span>
             </p>
           </div>
         </div>
