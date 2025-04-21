@@ -1,13 +1,21 @@
+import { RootState } from "@/store";
+import { toggle } from "@/store/slices/floatingChatbotSlice";
 import { Headset } from "lucide-react";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function FloatingChatbot() {
-  const [showVideo, setShowVideo] = useState(false);
+  const dispatch = useDispatch();
+  const showVideo = useSelector(
+    (state: RootState) => state.floating_chatbot.showVideo
+  );
   return (
     <div className="size-16 shadow-xl rounded-full z-50 bg-purple-500 fixed bottom-10 right-10 flex items-center justify-center">
       <button
-        className="bg-transparent"
-        onClick={() => setShowVideo(!showVideo)}
+        className="bg-transparent h-full w-full"
+        onClick={(e) => {
+          e.stopPropagation();
+          dispatch(toggle());
+        }}
       >
         <Headset className="h-6 text-white" />
       </button>
@@ -27,6 +35,5 @@ function FloatingChatbot() {
     </div>
   );
 }
-6;
 
 export default FloatingChatbot;

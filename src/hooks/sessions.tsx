@@ -15,6 +15,8 @@ export function useCreatePublicSpeakingSession() {
     return useMutation({
         mutationKey: ["createPublicSpeakingSession"],
         mutationFn: async (data: IPOSTSessionPayload) => {
+            localStorage.removeItem("sessionData");
+            localStorage.setItem("sessionData", JSON.stringify(data));
             return await apiPost<{ id: number }>("/sessions/sessions/", data);
         },
         onSuccess: async (data) => {
@@ -47,6 +49,8 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
             // Store the payload in local storage for debugging purposes
             localStorage.setItem("sessionPayload", JSON.stringify(data));
 
+            localStorage.removeItem("sessionData");
+            localStorage.setItem("sessionData", JSON.stringify(data));
             return await apiPost<ISession>(`/sessions/sessions/`, data);
         },
         onSuccess: async (data) => {
@@ -99,5 +103,15 @@ export function useGetSessionReport(sessionId: string | undefined) {
         queryFn: async () => {
             return await apiGet(`/sessions/sessions/${sessionId}/report/`);
         },
+    });
+}
+
+export function useGetSessionData(sessionId: string | undefined) {
+    return useQuery({
+        queryKey: ["getSessionData"],
+        queryFn: async () => {
+            return await apiGet(`/sessions/sessions/${sessionId}/`);
+        },
+        enabled: !!sessionId,
     });
 }

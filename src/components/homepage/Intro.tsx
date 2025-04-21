@@ -27,13 +27,8 @@ function Intro() {
               Why settle for ordinary when you can be extraordinary
             </h4>
             <p className="text-dark-electric-blue leading-normal">
-              Our platform offers a groundbreaking solution for anyone aiming to
-              improve their public speaking, pitch delivery, or presentation
-              skills. Personalized coaching feedback is powered by a hybrid of
-              AI technology and human insight from certified coaches, available
-              virtually, in person, or by phone based on your schedule,
-              delivering expert guidance that goes far beyond basic peer
-              evaluation
+              Our groundbreaking solution is powered by a hybrid of AI
+              technology and human insights from certified coaches.
             </p>
           </div>
         </div>
