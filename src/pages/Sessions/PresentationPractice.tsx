@@ -306,6 +306,7 @@ const PresentationPractice: React.FC = () => {
                                 border="rounded-2xl"
                                 pauseOnClick={false}
                                 preload={true}
+                                muted={true}
                             />
 
                             <div className="w-45 h-25 md:w-60 md:h-35 absolute left-5 bottom-5">
