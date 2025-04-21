@@ -98,7 +98,7 @@ export function useGetSessionReport(sessionId: string | undefined) {
     return useQuery({
         queryKey: ["getSessionReport"],
         queryFn: async () => {
-            return await apiGet(`/sessions/sessions/${sessionId}/report/`);
+            return await apiGet<ISession>(`/sessions/sessions/${sessionId}/report/`);
         },
     });
 }

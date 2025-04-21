@@ -12,7 +12,7 @@ export interface ISession {
     session_type: string;
     goals: string[];
     date: string;
-    duration: number | null;
+    duration: string | null;
     note: string | null;
     slides_file: string | null;
     slide_specific_timing: Record<string, unknown>;
