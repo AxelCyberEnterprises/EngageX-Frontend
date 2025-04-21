@@ -1,5 +1,5 @@
-import BoardRoom1 from "@/assets/images/jpegs/boardroom-1.jpeg";
 import PracticeBg from "@/assets/images/jpegs/practice-bg.jpeg";
+import BoardRoom1 from "@/assets/images/pngs/boardroom-1.png";
 import ConferenceRoom from "@/assets/images/pngs/conference-room.png";
 
 export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];

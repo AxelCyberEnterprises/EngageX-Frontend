@@ -3,6 +3,8 @@ import { FormType as PresentationPracticeFormType } from "@/components/forms/Pre
 import { Button } from "@/components/ui/button";
 import { useSessionHistory } from "@/hooks/auth";
 import { useCreatePracticeSession } from "@/hooks/sessions";
+import { useAppDispatch } from "@/store";
+import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { capitalize } from "@mui/material";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -23,14 +25,15 @@ const StartPracticeSetupSession = ({
     handleSubmit,
 }: IStartPracticeSetupSessionProps) => {
     const { mutate: createPracticeSession, isPending } = useCreatePracticeSession({ sessionType });
-    const { data } = useSessionHistory();
+    const { data, isPending: isGetSessionsPending } = useSessionHistory();
+    const dispatch = useAppDispatch();
 
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {
             const payload = {
                 ...values,
                 goals: values.goals.map(({ goal }) => goal),
-                slide: values.slides?.pop()?.preview,
+                // slide: values.slides?.pop()?.preview,
             };
             delete payload.slides;
 
@@ -44,6 +47,7 @@ const StartPracticeSetupSession = ({
             const { count } = data!;
 
             setValue("session_name", `${capitalize(sessionType)} Practice Session ${count + 1}`);
+            setValue("virtual_environment", "board_room_1");
         }
 
         handleSubmit(handleSessionSetupSubmit)();
@@ -53,6 +57,14 @@ const StartPracticeSetupSession = ({
         <StartSession>
             <Button
                 disabled={isPending}
+                variant="outline"
+                className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal w-full h-11"
+                onClick={() => dispatch(closeDialog())}
+            >
+                Cancel
+            </Button>
+            <Button
+                disabled={isPending || isGetSessionsPending}
                 isLoading={isPending}
                 className="bg-gunmetal hover:bg-gunmetal/90 font-normal w-full h-11"
                 onClick={handleProceed}

@@ -3,7 +3,7 @@ import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 import { apiGet, apiPost } from "@/lib/api";
 import { useAppDispatch } from "@/store";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
-import { IPOSTSessionPayload } from "@/types/sessions";
+import { IPOSTSessionPayload, ISession } from "@/types/sessions";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -15,7 +15,10 @@ export function useCreatePublicSpeakingSession() {
     return useMutation({
         mutationKey: ["createPublicSpeakingSession"],
         mutationFn: async (data: IPOSTSessionPayload) => {
-            return await apiPost<{ id: number }>("/sessions/sessions/", data);
+            localStorage.removeItem("sessionData");
+            localStorage.setItem("sessionData", JSON.stringify(data));
+
+            return await apiPost<ISession>("/sessions/sessions/", data);
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
@@ -44,7 +47,10 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
     return useMutation({
         mutationKey: ["createPitchPracticeSession"],
         mutationFn: async (data: IPOSTSessionPayload) => {
-            return await apiPost<{ id: number }>(`/sessions/sessions/`, data);
+            localStorage.removeItem("sessionData");
+            localStorage.setItem("sessionData", JSON.stringify(data));
+
+            return await apiPost<ISession>(`/sessions/sessions/`, data);
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
@@ -92,7 +98,17 @@ export function useGetSessionReport(sessionId: string | undefined) {
     return useQuery({
         queryKey: ["getSessionReport"],
         queryFn: async () => {
-            return await apiGet(`/sessions/sessions/${sessionId}/report/`);
+            return await apiGet<ISession>(`/sessions/sessions/${sessionId}/report/`);
         },
+    });
+}
+
+export function useGetSessionData(sessionId: string | undefined) {
+    return useQuery({
+        queryKey: ["getSessionData"],
+        queryFn: async () => {
+            return await apiGet(`/sessions/sessions/${sessionId}/`);
+        },
+        enabled: !!sessionId,
     });
 }

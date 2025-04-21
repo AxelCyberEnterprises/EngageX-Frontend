@@ -19,7 +19,7 @@ const EngagementMetrics: React.FC<EngagementProps> = ({ percent1, percent2, perc
                 </div>
 
                 <div className="mb-3">
-                    <p className="mb-3">Engagement Levels</p>
+                    <p className="mb-3">Trigger Response</p>
                     <SegmentedProgressBar percent={useFluctuatingNumber(percent2)} color={"#C64683"} divisions={1} />
                 </div>
 

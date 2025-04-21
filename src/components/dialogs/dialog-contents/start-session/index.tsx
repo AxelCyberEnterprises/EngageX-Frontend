@@ -1,12 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { PlayCircle } from "lucide-react";
 import { ReactNode } from "react";
-import { useDispatch } from "react-redux";
 
 const StartSession = ({ children }: { children: ReactNode }) => {
-    const dispatch = useDispatch();
-
     return (
         <div className="flex flex-col justify-between">
             <div className="space-y-6">
@@ -21,16 +16,7 @@ const StartSession = ({ children }: { children: ReactNode }) => {
                     </p>
                 </div>
             </div>
-            <div className="flex items-center gap-x-4">
-                <Button
-                    variant="outline"
-                    className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal w-full h-11"
-                    onClick={() => dispatch(closeDialog())}
-                >
-                    Cancel
-                </Button>
-                {children}
-            </div>
+            <div className="flex items-center gap-x-4">{children}</div>
         </div>
     );
 };

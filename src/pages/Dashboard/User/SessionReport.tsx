@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
@@ -8,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetSessionReport } from "@/hooks/sessions";
 import { ArrowLeft, Download, UserRound } from "lucide-react";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import avatar from "../../../assets/images/pngs/avater.png";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
@@ -19,11 +18,7 @@ const PitchSessionReport: React.FC = () => {
     const navigate = useNavigate();
 
     const { id } = useParams();
-    const { data, isPending, refetch } = useGetSessionReport(id) as {
-        data: any;
-        isPending: boolean;
-        refetch: () => void;
-    };
+    const { data, isPending, refetch } = useGetSessionReport(id);
 
     React.useEffect(() => {
         if (id) {
@@ -31,7 +26,25 @@ const PitchSessionReport: React.FC = () => {
         }
     }, [id, refetch]);
 
-    console.log(data);
+    const parseStrengthsAndImprovements = useCallback((input: string) => {
+        // Remove the outer quotes if the input is a stringified string
+        if (input.startsWith('"') && input.endsWith('"')) {
+            input = input.slice(1, -1);
+        }
+
+        // Remove the outer [ ]
+        const trimmed = input.trim().slice(1, -1);
+
+        // Split by comma, then trim and remove only leading and trailing single quotes
+        const elements = trimmed.split(/,(?=(?:[^']*'[^']*')*[^']*$)/).map((el) => {
+            const trimmedEl = el.trim();
+            const unquoted = trimmedEl.replace(/^'(.*)'$/, "$1");
+            return unquoted;
+        });
+
+        // Strip surrounding quotes from each string
+        return elements.map((str) => str.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1"));
+    }, []);
 
     const chartData = [
         { minute: 0, Impact: 0, TriggerResponse: 0, Conviction: 0 },
@@ -127,7 +140,7 @@ const PitchSessionReport: React.FC = () => {
 
     return (
         <div>
-            {isPending ? (
+            {!data || isPending ? (
                 <div className="p-4">
                     <Skeleton className="h-7 w-20 mb-3" />
                     <Skeleton className="h-15 w-100 mb-3" />
@@ -204,7 +217,7 @@ const PitchSessionReport: React.FC = () => {
                                         })}
                                     </p>
                                     <div className="border-l-1"></div>
-                                    <p>{`${parseInt(data.duration?.split(":")[0])} mins ${parseInt(data.duration?.split(":")[1])} secs`}</p>
+                                    <p>{`${parseInt(data.duration?.split(":")[1] ?? "0")} mins ${parseInt(data.duration?.split(":")[2] ?? "0")} secs`}</p>
                                 </div>
                             </div>
 
@@ -292,7 +305,7 @@ const PitchSessionReport: React.FC = () => {
                                                 <h5>{item.percent}%</h5>
                                             </div>
                                             <div>
-                                                <FullCircleProgress percent={item.percent} color={"#64BA9F"} />
+                                                <FullCircleProgress percent={item.percent!} color={"#64BA9F"} />
                                             </div>
                                         </div>
                                     </div>
@@ -310,7 +323,7 @@ const PitchSessionReport: React.FC = () => {
                                         </div>
                                         <div className="w-full lg:w-8/12 mt-3 lg:mt-0">
                                             <SegmentedProgressBar
-                                                percent={metric.rating}
+                                                percent={metric.rating!}
                                                 color={"#252A39"}
                                                 divisions={1}
                                             />
@@ -333,7 +346,7 @@ const PitchSessionReport: React.FC = () => {
                                                 <h5>{item.percent}%</h5>
                                             </div>
                                             <div>
-                                                <FullCircleProgress percent={item.percent} color={"#64BA9F"} />
+                                                <FullCircleProgress percent={item.percent!} color={"#64BA9F"} />
                                             </div>
                                         </div>
                                     </div>
@@ -351,7 +364,7 @@ const PitchSessionReport: React.FC = () => {
                                         </div>
                                         <div className="w-full lg:w-8/12 mt-3 lg:mt-0">
                                             <SegmentedProgressBar
-                                                percent={metric.rating}
+                                                percent={metric.rating!}
                                                 color={"#252A39"}
                                                 divisions={1}
                                             />
@@ -368,54 +381,49 @@ const PitchSessionReport: React.FC = () => {
                     <section className="px-4 lg:px-8 py-4">
                         <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
                             <div className="flex flex-col gap-6 md:flex-row">
-                                <div>
+                                <div className="w-3/5">
                                     <h5 className="mb-5">Personal Goal Summary</h5>
                                     <p className="text-independence">Session feedback summary</p>
                                     <div className="p-4 rounded-md border-bright-gray border-1 w-full">
-                                        <p>
-                                            The session was completed within the allocated time. Key strengths include
-                                            clear delivery and structured pacing. Areas for improvement include reducing
-                                            time spent on introductions and enhancing explanation of key benefits.
-                                        </p>
+                                        <p>{data.general_feedback_summary}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col w-full mt-5 lg:mt-0">
+                                <div className="flex flex-col w-2/5 mt-5 lg:mt-0">
                                     <div className="flex justify-between mb-4">
                                         <h6 className="mb-4">Strengths & Areas for Improvement</h6>
                                     </div>
 
                                     <div className="flex flex-col gap-3">
-                                        <div className="w-full md:w-1/2 md:pe-2 mb-3">
+                                        <div className="w-full md:w-4/5 md:pe-2 mb-3">
                                             <h6 className="text-medium-sea-green mb-3.5">Strengths</h6>
                                             <ul className="list-none space-y-3">
-                                                <li className="flex items-center gap-2 text-independence">
-                                                    <span className="text-medium-sea-green">✔</span> Excellent pace
-                                                    variation
-                                                </li>
-                                                <li className="flex items-center gap-2 text-independence">
-                                                    <span className="text-medium-sea-green">✔</span> Strong opening
-                                                    hook
-                                                </li>
-                                                <li className="flex items-center gap-2 text-independence">
-                                                    <span className="text-medium-sea-green">✔</span> Effective use of
-                                                    pauses
-                                                </li>
+                                                {parseStrengthsAndImprovements(data.strength ?? "[]").map(
+                                                    (strength, index) => (
+                                                        <li
+                                                            key={strength + index}
+                                                            className="flex items-center gap-2 text-independence"
+                                                        >
+                                                            <span className="text-medium-sea-green">✔</span> {strength}
+                                                        </li>
+                                                    ),
+                                                )}
                                             </ul>
                                         </div>
 
-                                        <div className="w-full md:w-1/2 md:ps-2">
-                                            <h6 className="text-jelly-bean mb-3.5">Weaknesses</h6>
+                                        <div className="w-full md:w-4/5 md:ps-2">
+                                            <h6 className="text-jelly-bean mb-3.5">Areas for Improvement</h6>
                                             <ul className="list-none space-y-3">
-                                                <li className="flex items-center gap-2 text-independence">
-                                                    <span className="text-jelly-bean">✔</span> Excellent pace variation
-                                                </li>
-                                                <li className="flex items-center gap-2 text-independence">
-                                                    <span className="text-jelly-bean">✔</span> Strong opening hook
-                                                </li>
-                                                <li className="flex items-center gap-2 text-independence">
-                                                    <span className="text-jelly-bean">✔</span> Effective use of pauses
-                                                </li>
+                                                {parseStrengthsAndImprovements(data.area_of_improvement ?? "[]").map(
+                                                    (improvement, index) => (
+                                                        <li
+                                                            key={improvement + index}
+                                                            className="flex items-center gap-2 text-independence"
+                                                        >
+                                                            <span className="text-jelly-bean">✔</span> {improvement}
+                                                        </li>
+                                                    ),
+                                                )}
                                             </ul>
                                         </div>
                                     </div>

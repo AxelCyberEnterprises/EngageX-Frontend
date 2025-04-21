@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const BaseSessionSetupSchema = z.object({
-    session_name: z.string({ required_error: "Session name is required" }),
+    session_name: z.string({ required_error: "Session name is required" }).min(1, "Session name is required"),
     session_type: z.enum(["pitch", "public", "presentation"]),
     goals: z.array(
         z.object({
@@ -9,7 +9,9 @@ export const BaseSessionSetupSchema = z.object({
             goal: z.string(),
         }),
     ),
-    virtual_environment: z.enum(["conference_room", "board_room_1", "board_room_2"]).optional(),
+    virtual_environment: z.enum(["conference_room", "board_room_1", "board_room_2"], {
+        required_error: "Virtual environment is required",
+    }),
     notes: z.string().optional(),
     allow_ai_questions: z.boolean().optional(),
 });
