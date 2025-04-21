@@ -1,24 +1,50 @@
 import { BaseSessionSetupSchema } from "@/schemas/dashboard/user";
 import { z } from "zod";
 
-interface ISession {
+export interface ISession {
     id: number;
-    session_name: string;
-    session_type: string;
-    goals: string;
-    session_type_display: string;
-    date: string;
-    duration: number | null;
-    note: string | null;
     user_email: string;
     full_name: string;
-    pauses: number;
-    tone: string | null;
-    impact: string | null;
-    audience_engagement: string | null;
-    sequence: string | null;
+    session_type_display: string;
+    latest_score: number;
+    sequence: number | null;
+    session_name: string;
+    session_type: string;
+    goals: string[];
+    date: string;
+    duration: string | null;
+    note: string | null;
+    slides_file: string | null;
+    slide_specific_timing: Record<string, unknown>;
     allow_ai_questions: boolean;
-    virtual_environment: string | null;
+    virtual_environment: string;
+    volume: number;
+    pitch_variability: number;
+    pace: number;
+    pauses: number;
+    conviction: number;
+    clarity: number;
+    impact: number;
+    brevity: number;
+    trigger_response: number;
+    filler_words: number;
+    grammar: number;
+    posture: number;
+    motion: number;
+    gestures: boolean;
+    transformative_potential: number;
+    general_feedback_summary: string | null;
+    strength: string | null;
+    area_of_improvement: string | null;
+    audience_engagement: number;
+    overall_captured_impact: number;
+    vocal_variety: number;
+    emotional_impact: number;
+    body_language: number;
+    transformative_communication: number;
+    structure_and_clarity: number;
+    language_and_word_choice: number;
+    user: number;
 }
 
 export interface IGETSessionsResponse {
