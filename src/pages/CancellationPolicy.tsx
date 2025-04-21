@@ -1,10 +1,6 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-
 function CancellationPolicy() {
   return (
     <main className="">
-      <Navbar />
       <div className="space-y-20 py-36 font-montserrat px-10 lg:px-20">
         <h1 className="text-center font-montreal">
           Our cancellation & refund Policy
@@ -54,8 +50,6 @@ function CancellationPolicy() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </main>
   );
 }

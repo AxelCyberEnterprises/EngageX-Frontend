@@ -1,7 +1,9 @@
 import { FormType } from "@/components/forms/PublicSpeakingForm";
 import { Button } from "@/components/ui/button";
 import { useSessionHistory } from "@/hooks/auth";
-import { useCreatePublicSpeakingSession } from "@/hooks/mutations/dashboard/user";
+import { useCreatePublicSpeakingSession } from "@/hooks/sessions";
+import { useAppDispatch } from "@/store";
+import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import StartSession from ".";
@@ -15,6 +17,7 @@ interface IStartPublicSpeakingSessionProps extends HTMLAttributes<HTMLDivElement
 const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: IStartPublicSpeakingSessionProps) => {
     const { mutate: createPublicSpeakingSession, isPending } = useCreatePublicSpeakingSession();
     const { data } = useSessionHistory();
+    const dispatch = useAppDispatch();
 
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {
@@ -37,6 +40,14 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
 
     return (
         <StartSession>
+            <Button
+                disabled={isPending}
+                variant="outline"
+                className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal w-full h-11"
+                onClick={() => dispatch(closeDialog())}
+            >
+                Cancel
+            </Button>
             <Button
                 disabled={isPending}
                 isLoading={isPending}

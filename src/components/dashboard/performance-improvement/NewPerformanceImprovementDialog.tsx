@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,75 +17,73 @@ import {
   handleActiveScreen,
   handleDialog,
   handleSelectedScreen,
+  updateNewPISData,
 } from "@/store/slices/performance_improvement_slice";
 import clsx from "clsx";
 import { useSessionHistory } from "@/hooks/auth";
+import {
+  capitalizeWords,
+  formatDate,
+  formatTime,
+} from "@/components/tables/session-history-table/admin";
+import { toast } from "sonner";
 
 interface Sessions {
   session_name: string;
-  completion_percentage: number;
+  impact: number;
   date: string;
   duration: string;
   new_sequence_name: string;
   is_active: boolean;
 }
 
-// const sessionsData: Sessions[] = [
-//   {
-//     title: "Pitch Presenation Session",
-//     completion_percentage: 80,
-//     date: "February 22, 2025",
-//     time: "11:59 am",
-//     new_sequence_name: "",
-//     is_active: false,
-//   },
-//   {
-//     title: "Pitch Presenation Session",
-//     completion_percentage: 0,
-//     date: "February 22, 2025",
-//     time: "11:59 am",
-//     new_sequence_name: "",
-//     is_active: true,
-//   },
-//   {
-//     title: "Idea Presenation Session",
-//     completion_percentage: 0,
-//     date: "February 22, 2025",
-//     time: "11:59 am",
-//     new_sequence_name: "",
-//     is_active: false,
-//   },
-//   {
-//     title: "Keynote Speaking Session",
-//     completion_percentage: 0,
-//     date: "February 22, 2025",
-//     time: "11:59 am",
-//     new_sequence_name: "",
-//     is_active: false,
-//   },
-// ];
-
 function NewPerformanceImprovementDialog() {
-  const { data: sessionData } = useSessionHistory();
   const [sessions, setSessions] = useState<Sessions[]>([]);
+  const [newSequenceName, setNewSequenceName] = useState("");
   const dispatch = useDispatch();
   const { dialog, selected_screen } = useSelector(
-    (state: RootState) => state.performance_improvment
+    (state: RootState) => state.performance_improvement
+  );
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
+  const { data, error, isLoading } = useSessionHistory(
+    pagination.pageIndex + 1
+  );
+
+  if (isLoading) {
+    console.log("loading data...");
+  }
+
+  if (error) {
+    toast.error("Can't load data at this time.");
+  }
+
+  const userSessionHistoryData: Sessions[] = useMemo(
+    () =>
+      data?.results?.map((item) => ({
+        session_name: capitalizeWords(item.session_name || "Unknown Session"),
+        impact: Number(item.impact) ?? 0,
+        date: formatDate(item.date),
+        duration: formatTime(item.duration?.toString()),
+        new_sequence_name: "",
+        is_active: false,
+      })) ?? [],
+    [data?.results]
   );
 
   useEffect(() => {
-    if (!sessionData) return;
-    let sessions = (sessionData as any).results as Sessions[];
-    setSessions(sessions);
-  }, [sessionData]);
-
-  console.log("session: ", sessionData);
+    if (!data?.results) return;
+    setSessions(userSessionHistoryData);
+  }, [data?.results, userSessionHistoryData]);
 
   const changeActive = (idx: number) => {
-    setSessions((prevSessions) =>
-      prevSessions.map((item, index) => ({
+    setSessions((prev) =>
+      prev.map((item, i) => ({
         ...item,
-        is_active: idx === index,
+        is_active: idx === i,
       }))
     );
   };
@@ -99,7 +97,7 @@ function NewPerformanceImprovementDialog() {
             onClick={() => dispatch(handleSelectedScreen(PIScreens.NEW_PIS))}
             className={clsx(
               "flex items-center space-x-4 text-left p-4 justify-between py-6 h-full w-full border rounded-2xl border-dark-gray overflow-clip",
-              selected_screen == PIScreens.NEW_PIS &&
+              selected_screen === PIScreens.NEW_PIS &&
                 "bg-alice-blue cursor-pointer"
             )}
           >
@@ -108,7 +106,7 @@ function NewPerformanceImprovementDialog() {
                 New Performance Improvement Sequence
               </small>
               <small className="relative mt-2 text-[#6B7186]">
-                Start a new performance Improvement sequence based on an old
+                Start a new performance improvement sequence based on an old
                 session
               </small>
             </div>
@@ -129,7 +127,8 @@ function NewPerformanceImprovementDialog() {
             </div>
           </div>
         </AlertDialogTrigger>
-        <AlertDialogContent className="max-h-[35rem] border-0 p-0 overflow-clip overflow-y-auto">
+
+        <AlertDialogContent className="max-h-[35rem] border-0 p-0 overflow-y-auto">
           <AlertDialogHeader>
             <AlertDialogTitle className="pb-4 p-4 font-medium sticky top-0 bg-white">
               <div className="flex justify-between text-left gap-4">
@@ -165,30 +164,8 @@ function NewPerformanceImprovementDialog() {
                   />
                 </svg>
               </div>
-              <div className="mt-4 flex items-center border px-3 rounded-2xl border-gray">
-                <svg
-                  width="18"
-                  height="18"
-                  className="text-gray stroke-gray"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M13.5846 13.5846L17.3346 17.3346M15.668 8.16797C15.668 6.17885 14.8778 4.27119 13.4713 2.86467C12.0647 1.45814 10.1571 0.667969 8.16797 0.667969C6.17885 0.667969 4.27119 1.45814 2.86467 2.86467C1.45814 4.27119 0.667969 6.17885 0.667969 8.16797C0.667969 10.1571 1.45814 12.0647 2.86467 13.4713C4.27119 14.8778 6.17885 15.668 8.16797 15.668C10.1571 15.668 12.0647 14.8778 13.4713 13.4713C14.8778 12.0647 15.668 10.1571 15.668 8.16797Z"
-                    stroke="#262B3A"
-                    stroke-width="0.75"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-
-                <input
-                  className="outline-none border-0 text-black"
-                  placeholder="Search session name"
-                />
-              </div>
             </AlertDialogTitle>
+
             <AlertDialogDescription className="space-y-4 p-4">
               {sessions.map((session, idx) => (
                 <div
@@ -200,8 +177,8 @@ function NewPerformanceImprovementDialog() {
                     className={clsx(
                       "flex justify-between p-4 border rounded-xl cursor-pointer items-center",
                       session.is_active
-                        ? "bg-alice-blue border border-black"
-                        : "border border-gray"
+                        ? "bg-alice-blue border-black"
+                        : "border-gray"
                     )}
                   >
                     <div className="space-y-1 text-left">
@@ -211,7 +188,7 @@ function NewPerformanceImprovementDialog() {
                         <small className="small">{session.duration}</small>
                       </div>
                     </div>
-                    <h6>{session.completion_percentage}%</h6>
+                    <h6>{session.impact}%</h6>
                   </div>
                   {session.is_active && (
                     <div className="space-y-2 text-left">
@@ -219,6 +196,8 @@ function NewPerformanceImprovementDialog() {
                         Enter New Sequence Name
                       </small>
                       <input
+                        value={newSequenceName}
+                        onChange={(e) => setNewSequenceName(e.target.value)}
                         className="mt-2 text-black"
                         placeholder="Type here"
                       />
@@ -228,27 +207,81 @@ function NewPerformanceImprovementDialog() {
               ))}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="w-full sticky border-2 bottom-0 bg-white items-center flex mx-4 justify-start px-4 py-0 h-20">
-            <AlertDialogAction
-              className="px-10 py-2 h-12 mx-4"
-              onClick={() =>
-                dispatch(
-                  handleDialog({
-                    dialog: {
-                      new_pis_isopen: false,
-                      session_confirmation: true,
-                    },
-                  })
-                )
-              }
-            >
-              Continue
-            </AlertDialogAction>
+
+          <AlertDialogFooter className="w-full flex justify-center items-center sticky border-t border-t-black/20 bottom-0 bg-white px-4 py-0 h-20">
+            <div className="flex justify-between w-full">
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() =>
+                    setPagination((prev) => ({
+                      ...prev,
+                      pageIndex: Math.max(prev.pageIndex - 1, 0),
+                    }))
+                  }
+                  disabled={pagination.pageIndex === 0}
+                  className="bg-transparent text-black disabled:opacity-40"
+                >
+                  <p>Previous</p>
+                </button>
+
+                <p className="size-8 rounded-full border flex items-center justify-center">
+                  {pagination.pageIndex + 1}
+                </p>
+
+                <button
+                  onClick={() =>
+                    setPagination((prev) => ({
+                      ...prev,
+                      pageIndex: prev.pageIndex + 1,
+                    }))
+                  }
+                  disabled={!data?.next}
+                  className="bg-transparent text-black disabled:opacity-40"
+                >
+                  <p>Next</p>
+                </button>
+              </div>
+
+              <AlertDialogAction
+                className={clsx(
+                  "px-10 py-2 h-12",
+                  newSequenceName.trim().length == 0
+                    ? "bg-gray-300"
+                    : "bg-black"
+                )}
+                disabled={newSequenceName.trim().length == 0}
+                onClick={() => {
+                  const activeSession = sessions.find((s) => s.is_active);
+                  if (!activeSession) return;
+
+                  dispatch(
+                    handleDialog({
+                      dialog: {
+                        new_pis_isopen: false,
+                        session_confirmation: true,
+                      },
+                    })
+                  );
+
+                  dispatch(
+                    updateNewPISData({
+                      title: activeSession.session_name,
+                      impact: activeSession.impact,
+                      date: activeSession.date,
+                      duration: activeSession.duration,
+                      new_sequence_name: newSequenceName.trim(),
+                    })
+                  );
+                }}
+              >
+                Continue
+              </AlertDialogAction>
+            </div>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Second Dialog (Session Confirmation) */}
+      {/* Session Confirmation Dialog */}
       {dialog.session_confirmation && <SessionConfirmationDialog />}
     </div>
   );

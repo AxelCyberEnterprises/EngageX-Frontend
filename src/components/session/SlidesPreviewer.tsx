@@ -1,101 +1,137 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 
-// === Props ===
-type SliderProps = {
+type SlidesPreviewerProps = {
     images: string[];
-    minutes: number;
+    start: boolean;
+    stop: boolean;
+    onStop: (durations: string[]) => void;
 };
 
-// Shared internally between components
-type SharedProps = SliderProps & {
-    currentSlide: number;
+export type SlidesPreviewerHandle = {
+    nextSlide: () => void;
+    currentSlideTime: string;
+    nextSlideImage: string | null;
+    slideProgress: { current: number; total: number };
 };
 
-// === Custom Hook: Shared Logic ===
-// eslint-disable-next-line react-refresh/only-export-components
-export function useImageSlider({ images, minutes }: SliderProps) {
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const totalSlides = images.length;
-    const durationPerSlide = (minutes * 60 * 1000) / totalSlides;
+const SlidesPreviewer = forwardRef<SlidesPreviewerHandle, SlidesPreviewerProps>(
+    ({ images, start, stop, onStop }, ref) => {
+        const [currentSlide, setCurrentSlide] = useState(0);
+        const [startTime, setStartTime] = useState<number | null>(null);
+        const [durations, setDurations] = useState<string[]>([]);
+        const [currentDuration, setCurrentDuration] = useState("00:00");
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % totalSlides);
-        }, durationPerSlide);
+        const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-        return () => clearInterval(interval);
-    }, [durationPerSlide, totalSlides]);
+        // Start timer when 'start' is true and 'stop' is false
+        useEffect(() => {
+            if (start && !stop && !startTime) {
+                const slideStart = Date.now();
+                setStartTime(slideStart);
 
-    return {
-        currentSlide,
-        totalSlides,
-        durationPerSlide,
-    };
-}
+                timerRef.current = setInterval(() => {
+                    const elapsed = Date.now() - slideStart;
+                    const minutes = Math.floor(elapsed / 60000)
+                        .toString()
+                        .padStart(2, "0");
+                    const seconds = Math.floor((elapsed % 60000) / 1000)
+                        .toString()
+                        .padStart(2, "0");
+                    setCurrentDuration(`${minutes}:${seconds}`);
+                }, 1000);
+            }
 
-// === Main Slider Component ===
-export default function ImageSlider({ images, currentSlide }: SharedProps) {
-    return (
-        <div className="w-full h-full relative overflow-hidden">
-            {images.map((img, index) => (
-                <img
-                    key={index}
-                    src={img}
-                    alt={`Slide ${index + 1}`}
-                    className={`absolute w-full h-full object-cover transition-opacity duration-1000 ${
-                        index === currentSlide ? "opacity-100" : "opacity-0"
-                    }`}
-                />
-            ))}
-        </div>
-    );
-}
+            return () => clearInterval(timerRef.current as NodeJS.Timeout);
+        }, [start, stop]);
 
-// === Slide Countdown Component ===
-export function SlideCountdown({ durationPerSlide }: { durationPerSlide: number }) {
-    const [countdown, setCountdown] = useState(durationPerSlide / 1000);
+        // Stop timer and report durations
+        useEffect(() => {
+            if (stop && startTime) {
+                const timeSpent = Date.now() - startTime;
+                const minutes = Math.floor(timeSpent / 60000)
+                    .toString()
+                    .padStart(2, "0");
+                const seconds = Math.floor((timeSpent % 60000) / 1000)
+                    .toString()
+                    .padStart(2, "0");
+                const formatted = `${minutes}:${seconds}`;
+                const updatedDurations = [...durations, formatted];
+                setDurations(updatedDurations);
+                clearInterval(timerRef.current as NodeJS.Timeout);
+                setStartTime(null);
+                setCurrentDuration("00:00");
+                onStop(updatedDurations);
+            }
+        }, [stop]);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCountdown((prev) => (prev <= 1 ? durationPerSlide / 1000 : prev - 1));
-        }, 1000);
+        // Move to next slide and reset timer
+        const nextSlide = () => {
+            if (images.length === 0) return;
 
-        return () => clearInterval(timer);
-    }, [durationPerSlide]);
+            // Don't go to next slide if already on the last slide
+            if (currentSlide === images.length - 1) return;
 
-    const minutes = Math.floor(countdown / 60);
-    const seconds = Math.floor(countdown % 60)
-        .toString()
-        .padStart(2, "0");
+            if (startTime) {
+                const timeSpent = Date.now() - startTime;
+                const minutes = Math.floor(timeSpent / 60000)
+                    .toString()
+                    .padStart(2, "0");
+                const seconds = Math.floor((timeSpent % 60000) / 1000)
+                    .toString()
+                    .padStart(2, "0");
+                const formatted = `${minutes}:${seconds}`;
+                const updated = [...durations, formatted];
+                setDurations(updated);
 
-    const percentage = (1 - countdown / (durationPerSlide / 1000)) * 100;
+                // Reset timer
+                clearInterval(timerRef.current as NodeJS.Timeout);
+                const newStart = Date.now();
+                setStartTime(newStart);
+                setCurrentDuration("00:00");
 
-    let timerColor = "#252A39"; // Default color
-    if (percentage >= 80) timerColor = "#DD524D";
-    else if (percentage >= 50) timerColor = "#F5B546";
+                timerRef.current = setInterval(() => {
+                    const elapsed = Date.now() - newStart;
+                    const minutes = Math.floor(elapsed / 60000)
+                        .toString()
+                        .padStart(2, "0");
+                    const seconds = Math.floor((elapsed % 60000) / 1000)
+                        .toString()
+                        .padStart(2, "0");
+                    setCurrentDuration(`${minutes}:${seconds}`);
+                }, 1000);
+            }
 
-    return (
-        <p className="text-grey">
-            Time:
-            <span className="ms-2" style={{ color: timerColor }}>
-                {minutes}:{seconds}
-            </span>
-        </p>
-    );
-}
+            setCurrentSlide((prev) => (prev + 1) % images.length);
+        };
 
-// === Slide Progress Component ===
-export function SlideProgress({ currentSlide, totalSlides }: { currentSlide: number; totalSlides: number }) {
-    return (
-        <small className="text-grey">
-            Slide {currentSlide + 1} of {totalSlides}
-        </small>
-    );
-}
+        // Expose values to parent
+        useImperativeHandle(ref, () => ({
+            nextSlide,
+            currentSlideTime: currentDuration,
+            nextSlideImage: currentSlide < images.length - 1 ? images[currentSlide + 1] : null,
+            slideProgress: {
+                current: currentSlide + 1,
+                total: images.length,
+            },
+        }));
 
-// === Next Slide Image Component ===
-export function NextSlideImage({ images, currentSlide }: { images: string[]; currentSlide: number }) {
-    if (images.length === 0) return null;
-    const nextIndex = (currentSlide + 1) % images.length;
-    return <img src={images[nextIndex]} alt={`Next Slide ${nextIndex + 1}`} className="w-full h-full object-cover rounded-lg" />;
-}
+        return (
+            <div className="w-full h-full relative overflow-hidden rounded-lg">
+                {/* Current Slide */}
+                {images.map((img, index) => (
+                    <img
+                        key={index}
+                        src={img}
+                        alt={`Slide ${index + 1}`}
+                        className={`absolute w-full h-full object-cover transition-opacity duration-1000 ${
+                            index === currentSlide ? "opacity-100" : "opacity-0"
+                        }`}
+                    />
+                ))}
+            </div>
+        );
+    },
+);
+
+export default SlidesPreviewer;

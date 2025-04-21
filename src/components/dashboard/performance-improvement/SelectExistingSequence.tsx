@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function SelectExistingSequence() {
   const { existing_sessions, active_screen } = useSelector(
-    (state: RootState) => state.performance_improvment
+    (state: RootState) => state.performance_improvement
   );
   const dispatch = useDispatch();
   return (

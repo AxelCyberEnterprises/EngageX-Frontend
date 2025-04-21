@@ -2,7 +2,9 @@ import { FormType as PitchPracticeFormType } from "@/components/forms/PitchPract
 import { FormType as PresentationPracticeFormType } from "@/components/forms/PresentationPracticeForm";
 import { Button } from "@/components/ui/button";
 import { useSessionHistory } from "@/hooks/auth";
-import { useCreatePracticeSession } from "@/hooks/mutations/dashboard/user";
+import { useCreatePracticeSession } from "@/hooks/sessions";
+import { useAppDispatch } from "@/store";
+import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { capitalize } from "@mui/material";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -22,8 +24,9 @@ const StartPracticeSetupSession = ({
     setValue,
     handleSubmit,
 }: IStartPracticeSetupSessionProps) => {
-    const { mutate: createPracticeSession, isPending, } = useCreatePracticeSession({ sessionType });
+    const { mutate: createPracticeSession, isPending } = useCreatePracticeSession({ sessionType });
     const { data } = useSessionHistory();
+    const dispatch = useAppDispatch();
 
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {
@@ -51,6 +54,14 @@ const StartPracticeSetupSession = ({
 
     return (
         <StartSession>
+            <Button
+                disabled={isPending}
+                variant="outline"
+                className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal w-full h-11"
+                onClick={() => dispatch(closeDialog())}
+            >
+                Cancel
+            </Button>
             <Button
                 disabled={isPending}
                 isLoading={isPending}

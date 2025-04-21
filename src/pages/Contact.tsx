@@ -1,5 +1,3 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import Faq from "@/components/contact/Faq";
 import Hero from "@/components/contact/Hero";
 import { useEffect } from "react";
@@ -13,17 +11,15 @@ function Contact() {
       const id = location.hash.replace("#", "");
       const el = document.getElementById(id);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth" }); // or "auto"
+        el.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, [location]);
 
   return (
     <main>
-      <Navbar />
       <Hero />
       <Faq />
-      <Footer />
     </main>
   );
 }

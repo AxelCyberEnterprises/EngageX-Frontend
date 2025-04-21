@@ -1,10 +1,6 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-
 function PrivacyPolicy() {
   return (
     <main className="">
-      <Navbar />
       <div className="space-y-20 py-36 font-montserrat px-10 lg:px-20">
         <h1 className="text-center font-montreal">Privacy policy</h1>
         <div className="space-y-16 text-[#475467]">
@@ -135,8 +131,6 @@ function PrivacyPolicy() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </main>
   );
 }

@@ -7,16 +7,18 @@ import pitchPracticeReducer from "./slices/dashboard/user/pitchPracticeSlice";
 import presentationPracticeReducer from "./slices/dashboard/user/presentationPracticeSlice";
 import dynamicDialogReducer from "./slices/dynamicDialogSlice";
 import sessionReducer from "./slices/sessionSlice";
+import floatingChatbotReducer from "./slices/floatingChatbotSlice";
 
 const rootReducer = combineReducers({
-    counter: counterReducer,
-    chat: chatSliceReducer,
-    auth: authReducer,
-    performance_improvment: PerformanceImprovementReducer,
-    dynamicDialog: dynamicDialogReducer,
-    pitchPractice: pitchPracticeReducer,
-    presentationPractice: presentationPracticeReducer,
-    session: sessionReducer,
+  counter: counterReducer,
+  chat: chatSliceReducer,
+  auth: authReducer,
+  performance_improvement: PerformanceImprovementReducer,
+  dynamicDialog: dynamicDialogReducer,
+  pitchPractice: pitchPracticeReducer,
+  presentationPractice: presentationPracticeReducer,
+  session: sessionReducer,
+  floating_chatbot: floatingChatbotReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

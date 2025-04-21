@@ -27,9 +27,8 @@ function Intro() {
               Why settle for ordinary when you can be extraordinary
             </h4>
             <p className="text-dark-electric-blue leading-normal">
-              Our platform offers a groundbreaking solution for anyone aiming to
-              improve their public speaking, pitch delivery, or presentation
-              skills{" "}
+              Our groundbreaking solution is powered by a hybrid of AI
+              technology and human insights from certified coaches.
             </p>
           </div>
         </div>
