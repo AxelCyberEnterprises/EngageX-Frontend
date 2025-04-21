@@ -33,7 +33,7 @@ const StartPracticeSetupSession = ({
             const payload = {
                 ...values,
                 goals: values.goals.map(({ goal }) => goal),
-                slide: values.slides?.pop()?.preview,
+                // slide: values.slides?.pop()?.preview,
             };
             delete payload.slides;
 
@@ -47,6 +47,7 @@ const StartPracticeSetupSession = ({
             const { count } = data!;
 
             setValue("session_name", `${capitalize(sessionType)} Practice Session ${count + 1}`);
+            setValue("virtual_environment", "board_room_1");
         }
 
         handleSubmit(handleSessionSetupSubmit)();

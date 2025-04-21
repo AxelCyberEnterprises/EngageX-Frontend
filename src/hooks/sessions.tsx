@@ -3,7 +3,7 @@ import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 import { apiGet, apiPost } from "@/lib/api";
 import { useAppDispatch } from "@/store";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
-import { IPOSTSessionPayload } from "@/types/sessions";
+import { IPOSTSessionPayload, ISession } from "@/types/sessions";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -44,11 +44,16 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
     return useMutation({
         mutationKey: ["createPitchPracticeSession"],
         mutationFn: async (data: IPOSTSessionPayload) => {
-            return await apiPost<{ id: number }>(`/sessions/sessions/`, data);
+            // Store the payload in local storage for debugging purposes
+            localStorage.setItem("sessionPayload", JSON.stringify(data));
+
+            return await apiPost<ISession>(`/sessions/sessions/`, data);
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
-            navigate(`/sessions/${sessionType}-practice-session/${data.id}`);
+            navigate(
+                `/sessions/${sessionType}-practice-session/${data.id}?virtual_environment=${data.virtual_environment}`,
+            );
         },
         onError: (error) => {
             console.error("Error creating pitch practice session: ", error);

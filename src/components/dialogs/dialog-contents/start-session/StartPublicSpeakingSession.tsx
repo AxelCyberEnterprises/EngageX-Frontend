@@ -33,6 +33,7 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
             const { count } = data!;
 
             setValue("session_name", `Public Speaking Session ${count + 1}`);
+            setValue("virtual_environment", "conference_room");
         }
 
         handleSubmit(handleSessionSetupSubmit)();
