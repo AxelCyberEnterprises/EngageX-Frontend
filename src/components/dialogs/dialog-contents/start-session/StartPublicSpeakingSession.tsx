@@ -16,7 +16,7 @@ interface IStartPublicSpeakingSessionProps extends HTMLAttributes<HTMLDivElement
 
 const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: IStartPublicSpeakingSessionProps) => {
     const { mutate: createPublicSpeakingSession, isPending } = useCreatePublicSpeakingSession();
-    const { data } = useSessionHistory();
+    const { data, isPending: isGetSessionsPending } = useSessionHistory();
     const dispatch = useAppDispatch();
 
     const handleSessionSetupSubmit = useCallback(
@@ -33,6 +33,7 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
             const { count } = data!;
 
             setValue("session_name", `Public Speaking Session ${count + 1}`);
+            setValue("virtual_environment", "conference_room");
         }
 
         handleSubmit(handleSessionSetupSubmit)();
@@ -49,7 +50,7 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
                 Cancel
             </Button>
             <Button
-                disabled={isPending}
+                disabled={isPending || isGetSessionsPending}
                 isLoading={isPending}
                 className="bg-gunmetal hover:bg-gunmetal/90 font-normal w-full h-11"
                 onClick={handleProceed}

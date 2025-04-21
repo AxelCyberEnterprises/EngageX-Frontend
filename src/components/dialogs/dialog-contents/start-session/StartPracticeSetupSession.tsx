@@ -25,7 +25,7 @@ const StartPracticeSetupSession = ({
     handleSubmit,
 }: IStartPracticeSetupSessionProps) => {
     const { mutate: createPracticeSession, isPending } = useCreatePracticeSession({ sessionType });
-    const { data } = useSessionHistory();
+    const { data, isPending: isGetSessionsPending } = useSessionHistory();
     const dispatch = useAppDispatch();
 
     const handleSessionSetupSubmit = useCallback(
@@ -33,7 +33,7 @@ const StartPracticeSetupSession = ({
             const payload = {
                 ...values,
                 goals: values.goals.map(({ goal }) => goal),
-                slide: values.slides?.pop()?.preview,
+                // slide: values.slides?.pop()?.preview,
             };
             delete payload.slides;
 
@@ -47,6 +47,7 @@ const StartPracticeSetupSession = ({
             const { count } = data!;
 
             setValue("session_name", `${capitalize(sessionType)} Practice Session ${count + 1}`);
+            setValue("virtual_environment", "board_room_1");
         }
 
         handleSubmit(handleSessionSetupSubmit)();
@@ -63,7 +64,7 @@ const StartPracticeSetupSession = ({
                 Cancel
             </Button>
             <Button
-                disabled={isPending}
+                disabled={isPending || isGetSessionsPending}
                 isLoading={isPending}
                 className="bg-gunmetal hover:bg-gunmetal/90 font-normal w-full h-11"
                 onClick={handleProceed}
