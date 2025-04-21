@@ -16,6 +16,7 @@ interface VideoPlayerProps {
     border?: string;
     pauseOnClick?: boolean;
     preload?: boolean;
+    muted?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -31,6 +32,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     border = "",
     pauseOnClick = true,
     preload = false,
+    muted = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -38,7 +40,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const [progress, setProgress] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
     const [showControls, setShowControls] = useState<boolean>(false);
-    const [isMuted, setIsMuted] = useState<boolean>(autoPlay && hideControls);
+    const [isMuted, setIsMuted] = useState<boolean>(muted);
     const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [currentSrc, setCurrentSrc] = useState<string>(src);
@@ -115,6 +117,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             document.exitFullscreen?.();
         }
     };
+
+    useEffect(() => {
+        setIsMuted(muted);
+        if (videoRef.current) {
+            videoRef.current.muted = muted;
+        }
+    }, [muted]);
 
     useEffect(() => {
         if (!preload) {

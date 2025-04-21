@@ -32,6 +32,7 @@ const PublicSpeaking: React.FC = () => {
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
     const [sessionData, setSessionData] = useState<any | undefined>(undefined);
+    const [isMuted, setIsMuted] = useState(true);
     const [duration, setDuration] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
@@ -47,6 +48,17 @@ const PublicSpeaking: React.FC = () => {
         setDuration(duration);
         setStop(true);
     };
+
+    const closeAndShowClapVideo = () => {
+        setDialogOneOpen(false);
+        setIsMuted(false);
+        setVideoUrl(
+            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
+        );
+        setTimeout(() => {
+            setDialogTwoOpen(true);
+        }, 7000);
+    }
 
     useEffect(() => {
         const seshData = localStorage.getItem("sessionData");
@@ -278,6 +290,7 @@ const PublicSpeaking: React.FC = () => {
                                 border="rounded-2xl"
                                 pauseOnClick={false}
                                 preload={true}
+                                muted={isMuted}
                             />
                             {!isLargeScreen && (
                                 <div
@@ -298,7 +311,7 @@ const PublicSpeaking: React.FC = () => {
                                         <VideoStreamer
                                             duration={time}
                                             stop={stop}
-                                            onStop={() => setDialogTwoOpen(true)}
+                                            onStop={() => closeAndShowClapVideo()}
                                             onStart={() => setStartTimer(true)}
                                             ws={socket.current}
                                             isWsReady={isSocketConnected}
@@ -347,7 +360,7 @@ const PublicSpeaking: React.FC = () => {
                                 <VideoStreamer
                                     duration={time}
                                     stop={stop}
-                                    onStop={() => setDialogTwoOpen(true)}
+                                    onStop={() => closeAndShowClapVideo()}
                                     onStart={() => setStartTimer(true)}
                                     ws={socket.current}
                                     isWsReady={isSocketConnected}
