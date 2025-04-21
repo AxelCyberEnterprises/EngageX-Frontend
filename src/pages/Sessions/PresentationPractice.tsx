@@ -31,6 +31,8 @@ const PresentationPractice: React.FC = () => {
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
+    const [selectedRoom, setSelectedRoom] = useState<string | undefined>("conference_room");
+    const [sessionData, setSessionData] = useState<any | undefined>(undefined);
     const [duration, setDuration] = useState<string | undefined>();
     const [slideDurations, setSlideDurations] = useState<string[] | undefined>();
     const durationRef = useRef<string | null>(null);
@@ -67,17 +69,19 @@ const PresentationPractice: React.FC = () => {
         sliderRef.current?.nextSlide();
     };
 
-    useEffect(() => {
-        const base64 = localStorage.getItem("slides");
-        if (!base64) return;
+    // const { data } = useGetSessionData(sessionId);
+    // console.log(data);
+    // console.log("sessionId:", sessionId);
 
-        // Fetch the base64 PDF string and turn it into a Blob
-        fetch(base64)
-            .then((res) => res.blob())
-            .then((blob) => {
-                const file = new File([blob], "upload.pdf", { type: "application/pdf" });
-                return pdfToImages(file); // Convert PDF to images
-            })
+    useEffect(() => {
+        const url = localStorage.getItem("slides");
+        const seshData = localStorage.getItem("sessionData");
+        const parsedData = seshData ? JSON.parse(seshData) : null;
+        setSessionData(parsedData);
+        setSelectedRoom("conference_room");
+        if (!url) return;
+
+        pdfToImages(url)
             .then((images) => {
                 setSlides(images);
                 console.log(images);
@@ -115,7 +119,9 @@ const PresentationPractice: React.FC = () => {
     useEffect(() => {
         if (!sessionId) return;
 
-        const ws = new WebSocket(`wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
+        const ws = new WebSocket(
+            `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=${selectedRoom}`,
+        );
         socket.current = ws;
 
         ws.onopen = () => {
@@ -263,7 +269,7 @@ const PresentationPractice: React.FC = () => {
                     >
                         <SquareArrowUpRight className="me-1" /> End Session
                     </Button>
-                    <h4 className="mb-4">Q1 Sales Presentation Practice</h4>
+                    <h4 className="mb-4">{ sessionData?.session_name }</h4>
                     <div className="mb-3">
                         <TimerProgressBar
                             minutes={time}
@@ -274,9 +280,13 @@ const PresentationPractice: React.FC = () => {
                             }}
                         />
                     </div>
-                    <p>
-                        Slide {sliderRef.current?.slideProgress.current} of {sliderRef.current?.slideProgress.total}
-                    </p>
+                    {slides.length > 0 ? (
+                        <p>
+                            Slide {sliderRef.current?.slideProgress.current} of {sliderRef.current?.slideProgress.total}
+                        </p>
+                    ) : (
+                        <p>No Slides uploaded</p>
+                    )}
                 </div>
             </section>
 
@@ -324,8 +334,7 @@ const PresentationPractice: React.FC = () => {
                         <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">
                             <h6 className="py-2">Speaker Notes</h6>
                             <p className="text-grey">
-                                “Our solution leverages cutting-edge AI to transform how businesses handle customer
-                                service...”
+                                { sessionData?.notes ? sessionData?.notes : "No note added" }
                             </p>
                         </div>
 

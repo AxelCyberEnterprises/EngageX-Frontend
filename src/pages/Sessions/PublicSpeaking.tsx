@@ -31,6 +31,7 @@ const PublicSpeaking: React.FC = () => {
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
+    const [sessionData, setSessionData] = useState<any | undefined>(undefined);
     const [duration, setDuration] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
@@ -46,6 +47,12 @@ const PublicSpeaking: React.FC = () => {
         setDuration(duration);
         setStop(true);
     };
+
+    useEffect(() => {
+        const seshData = localStorage.getItem("sessionData");
+        const parsedData = seshData ? JSON.parse(seshData) : null;
+        setSessionData(parsedData);
+    }, []);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -74,7 +81,9 @@ const PublicSpeaking: React.FC = () => {
     useEffect(() => {
         if (!sessionId) return;
 
-        const ws = new WebSocket(`wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}`);
+        const ws = new WebSocket(
+            `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
+        );
         socket.current = ws;
 
         ws.onopen = () => {
@@ -126,7 +135,7 @@ const PublicSpeaking: React.FC = () => {
                         <h4 className="mb-0 md:mb-4">Public Speaking Session</h4>
                     </div> */}
                     <div className="inline-block py-2 px-4 md:hidden bg-ghost-white border border-bright-gray rounded-3xl w-auto relative top-7">
-                        <p>CC Key Point 2</p>
+                        <p>{sessionData?.session_name}</p>
                     </div>
                     <div className="mb-3">
                         <PublicSpeakingTimer
@@ -311,7 +320,7 @@ const PublicSpeaking: React.FC = () => {
                         {/* tablet and mobile notes  */}
                         <div className="border px-2 py-4 rounded-lg border-bright-gray mx-4 md:mx-0 md:mt-5 lg:hidden">
                             <h6 className="mb-3">Speaker Notes</h6>
-                            <p>This is a note</p>
+                            <p className="text-grey">{sessionData?.notes ? sessionData?.notes : "No note added"}</p>
                         </div>
                     </div>
                 </div>
@@ -348,7 +357,7 @@ const PublicSpeaking: React.FC = () => {
 
                         <div className="border px-2 py-4 rounded-lg border-bright-gray mt-3">
                             <h6 className="mb-3">Speaker Notes</h6>
-                            <p>This is a note</p>
+                            <p>{sessionData?.notes ? sessionData?.notes : "No note added"}</p>
                         </div>
                     </div>
                 )}
