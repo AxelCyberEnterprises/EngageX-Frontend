@@ -158,8 +158,9 @@ export const convertDataUrlToFile = (dataUrl: string, filename: string): File =>
     return new File([u8arr], filename, { type: mime });
 };
 
-export const pdfToImages = async (file: File): Promise<string[]> => {
-    const arrayBuffer = await file.arrayBuffer();
+export const pdfToImages = async (url: string): Promise<string[]> => {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
     const images: string[] = [];
