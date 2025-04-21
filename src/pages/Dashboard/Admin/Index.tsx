@@ -110,12 +110,12 @@ const AdminDashboardHome: React.FC = () => {
     ];
 
     const lineChartData = [
-        { month: "January", Pitch: 186, Presentation: 80, Keynote: 90 },
-        { month: "February", Pitch: 305, Presentation: 200, Keynote: 100 },
-        { month: "March", Pitch: 237, Presentation: 120, Keynote: 100 },
-        { month: "April", Pitch: 73, Presentation: 190, Keynote: 100 },
-        { month: "May", Pitch: 209, Presentation: 130, Keynote: 100 },
-        { month: "June", Pitch: 214, Presentation: 140, Keynote: 100 },
+        { month: 1, Pitch: 186, Presentation: 80, Keynote: 90 },
+        { month: 2, Pitch: 305, Presentation: 200, Keynote: 100 },
+        { month: 3, Pitch: 237, Presentation: 120, Keynote: 100 },
+        { month: 4, Pitch: 73, Presentation: 190, Keynote: 100 },
+        { month: 5, Pitch: 209, Presentation: 130, Keynote: 100 },
+        { month: 6, Pitch: 214, Presentation: 140, Keynote: 100 },
     ];
 
     const lineChartColors = {
