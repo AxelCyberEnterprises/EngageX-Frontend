@@ -612,7 +612,7 @@ const SideNav: React.FC = () => {
             <Link
               to={link.path}
               key={index}
-              className={`link flex items-center  mobile_links w-full py-2 -px-1 mb-0.5 ${
+              className={`link flex items-center  mobile_links w-full py-2 px-3 mb-0.5 ${
                 location.pathname === link.path ? "active" : ""
               }`}
             >
@@ -641,7 +641,7 @@ const SideNav: React.FC = () => {
             to={link.path}
             onClick={link.function}
             key={index}
-            className={`link flex items-center mobile_links w-full py-2 px-3 mb-0.5 ${
+            className={`link flex items-center mobile_links w-full  py-2 px-3 mb-0.5 ${
               location.pathname === link.path ? "active" : ""
             }`}
           >
