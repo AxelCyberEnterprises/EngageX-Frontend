@@ -89,7 +89,14 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
         },
         onError: (error) => {
             console.error("End session failed:", error);
-            navigate(`/dashboard/user/session-history/${sessionId}`);
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Error ending session",
+                        description: "An error occurred while ending session, please try again.",
+                    }}
+                />,
+            );
         },
     });
 }
