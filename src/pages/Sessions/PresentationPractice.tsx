@@ -42,7 +42,7 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Curiosity.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/curious/1.mp4"
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -78,7 +78,7 @@ const PresentationPractice: React.FC = () => {
         const seshData = localStorage.getItem("sessionData");
         const parsedData = seshData ? JSON.parse(seshData) : null;
         setSessionData(parsedData);
-        setSelectedRoom("conference_room");
+        setSelectedRoom(parsedData?.virtual_environment);
         if (!url) return;
 
         pdfToImages(url)
@@ -306,6 +306,7 @@ const PresentationPractice: React.FC = () => {
                                 border="rounded-2xl"
                                 pauseOnClick={false}
                                 preload={true}
+                                muted={true}
                             />
 
                             <div className="w-45 h-25 md:w-60 md:h-35 absolute left-5 bottom-5">
