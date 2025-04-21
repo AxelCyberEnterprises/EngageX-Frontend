@@ -117,10 +117,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
 
     useEffect(() => {
-        if (!preload || src === currentSrc) {
+        if (!preload) {
             setCurrentSrc(src); // immediate swap if preload is false or same src
             return;
         }
+
+        if (src === currentSrc) return; // no need to preload if the src is the same
 
         const tempVideo = document.createElement("video");
         tempVideo.src = src;
