@@ -34,7 +34,8 @@ const PresentationPracticeForm = () => {
             if (name !== "slides" || !("slides" in values && values.slides)) return;
 
             const slides = values.slides.filter(
-                (slide): slide is { file: File; preview: string } => slide !== undefined && slide.preview !== undefined,
+                (slide): slide is { file: File; preview: string } =>
+                    slide !== undefined && slide.file !== undefined && slide.preview !== undefined,
             );
             const slidePreviews = slides.map((slide) => slide.preview);
 

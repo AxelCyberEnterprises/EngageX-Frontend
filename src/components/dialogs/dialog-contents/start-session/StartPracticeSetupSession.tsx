@@ -1,32 +1,99 @@
 import { FormType as PitchPracticeFormType } from "@/components/forms/PitchPracticeForm";
 import { FormType as PresentationPracticeFormType } from "@/components/forms/PresentationPracticeForm";
 import { Button } from "@/components/ui/button";
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 import { useSessionHistory } from "@/hooks/auth";
-import { useCreatePracticeSession } from "@/hooks/sessions";
+import { apiPost, apiPut } from "@/lib/api";
 import { useAppDispatch } from "@/store";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
+import { IPOSTSessionPayload, ISession } from "@/types/sessions";
 import { capitalize } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { HTMLAttributes, useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import StartSession from ".";
 
 export type FormType = PitchPracticeFormType | PresentationPracticeFormType;
 interface IStartPracticeSetupSessionProps extends HTMLAttributes<HTMLDivElement> {
     initiationType: "skip" | "start";
-    sessionType: "presentation" | "pitch";
+    getValues: UseFormReturn<FormType>["getValues"];
     setValue?: UseFormReturn<FormType>["setValue"];
     handleSubmit: UseFormReturn<FormType>["handleSubmit"];
 }
 
 const StartPracticeSetupSession = ({
     initiationType,
-    sessionType,
+    getValues,
     setValue,
     handleSubmit,
 }: IStartPracticeSetupSessionProps) => {
-    const { mutate: createPracticeSession, isPending } = useCreatePracticeSession({ sessionType });
-    const { data, isPending: isGetSessionsPending } = useSessionHistory();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const slidesFormData = new FormData();
+    const { session_type: sessionType, slides } = getValues();
+
+    if (slides) slides.forEach(({ file }) => slidesFormData.append("slides_file", file));
+
+    const { data, isPending: isGetSessionsPending } = useSessionHistory();
+
+    const { mutate: uploadSlides, isPending: isUploadSlidesPending } = useMutation({
+        mutationKey: ["uploadSlides"],
+        mutationFn: async (sessionId: number) => {
+            await apiPut(`/sessions/practice-sessions/${sessionId}/upload-slides/`, slidesFormData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            return sessionId;
+        },
+        onSettled(sessionId) {
+            dispatch(closeDialog());
+            navigate(`/sessions/${sessionType}-practice-session/${sessionId}`);
+        },
+        onError: (error) => {
+            console.error("Error uploading slides: ", error);
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Error uploading slides",
+                        description: "An error occurred while uploading slides, please try again.",
+                    }}
+                />,
+            );
+        },
+    });
+
+    const { mutate: createPracticeSession, isPending } = useMutation({
+        mutationKey: ["createPitchPracticeSession"],
+        mutationFn: async (data: IPOSTSessionPayload) => {
+            localStorage.removeItem("sessionData");
+            localStorage.setItem("sessionData", JSON.stringify(data));
+
+            return await apiPost<ISession>(`/sessions/sessions/`, data);
+        },
+        onSuccess: async (data) => {
+            if (slidesFormData.get("slides_file")) uploadSlides(data.id);
+            else {
+                dispatch(closeDialog());
+                navigate(`/sessions/${sessionType}-practice-session/${data.id}`);
+            }
+        },
+        onError: (error) => {
+            console.error("Error creating pitch practice session: ", error);
+
+            dispatch(closeDialog());
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Error creating session",
+                        description: "An error occurred while creating session, please try again.",
+                    }}
+                />,
+            );
+        },
+    });
 
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {
@@ -64,8 +131,8 @@ const StartPracticeSetupSession = ({
                 Cancel
             </Button>
             <Button
-                disabled={isPending || isGetSessionsPending}
-                isLoading={isPending}
+                disabled={isPending || isGetSessionsPending || isUploadSlidesPending}
+                isLoading={isPending || isUploadSlidesPending}
                 className="bg-gunmetal hover:bg-gunmetal/90 font-normal w-full h-11"
                 onClick={handleProceed}
             >
