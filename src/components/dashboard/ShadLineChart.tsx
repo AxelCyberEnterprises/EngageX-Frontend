@@ -31,7 +31,6 @@ import {
     const { payload } = props;
     if (!payload) return null;
   
-    console.log(payload)
     return (
       <div className="flex justify-center gap-4 pt-4">
         {payload.map((entry, index) => (
@@ -61,7 +60,6 @@ import {
     colors,
     isLoading = false,
   }: Props) {
-    console.log("ShadLineChart data", data);
     const chartConfig = Object.keys(colors).reduce((acc, key) => {
       acc[key] = {
         label: key.charAt(0).toUpperCase() + key.slice(1),
@@ -85,7 +83,6 @@ Object.keys(colors).forEach((key) => {
   initialPoint[key] = firstPoint[key] ?? 0;
 });
 
-console.log(data);
     const dataWithTime = [
       initialPoint,
       ...data.map((d) => ({
