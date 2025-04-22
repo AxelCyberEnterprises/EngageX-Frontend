@@ -17,6 +17,7 @@ interface VideoPlayerProps {
     pauseOnClick?: boolean;
     preload?: boolean;
     muted?: boolean;
+    requireFullPlay?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -33,10 +34,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     pauseOnClick = true,
     preload = false,
     muted = false,
+    requireFullPlay = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isPlaying, setIsPlaying] = useState<boolean>(autoPlay);
+    const [hasPlayedOnce, setHasPlayedOnce] = useState<boolean>(false);
     const [progress, setProgress] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
     const [showControls, setShowControls] = useState<boolean>(false);
@@ -44,6 +47,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [currentSrc, setCurrentSrc] = useState<string>(src);
+    const [nextSrc, setNextSrc] = useState<string | null>(null);
 
     const togglePlay = (): void => {
         if (videoRef.current) {
@@ -127,28 +131,37 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     useEffect(() => {
         if (!preload) {
-            setCurrentSrc(src); // immediate swap if preload is false or same src
+            // immediate switch if preload is false
+            setCurrentSrc(src);
+            setHasPlayedOnce(false);
             return;
         }
 
-        if (src === currentSrc) return; // no need to preload if the src is the same
+        if (src === currentSrc || src === nextSrc) return; // no need to preload again
 
-        const tempVideo = document.createElement("video");
-        tempVideo.src = src;
-        tempVideo.preload = "auto";
+        if (requireFullPlay && !hasPlayedOnce) {
+            // preload into buffer but don’t switch yet
+            const tempVideo = document.createElement("video");
+            tempVideo.src = src;
+            tempVideo.preload = "auto";
 
-        const handleLoaded = () => {
-            setCurrentSrc(src); // update when preloaded
-        };
+            const handleLoaded = () => {
+                setNextSrc(src); // preload and queue it
+            };
 
-        tempVideo.addEventListener("loadeddata", handleLoaded);
+            tempVideo.addEventListener("loadeddata", handleLoaded);
 
-        return () => {
-            tempVideo.removeEventListener("loadeddata", handleLoaded);
-            tempVideo.src = "";
-            tempVideo.load();
-        };
-    }, [src, preload]);
+            return () => {
+                tempVideo.removeEventListener("loadeddata", handleLoaded);
+                tempVideo.src = "";
+                tempVideo.load();
+            };
+        } else {
+            // either not required to play full OR already has played
+            setCurrentSrc(src);
+            setHasPlayedOnce(false);
+        }
+    }, [src, preload, requireFullPlay, hasPlayedOnce, currentSrc, nextSrc]);
 
     useEffect(() => {
         const videoElement = videoRef.current;
@@ -163,6 +176,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         const handleEnded = () => {
             setIsPlaying(false);
             setProgress(100);
+            setHasPlayedOnce(true);
+
+            if (requireFullPlay && nextSrc) {
+                // Swap in nextSrc after full play
+                setCurrentSrc(nextSrc);
+                setNextSrc(null);
+                setHasPlayedOnce(false);
+            } else if (!nextSrc && loop) {
+                // Only loop if no nextSrc is ready
+                videoElement.currentTime = 0;
+                videoElement.play();
+            }
         };
 
         videoElement.addEventListener("loadedmetadata", handleLoadedMetadata);
@@ -253,8 +278,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onClick={handleVideoClick}
                 controls={false}
                 playsInline
-                preload="metadata"
-                loop={loop}
+                preload={preload ? "auto" : "metadata"}
+                loop={loop && (!requireFullPlay || !nextSrc)}
                 muted={isMuted}
             />
 
