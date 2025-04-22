@@ -123,7 +123,7 @@ const StartPracticeSetupSession = ({
     return (
         <StartSession>
             <Button
-                disabled={isPending}
+                disabled={isPending || isUploadSlidesPending}
                 variant="outline"
                 className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal w-full h-11"
                 onClick={() => dispatch(closeDialog())}
