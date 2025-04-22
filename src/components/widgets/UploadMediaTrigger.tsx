@@ -55,6 +55,7 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
 
             const newFiles = await Promise.all(
                 acceptedFiles.map(async (file) => ({
+                    file,
                     preview: await convertFileToDataUrl(file),
                 })),
             );
