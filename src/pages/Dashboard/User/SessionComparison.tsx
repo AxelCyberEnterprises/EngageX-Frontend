@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import download from '../../../assets/images/svgs/download-dark.svg';
 import calendar from '../../../assets/images/svgs/calendar.svg';
@@ -25,7 +25,7 @@ const SessionComparison: React.FC = () => {
   const { data: sessionData } = useSessionHistory();
   const [selectedSequence1, setSelectedSequence1] = useState<string>("");
   const [selectedSequence2, setSelectedSequence2] = useState<string>("");
-  const { data: singleSessionComparisonData } = useSessionComparison<any>(selectedSequence1, selectedSequence2);
+  const { data: singleSessionComparisonData } = useSessionComparison(selectedSequence1, selectedSequence2);
 
   const sessionOptions = sessionData?.results?.map(session => {
     const formattedDate = new Date(session.date).toLocaleDateString();
