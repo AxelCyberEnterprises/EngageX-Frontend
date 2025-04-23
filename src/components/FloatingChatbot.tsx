@@ -20,7 +20,7 @@ function FloatingChatbot() {
         <Headset className="h-6 text-white" />
       </button>
       {showVideo && (
-        <div>
+        <div onClick={(e) => e.stopPropagation()}>
           <video
             className="h-[19rem] bg-white object-cover w-[15rem] fixed right-32 bottom-10 rounded-xl"
             controls

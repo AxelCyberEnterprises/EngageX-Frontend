@@ -27,12 +27,13 @@ const PresentationPractice: React.FC = () => {
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
     const time = 15; // in minutes
-    const [slides, setSlides] = useState<any[]>([])
+    const [slides, setSlides] = useState<any[]>([]);
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
     const [selectedRoom, setSelectedRoom] = useState<string | undefined>("conference_room");
     const [sessionData, setSessionData] = useState<any | undefined>(undefined);
+    const [isMuted, setIsMuted] = useState(true);
     const [duration, setDuration] = useState<string | undefined>();
     const [slideDurations, setSlideDurations] = useState<string[] | undefined>();
     const durationRef = useRef<string | null>(null);
@@ -42,7 +43,7 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Curiosity.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/curious/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -65,6 +66,17 @@ const PresentationPractice: React.FC = () => {
         }
     };
 
+    const closeAndShowClapVideo = () => {
+        setDialogOneOpen(false);
+        setIsMuted(false);
+        setVideoUrl(
+            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
+        );
+        setTimeout(() => {
+            setDialogTwoOpen(true);
+        }, 7000);
+    };
+
     const triggerNextSlide = () => {
         sliderRef.current?.nextSlide();
     };
@@ -78,7 +90,7 @@ const PresentationPractice: React.FC = () => {
         const seshData = localStorage.getItem("sessionData");
         const parsedData = seshData ? JSON.parse(seshData) : null;
         setSessionData(parsedData);
-        setSelectedRoom("conference_room");
+        setSelectedRoom(parsedData?.virtual_environment);
         if (!url) return;
 
         pdfToImages(url)
@@ -208,7 +220,7 @@ const PresentationPractice: React.FC = () => {
             </Dialog>
 
             {/* time over dialog  */}
-            <Dialog open={isDialogTwoOpen} onOpenChange={setDialogTwoOpen}>
+            <Dialog open={isDialogTwoOpen}>
                 <DialogContent>
                     <DialogHeader>
                         <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
@@ -263,12 +275,14 @@ const PresentationPractice: React.FC = () => {
 
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
                 <div className="w-full">
-                    <Button
-                        className="bg-jelly-bean hover:bg-jelly-bean/90 flex lg:hidden mb-4"
-                        onClick={() => setDialogOneOpen(true)}
-                    >
-                        <SquareArrowUpRight className="me-1" /> End Session
-                    </Button>
+                    {startTimer && !stop && (
+                        <Button
+                            className="bg-jelly-bean hover:bg-jelly-bean/90 flex lg:hidden mb-4"
+                            onClick={() => setDialogOneOpen(true)}
+                        >
+                            <SquareArrowUpRight className="me-1" /> End Session
+                        </Button>
+                    )}
                     <h4 className="mb-4">{sessionData?.session_name}</h4>
                     <div className="mb-3">
                         <TimerProgressBar
@@ -306,7 +320,8 @@ const PresentationPractice: React.FC = () => {
                                 border="rounded-2xl"
                                 pauseOnClick={false}
                                 preload={true}
-                                muted={true}
+                                muted={isMuted}
+                                requireFullPlay={isMuted}
                             />
 
                             <div className="w-45 h-25 md:w-60 md:h-35 absolute left-5 bottom-5">
@@ -368,12 +383,14 @@ const PresentationPractice: React.FC = () => {
                     </div>
 
                     <div className="w-full flex justify-end mt-16 px-4 md:px-0">
-                        <Button
-                            className="bg-jelly-bean hover:bg-jelly-bean/90 hidden lg:flex"
-                            onClick={() => setDialogOneOpen(true)}
-                        >
-                            <SquareArrowUpRight className="me-1" /> End Session
-                        </Button>
+                        {startTimer && !stop && (
+                            <Button
+                                className="bg-jelly-bean hover:bg-jelly-bean/90 hidden lg:flex"
+                                onClick={() => setDialogOneOpen(true)}
+                            >
+                                <SquareArrowUpRight className="me-1" /> End Session
+                            </Button>
+                        )}
                     </div>
                 </div>
 
@@ -399,7 +416,7 @@ const PresentationPractice: React.FC = () => {
                                 <VideoStreamer
                                     duration={time}
                                     stop={stop}
-                                    onStop={() => setDialogTwoOpen(true)}
+                                    onStop={() => closeAndShowClapVideo()}
                                     onStart={() => setStartTimer(true)}
                                     ws={socket.current}
                                     isWsReady={isSocketConnected}

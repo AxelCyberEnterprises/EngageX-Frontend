@@ -89,7 +89,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                                     children: (
                                         <StartPracticeSetupSession
                                             initiationType="skip"
-                                            sessionType={form.getValues("session_type")}
+                                            getValues={form.getValues}
                                             setValue={form.setValue}
                                             handleSubmit={form.handleSubmit}
                                         />
@@ -110,7 +110,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                                     children: (
                                         <StartPracticeSetupSession
                                             initiationType="start"
-                                            sessionType={form.getValues("session_type")}
+                                            getValues={form.getValues}
                                             handleSubmit={form.handleSubmit}
                                         />
                                     ),
@@ -149,7 +149,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                                     children: (
                                         <StartPracticeSetupSession
                                             initiationType="skip"
-                                            sessionType={form.getValues("session_type")}
+                                            getValues={form.getValues}
                                             setValue={form.setValue}
                                             handleSubmit={form.handleSubmit}
                                         />
@@ -170,7 +170,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                                     children: (
                                         <StartPracticeSetupSession
                                             initiationType="start"
-                                            sessionType={form.getValues("session_type")}
+                                            getValues={form.getValues}
                                             handleSubmit={form.handleSubmit}
                                         />
                                     ),

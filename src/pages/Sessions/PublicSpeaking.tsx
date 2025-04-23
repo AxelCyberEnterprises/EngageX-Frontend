@@ -38,7 +38,7 @@ const PublicSpeaking: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Curiosity.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/curiosity/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -138,12 +138,14 @@ const PublicSpeaking: React.FC = () => {
         <div className="text-primary-blue">
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
                 <div className="w-full">
-                    <Button
-                        className="bg-jelly-bean hover:bg-jelly-bean/90 flex mt-2 md:hidden"
-                        onClick={() => setDialogOneOpen(true)}
-                    >
-                        <SquareArrowUpRight className="me-1" /> End Session
-                    </Button>
+                    {startTimer && !stop && (
+                        <Button
+                            className="bg-jelly-bean hover:bg-jelly-bean/90 md:hidden mt-2 flex"
+                            onClick={() => setDialogOneOpen(true)}
+                        >
+                            <SquareArrowUpRight className="me-1" /> End Session
+                        </Button>
+                    )}
                     {/* <div className="flex justify-between items-center mb-4">
                         <h4 className="mb-0 md:mb-4">Public Speaking Session</h4>
                     </div> */}
@@ -230,7 +232,7 @@ const PublicSpeaking: React.FC = () => {
             </Dialog>
 
             {/* session ended dialog  */}
-            <Dialog open={isDialogTwoOpen} onOpenChange={setDialogTwoOpen}>
+            <Dialog open={isDialogTwoOpen}>
                 <DialogContent>
                     <DialogHeader>
                         <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
@@ -291,6 +293,7 @@ const PublicSpeaking: React.FC = () => {
                                 pauseOnClick={false}
                                 preload={true}
                                 muted={isMuted}
+                                requireFullPlay={isMuted}
                             />
                             {!isLargeScreen && (
                                 <div
@@ -323,12 +326,14 @@ const PublicSpeaking: React.FC = () => {
                         </div>
 
                         <div className="w-full flex justify-end mt-16 px-4 md:px-0">
-                            <Button
-                                className="bg-jelly-bean hover:bg-jelly-bean/90 hidden md:flex"
-                                onClick={() => setDialogOneOpen(true)}
-                            >
-                                <SquareArrowUpRight className="me-1" /> End Session
-                            </Button>
+                            {startTimer && !stop && (
+                                <Button
+                                    className="bg-jelly-bean hover:bg-jelly-bean/90 hidden md:flex"
+                                    onClick={() => setDialogOneOpen(true)}
+                                >
+                                    <SquareArrowUpRight className="me-1" /> End Session
+                                </Button>
+                            )}
                         </div>
 
                         {/* tablet and mobile notes  */}
@@ -371,7 +376,7 @@ const PublicSpeaking: React.FC = () => {
 
                         <div className="border px-2 py-4 rounded-lg border-bright-gray mt-3">
                             <h6 className="mb-3">Speaker Notes</h6>
-                            <p>{sessionData?.notes ? sessionData?.notes : "No note added"}</p>
+                            <p className="text-grey">{sessionData?.notes ? sessionData?.notes : "No note added"}</p>
                         </div>
                     </div>
                 )}

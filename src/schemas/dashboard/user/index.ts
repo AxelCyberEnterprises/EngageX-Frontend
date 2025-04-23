@@ -1,3 +1,4 @@
+import { MediaSchema } from "@/schemas/media-schema";
 import { z } from "zod";
 
 export const BaseSessionSetupSchema = z.object({
@@ -19,21 +20,9 @@ export const BaseSessionSetupSchema = z.object({
 export const PublicSpeakingSchema = BaseSessionSetupSchema;
 
 export const PitchPracticeSchema = BaseSessionSetupSchema.extend({
-    slides: z
-        .array(
-            z.object({
-                preview: z.string(),
-            }),
-        )
-        .optional(),
+    slides: MediaSchema.optional(),
 });
 
 export const PresentationPracticeSchema = BaseSessionSetupSchema.extend({
-    slides: z
-        .array(
-            z.object({
-                preview: z.string(),
-            }),
-        )
-        .optional(),
+    slides: MediaSchema.optional(),
 });
