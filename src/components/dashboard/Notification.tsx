@@ -42,18 +42,18 @@ const NotificationSettings: React.FC = () => {
         },
       ],
     },
-    {
-      id: 'session',
-      title: 'Session Analysis',
-      options: [
-        {
-          id: 'auto-session',
-          title: 'Automatic Session Analysis',
-          description: 'Receive detailed session analysis after each practice session',
-          enabled: false,
-        },
-      ],
-    },
+    // {
+    //   id: 'session',
+    //   title: 'Session Analysis',
+    //   options: [
+    //     {
+    //       id: 'auto-session',
+    //       title: 'Automatic Session Analysis',
+    //       description: 'Receive detailed session analysis after each practice session',
+    //       enabled: false,
+    //     },
+    //   ],
+    // },
     {
       id: 'community',
       title: 'Community Updates',
