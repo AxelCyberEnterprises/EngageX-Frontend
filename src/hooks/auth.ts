@@ -231,6 +231,15 @@ export function useSessionHistoryById(id: string) {
     });
 }
 
+export function useSessionComparison(id1: string | undefined, id2: string | undefined) {
+    return useQuery({
+      queryKey: ["sessionComparison", id1, id2],
+      queryFn: () => apiGet<any>(`/sessions/compare-sessions/${id1}/${id2}`),
+      enabled: Boolean(id1 && id2),
+    });
+  }
+  
+
 export function useContactUs({ onSuccess, onError }: { onSuccess?: () => void; onError?: () => void }) {
     return useMutation({
         mutationKey: ["contact-us"],
