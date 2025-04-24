@@ -46,7 +46,7 @@ const PersonalInfoForm: React.FC = () => {
     industry: profile?.industry || "",
     country: profile?.country || "",
     timezone: profile?.timezone || "",
-    profile_picture: undefined
+    profile_picture: undefined,
   };
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),

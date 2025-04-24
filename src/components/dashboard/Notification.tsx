@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
+import { useUserProfile, useUpdateUserProfile } from '@/hooks/settings';
+import { toast } from 'sonner';
+import { LoaderCircle } from 'lucide-react';
 
 interface NotificationOption {
   id: string;
   title: string;
   description: string;
   enabled: boolean;
+  apiField: string; // Field name in the API
 }
 
 interface NotificationCategory {
@@ -17,6 +21,10 @@ interface NotificationCategory {
 }
 
 const NotificationSettings: React.FC = () => {
+  const { data: profile, isLoading } = useUserProfile();
+  const { mutate: updateProfile, isPending: isUpdating } = useUpdateUserProfile();
+  
+  // Initial state structure
   const [categories, setCategories] = useState<NotificationCategory[]>([
     {
       id: 'email',
@@ -27,6 +35,7 @@ const NotificationSettings: React.FC = () => {
           title: 'Email Alerts',
           description: 'Receive important updates and announcements via Email',
           enabled: false,
+          apiField: 'email_alert'
         },
       ],
     },
@@ -39,21 +48,10 @@ const NotificationSettings: React.FC = () => {
           title: 'Daily Practice Reminders',
           description: 'Get notifications to maintain your practice schedule',
           enabled: false,
+          apiField: 'practice_reminder'
         },
       ],
     },
-    // {
-    //   id: 'session',
-    //   title: 'Session Analysis',
-    //   options: [
-    //     {
-    //       id: 'auto-session',
-    //       title: 'Automatic Session Analysis',
-    //       description: 'Receive detailed session analysis after each practice session',
-    //       enabled: false,
-    //     },
-    //   ],
-    // },
     {
       id: 'community',
       title: 'Community Updates',
@@ -63,10 +61,27 @@ const NotificationSettings: React.FC = () => {
           title: 'Community & Leaderboard Updates',
           description: 'Stay informed about community activities and your ranking',
           enabled: false,
+          apiField: 'session_analysis' // Reusing session_analysis field for community updates
         },
       ],
     },
   ]);
+
+  // Update local state when profile data is loaded
+  useEffect(() => {
+    if (profile) {
+      setCategories(prevCategories =>
+        prevCategories.map(category => ({
+          ...category,
+          options: category.options.map(option => ({
+            ...option,
+            // @ts-ignore - Using dynamic key access
+            enabled: !!profile[option.apiField]
+          }))
+        }))
+      );
+    }
+  }, [profile]);
 
   const toggleOption = (categoryId: string, optionId: string) => {
     setCategories(
@@ -91,8 +106,59 @@ const NotificationSettings: React.FC = () => {
   };
 
   const handleSave = () => {
-    console.log(categories);
+    // Create an object with the notification settings
+    const notificationSettings: Record<string, boolean> = {};
+    
+    // Collect all notification settings
+    categories.forEach(category => {
+      category.options.forEach(option => {
+        notificationSettings[option.apiField] = option.enabled;
+      });
+    });
+    
+    // Create FormData for the API request
+    const formData = new FormData();
+    Object.keys(notificationSettings).forEach(key => {
+      formData.append(key, notificationSettings[key].toString());
+    });
+    
+    // Update profile
+    updateProfile(formData, {
+      onSuccess: () => {
+        toast.success('Notification settings updated successfully');
+      },
+      onError: (error) => {
+        console.error('Failed to update notification settings:', error);
+        toast.error('Failed to update notification settings');
+      }
+    });
   };
+
+  const handleCancel = () => {
+    // Reset to the original values from the profile
+    if (profile) {
+      setCategories(prevCategories =>
+        prevCategories.map(category => ({
+          ...category,
+          options: category.options.map(option => ({
+            ...option,
+            // @ts-ignore - Using dynamic key access
+            enabled: !!profile[option.apiField]
+          }))
+        }))
+      );
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <Card className="w-full border-none shadow-none py-8">
+        <div className='flex items-center justify-center py-[200px]'>
+          <LoaderCircle className="size-10 animate-spin" />
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full border-none shadow-none py-8">
@@ -135,7 +201,7 @@ const NotificationSettings: React.FC = () => {
         <div className="mt-8 flex sm:flex-row flex-col sm:justify-end w-full gap-6">
           <Button
             variant="outline"
-            onClick={()=>{}}
+            onClick={handleCancel}
             className="border-[#D0D5DD] text-[#6F7C8E] sm:hidden w-full sm:w-auto"
           >
             Cancel
@@ -143,8 +209,9 @@ const NotificationSettings: React.FC = () => {
           <Button
             onClick={handleSave}
             className="px-10 w-full sm:w-auto"
+            disabled={isUpdating}
           >
-            Save
+            {isUpdating ? "Saving..." : "Save"}
           </Button>
         </div>
       </CardContent>
