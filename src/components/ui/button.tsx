@@ -49,7 +49,7 @@ function Button({
 
     return (
         <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props}>
-            {isLoading ? <LoaderCircle className="size-4 animate-spin text-white" /> : children}
+            {isLoading ? <LoaderCircle className="size-4 animate-spin" /> : children}
         </Comp>
     );
 }
