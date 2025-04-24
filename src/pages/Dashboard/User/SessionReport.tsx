@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetSessionReport } from "@/hooks/sessions";
+import html2canvas from "html2canvas-pro";
+import jsPDF from "jspdf";
 import { ArrowLeft, Download, UserRound } from "lucide-react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import avatar from "../../../assets/images/pngs/avater.png";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
@@ -19,6 +21,32 @@ const PitchSessionReport: React.FC = () => {
 
     const { id } = useParams();
     const { data, isPending, refetch } = useGetSessionReport(id);
+    const pdfRef = useRef<HTMLDivElement>(null);
+
+    const handlePDFDownload = useCallback(async () => {
+        const element = document.getElementById("pdf-container");
+
+        if (!element) {
+            return;
+        }
+
+        const canvas = await html2canvas(element, {
+            scale: 2,
+        });
+        const data = canvas.toDataURL("image/png");
+
+        const pdf = new jsPDF({
+            orientation: "portrait",
+            unit: "px",
+            format: "a4",
+        });
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`Session-Report-${id}.pdf`);
+    }, [id]);
 
     React.useEffect(() => {
         if (id) {
@@ -153,9 +181,9 @@ const PitchSessionReport: React.FC = () => {
                     </div>
                 </div>
             ) : (
-                <div className="py-4 text-primary-blue">
+                <div id="pdf-container" ref={pdfRef} className="py-4 text-primary-blue">
                     <section className="px-4 lg:px-8 border-b-1 border-bright-gray">
-                        <div className="py-3 flex flex-wrap justify-between items-center">
+                        <div data-html2canvas-ignore className="py-3 flex flex-wrap justify-between items-center">
                             <button
                                 onClick={() => navigate(-1)}
                                 className="flex items-center text-black bg-transparent hover:bg-transparent p-0 gap-2"
@@ -165,7 +193,10 @@ const PitchSessionReport: React.FC = () => {
                             </button>
 
                             <div className="flex items-center gap-2">
-                                <Button className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray">
+                                <Button
+                                    className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
+                                    onClick={handlePDFDownload}
+                                >
                                     <Download />
                                     <span className="hidden lg:block">Download</span>
                                 </Button>
@@ -431,7 +462,7 @@ const PitchSessionReport: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="w-full flex flex-wrap gap-3 justify-end mt-8">
+                        <div data-html2canvas-ignore className="w-full flex flex-wrap gap-3 justify-end mt-8">
                             <Button
                                 className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray"
                                 onClick={() => navigate(-1)}

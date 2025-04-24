@@ -1,7 +1,7 @@
 import VirtualEnvironmentSection from "@/components/forms/form-sections/VirtualEnvironmentSection";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { practicesVEOptions } from "@/config/form-field-options";
+import { pitchPracticeVEOptions, presentationPracticeVEOptions } from "@/config/form-field-options";
 import { cn } from "@/lib/utils";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -12,13 +12,15 @@ interface ISlidePreviewAndSettingsSectionProps extends HTMLAttributes<HTMLElemen
 }
 
 const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSettingsSectionProps) => {
+    const sessionType = form.watch("session_type") as "pitch" | "public";
+
     return (
         <section className={cn("md:flex hidden flex-col gap-y-4", className)}>
             <>
                 <VirtualEnvironmentSection
                     {...{ form }}
                     instruction="Select a suitable environment for your speaking needs"
-                    options={practicesVEOptions}
+                    options={sessionType === "pitch" ? pitchPracticeVEOptions : presentationPracticeVEOptions}
                     className="md:block hidden p-0 border-0 [&_[data-slot='form-label']>div]:h-38 [&_h6]:text-lg"
                 />
                 <Separator className="md:block hidden bg-bright-gray" />
