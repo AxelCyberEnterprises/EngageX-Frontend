@@ -116,8 +116,8 @@ const UserDashboardHome: React.FC = () => {
     const cardsData = [
         {
             image: speakingBg,
-            title: "Public Speaking",
-            text: "Improve delivery & structure with real-time AI feedback",
+            title: "Public Speaking / Storytelling",
+            text: "Improve delivery & structure with real-time AI feedback and Coaching expertise",
             buttonText: "Start Public Speaking",
             href: "./public-speaking",
             icon: (
@@ -132,7 +132,7 @@ const UserDashboardHome: React.FC = () => {
         {
             image: presentationBg,
             title: "Presentation",
-            text: "Improve delivery & structure with real-time AI feedback",
+            text: "Improve delivery & structure with real-time AI feedback and Coaching expertise",
             buttonText: "Start Your Presentation",
             href: "./presentation-practice",
             icon: (
@@ -147,7 +147,7 @@ const UserDashboardHome: React.FC = () => {
         {
             image: practiceBg,
             title: "Pitch Practice",
-            text: "Sharpen your persuasion and Conviction",
+            text: "Improve delivery & structure with real-time AI feedback and Coaching expertise",
             buttonText: "Start Pitching",
             href: "./pitch-practice",
             icon: (

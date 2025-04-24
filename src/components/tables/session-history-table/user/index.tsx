@@ -42,7 +42,7 @@ export function formatDate(timestamp?: string): string {
 }
 
 export function formatTime(time?: string): string {
-    if (!time) return "Unknown Duration";
+    if (!time) return "0 seconds";
 
     const parts = time.split(":").map(Number);
     if (parts.length !== 3 || parts.some(isNaN)) return "Invalid Duration";
