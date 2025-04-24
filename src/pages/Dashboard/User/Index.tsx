@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import practiceBg from "../../../assets/images/jpegs/practice-bg.jpeg";
+import practiceBg from "../../../assets/images/jpegs/practice-bg-dashboard.jpeg";
 import presentationBg from "../../../assets/images/jpegs/presentation-bg.jpeg";
 import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
