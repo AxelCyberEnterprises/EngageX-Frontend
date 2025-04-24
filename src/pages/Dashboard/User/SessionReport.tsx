@@ -16,6 +16,7 @@ import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
+    const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
     // const sessionType = 'pitch';
     const navigate = useNavigate();
 
@@ -29,6 +30,8 @@ const PitchSessionReport: React.FC = () => {
         if (!element) {
             return;
         }
+
+        setIsGeneratingPDF(true);
 
         const canvas = await html2canvas(element, {
             scale: 2,
@@ -46,6 +49,8 @@ const PitchSessionReport: React.FC = () => {
 
         pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
         pdf.save(`Session-Report-${id}.pdf`);
+
+        setIsGeneratingPDF(false);
     }, [id]);
 
     React.useEffect(() => {
@@ -194,6 +199,8 @@ const PitchSessionReport: React.FC = () => {
 
                             <div className="flex items-center gap-2">
                                 <Button
+                                    disabled={isGeneratingPDF}
+                                    isLoading={isGeneratingPDF}
                                     className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
                                     onClick={handlePDFDownload}
                                 >
