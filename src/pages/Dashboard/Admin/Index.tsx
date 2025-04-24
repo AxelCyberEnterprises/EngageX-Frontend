@@ -11,10 +11,11 @@ import AdminDashboardSkeleton from "@/components/skeletons/AdminDashboardSkeleto
 
 const AdminDashboardHome: React.FC = () => {
     const { data, isLoading } = useDashboardData() as UseQueryResult<
-        { recent_sessions: Session[]; active_users_count: number; inactive_users_count: number; today_new_users_count: number },
+        { recent_sessions: Session[]; active_users_count: number; inactive_users_count: number; today_new_users_count: number, session_breakdown: [] },
         Error
     >;
 
+    console.log(data)
     const recentData = useMemo(
         () =>
             data?.recent_sessions?.map((item: any) => ({
