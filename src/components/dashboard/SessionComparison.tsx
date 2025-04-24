@@ -1,14 +1,14 @@
 import React from 'react';
 import PresentationMetricsTable from '../tables/performance-metric-table/user';
 import { columnsTwo } from "@/components/tables/performance-metric-table/user/columnsTwo";
-import { dataTwo } from "@/components/tables/performance-metric-table/user/dataTwo";
 
 interface SessionComparisonResultsProps {
   session1: any;
   session2: any;
+  tableData: any;
 }
 
-const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ session1, session2 }) => {
+const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ session1, session2, tableData }) => {
 
   const getScoreBackgroundColor = (score: number) => {
     if (score >= 80) return 'bg-[#e6f7e6]'; // Light green
@@ -114,9 +114,7 @@ const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ ses
                       <span className="text-[#252A39]">{insight}</span>
                     </li>
                   ))}
-                </ul> :
-                  <p>none</p>
-                }
+                </ul> : <p>none</p>}
               </div>
             </div>
           </div>
@@ -126,7 +124,7 @@ const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ ses
       <div className='border border-[#E0E0E0] rounded-[12px] p-8 sm:pr-8 pr-0'>
         <PresentationMetricsTable
           columns={columnsTwo}
-          data={dataTwo}
+          data={tableData}
           hidePagination={true}
           pageSize={4}
           tableContainerClassName='sm:rounded-tr-md rounded-tr-[0] sm:border-r border-r-0'

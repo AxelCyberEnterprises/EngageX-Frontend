@@ -27,15 +27,25 @@ const UserSettings: React.FC = () => {
 
   useEffect(() => {
     if (sectionFromUrl) {
-      const newIndex = sectionItems.indexOf(sectionFromUrl);
-      if (newIndex !== -1) setActiveIndex(newIndex);
+      // Normalize the section name from URL for comparison
+      const normalizedUrlSection = sectionFromUrl.toLowerCase().trim();
+      
+      // Find matching section index with more flexible matching
+      const newIndex = sectionItems.findIndex(item => {
+        const normalizedItem = item.toLowerCase().split('&')[0].trim();
+        return normalizedItem.includes(normalizedUrlSection) || 
+               normalizedUrlSection.includes(normalizedItem);
+      });
+      
+      if (newIndex !== -1) {
+        setActiveIndex(newIndex);
+      }
     }
-  }, [sectionFromUrl]);
+  }, [sectionFromUrl, sectionItems]);
 
   const handleSectionChange = (index: number) => {
-    const sectionName = sectionItems[index].split("&")[0].trim();
     setActiveIndex(index);
-    setSearchParams({ section: sectionName });
+    setSearchParams({ section: sectionItems[index] });
   };
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,17 +57,6 @@ const UserSettings: React.FC = () => {
       });
     }
   };
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const section = searchParams.get("section");
-    const index = sectionItems.findIndex(
-      (item) => item.toLowerCase() === section?.toLowerCase()
-    );
-    if (index !== -1) {
-      setActiveIndex(index);
-    }
-  }, []);
 
   return (
     <>
