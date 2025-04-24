@@ -20,6 +20,9 @@ export interface UserProfile {
   company?: string;
   phone_number?: string;
   industry?: string;
+  email_alert?: string;
+  practice_reminder?: string;
+  session_analysis?: string;
 }
 
 export function useUserProfile() {

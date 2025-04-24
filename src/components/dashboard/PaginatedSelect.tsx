@@ -29,6 +29,9 @@ interface PaginatedSelectProps {
   icon?: string;
   disabled?: boolean;
   itemsPerPage?: number;
+  setPage: (data: number) => void;
+  page: number;
+  count?: number;
 }
 
 const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
@@ -42,7 +45,10 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
   hideChevron,
   icon,
   disabled,
-  itemsPerPage = 5,
+  itemsPerPage = 20,
+  setPage,
+  page,
+  count,
 }) => {
   const [selectedLabel, setSelectedLabel] = useState<string>(() => {
     if (defaultValue) {
@@ -54,9 +60,6 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const totalPages = Math.ceil(options.length / itemsPerPage);
-
-  // Reset pagination when options change
   useEffect(() => {
     setCurrentPage(1);
   }, [options.length]);
@@ -80,16 +83,16 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
     : filteredOptions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(prev => prev + 1);
-    }
+    setPage(page + 1);
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(prev => prev - 1);
+    if (page > 1) {
+      setPage(page - 1);
     }
   };
+
+  const totalPages = Math.ceil(count ? count / (itemsPerPage || 20) : 0)
 
   return (
     <Select defaultValue={defaultValue} onValueChange={handleChange}>
@@ -146,7 +149,7 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
           )}
         </SelectGroup>
 
-        {!searchTerm && totalPages > 1 && (
+        {!searchTerm && (
           <div className="p-2 flex items-center justify-between sticky bottom-0 bg-white">
             <Button 
               variant="outline" 
@@ -155,13 +158,13 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
                 e.stopPropagation();
                 handlePrevPage();
               }}
-              disabled={currentPage === 1}
+              disabled={page === 1}
               className="px-2 py-1 h-8"
             >
               <ChevronLeft className="h-4 w-4  text-black" />
             </Button>
             <span className="text-sm text-gray-600">
-              {currentPage} / {totalPages}
+              {page} / {totalPages}
             </span>
             <Button 
               variant="outline" 
@@ -170,7 +173,7 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
                 e.stopPropagation();
                 handleNextPage();
               }}
-              disabled={currentPage === totalPages}
+              // disabled={currentPage === totalPages}
               className="px-2 py-1 h-8"
             >
               <ChevronRight className="h-4 w-4 text-black" />

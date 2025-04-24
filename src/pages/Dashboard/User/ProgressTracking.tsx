@@ -76,7 +76,7 @@ const ProgressTracking: React.FC = () => {
     if (fetchGoalsAndAchievement) {
       toast.error(
         "Failed to fetch goals and achievement: " +
-          (fetchGoalsAndAchievement.message || "Unknown error")
+        (fetchGoalsAndAchievement.message || "Unknown error")
       );
     }
   }, []);
@@ -85,7 +85,7 @@ const ProgressTracking: React.FC = () => {
     if (progressTrackingEerror) {
       toast.error(
         "Failed to fetch goals and achievement: " +
-          (progressTrackingEerror.message || "Unknown error")
+        (progressTrackingEerror.message || "Unknown error")
       );
     }
   }, []);
@@ -101,42 +101,42 @@ const ProgressTracking: React.FC = () => {
     {
       title: "Vocal Variety",
       wordRate: "85% pitch score",
-      percentage: goalsAndAchievement?.vocal_variety ? (goalsAndAchievement?.vocal_variety * 10) : 0,
+      percentage: goalsAndAchievement?.vocal_variety ?? 0,
     },
     {
       title: "Overall ⁠Captured Impact",
       wordRate: "85% impact score",
-      percentage: goalsAndAchievement?.overall_captured_impact ? (goalsAndAchievement?.overall_captured_impact * 10) : 0,
+      percentage: goalsAndAchievement?.overall_captured_impact ?? 0,
     },
     {
       title: "Emotional Impact",
       wordRate: "85% speaker",
-      percentage: goalsAndAchievement?.emotional_impact ? (goalsAndAchievement?.emotional_impact * 10) : 0,
+      percentage: goalsAndAchievement?.emotional_impact ?? 0,
     },
     {
       title: "Body Language",
       wordRate: "85% clarity score",
-      percentage: goalsAndAchievement?.body_language ? (goalsAndAchievement?.body_language * 10) : 0,
+      percentage: goalsAndAchievement?.body_language ?? 0,
     },
     {
       title: "Transformative Communication",
       wordRate: "85% brevity score",
-      percentage: goalsAndAchievement?.transformative_communication ? (goalsAndAchievement?.transformative_communication * 10) : 0,
+      percentage: goalsAndAchievement?.transformative_communication ?? 0,
     },
     {
       title: "Audience Engagement",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.audience_engagement ? (goalsAndAchievement?.audience_engagement * 10) : 0,
+      percentage: goalsAndAchievement?.audience_engagement ?? 0,
     },
     {
       title: "Structure & Clarity",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.structure_and_clarity ? (goalsAndAchievement?.structure_and_clarity * 10) : 0,
+      percentage: goalsAndAchievement?.structure_and_clarity ?? 0,
     },
     {
       title: "Language & Word Choice",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.language_and_word_choice ? (goalsAndAchievement?.language_and_word_choice * 10) : 0,
+      percentage: goalsAndAchievement?.language_and_word_choice ?? 0,
     },
   ];
 
@@ -144,69 +144,70 @@ const ProgressTracking: React.FC = () => {
     {
       id: 1,
       title: "Vocal Variety Mastery",
-      score: Math.round(goalsAndAchievement?.vocal_variety ?? 0),
-      level: getLevel(Math.round(goalsAndAchievement?.vocal_variety ?? 0)),
+      score: (goalsAndAchievement?.vocal_variety ? (goalsAndAchievement?.vocal_variety / 10) : 0),
+      level: getLevel(Math.round(goalsAndAchievement?.vocal_variety ? (goalsAndAchievement?.vocal_variety / 10) : 0)),
       total: 10,
       note: "Pitch, tone, pace, and pauses.",
     },
     {
       id: 2,
       title: "Overall Captured Impact Mastery",
-      score: Math.round(goalsAndAchievement?.overall_captured_impact ?? 0),
-      level: getLevel(Math.round(goalsAndAchievement?.overall_captured_impact ?? 0)),
+      score: (goalsAndAchievement?.overall_captured_impact ? (goalsAndAchievement?.overall_captured_impact / 10) : 0),
+      level: getLevel(Math.round(goalsAndAchievement?.overall_captured_impact ? (goalsAndAchievement?.overall_captured_impact / 10) : 0)),
       total: 10,
       note: "The impact of the overall speech.",
     },
     {
       id: 3,
       title: "Emotional Impact Mastery",
-      score: Math.round(goalsAndAchievement?.emotional_impact ?? 0),
-      level: getLevel(Math.round(goalsAndAchievement?.emotional_impact ?? 0)),
+      score: (goalsAndAchievement?.emotional_impact ? (goalsAndAchievement?.emotional_impact / 10) : 0),
+      level: getLevel(Math.round(goalsAndAchievement?.emotional_impact ? (goalsAndAchievement?.emotional_impact / 10) : 0)),
       total: 10,
       note: "Compels to the audience's emotions.",
     },
     {
       id: 4,
       title: "Body Language Mastery",
-      score: Math.round(goalsAndAchievement?.body_language ?? 0),
-      level: getLevel(Math.round(goalsAndAchievement?.body_language ?? 0)),
+      score: (goalsAndAchievement?.body_language ? (goalsAndAchievement?.body_language / 10) : 0),
+      level: getLevel(Math.round(goalsAndAchievement?.body_language ? (goalsAndAchievement?.body_language / 10) : 0)),
       total: 10,
       note: "Body posture, motion and hand gestures.",
     },
     {
       id: 5,
       title: "Transformative Communication Mastery",
-      score: Math.round(goalsAndAchievement?.transformative_communication ?? 0),
-      level: getLevel(Math.round(goalsAndAchievement?.transformative_communication ?? 0)),
+      score: (goalsAndAchievement?.transformative_communication ? (goalsAndAchievement?.transformative_communication / 10) : 0),
+      level: getLevel(Math.round(goalsAndAchievement?.transformative_communication ? (goalsAndAchievement?.transformative_communication / 10) : 0)),
       total: 10,
       note: "Inspires change or shifts thinking.",
     },
     {
       id: 6,
       title: "Audience Engagement Mastery",
-      score: Math.round(goalsAndAchievement?.audience_engagement ?? 0),
-      level: getLevel(Math.round(goalsAndAchievement?.audience_engagement ?? 0)),
+      score: (goalsAndAchievement?.audience_engagement ? (goalsAndAchievement?.audience_engagement / 10) : 0),
+      level: getLevel(Math.round(goalsAndAchievement?.audience_engagement ? (goalsAndAchievement?.audience_engagement / 10) : 0)),
       total: 10,
       note: "Triggers the audience to respond.",
     },
     {
       id: 7,
       title: "Structure & Clarity Mastery",
-      score: Math.round(goalsAndAchievement?.structure_and_clarity ?? 0),
-      level: getLevel(Math.round(goalsAndAchievement?.structure_and_clarity ?? 0)),
+      score: (goalsAndAchievement?.structure_and_clarity ? (goalsAndAchievement?.structure_and_clarity / 10) : 0),
+      level: getLevel(Math.round(goalsAndAchievement?.structure_and_clarity ? (goalsAndAchievement?.structure_and_clarity / 10) : 0)),
       total: 10,
       note: "How clearly ideas are organized and expressed.",
     },
     {
       id: 8,
       title: "Language & Word Choice Mastery",
-      score: Math.round(goalsAndAchievement?.language_and_word_choice ?? 0),
-      level: getLevel(Math.round(goalsAndAchievement?.language_and_word_choice ?? 0)),
+      score: (goalsAndAchievement?.language_and_word_choice ? (goalsAndAchievement?.language_and_word_choice / 10) : 0),
+      level: getLevel(Math.round(goalsAndAchievement?.language_and_word_choice ? (goalsAndAchievement?.language_and_word_choice / 10) : 0)),
       total: 10,
       note: "Avoid filler words and use good grammar.",
     },
   ];
-  
+
+
 
   const streakStats = [
     {
@@ -324,14 +325,14 @@ const ProgressTracking: React.FC = () => {
       const date = new Date(item.month);
       const monthName = date.toLocaleString("default", { month: "long" });
 
-    return {
-      month: monthName,
-      Impact: item.impact,
-      AudienceEngagement: item.audience_engagement,
-      Clarity: item.clarity,
-      Confidence: 90
-    };
-  }) || [];
+      return {
+        month: monthName,
+        Impact: item.impact,
+        AudienceEngagement: item.audience_engagement,
+        Clarity: item.clarity,
+        Confidence: 90
+      };
+    }) || [];
 
   const chartColors = {
     Impact: "#252A39",
@@ -407,8 +408,8 @@ const ProgressTracking: React.FC = () => {
     activeFilter === "all"
       ? sessions
       : sessions.filter((session) =>
-          session.type.toLowerCase().includes(activeFilter.toLowerCase())
-        );
+        session.type.toLowerCase().includes(activeFilter.toLowerCase())
+      );
 
   const handleFilterChange = (value: string) => {
     setActiveFilter(value);
@@ -487,11 +488,10 @@ const ProgressTracking: React.FC = () => {
               {sectionItems.map((item, index) => (
                 <Button
                   onClick={() => handleSectionChange(index)}
-                  className={`${
-                    activeIndex === index
+                  className={`${activeIndex === index
                       ? "bg-white text-[#252A39] hover:bg-white "
                       : "text-[#6F7C8E] bg-[#F2F2F2] hover:bg-[#F2F2F2]"
-                  } py-1 px-3 rounded-[6px] shadow-none hover:text-inherit hover:shadow-none`}
+                    } py-1 px-3 rounded-[6px] shadow-none hover:text-inherit hover:shadow-none`}
                 >
                   {item}
                 </Button>
