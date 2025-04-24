@@ -409,7 +409,7 @@ const UserDashboardHome: React.FC = () => {
                         </div>
                         <p className="text-sm text-muted-foreground mt-6">
                             <span className="text-[#40B869]">Trigger Response</span> is the audience’s engagement, where
-                            a trigger evokes the audience to respond in some shape or form as a reaction to the
+                            a trigger word or phrase evokes the audience to respond in some shape or form as a reaction to the
                             information they’ve heard.
                         </p>
                     </div>
