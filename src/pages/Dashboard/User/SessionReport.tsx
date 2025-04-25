@@ -25,7 +25,7 @@ const PitchSessionReport: React.FC = () => {
     const pdfRef = useRef<HTMLDivElement>(null);
 
     const handlePDFDownload = useCallback(async () => {
-        const element = document.getElementById("pdf-container");
+        const element = pdfRef.current;
 
         if (!element) {
             return;
@@ -44,10 +44,11 @@ const PitchSessionReport: React.FC = () => {
             format: "a4",
         });
 
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const margin = 10;
+        const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+        const pdfHeight = pdf.internal.pageSize.getHeight() - margin * 2;
 
-        pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.addImage(data, "PNG", margin, margin, pdfWidth, pdfHeight);
         pdf.save(`Session-Report-${id}.pdf`);
 
         setIsGeneratingPDF(false);
@@ -186,7 +187,7 @@ const PitchSessionReport: React.FC = () => {
                     </div>
                 </div>
             ) : (
-                <div id="pdf-container" ref={pdfRef} className="py-4 text-primary-blue">
+                <div ref={pdfRef} className="py-4 text-primary-blue">
                     <section className="px-4 lg:px-8 border-b-1 border-bright-gray">
                         <div data-html2canvas-ignore className="py-3 flex flex-wrap justify-between items-center">
                             <button
