@@ -5,7 +5,7 @@ import ConferenceRoom from "@/assets/images/pngs/conference-room.png";
 
 export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
 
-export const pitchPracticeVEOptions = [{ name: "Pitch studio", value: "pitch_studio", src: PitchStudio }];
+export const pitchPracticeVEOptions = [{ name: "Pitch Studio", value: "pitch_studio", src: PitchStudio }];
 
 export const presentationPracticeVEOptions = [
     { name: "Boardroom 1", value: "board_room_1", src: BoardRoom1 },

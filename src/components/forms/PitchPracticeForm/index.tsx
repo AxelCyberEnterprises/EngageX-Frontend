@@ -18,7 +18,7 @@ const PitchPracticeForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PitchPracticeSchema),
-        defaultValues: useMemo(() => ({ session_type: "pitch" }), []),
+        defaultValues: useMemo(() => ({ session_type: "pitch", virtual_environment: "pitch_studio" }), []),
     });
 
     useEffect(() => {

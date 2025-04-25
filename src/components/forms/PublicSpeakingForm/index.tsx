@@ -23,7 +23,7 @@ const PublicSpeakingForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PublicSpeakingSchema),
-        defaultValues: useMemo(() => ({ session_type: "public" }), []),
+        defaultValues: useMemo(() => ({ session_type: "public", virtual_environment: "conference_room" }), []),
     });
 
     return (
@@ -35,10 +35,10 @@ const PublicSpeakingForm = () => {
                     <TimeAllocationSection />
                     <InputSpeakerNotesSection {...{ form }} />
                 </section>
-                <section className="space-y-6">
+                <section className="lg:space-y-6 space-y-12">
                     <VirtualEnvironmentSection
                         {...{ form }}
-                        className="[&_[data-slot='form-label']>div]:h-38"
+                        className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full [&_[data-slot='form-label']>div]:w-85"
                         options={publicSpeakingVEOptions}
                     />
                     <div className="flex items-start justify-between gap-x-8">
