@@ -228,6 +228,7 @@ const PitchPractice: React.FC = () => {
                                     onStart={() => setStartTimer(true)}
                                     ws={socket.current}
                                     isWsReady={isSocketConnected}
+                                    sessionId={sessionId}
                                 />
                             </div>
                         </div>
