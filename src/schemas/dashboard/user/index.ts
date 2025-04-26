@@ -10,7 +10,7 @@ export const BaseSessionSetupSchema = z.object({
             goal: z.string(),
         }),
     ),
-    virtual_environment: z.enum(["conference_room", "board_room_1", "board_room_2"], {
+    virtual_environment: z.enum(["conference_room", "pitch_studio", "board_room_1", "board_room_2"], {
         required_error: "Virtual environment is required",
     }),
     notes: z.string().optional(),

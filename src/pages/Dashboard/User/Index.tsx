@@ -1,16 +1,20 @@
+import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
+import { Button } from "@/components/ui/button";
+import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
+import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
+import { RootState } from "@/store";
+import { UseQueryResult } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import practiceBg from "../../../assets/images/jpegs/practice-bg.jpeg";
+import practiceBg from "../../../assets/images/jpegs/practice-bg-dashboard.jpeg";
 import presentationBg from "../../../assets/images/jpegs/presentation-bg.jpeg";
 import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
+import improveBg from "../../../assets/images/pngs/improve-bg.png";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress";
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
-import { Button } from "@/components/ui/button";
-import improveBg from "../../../assets/images/pngs/improve-bg.png";
-import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
-import { UseQueryResult } from "@tanstack/react-query";
 
 interface DashboardData {
     latest_session_dict: {
@@ -36,10 +40,6 @@ interface DashboardData {
     }>;
     // Add other properties of the `data` object here if needed
 }
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
-import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
-import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
 
 const UserDashboardHome: React.FC = () => {
     const { data, isLoading } = useDashboardData() as UseQueryResult<DashboardData, Error>;
@@ -90,7 +90,7 @@ const UserDashboardHome: React.FC = () => {
         const totalGoals = Object.keys(goalsData).length;
         const goalsAbove80 = Object.values(goalsData).filter((value) => value >= 8).length;
         const fraction = `${goalsAbove80}/${totalGoals}`;
-        console.log(fraction, goalsAbove80)
+        console.log(fraction, goalsAbove80);
         setGoalFraction(fraction);
         console.log(`You have completed ${fraction} of your goals`);
     }, [goalsData]);
@@ -116,8 +116,8 @@ const UserDashboardHome: React.FC = () => {
     const cardsData = [
         {
             image: speakingBg,
-            title: "Public Speaking",
-            text: "Improve delivery & structure with real-time AI feedback",
+            title: "Public Speaking / Storytelling",
+            text: "Improve delivery & structure with real-time AI feedback and Coaching expertise",
             buttonText: "Start Public Speaking",
             href: "./public-speaking",
             icon: (
@@ -132,7 +132,7 @@ const UserDashboardHome: React.FC = () => {
         {
             image: presentationBg,
             title: "Presentation",
-            text: "Improve delivery & structure with real-time AI feedback",
+            text: "Improve delivery & structure with real-time AI feedback and Coaching expertise",
             buttonText: "Start Your Presentation",
             href: "./presentation-practice",
             icon: (
@@ -147,7 +147,7 @@ const UserDashboardHome: React.FC = () => {
         {
             image: practiceBg,
             title: "Pitch Practice",
-            text: "Sharpen your persuasion and Conviction",
+            text: "Improve delivery & structure with real-time AI feedback and Coaching expertise",
             buttonText: "Start Pitching",
             href: "./pitch-practice",
             icon: (
@@ -197,49 +197,41 @@ const UserDashboardHome: React.FC = () => {
     );
     const goals = [
         {
-           
             title: "Vocal Variety",
             percent: 100,
             color: "#64BA9E",
         },
         {
-           
             title: "Overall Captured Impact",
             percent: 80,
             color: "#64BA9E",
         },
         {
-            
             title: "Emotional Impact",
             percent: 45,
             color: "#ECB25E",
         },
         {
-           
             title: "Body Language",
             percent: 100,
             color: "#64BA9E",
         },
         {
-           
             title: "Transformative Communication",
             percent: 100,
             color: "#64BA9E",
         },
         {
-           
             title: "Audience Engagement",
             percent: 85,
             color: "#64BA9F",
         },
         {
-           
             title: "Structure and Clarity",
             percent: 40,
             color: "#ECB25E",
         },
         {
-          
             title: "Language and Word Choice",
             percent: 40,
             color: "#ECB25E",
@@ -247,16 +239,14 @@ const UserDashboardHome: React.FC = () => {
     ];
     console.log("goals: ", goalsData);
     const updatedGoals = goals.map((goal) => {
-      const key = goal.title.toLowerCase().replace(/\s+/g, "_"); // e.g. "Audience Engagement" -> "audience_engagement"
-      const rawValue = goalsData[key as keyof typeof goalsData];
-    
-      return {
-        ...goal,
-        percent: rawValue !== undefined ? rawValue * 10 : goal.percent,
-      };
+        const key = goal.title.toLowerCase().replace(/\s+/g, "_"); // e.g. "Audience Engagement" -> "audience_engagement"
+        const rawValue = goalsData[key as keyof typeof goalsData];
+
+        return {
+            ...goal,
+            percent: rawValue !== undefined ? rawValue * 10 : goal.percent,
+        };
     });
-    
-    
 
     const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
     useEffect(() => {
@@ -409,8 +399,8 @@ const UserDashboardHome: React.FC = () => {
                         </div>
                         <p className="text-sm text-muted-foreground mt-6">
                             <span className="text-[#40B869]">Trigger Response</span> is the audience’s engagement, where
-                            a trigger evokes the audience to respond in some shape or form as a reaction to the
-                            information they’ve heard.
+                            a trigger word or phrase evokes the audience to respond in some shape or form as a reaction
+                            to the information they’ve heard.
                         </p>
                     </div>
                 </div>

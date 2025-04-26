@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import download from '../../../assets/images/svgs/download-dark.svg';
 import calendar from '../../../assets/images/svgs/calendar.svg';
 import SessionComparisonResults from '@/components/dashboard/SessionComparison';
-
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
-import { useSessionHistory } from '@/hooks/auth';
+import { useSessionComparison, useSessionHistory } from '@/hooks/auth';
 import PaginatedSelect from '@/components/dashboard/PaginatedSelect';
+import { formatSessionMetricsData } from '@/components/tables/performance-metric-table/user/dataTwo';
+// import { apiGet } from '@/lib/api';
 
 interface SessionData {
   id: string;
@@ -16,17 +17,71 @@ interface SessionData {
   dateRange: string;
   duration: string;
   overallScore: number;
-  insights: KeyInsight[];
+  strengths: any[];
+  improvements: any[];
 }
 
-interface KeyInsight {
-  type: 'strength' | 'improvement';
-  text: string;
-}
+// function useAllSessionHistory() {
+//   const [allSessions, setAllSessions] = useState<any[]>([]);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [error, setError] = useState<any>(null);
+  
+//   useEffect(() => {
+//     const fetchAllSessions = async () => {
+//       try {
+//         setIsLoading(true);
+        
+//         // First request to get total pages
+//         const firstPageResponse: any = await apiGet('/sessions/sessions/?page=1');
+//         const totalPages = Math.ceil(firstPageResponse?.count / 20); // Assuming 20 items per page
+        
+//         // Add first page results
+//         // eslint-disable-next-line no-unsafe-optional-chaining
+//         let sessions: any = [...firstPageResponse?.results];
+        
+//         // Fetch remaining pages if needed
+//         const remainingRequests = [];
+//         for (let page = 2; page <= totalPages; page++) {
+//           remainingRequests.push(apiGet(`/sessions/sessions/?page=${page}`));
+//         }
+        
+//         if (remainingRequests.length > 0) {
+//           const responses = await Promise.all(remainingRequests);
+//           responses.forEach((response: any) => {
+//             sessions = [...sessions, ...response.results];
+//           });
+//         }
+        
+//         setAllSessions(sessions);
+//       } catch (err) {
+//         setError(err);
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     };
+    
+//     fetchAllSessions();
+//   }, []);
+  
+//   return { data: { results: allSessions }, isLoading, error };
+// }
 
 const SessionComparison: React.FC = () => {
   const sectionItems = ["view", "comparison"];
-  const { data: sessionData } = useSessionHistory();
+  const [page, setPage] = useState<number>(1);
+  // const { data: sessionData, isLoading: sessionsLoading } = useAllSessionHistory();
+  const { data: sessionData, isLoading: sessionsLoading } = useSessionHistory(page);   
+  const [selectedSequence1, setSelectedSequence1] = useState<string>("");
+  const [selectedSequence2, setSelectedSequence2] = useState<string>("");
+  const { data: singleSessionComparisonData } = useSessionComparison(selectedSequence1, selectedSequence2);
+  const [comparisonMetricsData, setComparisonMetricsData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (singleSessionComparisonData) {
+      const formattedMetricsData = formatSessionMetricsData(singleSessionComparisonData);
+      setComparisonMetricsData(formattedMetricsData);
+    }
+  }, [singleSessionComparisonData]);
 
   const sessionOptions = sessionData?.results?.map(session => {
     const formattedDate = new Date(session.date).toLocaleDateString();
@@ -44,26 +99,27 @@ const SessionComparison: React.FC = () => {
     setSelectedSequence2(value)
   };
   const [activeSection, setActiveSection] = useState(sectionItems[0]);
-  const [selectedSequence1, setSelectedSequence1] = useState<string>("");
-  const [selectedSequence2, setSelectedSequence2] = useState<string>("");
+
   const [session1, setSession1] = useState<any>();
   const [session2, setSession2] = useState<any>();
 
   const formatSessionData = (session: any): SessionData => {
+    if (!session) return {} as SessionData;
+    
     const formattedDate = new Date(session.date).toLocaleDateString(undefined, {
       year: 'numeric', month: 'short', day: 'numeric'
     });
   
     const overallScore = Math.round(
       (
-        session.overall_captured_impact +
-        session.vocal_variety +
-        session.emotional_impact +
-        session.body_language +
-        session.transformative_communication +
-        session.structure_and_clarity +
-        session.language_and_word_choice +
-        session.audience_engagement
+        (session.overall_captured_impact || 0) +
+        (session.vocal_variety || 0) +
+        (session.emotional_impact || 0) +
+        (session.body_language || 0) +
+        (session.transformative_communication || 0) +
+        (session.structure_and_clarity || 0) +
+        (session.language_and_word_choice || 0) +
+        (session.audience_engagement || 0)
       ) / 8
     );
   
@@ -73,25 +129,19 @@ const SessionComparison: React.FC = () => {
       dateRange: formattedDate,
       duration: session.duration ? session.duration.replace(/^00:/, '') : '0 min',
       overallScore: overallScore,
-      insights: [
-        { type: 'strength', text: 'Strong structure and clarity' },
-        { type: 'strength', text: 'Good use of pauses' },
-        { type: 'strength', text: 'Clear body language' },
-        { type: 'improvement', text: 'Improve vocal variety' },
-        { type: 'improvement', text: 'Enhance emotional connection' },
-        { type: 'improvement', text: 'Use more powerful word choices' },
-      ]
+      strengths: session.strength || [],
+      improvements: session.area_of_improvement || [],
     };
   };
-  
 
   const handleCompareSequences = (section: string) => {
-    handleSectionChange(section);
-  };
-
-  const handleSectionChange = (section: string) => {
     if (sectionItems.includes(section)) {
       setActiveSection(section);
+    }
+    
+    if (singleSessionComparisonData) {
+      setSession1(formatSessionData(singleSessionComparisonData?.session1));
+      setSession2(formatSessionData(singleSessionComparisonData?.session2));
     }
   };
 
@@ -111,20 +161,6 @@ const SessionComparison: React.FC = () => {
       html2pdf().set(opt).from(element).save();
     }
   };
-
-  useEffect(() => {
-    if (sessionData && selectedSequence1) {
-      const raw = sessionData.results.find(s => s.id.toString() === selectedSequence1);
-      if (raw) setSession1(formatSessionData(raw));
-    }
-  }, [selectedSequence1, sessionData]);
-  
-  useEffect(() => {
-    if (sessionData && selectedSequence2) {
-      const raw = sessionData.results.find(s => s.id.toString() === selectedSequence2);
-      if (raw) setSession2(formatSessionData(raw));
-    }
-  }, [selectedSequence2, sessionData]);
   
 
   return (
@@ -155,7 +191,11 @@ const SessionComparison: React.FC = () => {
               placeholder="Select Session"
               className="rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full"
               icon={calendar}
-              itemsPerPage={5} // Adjust this number based on your UI needs
+              itemsPerPage={20}
+              disabled={sessionsLoading}
+              setPage={setPage}
+              page={page}
+              count={sessionData?.count}
             />
           </div>
 
@@ -167,7 +207,11 @@ const SessionComparison: React.FC = () => {
               placeholder="Select Session"
               className="rounded-[8px] shadow-none py-5 md:ml-0 ml-auto focus:shadow-none active:shadow-none w-full"
               icon={calendar}
-              itemsPerPage={5} // Adjust this number based on your UI needs
+              itemsPerPage={20}
+              disabled={sessionsLoading}
+              setPage={setPage}
+              page={page}
+              count={sessionData?.count}
             />
           </div>
         </div>
@@ -185,7 +229,7 @@ const SessionComparison: React.FC = () => {
 
       {activeSection === 'comparison' && selectedSequence1 && selectedSequence2 &&
         <section>
-          <SessionComparisonResults session1={session1} session2={session2}/>
+          <SessionComparisonResults session1={session1} session2={session2} tableData={comparisonMetricsData}/>
         </section>
       }
 

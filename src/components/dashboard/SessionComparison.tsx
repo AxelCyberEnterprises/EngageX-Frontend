@@ -1,14 +1,14 @@
 import React from 'react';
-// import PresentationMetricsTable from '../tables/performance-metric-table/user';
-// import { columnsTwo } from "@/components/tables/performance-metric-table/user/columnsTwo";
-// import { dataTwo } from "@/components/tables/performance-metric-table/user/dataTwo";
+import PresentationMetricsTable from '../tables/performance-metric-table/user';
+import { columnsTwo } from "@/components/tables/performance-metric-table/user/columnsTwo";
 
 interface SessionComparisonResultsProps {
   session1: any;
   session2: any;
+  tableData: any;
 }
 
-const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ session1, session2 }) => {
+const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ session1, session2, tableData }) => {
 
   const getScoreBackgroundColor = (score: number) => {
     if (score >= 80) return 'bg-[#e6f7e6]'; // Light green
@@ -38,34 +38,34 @@ const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ ses
             <div className='flex justify-between md:flex-row flex-col'>
               <div className="mb-4">
                 <p className="text-green-600 mb-2">Strengths</p>
-                <ul className="space-y-2 text-sm">
-                  {session1.insights
-                    .filter((insight: any) => insight?.type === 'strength')
-                    .map((insight: any, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                          <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <span className="text-[#252A39]">{insight?.text}</span>
-                      </li>
-                    ))}
-                </ul>
+                {Array.isArray(session1?.strengths) ? <ul className="space-y-2 text-sm">
+                  {session1.strengths.map((insight: any, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span className="text-[#252A39]">{insight}</span>
+                    </li>
+                  ))}
+                </ul> :
+                  <p>none</p>
+                }
               </div>
 
               <div>
                 <p className="text-red-500 mb-2">Areas of Improvement</p>
-                <ul className="space-y-2 text-sm">
-                  {session1.insights
-                    .filter((insight: any) => insight?.type === 'improvement')
-                    .map((insight: any, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                          <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <span className="text-[#252A39]">{insight?.text}</span>
-                      </li>
-                    ))}
-                </ul>
+                {Array.isArray(session1?.improvements) ? <ul className="space-y-2 text-sm">
+                  {session1.improvements.map((insight: any, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span className="text-[#252A39]">{insight}</span>
+                    </li>
+                  ))}
+                </ul> :
+                  <p>none</p>
+                }
               </div>
             </div>
 
@@ -89,49 +89,47 @@ const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ ses
             <div className='flex justify-between md:flex-row flex-col'>
               <div className="mb-4">
                 <p className="text-green-600 mb-2">Strengths</p>
-                <ul className="space-y-2 text-sm">
-                  {session2.insights
-                    .filter((insight: any) => insight?.type === 'strength')
-                    .map((insight: any, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                          <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <span className="text-[#252A39]">{insight?.text}</span>
-                      </li>
-                    ))}
-                </ul>
+                {Array.isArray(session2?.strengths) ? <ul className="space-y-2 text-sm">
+                  {session2.strengths.map((insight: any, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <svg className="w-5 h-5 text-green-600 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span className="text-[#252A39]">{insight}</span>
+                    </li>
+                  ))}
+                </ul> :
+                  <p>none</p>
+                }
               </div>
 
               <div>
                 <p className="text-red-500 mb-2">Areas of Improvement</p>
-                <ul className="space-y-2 text-sm">
-                  {session1.insights
-                    .filter((insight: any) => insight?.type === 'improvement')
-                    .map((insight: any, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
-                          <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <span className="text-[#252A39]">{insight?.text}</span>
-                      </li>
-                    ))}
-                </ul>
+                {Array.isArray(session2?.improvements) ? <ul className="space-y-2 text-sm">
+                  {session2.improvements.map((insight: any, index: number) => (
+                    <li key={index} className="flex items-start">
+                      <svg className="w-5 h-5 text-red-500 mr-2 flex-shrink-0" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span className="text-[#252A39]">{insight}</span>
+                    </li>
+                  ))}
+                </ul> : <p>none</p>}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* <div className='border border-[#E0E0E0] rounded-[12px] p-8 sm:pr-8 pr-0'>
+      <div className='border border-[#E0E0E0] rounded-[12px] p-8 sm:pr-8 pr-0'>
         <PresentationMetricsTable
           columns={columnsTwo}
-          data={dataTwo}
+          data={tableData}
           hidePagination={true}
           pageSize={4}
           tableContainerClassName='sm:rounded-tr-md rounded-tr-[0] sm:border-r border-r-0'
         />
-      </div> */}
+      </div>
 
     </div>
   );

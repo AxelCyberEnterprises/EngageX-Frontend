@@ -1,18 +1,26 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { BaseTable } from "../../base-table";
+import { useState } from "react";
+import { PaginationState } from "@tanstack/react-table";
 
 interface PresentationMetricsTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pageSize?: number;
+  pageSize: number;
   hidePagination?: boolean;
   tableContainerClassName?: string;
 }
 
-function PresentationMetricsTable<TData, TValue> ({
+function PresentationMetricsTable<TData, TValue>({
   columns, data, pageSize, hidePagination, tableContainerClassName
 }: PresentationMetricsTableProps<TData, TValue>) {
 
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: pageSize,
+  });
+
+  console.log(data);
   return (
     <div className="w-full">
       <BaseTable
@@ -23,6 +31,8 @@ function PresentationMetricsTable<TData, TValue> ({
         pageSize={pageSize}
         hidePagination={hidePagination}
         tableContainerClassName={tableContainerClassName}
+        pagination={pagination}
+        setPagination={setPagination}
       />
     </div>
   );
