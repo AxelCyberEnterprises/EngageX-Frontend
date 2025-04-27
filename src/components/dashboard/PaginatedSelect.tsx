@@ -8,7 +8,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2Icon } from "lucide-react";
 
 export interface SelectOption {
   value: string;
@@ -32,6 +32,7 @@ interface PaginatedSelectProps {
   setPage: (data: number) => void;
   page: number;
   count?: number;
+  isLoading?: boolean;
 }
 
 const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
@@ -49,6 +50,7 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
   setPage,
   page,
   count,
+  isLoading,
 }) => {
   const [selectedLabel, setSelectedLabel] = useState<string>(() => {
     if (defaultValue) {
@@ -78,8 +80,8 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const paginatedOptions = searchTerm 
-    ? filteredOptions 
+  const paginatedOptions = searchTerm
+    ? filteredOptions
     : filteredOptions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleNextPage = () => {
@@ -94,6 +96,8 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
 
   const totalPages = Math.ceil(count ? count / (itemsPerPage || 20) : 0)
 
+  console.log(isLoading);
+  
   return (
     <Select defaultValue={defaultValue} onValueChange={handleChange}>
       <SelectTrigger
@@ -125,9 +129,13 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
             onClick={(e) => e.stopPropagation()}
           />
         </div>
-        
+
         <SelectGroup className="max-h-48 overflow-y-auto">
-          {paginatedOptions.length > 0 ? (
+          {isLoading ? (
+            <div className="py-6 flex flex-col items-center justify-center h-full">
+              <Loader2Icon className='animate-spin' />
+            </div>
+          ) : paginatedOptions.length > 0 ? (
             paginatedOptions.map((option) => (
               <SelectItem
                 key={option.value}
@@ -136,7 +144,7 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
                 className="py-3 px-2 cursor-pointer hover:bg-gray-100"
               >
                 <div className="flex items-center gap-1">
-                  {option?.icon && <img src={option?.icon} alt="option icon" className='mr-1 w-5 h-5' />}
+                  {option?.icon && <img src={option?.icon} alt="option icon" className="mr-1 w-5 h-5" />}
                   <span className="text-gray-700">{option.label}</span>
                   {option.date && (
                     <span className="text-sm text-gray-500">({option.date})</span>
@@ -151,9 +159,9 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
 
         {!searchTerm && (
           <div className="p-2 flex items-center justify-between sticky bottom-0 bg-white">
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
                 handlePrevPage();
@@ -166,9 +174,9 @@ const PaginatedSelect: React.FC<PaginatedSelectProps> = ({
             <span className="text-sm text-gray-600">
               {page} / {totalPages}
             </span>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
                 handleNextPage();

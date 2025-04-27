@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SearchableSelect } from '../select/CustomSelect';
-import { useUpdateUserProfile, useUserProfile } from '@/hooks/settings';
+import { useUserProfile } from '@/hooks/settings';
 import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -44,9 +44,10 @@ const PersonalInfoForm: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const queryClient = useQueryClient();
   const { data: profile, isLoading, error: fetchProfileError } = useUserProfile();
-  const { mutate: updateProfile, isPending: isUpdating } = useUpdateUserProfile();
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const form = useForm<PersonalInfoFormData>({
@@ -63,49 +64,53 @@ const PersonalInfoForm: React.FC = () => {
   });
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const token = tokenManager.getToken();
     const file = event.target.files?.[0];
     if (file) {
       setPhotoPreview(URL.createObjectURL(file));
-      const photoFormData = new FormData();
-      photoFormData.append('profile_picture', file);
-      const userId = user?.user_id;
-      axios.patch(
-        `${API_BASE_URL}/users/userprofiles/${userId}/`, 
-        photoFormData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Token ${token}`
-          }
-        }
-      ).then(() => {
-        toast.success('Profile picture updated successfully');
-        queryClient.invalidateQueries({ queryKey: ["user-profile"] });
-      })
-      .catch((error) => {
-        console.error('Profile picture update error:', error);
-        toast.error('Failed to update profile picture: ' + (error.response?.data?.message || error.message || 'Unknown error'));
-      });
+      setSelectedPhoto(file);
     }
   };
 
+
   const submit = (data: PersonalInfoFormData) => {
     const formData = new FormData();
+    
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value);
       }
     });
-    updateProfile(formData, {
-      onSuccess: () => {
-        toast.success('Profile updated successfully');
-        setIsEditMode(false);
-      },
-      onError: (error: any) => {
-        console.error('Profile update error:', error);
-        toast.error('Failed to update profile: ' + (error.message || 'Unknown error'));
+    
+    if (selectedPhoto) {
+      formData.append('profile_picture', selectedPhoto);
+    }
+    
+    const token = tokenManager.getToken();
+    const userId = user?.user_id;
+  
+    setIsUpdating(true);
+  
+    axios.patch(
+      `${API_BASE_URL}/users/userprofiles/${userId}/`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Token ${token}`
+        }
       }
+    ).then(() => {
+      toast.success('Profile updated successfully');
+      setIsEditMode(false);
+      setSelectedPhoto(null);
+      queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+    })
+    .catch((error) => {
+      console.error('Profile update error:', error);
+      toast.error('Failed to update profile: ' + (error.response?.data?.message || error.message || 'Unknown error'));
+    })
+    .finally(() => {
+      setIsUpdating(false);
     });
   };
   
@@ -173,6 +178,7 @@ const PersonalInfoForm: React.FC = () => {
       timezone: profile?.timezone || "",
     });
     setPhotoPreview(profile?.profile_picture || null);
+    setSelectedPhoto(null);
     setIsEditMode(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
