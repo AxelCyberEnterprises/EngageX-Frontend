@@ -7,6 +7,7 @@ import ErrorToast from "../ui/custom-toasts/error-toast";
 
 type IUploadMediaTriggerProps<T extends FieldValues, K extends Path<T>> = HTMLAttributes<HTMLElement> & {
     accept?: DropzoneProps["accept"];
+    maxSize?: DropzoneProps["maxSize"];
     multiple?: boolean;
     name: K;
 };
@@ -17,6 +18,7 @@ export type IFilesWithPreview = {
 
 const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
     accept = { "application/*": [".pdf", ".ppt", ".pptx"] },
+    maxSize = 10 * 1024 * 1024, // 10MB
     className,
     children,
     name,
@@ -50,7 +52,18 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
                             }}
                         />,
                     );
+                } else if (error.code === "file-too-large") {
+                    toast(
+                        <ErrorToast
+                            {...{
+                                heading: "File too large",
+                                description: `File size should not be more than ${maxSize / 1024 / 1024}MB`,
+                            }}
+                        />,
+                    );
                 }
+
+                return;
             }
 
             const newFiles = await Promise.all(
@@ -65,7 +78,7 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
             // Store the file in the form state
             setValue(name, newFiles as unknown as T[K], { shouldValidate: true });
         },
-        [name, setValue],
+        [maxSize, name, setValue],
     );
 
     useEffect(() => {
@@ -76,7 +89,7 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
     }, [register, unregister, name]);
 
     return (
-        <Dropzone accept={accept} maxFiles={1} onDrop={handleDrop}>
+        <Dropzone accept={accept} maxFiles={1} maxSize={maxSize} onDrop={handleDrop}>
             {({ getRootProps, getInputProps }) => (
                 <div {...getRootProps()} className={cn(className)}>
                     <input {...getInputProps()} />
