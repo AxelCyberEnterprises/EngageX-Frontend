@@ -17,7 +17,7 @@ import alert from "../../assets/images/svgs/alert.svg";
 import questionImage from "../../assets/images/pngs/question-image.png";
 import TimerComponent from "@/components/session/TimerComponent";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
-import { useEndSession } from "@/hooks/sessions";
+import { useEndSession, useGetSessionData } from "@/hooks/sessions";
 import { pdfToImages } from "@/lib/utils";
 
 const PresentationPractice: React.FC = () => {
@@ -47,6 +47,7 @@ const PresentationPractice: React.FC = () => {
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
+    const [seshData, setSeshData] = useState<any>();
 
     const stopTimer = (dur?: string, durationArr?: string[]) => {
         if (dur !== undefined) {
@@ -81,14 +82,19 @@ const PresentationPractice: React.FC = () => {
         sliderRef.current?.nextSlide();
     };
 
-    // const { data } = useGetSessionData(sessionId);
-    // console.log(data);
-    // console.log("sessionId:", sessionId);
+    const { data }: { data?: any } = useGetSessionData(sessionId);
 
     useEffect(() => {
-        const url = localStorage.getItem("slides");
-        const seshData = localStorage.getItem("sessionData");
-        const parsedData = seshData ? JSON.parse(seshData) : null;
+        if (!seshData && data) {
+            setSeshData(data);
+            console.log(seshData?.slides_file);
+        }
+    }, [data, seshData]);
+
+    useEffect(() => {
+        const url = seshData?.slides_file;
+        const localSeshData = localStorage.getItem("sessionData");
+        const parsedData = localSeshData ? JSON.parse(localSeshData) : null;
         setSessionData(parsedData);
         setSelectedRoom(parsedData?.virtual_environment);
         if (!url) return;
@@ -102,7 +108,7 @@ const PresentationPractice: React.FC = () => {
             .catch((err) => {
                 console.error("Error converting PDF to images:", err);
             });
-    }, []);
+    }, [seshData]);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -421,6 +427,7 @@ const PresentationPractice: React.FC = () => {
                                     ws={socket.current}
                                     isWsReady={isSocketConnected}
                                     border={isExpanded ? "rounded-2xl" : ""}
+                                    sessionId={sessionId}
                                 />
                             </div>
                         </div>

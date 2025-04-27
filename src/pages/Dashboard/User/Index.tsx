@@ -2,7 +2,9 @@ import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton"
 import { Button } from "@/components/ui/button";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
 import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
+import usePerformanceChart from "@/hooks/usePerformanceChart";
 import { RootState } from "@/store";
+import { ISession } from "@/types/sessions";
 import { UseQueryResult } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -32,12 +34,7 @@ interface DashboardData {
         transformative_communication: number;
         vocal_variety: number;
     };
-    performance_analytics?: Array<{
-        chunk_number: string;
-        impact: number;
-        trigger_reponse: number;
-        conviction: number;
-    }>;
+    performance_analytics?: ISession["performance_analytics"];
     // Add other properties of the `data` object here if needed
 }
 
@@ -248,36 +245,13 @@ const UserDashboardHome: React.FC = () => {
         };
     });
 
+    const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
+
     const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
     useEffect(() => {
         console.log("newChartData: ", newChartData);
         console.log(setNewChartData);
     }, [newChartData]);
-
-    function applyChunkOffset(arr: Array<{ [key: string]: any }>, chunkSize = 7, offset = 4) {
-        return arr.map((item, index) => {
-            const chunkOffset = (index + offset) * chunkSize;
-            return {
-                ...item,
-                chunk_offset: chunkOffset, // you can name this anything
-                impact: item.impact,
-                trigger: item.trigger_reponse,
-                conviction: item.conviction,
-            };
-        });
-    }
-    const result: {
-        chunk_offset: number;
-        impact: number;
-        trigger: number;
-        conviction: number;
-    }[] = applyChunkOffset(data?.performance_analytics?.filter(Boolean) || [], 7);
-
-    const chartColors = {
-        Impact: "#252A39",
-        Trigger: "#40B869",
-        Conviction: "#F5B546",
-    };
 
     if (isLoading) {
         return <UserDashboardSkeleton />;
@@ -378,29 +352,19 @@ const UserDashboardHome: React.FC = () => {
 
                         <div className="chart__div">
                             <ShadLineChart
-                                data={result
-                                    .filter(Boolean)
-                                    .map(
-                                        (item: {
-                                            chunk_offset: number;
-                                            impact: number;
-                                            trigger: number;
-                                            conviction: number;
-                                        }) => ({
-                                            month: item.chunk_offset,
-                                            Impact: item.impact,
-                                            Trigger: item.trigger,
-                                            Conviction: item.conviction,
-                                        }),
-                                    )}
-                                // data={chartData}
+                                data={chartData.filter(Boolean).map((item) => ({
+                                    month: item.chunk_offset,
+                                    Impact: item.impact,
+                                    Trigger: item.trigger,
+                                    Conviction: item.conviction,
+                                }))}
                                 colors={chartColors}
                             />
                         </div>
                         <p className="text-sm text-muted-foreground mt-6">
                             <span className="text-[#40B869]">Trigger Response</span> is the audience’s engagement, where
                             a trigger word or phrase evokes the audience to respond in some shape or form as a reaction
-                            to the information they’ve heard.
+                            to the information they've heard.
                         </p>
                     </div>
                 </div>

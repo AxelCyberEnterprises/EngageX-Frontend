@@ -319,6 +319,7 @@ const PublicSpeaking: React.FC = () => {
                                             ws={socket.current}
                                             isWsReady={isSocketConnected}
                                             border={isExpanded ? "rounded-2xl" : ""}
+                                            sessionId={sessionId}
                                         />
                                     </div>
                                 </div>
@@ -370,6 +371,7 @@ const PublicSpeaking: React.FC = () => {
                                     ws={socket.current}
                                     isWsReady={isSocketConnected}
                                     border={isExpanded ? "rounded-2xl" : ""}
+                                    sessionId={sessionId}
                                 />
                             </div>
                         </div>

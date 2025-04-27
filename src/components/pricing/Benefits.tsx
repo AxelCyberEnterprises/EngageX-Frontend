@@ -97,6 +97,17 @@ function Benefits() {
               <p className="big h-[6rem] border-b border-b-white/10 flex items-center">
                 Branded for pros, sales, entrepreneurs, athletes.
               </p>
+              <p className="big h-[6rem] border-b border-b-white/10 flex items-center">
+                Access to live certified coaches
+              </p>
+              <p className="big h-[6rem] border-b border-b-white/10 flex items-center">
+                Powerpoint deck feedback models,
+              </p>
+              <p className="big h-[6rem] border-b border-b-white/10 flex items-center">
+                3D reactionary audience models using proprietary feedback
+                integration
+              </p>
+
               {/* <p className="big h-[5rem] border-b border-b-white/10 flex items-center">
                 Tailored for professional speakings
               </p> */}
@@ -105,6 +116,15 @@ function Benefits() {
             <div className="w-2/3 bg-white h-full divide-x py-4 flex rounded-2xl">
               <div className="flex-1 w-full flex flex-col items-center">
                 <div className="h-[4.6rem] flex items-center">
+                  <BenefitCancelSVG />
+                </div>
+                <div className="h-[6rem] flex items-center">
+                  <BenefitCancelSVG />
+                </div>
+                <div className="h-[6rem] flex items-center">
+                  <BenefitCancelSVG />
+                </div>
+                <div className="h-[6rem] flex items-center">
                   <BenefitCancelSVG />
                 </div>
                 <div className="h-[6rem] flex items-center">
@@ -131,6 +151,15 @@ function Benefits() {
               </div>
               <div className="flex-1 w-full flex flex-col items-center">
                 <div className="h-[3rem] flex items-center">
+                  <BenefitCheckedSVG />
+                </div>
+                <div className="h-[5rem] flex items-center">
+                  <BenefitCheckedSVG />
+                </div>
+                <div className="h-[5rem] flex items-center">
+                  <BenefitCheckedSVG />
+                </div>
+                <div className="h-[5rem] flex items-center">
                   <BenefitCheckedSVG />
                 </div>
                 <div className="h-[5rem] flex items-center">
@@ -227,6 +256,40 @@ function Benefits() {
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[8rem] text-[#262B3A]">
             Branded for pros, sales, entrepreneurs, athletes.
+          </p>
+          <div className="pl-2 h-[8rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[8rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[8rem] text-[#262B3A]">
+            Access to live certified coaches.
+          </p>
+          <div className="pl-2 h-[8rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[8rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[8rem] text-[#262B3A]">
+            Powerpoint deck feedback models
+          </p>
+          <div className="pl-2 h-[8rem] border-r flex w-[40%] justify-center items-center">
+            <BenefitCancelSVG />
+          </div>
+          <div className="pl-2 h-[8rem] flex flex-1 justify-center items-center">
+            <BenefitCheckedSVG />
+          </div>
+        </div>
+        <div className="flex justify-between items-center">
+          <p className="border-r w-[35%] pr-2 flex items-center h-[8rem] text-[#262B3A]">
+            3D reactionary audience models using proprietary feedback
+            integration
           </p>
           <div className="pl-2 h-[8rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />

@@ -9,9 +9,10 @@ interface VideoStreamerProps {
     ws: WebSocket | null;
     isWsReady: boolean;
     border?: string;
+    sessionId: string | undefined;
 }
 
-const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop, ws, isWsReady, border }) => {
+const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop, ws, isWsReady, border, sessionId }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isRecording, setIsRecording] = useState(false);
     const streamRef = useRef<MediaStream | null>(null);
@@ -95,9 +96,10 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
                         JSON.stringify({
                             type: "media",
                             data: base64Data,
+                            session_id: sessionId,
                         }),
                     );
-                    console.log(`Chunk sent (${Math.round(base64Data.length / 1024)} KB)`);
+                    console.log(`Chunk sent (${Math.round(base64Data.length / 1024)} KB) with session ID: ${sessionId}`);
                 } catch (err) {
                     console.error("Error converting chunk:", err);
                 }
