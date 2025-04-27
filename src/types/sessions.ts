@@ -44,6 +44,9 @@ export interface ISession {
     transformative_communication: number;
     structure_and_clarity: number;
     language_and_word_choice: number;
+    slide_efficiency: number;
+    text_economy: number;
+    visual_communication: number;
     user: number;
 }
 

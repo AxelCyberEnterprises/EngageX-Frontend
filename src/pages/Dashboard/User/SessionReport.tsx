@@ -124,6 +124,24 @@ const PitchSessionReport: React.FC = () => {
         },
     ];
 
+    const slideAnalysis = [
+        {
+            bg: "bg-alice-blue",
+            title: "Slide Efficiency",
+            percent: data?.slide_efficiency,
+        },
+        {
+            bg: "bg-green-sheen/15",
+            title: "Text Economy",
+            percent: data?.text_economy,
+        },
+        {
+            bg: "bg-seashell",
+            title: "Visual Communication",
+            percent: data?.visual_communication,
+        },
+    ];
+
     const deliveryMetrics = [
         {
             title: "Structure and Clarity",
@@ -410,6 +428,28 @@ const PitchSessionReport: React.FC = () => {
                                         </div>
                                         <div className="w-full lg:w-1/12 hidden lg:flex justify-end">
                                             <p>{metric.rating}%</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="px-4 lg:px-8 pt-4">
+                        <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
+                            <h5 className="mb-6">Slide Analysis</h5>
+
+                            <div className="flex flex-wrap gap-4">
+                                {slideAnalysis.map((item, index) => (
+                                    <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
+                                        <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
+                                            <div className="flex flex-col justify-between py-3">
+                                                <p>{item.title}</p>
+                                                <h5>{item.percent}%</h5>
+                                            </div>
+                                            <div>
+                                                <FullCircleProgress percent={item.percent!} color={"#64BA9F"} />
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
