@@ -1,11 +1,12 @@
 import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
-import ShadLinearLineChart from "@/components/dashboard/ShadLinearLineChart";
+import ShadLineChart from "@/components/dashboard/ShadLineChart";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetSessionReport } from "@/hooks/sessions";
+import usePerformanceChart from "@/hooks/usePerformanceChart";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, UserRound } from "lucide-react";
@@ -17,11 +18,13 @@ import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-    // const sessionType = 'pitch';
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const { id } = useParams();
+
     const { data, isPending, refetch } = useGetSessionReport(id);
+    const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
+
     const pdfRef = useRef<HTMLDivElement>(null);
 
     const handlePDFDownload = useCallback(async () => {
@@ -79,21 +82,6 @@ const PitchSessionReport: React.FC = () => {
         // Strip surrounding quotes from each string
         return elements.map((str) => str.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1"));
     }, []);
-
-    const chartData = [
-        { minute: 0, Impact: 0, TriggerResponse: 0, Conviction: 0 },
-        { minute: 5, Impact: 305, TriggerResponse: 200, Conviction: 100 },
-        { minute: 10, Impact: 237, TriggerResponse: 120, Conviction: 100 },
-        { minute: 15, Impact: 73, TriggerResponse: 190, Conviction: 100 },
-        { minute: 20, Impact: 209, TriggerResponse: 130, Conviction: 100 },
-        { minute: 25, Impact: 214, TriggerResponse: 140, Conviction: 100 },
-    ];
-
-    const chartColors = {
-        Impact: "#252A39",
-        TriggerResponse: "#40B869",
-        Conviction: "#F5B546",
-    };
 
     const variety = [
         // {
@@ -304,7 +292,17 @@ const PitchSessionReport: React.FC = () => {
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                                 <div className="border-1 border-bright-gray rounded-xl p-4">
                                     <h6 className="mb-3">Audience Engagement</h6>
-                                    <ShadLinearLineChart data={chartData} colors={chartColors} />
+                                    <div className="chart__div">
+                                        <ShadLineChart
+                                            data={chartData.filter(Boolean).map((item) => ({
+                                                month: item.chunk_offset,
+                                                Impact: item.impact,
+                                                Trigger: item.trigger,
+                                                Conviction: item.conviction,
+                                            }))}
+                                            colors={chartColors}
+                                        />
+                                    </div>
                                     <p className="mt-2">
                                         <span className="text-medium-sea-green">Trigger Response</span> is the
                                         audience’s engagement, where a trigger evokes the audience to respond in some

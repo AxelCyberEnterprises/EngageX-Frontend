@@ -1,6 +1,15 @@
 import { BaseSessionSetupSchema } from "@/schemas/dashboard/user";
 import { z } from "zod";
 
+export interface ISessionChunk {
+    chunk_number: number;
+    start_time: number;
+    end_time: number;
+    impact: number;
+    trigger_response: number;
+    conviction: number;
+}
+
 export interface ISession {
     id: number;
     user_email: string;
@@ -48,6 +57,7 @@ export interface ISession {
     text_economy: number;
     visual_communication: number;
     user: number;
+    performance_analytics: ISessionChunk[];
 }
 
 export interface IGETSessionsResponse {
