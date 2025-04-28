@@ -26,7 +26,6 @@ import { RootState } from '@/store';
 import { tokenManager } from "@/lib/utils";
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
-import { API_BASE_URL } from '@/lib/constants';
 
 const personalInfoSchema = z.object({
   first_name: z.string().min(1, 'First name is required').optional(),
