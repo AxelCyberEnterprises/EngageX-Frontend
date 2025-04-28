@@ -36,6 +36,8 @@ interface AuthQuestionData {
     userId: string; // ensure you pass this when calling the mutation
     user_intent: string;
     purpose: string;
+    password: string | null | undefined;
+    email?: string | null | undefined;
 }
 
 export function useAddAuthQuestion() {
@@ -45,7 +47,7 @@ export function useAddAuthQuestion() {
         mutationKey: ["addAuthQuestion"],
         mutationFn: async ({ userId, user_intent, purpose }: AuthQuestionData) => {
             console.log(userId, user_intent, purpose);
-            return await apiPatch(`/users/users/3/`, { user_intent: "early", purpose: "public_speaking" });
+            return await apiPatch(`/users/users/${userId}/`, { user_intent, purpose });
         },
         onSuccess: () => {
             console.log("Auth question added successfully.");
@@ -209,12 +211,39 @@ export function usePublicSpeaking() {
     });
 }
 
-export function useDashboardData() {
+function getDateRange(filter: string) {
+    const today = new Date();
+    const formattedToday = today.toISOString().split('T')[0];
+    let startDate = formattedToday;
+    let endDate = formattedToday;
+  
+    if (filter === 'last_week') {
+      const lastWeek = new Date();
+      lastWeek.setDate(today.getDate() - 7);
+      startDate = lastWeek.toISOString().split('T')[0];
+    } else if (filter === 'last_month') {
+      const lastMonth = new Date();
+      lastMonth.setMonth(today.getMonth() - 1);
+      startDate = lastMonth.toISOString().split('T')[0];
+    } else if (filter === 'last_year') {
+      const lastYear = new Date();
+      lastYear.setFullYear(today.getFullYear() - 1);
+      startDate = lastYear.toISOString().split('T')[0];
+    }
+    // else if filter is "today", default today is already correct
+  
+    return { startDate, endDate };
+  }
+  
+  export function useDashboardData(filter = 'today') {
+    const { startDate, endDate } = getDateRange(filter);
+  
     return useQuery({
-        queryKey: ["dashboardData"],
-        queryFn: () => apiGet("/sessions/dashboard/"),
+      queryKey: ['dashboardData', filter], // 👈 Add filter to key to refetch properly
+      queryFn: () => 
+        apiGet(`/sessions/dashboard/?start_date=${startDate}&end_date=${endDate}`),
     });
-}
+  }
 
 export function useSessionHistory(page = 1) {
     return useQuery({
