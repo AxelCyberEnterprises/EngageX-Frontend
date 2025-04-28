@@ -45,7 +45,9 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/curious/1.mp4",
+        sessionData?.virtual_environment === "board_room_1" ?
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4" :
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_2/uncertain/1.mp4"
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
