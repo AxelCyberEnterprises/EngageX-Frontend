@@ -18,7 +18,7 @@ export interface ISession {
     latest_score: number;
     sequence: number | null;
     session_name: string;
-    session_type: string;
+    session_type: "public" | "pitch" | "presentation";
     goals: string[];
     date: string;
     duration: string | null;
