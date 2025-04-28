@@ -18,6 +18,7 @@ interface VideoPlayerProps {
     preload?: boolean;
     muted?: boolean;
     requireFullPlay?: boolean;
+    allowSwitch?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -35,6 +36,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     preload = false,
     muted = false,
     requireFullPlay = false,
+    allowSwitch = true,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -178,7 +180,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             setProgress(100);
             setHasPlayedOnce(true);
 
-            if (requireFullPlay && nextSrc) {
+            if (requireFullPlay && nextSrc && allowSwitch) {
                 // Swap in nextSrc after full play
                 setCurrentSrc(nextSrc);
                 setNextSrc(null);
@@ -209,7 +211,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             videoElement.removeEventListener("pause", handlePause);
             videoElement.removeEventListener("ended", handleEnded);
         };
-    }, [currentSrc, autoPlay]); // ⬅️ changed from [src, autoPlay]
+    }, [currentSrc, autoPlay, allowSwitch]);
 
     useEffect(() => {
         const handleFullscreenChange = () => {
