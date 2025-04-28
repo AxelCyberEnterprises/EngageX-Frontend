@@ -288,7 +288,7 @@ const PitchSessionReport: React.FC = () => {
                     </section>
 
                     <section className="px-4 lg:px-8 py-4">
-                        <div className="flex md:flex-row w-full items-stretch gap-3">
+                        <div className="flex flex-col md:flex-row w-full items-stretch gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                                 <div className="border-1 border-bright-gray rounded-xl p-4">
                                     <h6 className="mb-3">Audience Engagement</h6>
@@ -305,7 +305,7 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                     <p className="mt-2">
                                         <span className="text-medium-sea-green">Trigger Response</span> is the
-                                        audience’s engagement, where a trigger evokes the audience to respond in some
+                                        audience’s engagement, where a trigger word or phrase evokes the audience to respond in some
                                         shape or form as a reaction to the information they’ve heard.
                                     </p>
                                 </div>
