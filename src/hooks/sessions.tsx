@@ -72,7 +72,7 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
     });
 }
 
-export function useEndSession(sessionId: string | undefined, duration: any, slidesDuration?: any) {
+export function useEndSession(sessionId: string | undefined, duration: any, slidesDuration?: any[]) {
     const navigate = useNavigate();
 
     return useMutation({
