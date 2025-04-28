@@ -4,15 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import {  setAuthPageImage, setSignupData } from "../../store/slices/authSlice";
+import { setAuthPageImage, setSignupData } from "../../store/slices/authSlice";
 import { Link, useLocation } from "react-router-dom";
 import { BackToWebsite, welcomeMessage } from "../layouts/userAuth";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "../ui/checkbox";
-import googleIcon from "@/assets/images/svgs/google-icon.svg";
-import {  useSignup } from "@/hooks/auth";
+// import googleIcon from "@/assets/images/svgs/google-icon.svg";
+import { useSignup } from "@/hooks/auth";
 import { RootState } from "@/store";
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
 // Enhanced password validation schema
@@ -53,7 +53,7 @@ const Signup: React.FC = () => {
         },
     });
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const signupData = useSelector((state: RootState) => state.auth.signupData);
 
@@ -74,21 +74,20 @@ const Signup: React.FC = () => {
                 email: data.email,
                 password: data.password,
                 confirmPassword: data.confirmPassword,
-                
-            }))
+            }),
+        );
         signup(newData);
     };
 
+    useEffect(() => {
+        if (error) {
+            form.setError("confirmPassword", {
+                type: "manual",
+                message: error.message || "Verification failed. Please try again.",
+            });
+        }
+    }, [error]);
 
-     useEffect(() => {
-                if (error) {
-                    form.setError("confirmPassword", {
-                        type: "manual",
-                        message: (error.message || "Verification failed. Please try again."),
-                    });
-                }
-            }, [error]);
-            
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const password = e.target.value;
         form.setValue("password", password);
@@ -109,30 +108,25 @@ const Signup: React.FC = () => {
         }
     };
 
+    // const handleGoogleLogin = async () => {
+    // googleLogin()
+    // try {
+    //     const response = await axios.post(
+    //         "http://exchange-v2-env.eba-ccvmvqqg.us-west-1.elasticbeanstalk.com/users/auth/google-login/", // Your Django endpoint
+    //         {}, // Send an empty object as the POST body (if no data is needed)
+    //         { withCredentials: true }
+    //     );
+    //     console.log("Google login initiated:", response);
+    //     window.location.href = response.request.responseURL; // Redirect to the Google login page.
+    // } catch (error) {
+    //     console.error("Google login failed:", error);
+    // }
+    // };
 
-    const handleGoogleLogin = async () => {
-        // googleLogin()
-        // try {
-        //     const response = await axios.post(
-        //         "http://exchange-v2-env.eba-ccvmvqqg.us-west-1.elasticbeanstalk.com/users/auth/google-login/", // Your Django endpoint
-        //         {}, // Send an empty object as the POST body (if no data is needed)
-        //         { withCredentials: true }
-        //     );
-    
-        //     console.log("Google login initiated:", response);
-    
-        //     window.location.href = response.request.responseURL; // Redirect to the Google login page.
-        // } catch (error) {
-        //     console.error("Google login failed:", error);
-        // }
-
-
-    };
-
-      const location = useLocation()
-                        useEffect(()=>{
-                            dispatch(setAuthPageImage(authPageImage1))
-                        },[location.pathname])
+    const location = useLocation();
+    useEffect(() => {
+        dispatch(setAuthPageImage(authPageImage1));
+    }, [location.pathname]);
 
     return (
         <div className="signup-container sm:w-10/12 overflow-y-auto px-1 scrollbar-hide lg:mt-5 sm:mx-auto md:flex flex flex-col lg:block  max-md:justify-start justify-center h-[100dvh] mb-10 pb-7  max-md:pl-0 max-lg:pl-5">
@@ -262,7 +256,7 @@ const Signup: React.FC = () => {
 
                     <Button
                         type="submit"
-                         name="submit"
+                        name="submit"
                         isLoading={isPending}
                         className="rounded-lg font-[Montserrat] bg-[#262b3a] hover:bg-[#262b3ada] py-6"
                     >
@@ -283,7 +277,7 @@ const Signup: React.FC = () => {
                     Remember for 30 days
                 </label>
             </div>
-            <div className="relative w-full sm:w-3/4 mx-auto font-[Inter] text-center my-5 ">
+            {/* <div className="relative w-full sm:w-3/4 mx-auto font-[Inter] text-center my-5 ">
                 <div className="absolute top-1/2 transform -translate-y-1/2 w-full border-b border-gray-300 z-10"></div>
                 <span className="relative z-20 bg-white px-3">OR</span>
             </div>
@@ -293,7 +287,7 @@ const Signup: React.FC = () => {
             >
                 <img src={googleIcon} className="w-[20px]" alt="" />
                 <p>Sign up with Google</p>
-            </button>
+            </button> */}
             <div className="flex gap-2 w-full text-muted-foreground text-sm justify-center font-[Montserrat] items-center my-2">
                 <p>Already have an account?</p>
                 <Link

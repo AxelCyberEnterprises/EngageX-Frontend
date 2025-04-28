@@ -8,7 +8,8 @@ import AudienceEngaged from "@/components/session/AudienceEngaged";
 import EngagementMetrics from "@/components/session/VoiceAnalytics";
 import CountdownTimer from "@/components/session/CountdownTimer";
 import TimerProgressBar from "@/components/session/TimerProgressBar";
-import presentationRoom from "../../assets/images/pngs/presentation-practice-room.png";
+import boardRoom1 from "../../assets/images/pngs/presentation-practice-room.png";
+import boardRoom2 from "../../assets/images/pngs/boardroom-2.png";
 import VideoStreamer from "@/components/session/RecordView";
 import { useParams } from "react-router-dom";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
@@ -19,6 +20,7 @@ import TimerComponent from "@/components/session/TimerComponent";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
 import { useEndSession, useGetSessionData } from "@/hooks/sessions";
 import { pdfToImages } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PresentationPractice: React.FC = () => {
     const [stop, setStop] = useState(false);
@@ -43,11 +45,14 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/curious/1.mp4",
+        sessionData?.virtual_environment === "board_room_1" ?
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4" :
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_2/uncertain/1.mp4"
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const [seshData, setSeshData] = useState<any>();
+    const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
 
     const stopTimer = (dur?: string, durationArr?: string[]) => {
         if (dur !== undefined) {
@@ -68,10 +73,14 @@ const PresentationPractice: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
+        setSlides([]);
+        setAllowSwitch(false);
         setDialogOneOpen(false);
         setIsMuted(false);
         setVideoUrl(
-            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
+            sessionData.virtualEnvironment === "board_room_1"
+                ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom1Clap.mp4"
+                : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4",
         );
         setTimeout(() => {
             setDialogTwoOpen(true);
@@ -85,11 +94,10 @@ const PresentationPractice: React.FC = () => {
     const { data }: { data?: any } = useGetSessionData(sessionId);
 
     useEffect(() => {
-        if (!seshData && data) {
+        if (data) {
             setSeshData(data);
-            console.log(seshData?.slides_file);
         }
-    }, [data, seshData]);
+    }, [data]);
 
     useEffect(() => {
         const url = seshData?.slides_file;
@@ -102,8 +110,6 @@ const PresentationPractice: React.FC = () => {
         pdfToImages(url)
             .then((images) => {
                 setSlides(images);
-                console.log(images);
-                localStorage.removeItem("slides");
             })
             .catch((err) => {
                 console.error("Error converting PDF to images:", err);
@@ -159,7 +165,9 @@ const PresentationPractice: React.FC = () => {
                     setFeedback(parsed);
                 } else if (parsed.type === "window_emotion_update") {
                     console.log(parsed);
-                    setVideoUrl(parsed.emotion_s3_url);
+                    if (allowSwitch) {
+                        setVideoUrl(parsed.emotion_s3_url);
+                    }
                 }
             } catch (e) {
                 console.error("Invalid JSON from server:", e);
@@ -178,7 +186,7 @@ const PresentationPractice: React.FC = () => {
         return () => {
             ws.close();
         };
-    }, [sessionId]);
+    }, [sessionId, allowSwitch]);
 
     return (
         <div className="text-primary-blue">
@@ -328,18 +336,23 @@ const PresentationPractice: React.FC = () => {
                                 preload={true}
                                 muted={isMuted}
                                 requireFullPlay={isMuted}
+                                allowSwitch={allowSwitch}
                             />
 
                             <div className="w-45 h-25 md:w-60 md:h-35 absolute left-5 bottom-5">
-                                <ImageSlider
-                                    ref={sliderRef}
-                                    images={slides}
-                                    start={startTimer}
-                                    stop={stop}
-                                    onStop={(durationArr) => {
-                                        stopTimer(undefined, durationArr);
-                                    }}
-                                />
+                                {!slides.length && seshData?.slides_file ? (
+                                    <Skeleton className="w-full h-full bg-gray" />
+                                ) : (
+                                    <ImageSlider
+                                        ref={sliderRef}
+                                        images={slides}
+                                        start={startTimer}
+                                        stop={stop}
+                                        onStop={(durationArr) => {
+                                            stopTimer(undefined, durationArr);
+                                        }}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
@@ -407,7 +420,7 @@ const PresentationPractice: React.FC = () => {
                         <div
                             className="rounded-xl w-full h-40 relative"
                             style={{
-                                backgroundImage: `url(${presentationRoom})`,
+                                backgroundImage: `url(${sessionData?.virtual_environment === "board_room_1" ? boardRoom1 : boardRoom2})`,
                                 backgroundSize: "cover",
                                 backgroundPosition: "center",
                             }}
@@ -416,7 +429,9 @@ const PresentationPractice: React.FC = () => {
                                 className={`absolute transition-all duration-500 ${
                                     isExpanded
                                         ? "top-0 left-0 w-full h-full"
-                                        : "w-40 h-23.5 md:w-20 md:h-12 lg:w-20 lg:h-12 absolute top-14.5 right-53 md:top-8 md:right-19.5 lg:top-8 lg:right-21.5"
+                                        : sessionData?.virtual_environment === "board_room_1"
+                                          ? "w-40 h-23.5 md:w-20 md:h-12 lg:w-20 lg:h-12 absolute top-14.5 right-53 md:top-8 md:right-19.5 lg:top-8 lg:right-21.5"
+                                          : "w-40 h-23.5 md:w-20 md:h-12 lg:w-22 lg:h-12 absolute top-14.5 right-53 md:top-11 md:right-23 lg:top-11 lg:right-24"
                                 }`}
                             >
                                 <VideoStreamer
@@ -433,7 +448,7 @@ const PresentationPractice: React.FC = () => {
                         </div>
                     </div>
 
-                    <AudienceEngaged percent={86} />
+                    <AudienceEngaged percent={feedback ? feedback.analysis.Feedback.Clarity : 0} />
 
                     <EngagementMetrics
                         percent1={feedback ? feedback.analysis.Scores["Volume Score"] : 0}
