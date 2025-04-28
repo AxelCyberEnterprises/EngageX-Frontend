@@ -91,7 +91,7 @@ const PersonalInfoForm: React.FC = () => {
     setIsUpdating(true);
   
     axios.patch(
-      `${API_BASE_URL}/users/userprofiles/${userId}/`,
+      `${API_BASE_URL}users/userprofiles/${userId}/`,
       formData,
       {
         headers: {
