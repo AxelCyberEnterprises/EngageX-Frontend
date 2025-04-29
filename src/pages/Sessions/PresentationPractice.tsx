@@ -339,7 +339,7 @@ const PresentationPractice: React.FC = () => {
                                 allowSwitch={allowSwitch}
                             />
 
-                            <div className="w-45 h-25 md:w-60 md:h-35 absolute left-5 bottom-5">
+                            <div className="w-45 h-25 md:w-80 md:h-55 absolute left-0 bottom-0">
                                 {!slides.length && seshData?.slides_file ? (
                                     <Skeleton className="w-full h-full bg-gray" />
                                 ) : (
