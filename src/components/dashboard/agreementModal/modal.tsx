@@ -193,12 +193,11 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
                             onClick={nextStep}
                             disabled={
                                 (step === 2 && (!agreementState.agree || agreementState.initials === "")) ||
-                                (step === 3 && !agreementState.filePreview) ||
                                 (step === 4 &&
                                     (agreementState.industryState === "" || agreementState.industryType === ""))
                             }
                         >
-                            {step === 1 ? "Read Agreement" : step > 3 ? "Confirm" : "Proceed"}
+                            {step === 1 ? "Read Agreement" : (step === 3 && !agreementState.filePreview) ? "Next Step" : "Proceed"}
                         </Button>
                     ) : (
                         <Button
@@ -408,7 +407,7 @@ function StepThree({
     return (
         <div className="flex flex-col font-medium font-[montserrat] items-center overflow-hidden gap-1">
             <img src={cloudCheck} alt="checkSvg" />
-            <p className="text-base">Upload Picture</p>
+            <p className="text-base">Upload Picture (optional)</p>
             <p className="text-muted-foreground text-sm text-center">Upload your picture for easy identification.</p>
             <div
                 className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${
@@ -424,11 +423,11 @@ function StepThree({
                 )}
                 <img src={cloudCheckGray} className="mb-2" alt="checkSvg" />
                 <p className="text-sm">Choose a file or drag & drop it here</p>
-                <p className="text-muted-foreground text-[12px] text-center">JPEG, PNG, and MP4 formats, up to 3MB</p>
+                <p className="text-muted-foreground text-[12px] text-center">JPEG or PNG formats, up to 3MB</p>
                 <input
                     type="file"
                     className="hidden"
-                    accept="image/jpeg, image/png, video/mp4"
+                    accept="image/jpeg, image/png"
                     onChange={handleFileChange}
                 />
                 <Button
@@ -486,6 +485,7 @@ function StepFour({
                     {/* <option value="major_league_sports_executive">Major League Sports Executive</option> */}
                     {/* <option value="production">Production</option> */}
                     <option value="Education">Education</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
 
