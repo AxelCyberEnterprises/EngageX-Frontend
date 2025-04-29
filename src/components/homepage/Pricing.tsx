@@ -1,6 +1,12 @@
 import PricingCard from "./PricingCard";
 
-function Pricing({ subtext }: { subtext?: string }) {
+function Pricing({
+  subtext,
+  showPricing,
+}: {
+  subtext?: string;
+  showPricing?: boolean;
+}) {
   let plans = [
     {
       type: "STARTER PLAN",
@@ -14,8 +20,7 @@ function Pricing({ subtext }: { subtext?: string }) {
       ],
       button_text: "Start now",
       highlight: false,
-      payment_link:
-        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-d77fb68013f54350b75d514d54189fd1191971d0274b4d16bb762c22406bdf7156e09114df9548b88a6b0c9d519b1239?locale=EN_US",
+      payment_link: "/auth/login",
     },
     {
       type: "GROWTH PLAN",
@@ -28,8 +33,7 @@ function Pricing({ subtext }: { subtext?: string }) {
       ],
       button_text: "Choose growth plan",
       highlight: true,
-      payment_link:
-        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-46dbc56154fd4e2fa0150a8246276351757f6a348eca4c02b3b4ebaf67ef244f7b923ec4fce641d0b42984bfc07c8491?locale=EN_US",
+      payment_link: "/auth/login",
     },
     {
       type: "PRO PLAN",
@@ -44,8 +48,7 @@ function Pricing({ subtext }: { subtext?: string }) {
       ],
       button_text: "Go pro",
       highlight: false,
-      payment_link:
-        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-83fccafc8b004617b1f57152c42c9bd6b711beae594e4ba3b19fcca2ba0c10800257b01db53b4fd4bd54ca1d47bece0e?locale=EN_US",
+      payment_link: "/auth/login",
     },
     {
       type: "ULTIMATE PLAN",
@@ -59,8 +62,7 @@ function Pricing({ subtext }: { subtext?: string }) {
       ],
       button_text: "Get the ultimate plan",
       highlight: false,
-      payment_link:
-        "https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-b4372ea1177e40689bfc3080f896e78ec455af91c9a543eea0b08df2de1ab9b090507c99ea5048beaf1f2b31984ddf0a?locale=EN_US",
+      payment_link: "/auth/login",
     },
   ];
   return (
@@ -95,11 +97,13 @@ function Pricing({ subtext }: { subtext?: string }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 w-full lg:grid-cols-2 xl:grid-cols-4 gap-10 lg:gap-8 lg:pt-32">
-        {plans.map((plan, idx) => (
-          <PricingCard plan={plan} key={idx} />
-        ))}
-      </div>
+      {showPricing && (
+        <div className="grid grid-cols-1 w-full lg:grid-cols-2 xl:grid-cols-4 gap-10 lg:gap-8 lg:pt-32">
+          {plans.map((plan, idx) => (
+            <PricingCard plan={plan} key={idx} />
+          ))}
+        </div>
+      )}
 
       <div className="flex flex-col lg:flex-row relative justify-between overflow-clip w-full pl-10 py-12  lg:h-max lg:py-12 bg-[#6F7C8E] rounded-2xl text-white">
         <div className="h-full lg:w-[50%]">
@@ -109,6 +113,16 @@ function Pricing({ subtext }: { subtext?: string }) {
               For organizations with more than 10 individuals, we offer a
               customized enterprise plan designed for seamless multi-user access
             </p>
+            <ul className="space-y-4 mt-6">
+              <li className="list-disc">Enterprise volume pricing discount</li>
+              <li className="list-disc">Internal report sharing </li>
+              <li className="list-disc">
+                White labelling with logo and brand colors
+              </li>
+              <li className="list-disc">CSV bulk user admin onboarding </li>
+              <li className="list-disc">Data security & compliance setup</li>
+              <li className="list-disc">API access</li>
+            </ul>
             <a
               href="https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching?month=2025-04"
               target="_blank"
@@ -133,7 +147,7 @@ function Pricing({ subtext }: { subtext?: string }) {
           </div>
         </div>
         <img
-          className="hidden lg:block h-[16rem] absolute right-0 bottom-0"
+          className="hidden lg:block h-[20rem] absolute right-0 bottom-0"
           src="./assets/product.png"
           alt="EngageX™ product image"
         />

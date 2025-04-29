@@ -7,7 +7,10 @@ function Pricing() {
   return (
     <main>
       <Hero />
-      <PricingComponent subtext="Everything you need to become the best speaker you can be is right here" />
+      <PricingComponent
+        showPricing={true}
+        subtext="Everything you need to become the best speaker you can be is right here"
+      />
       <Benefits />
       <FAQs />
     </main>
