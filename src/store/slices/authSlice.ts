@@ -3,13 +3,13 @@ import { tokenManager } from "@/lib/utils";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg"
+import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
 import { LoginResponse } from "@/hooks/auth";
 
 interface Question {
     id: number;
     question: string;
-    content: { contentId: number; plan?: string; role?: string, apiName: string; }[];
+    content: { contentId: number; plan?: string; role?: string; apiName: string }[];
 }
 
 interface SignupData {
@@ -59,7 +59,8 @@ const initialState: AuthState = {
             content: [
                 { contentId: 1, plan: "Pitch", apiName: "pitch" },
                 { contentId: 2, plan: "Present", apiName: "presenting" },
-                { contentId: 3, plan: "Speak", apiName: "public_speaking" },
+                { contentId: 3, plan: "Speak/Storytelling", apiName: "public_speaking" },
+                { contentId: 4, plan: "Interview", apiName: "public_speakin" },
             ],
         },
         {
@@ -81,7 +82,7 @@ const initialState: AuthState = {
     signupFlow: "signup",
     routeFromLogin: false,
     signupData: null, // Stores signup details
-    user: storedUser ? JSON.parse(storedUser) as AuthUser : null,
+    user: storedUser ? (JSON.parse(storedUser) as AuthUser) : null,
     isAuthenticated: false,
     hasCheckedAuth: false,
     emailForPasswordReset: "jnr@gmail.com",
@@ -92,8 +93,6 @@ const initialState: AuthState = {
     contactStatus: "",
     otpSent: false,
 };
-
-
 
 const authSlice = createSlice({
     name: "auth",
@@ -151,8 +150,8 @@ const authSlice = createSlice({
 
             try {
                 tokenManager.setToken(user.token);
+                console.log(user);
                 localStorage.setItem("user", JSON.stringify(user));
-
                 state.isAuthenticated = true;
                 state.user = user;
             } catch (error) {
@@ -160,14 +159,13 @@ const authSlice = createSlice({
                 state.user = null;
                 state.isAuthenticated = false;
             }
-        }
-
+        },
     },
 });
 
 export function useAutoClearSuccessMessage() {
     const dispatch = useDispatch();
-    const location = useLocation()
+    const location = useLocation();
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -178,5 +176,20 @@ export function useAutoClearSuccessMessage() {
     }, [location.pathname]);
 }
 
-export const { setTopicQuestion, setSignupFlow, setAuthPageImage, setOtpSent, setContactStatus, setUserIdAfterSignup, setRouteFromLogin, setSignupData, logout, login, setApiError, setEmailForPasswordReset, setSuccessMessage, setUser } = authSlice.actions;
+export const {
+    setTopicQuestion,
+    setSignupFlow,
+    setAuthPageImage,
+    setOtpSent,
+    setContactStatus,
+    setUserIdAfterSignup,
+    setRouteFromLogin,
+    setSignupData,
+    logout,
+    login,
+    setApiError,
+    setEmailForPasswordReset,
+    setSuccessMessage,
+    setUser,
+} = authSlice.actions;
 export default authSlice.reducer;

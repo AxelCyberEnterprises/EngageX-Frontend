@@ -81,7 +81,7 @@ export function useCreatePracticeSession({
 export function useEndSession(
   sessionId: string | undefined,
   duration: any,
-  slidesDuration?: any
+  slidesDuration?: any[]
 ) {
   const navigate = useNavigate();
 
@@ -116,7 +116,7 @@ export function useGetSessionReport(sessionId: string | undefined) {
   return useQuery({
     queryKey: ["getSessionReport"],
     queryFn: async () => {
-      return await apiGet<ISession>(`/sessions/sessions/${sessionId}/report/`);
+      return await apiGet<ISession>(`/sessions/sessions-report/${sessionId}/`);
     },
   });
 }

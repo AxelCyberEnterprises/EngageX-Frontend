@@ -11,7 +11,7 @@ const Tutorial: React.FC = () => {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const videoUrl = "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/introvid.mp4";
+    const videoUrl = "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Onboarding.mp4";
 
     useEffect(() => {
         dispatch(setAuthPageImage(authPageImage2));

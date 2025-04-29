@@ -23,16 +23,16 @@ interface Achievement {
 const RecentAchievementsModal: React.FC<RecentAchievementsModalProps> = ({ show, onClose, achievementData }) => {
 
   const getLevel = (score: number) => {
-    if (score >= 1 && score <= 30) return 1;
-    if (score >= 40 && score <= 70) return 2;
-    if (score >= 80 && score <= 100) return 3;
+    if (score >= 1 && score <= 3) return 1;
+    if (score >= 4 && score <= 7) return 2;
+    if (score >= 8 && score <= 10) return 3;
     return 1; 
   };
 
   const getLevelColor = (score: number) => {
-    if (score >= 1 && score <= 30) return 'bg-[#C1C2B4]'; // Light gray/beige for Level 1
-    if (score >= 40 && score <= 70) return 'bg-[#ECB25E]'; // Gold/Yellow for Level 2
-    if (score >= 80 && score <= 100) return 'bg-[#64BA9F]'; // Green for Level 3
+    if (score >= 1 && score <= 3) return 'bg-[#C1C2B4]'; // Light gray/beige for Level 1
+    if (score >= 4 && score <= 7) return 'bg-[#ECB25E]'; // Gold/Yellow for Level 2
+    if (score >= 8 && score <= 10) return 'bg-[#64BA9F]'; // Green for Level 3
     return 'bg-[#C1C2B4]';
   };
 
@@ -46,15 +46,17 @@ const RecentAchievementsModal: React.FC<RecentAchievementsModalProps> = ({ show,
 
 
   const getProgressBarColor = (score: number) => {
-    if (score >= 1 && score <= 30) return "#C1C2B4"; // Light gray/beige for Level 1
-    if (score >= 40 && score <= 70) return "#ECB25E"; // Gold/Yellow for Level 2
-    if (score >= 80 && score <= 100) return "#64BA9F"; // Green for Level 3
+    if (score >= 1 && score <= 3) return "#C1C2B4"; // Light gray/beige for Level 1
+    if (score >= 4 && score <= 7) return "#ECB25E"; // Gold/Yellow for Level 2
+    if (score >= 8 && score <= 10) return "#64BA9F"; // Green for Level 3
     return "#C1C2B4";
   };
 
   const getPercentage = (score: number, total: number) => {
     return (score / total) * 100;
   };
+
+  console.log(achievementData)
 
   return (
     <>

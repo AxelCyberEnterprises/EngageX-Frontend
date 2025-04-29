@@ -1,8 +1,9 @@
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
 import { Button } from "@/components/ui/button";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
-import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
+import usePerformanceChart from "@/hooks/usePerformanceChart";
 import { RootState } from "@/store";
+import { ISession } from "@/types/sessions";
 import { UseQueryResult } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -15,13 +16,14 @@ import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress";
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
+import MultiStepAgreement from "@/components/dashboard/agreementModal/modal";
 
 interface DashboardData {
     latest_session_dict: {
         session_type: string;
         session_score: number;
     } | null;
-    available_credit: number; // Added this property
+    available_credit: number;
     goals_and_achievement: {
         audience_engagement: number;
         body_language: number;
@@ -32,26 +34,31 @@ interface DashboardData {
         transformative_communication: number;
         vocal_variety: number;
     };
-    performance_analytics?: Array<{
-        chunk_number: string;
-        impact: number;
-        trigger_reponse: number;
-        conviction: number;
-    }>;
+    // performance_analytics?: Array<{
+    //     chunk_number: string;
+    //     impact: number;
+    //     trigger_response: number;
+    //     conviction: number;
+    // }>;
+    performance_analytics?: ISession["performance_analytics"];
     // Add other properties of the `data` object here if needed
 }
 
 const UserDashboardHome: React.FC = () => {
+    const [showAgreementModal, setShowAgreementModal] = useState(false);
     const { data, isLoading } = useDashboardData() as UseQueryResult<DashboardData, Error>;
 
-    console.log(data);
-    const {
-        data: goalsAndAchievement,
-        // isLoading: goalsLoading,
-        // error: fetchGoalsAndAchievement,
-    } = useGoalsAndAchievement();
+    useEffect(() => {
+        const hasShownAgreement = localStorage.getItem("hasShownAgreement");
 
-    console.log(goalsAndAchievement);
+        if (!hasShownAgreement && agreementTrigger < 1) {
+            setShowAgreementModal(true);
+            localStorage.setItem("hasShownAgreement", "true");
+        }
+    }, []);
+
+    console.log(data);
+
     const [goalsData, setGoalsData] = useState({
         audience_engagement: 0,
         body_language: 0,
@@ -81,37 +88,34 @@ const UserDashboardHome: React.FC = () => {
         }
     }, [data]);
 
-    useEffect(() => {
-        console.log("Goals Data:", goalsData);
-    }, [goalsData]);
-
     const [goalFraction, setGoalFraction] = useState("0/0");
     useEffect(() => {
         const totalGoals = Object.keys(goalsData).length;
         const goalsAbove80 = Object.values(goalsData).filter((value) => value >= 8).length;
         const fraction = `${goalsAbove80}/${totalGoals}`;
-        console.log(fraction, goalsAbove80);
         setGoalFraction(fraction);
         console.log(`You have completed ${fraction} of your goals`);
     }, [goalsData]);
-    console.log(goalFraction);
     const [numerator, denominator] = goalFraction.split("/").map(Number);
-
+    const user = useSelector((state: RootState) => state.auth.user);
     const { mutate: authQuestions } = useAddAuthQuestion();
-    const userIdAfterSignup = useSelector((state: RootState) => state.auth.userIdAfterSignup);
+    // const userIdAfterSignup = useSelector((state: RootState) => state.auth.userIdAfterSignup);
     const userQuestions = JSON.parse(localStorage.getItem("userQuestions") || "{}");
-
+    const signupData = useSelector((state: RootState) => state.auth.signupData);
     console.log(userQuestions.role);
+    console.log(signupData);
     useEffect(() => {
-        if (userQuestions.plan && userQuestions.role) {
-            authQuestions({
-                userId: userIdAfterSignup,
-                user_intent: userQuestions.role,
-                purpose: userQuestions.plan,
-            });
-        }
+        authQuestions({
+            userId: String(user?.user_id),
+            purpose: signupData?.planQuestion.toLowerCase() ?? "",
+            user_intent: signupData?.roleQuestion.toLowerCase() ?? "",
+            email: user?.email,
+            password: signupData?.password,
+        });
     }, []);
     const score = data?.latest_session_dict?.session_score || 0;
+    const agreementTrigger: number = data?.performance_analytics?.length || 0;
+
     const sessionType = data?.latest_session_dict?.session_type || "Public Speaking";
     const cardsData = [
         {
@@ -198,46 +202,45 @@ const UserDashboardHome: React.FC = () => {
     const goals = [
         {
             title: "Vocal Variety",
-            percent: 100,
+            percent: 0,
             color: "#64BA9E",
         },
         {
             title: "Overall Captured Impact",
-            percent: 80,
+            percent: 0,
             color: "#64BA9E",
         },
         {
             title: "Emotional Impact",
-            percent: 45,
+            percent: 0,
             color: "#ECB25E",
         },
         {
             title: "Body Language",
-            percent: 100,
+            percent: 0,
             color: "#64BA9E",
         },
         {
             title: "Transformative Communication",
-            percent: 100,
+            percent: 0,
             color: "#64BA9E",
         },
         {
             title: "Audience Engagement",
-            percent: 85,
+            percent: 0,
             color: "#64BA9F",
         },
         {
             title: "Structure and Clarity",
-            percent: 40,
+            percent: 0,
             color: "#ECB25E",
         },
         {
             title: "Language and Word Choice",
-            percent: 40,
+            percent: 0,
             color: "#ECB25E",
         },
     ];
-    console.log("goals: ", goalsData);
     const updatedGoals = goals.map((goal) => {
         const key = goal.title.toLowerCase().replace(/\s+/g, "_"); // e.g. "Audience Engagement" -> "audience_engagement"
         const rawValue = goalsData[key as keyof typeof goalsData];
@@ -248,36 +251,37 @@ const UserDashboardHome: React.FC = () => {
         };
     });
 
+    // function applyChunkOffset(arr: Array<{ [key: string]: any }>, chunkSize = 7, offset = 4) {
+    //     return arr.map((item, index) => {
+    //         const chunkOffset = (index + offset) * chunkSize;
+    //         return {
+    //             ...item,
+    //             chunk_offset: chunkOffset,
+    //             impact: item.impact,
+    //             trigger: item.trigger_response,
+    //             conviction: item.conviction,
+    //         };
+    //     });
+    // }
+    // const result: {
+    //     chunk_offset: number;
+    //     impact: number;
+    //     trigger: number;
+    //     conviction: number;
+    // }[] = applyChunkOffset(data?.performance_analytics?.filter(Boolean) || [], 7);
+
+    // const chartColors = {
+    //     Impact: "#252A39",
+    //     Trigger: "#40B869",
+    //     Conviction: "#F5B546",
+    // };
+    const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
+
     const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
     useEffect(() => {
         console.log("newChartData: ", newChartData);
         console.log(setNewChartData);
     }, [newChartData]);
-
-    function applyChunkOffset(arr: Array<{ [key: string]: any }>, chunkSize = 7, offset = 4) {
-        return arr.map((item, index) => {
-            const chunkOffset = (index + offset) * chunkSize;
-            return {
-                ...item,
-                chunk_offset: chunkOffset, // you can name this anything
-                impact: item.impact,
-                trigger: item.trigger_reponse,
-                conviction: item.conviction,
-            };
-        });
-    }
-    const result: {
-        chunk_offset: number;
-        impact: number;
-        trigger: number;
-        conviction: number;
-    }[] = applyChunkOffset(data?.performance_analytics?.filter(Boolean) || [], 7);
-
-    const chartColors = {
-        Impact: "#252A39",
-        Trigger: "#40B869",
-        Conviction: "#F5B546",
-    };
 
     if (isLoading) {
         return <UserDashboardSkeleton />;
@@ -296,7 +300,11 @@ const UserDashboardHome: React.FC = () => {
                         <small className="independence mb-3.5">Session Credits</small>
                         <h4 className="gunmetal mb-5.5">{data?.available_credit}</h4>
                         <Link className="w-full" to={"/dashboard/user/settings?section=credits"}>
-                            <button className="p-3 w-full rounded-md">Buy more sessions</button>
+                            {data?.available_credit === 0 ? (
+                                <button className="p-3 w-full rounded-md">Buy credits</button>
+                            ) : (
+                                <button className="p-3 w-full rounded-md">Buy more credits</button>
+                            )}
                         </Link>
                     </div>
                 </div>
@@ -375,32 +383,27 @@ const UserDashboardHome: React.FC = () => {
                                 </Link>
                             </div>
                         </div>
-
+                        {showAgreementModal && (
+                            <MultiStepAgreement
+                                open={showAgreementModal}
+                                onClose={() => setShowAgreementModal(false)}
+                            />
+                        )}
                         <div className="chart__div">
                             <ShadLineChart
-                                data={result
-                                    .filter(Boolean)
-                                    .map(
-                                        (item: {
-                                            chunk_offset: number;
-                                            impact: number;
-                                            trigger: number;
-                                            conviction: number;
-                                        }) => ({
-                                            month: item.chunk_offset,
-                                            Impact: item.impact,
-                                            Trigger: item.trigger,
-                                            Conviction: item.conviction,
-                                        }),
-                                    )}
-                                // data={chartData}
+                                data={chartData.filter(Boolean).map((item) => ({
+                                    month: item.chunk_offset,
+                                    Impact: item.impact,
+                                    Trigger: item.trigger,
+                                    Conviction: item.conviction,
+                                }))}
                                 colors={chartColors}
                             />
                         </div>
                         <p className="text-sm text-muted-foreground mt-6">
                             <span className="text-[#40B869]">Trigger Response</span> is the audience’s engagement, where
                             a trigger word or phrase evokes the audience to respond in some shape or form as a reaction
-                            to the information they’ve heard.
+                            to the information they've heard.
                         </p>
                     </div>
                 </div>
@@ -414,7 +417,10 @@ const UserDashboardHome: React.FC = () => {
                         </Link>
 
                         <div className="progress__div relative flex flex-col items-center w-full mt-7 mb-6">
-                            <SemiCircleProgress percent={numerator / denominator} color="#7387FF" />
+                            <SemiCircleProgress
+                                percent={(numerator ?? 0) / (denominator === 0 ? 1 : denominator)}
+                                color="#7387FF"
+                            />
                             <h2 className="pt-20 mb-2">🎊</h2>
                             <p className="mb-3">{numerator} goals completed</p>
                             <h2 className="mb-3">{goalFraction}</h2>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,14 +19,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SearchableSelect } from '../select/CustomSelect';
-import { useUpdateUserProfile, useUserProfile } from '@/hooks/settings';
+import { useUserProfile } from '@/hooks/settings';
 import { toast } from 'sonner';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { tokenManager } from "@/lib/utils";
+import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 
 const personalInfoSchema = z.object({
   first_name: z.string().min(1, 'First name is required').optional(),
   last_name: z.string().min(1, 'Last name is required').optional(),
   email: z.string().email('Invalid email address').optional(),
-  profile_picture: z.any().optional(),
   company: z.string().transform(val => val === "" ? undefined : val).optional(),
   industry: z.string().transform(val => val === "" ? undefined : val).optional(),
   country: z.string().transform(val => val === "" ? undefined : val).optional(),
@@ -36,59 +40,79 @@ const personalInfoSchema = z.object({
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
 const PersonalInfoForm: React.FC = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const queryClient = useQueryClient();
   const { data: profile, isLoading, error: fetchProfileError } = useUserProfile();
-  const { mutate: updateProfile, isPending: isUpdating } = useUpdateUserProfile();
-  const initialData: PersonalInfoFormData = {
-    first_name: profile?.first_name || "",
-    last_name: profile?.last_name || "",
-    email: profile?.email || "",
-    company: profile?.company || "",
-    industry: profile?.industry || "",
-    country: profile?.country || "",
-    timezone: profile?.timezone || "",
-    profile_picture: undefined,
-  };
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
-    defaultValues: initialData
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      email: "",
+      company: "",
+      industry: "",
+      country: "",
+      timezone: "",
+    }
   });
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      form.setValue('profile_picture', file);
       setPhotoPreview(URL.createObjectURL(file));
+      setSelectedPhoto(file);
     }
   };
 
+
   const submit = (data: PersonalInfoFormData) => {
     const formData = new FormData();
-    if (data.first_name) formData.append('first_name', data.first_name);
-    if (data.last_name) formData.append('last_name', data.last_name);
-    if (data.email) formData.append('email', data.email);
-    if (data.company) formData.append('company', data.company);
-    if (data.industry) formData.append('industry', data.industry);
-    if (data.country) formData.append('country', data.country);
-    if (data.timezone) formData.append('timezone', data.timezone);
-    if (data.profile_picture) formData.append('profile_picture', data.profile_picture);
-
-    console.log(data.profile_picture);
     
-    updateProfile(formData, {
-      onSuccess: () => {
-        toast.success('Profile updated successfully');
-        setIsEditMode(false);
-      },
-      onError: (error) => {
-        console.error('Profile update error:', error);
-        toast.error('Failed to update profile: ' + (error.message || 'Unknown error'));
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value);
       }
+    });
+    
+    if (selectedPhoto) {
+      formData.append('profile_picture', selectedPhoto);
+    }
+    
+    const token = tokenManager.getToken();
+    const userId = user?.user_id;
+  
+    setIsUpdating(true);
+  
+    axios.patch(
+      `https://api.engagexai.io/users/userprofiles/${userId}/`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Token ${token}`
+        }
+      }
+    ).then(() => {
+      toast.success('Profile updated successfully');
+      setIsEditMode(false);
+      setSelectedPhoto(null);
+      queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+    })
+    .catch((error) => {
+      console.error('Profile update error:', error);
+      toast.error('Failed to update profile: ' + (error.response?.data?.message || error.message || 'Unknown error'));
+    })
+    .finally(() => {
+      setIsUpdating(false);
     });
   };
   
-
   const countries = [
     { value: "Canada", label: "Canada", icon: "🇨🇦" },
     { value: "Nigeria", label: "Nigeria", icon: "🇳🇬" },
@@ -132,13 +156,13 @@ const PersonalInfoForm: React.FC = () => {
         industry: profile.industry || "",
         country: profile.country || "",
         timezone: profile.timezone || "",
-        profile_picture: undefined
       });
+      
       if (profile.profile_picture) {
         setPhotoPreview(profile.profile_picture);
       }
     } else if (fetchProfileError) {
-      toast.error('Error fetching profile details')
+      toast.error('Error fetching profile details');
     }
   }, [profile, form, fetchProfileError]);
 
@@ -151,16 +175,19 @@ const PersonalInfoForm: React.FC = () => {
       industry: profile?.industry || "",
       country: profile?.country || "",
       timezone: profile?.timezone || "",
-      profile_picture: undefined
     });
     setPhotoPreview(profile?.profile_picture || null);
+    setSelectedPhoto(null);
     setIsEditMode(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
     <Card className="w-full border-none shadow-none py-8">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(submit)}>
+        <form encType="multipart/form-data" onSubmit={form.handleSubmit(submit)}>
           <CardHeader className='flex flex-row justify-between px-0 w-full'>
             <div>
               <CardTitle className="text-xl font-medium">Personal info</CardTitle>
@@ -287,6 +314,7 @@ const PersonalInfoForm: React.FC = () => {
                       <input
                         type="file"
                         id="photo"
+                        ref={fileInputRef}
                         className="hidden"
                         disabled={!isEditMode}
                         accept="image/svg+xml,image/png,image/jpeg,image/gif"
@@ -330,7 +358,7 @@ const PersonalInfoForm: React.FC = () => {
 
               <SearchableSelect
                 label="Industry"
-                defaultValue={initialData?.industry}
+                defaultValue={profile?.industry || ""}
                 onValueChange={(value) => form.setValue('industry', value)}
                 isEditable={isEditMode}
                 placeholder="Select industry"
@@ -341,7 +369,7 @@ const PersonalInfoForm: React.FC = () => {
 
               <SearchableSelect
                 label="Country"
-                defaultValue={initialData?.country}
+                defaultValue={profile?.country || ""}
                 onValueChange={(value) => form.setValue('country', value)}
                 options={countries}
                 placeholder="Select country"
@@ -352,7 +380,7 @@ const PersonalInfoForm: React.FC = () => {
               <div className="space-y-1">
                 <SearchableSelect
                   label="Timezone"
-                  defaultValue={initialData?.timezone}
+                  defaultValue={profile?.timezone || ""}
                   onValueChange={(value) => form.setValue('timezone', value)}
                   isEditable={isEditMode}
                   placeholder="Select timezone"
@@ -375,7 +403,7 @@ const PersonalInfoForm: React.FC = () => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => form.reset}
+              onClick={handleCancel}
               className="w-full sm:w-auto text-[#6F7C8E] sm:hidden"
             >
               Cancel
@@ -391,7 +419,6 @@ const PersonalInfoForm: React.FC = () => {
         </form>
       </Form>
     </Card>
-
   );
 };
 

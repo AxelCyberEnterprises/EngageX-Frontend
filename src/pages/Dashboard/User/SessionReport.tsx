@@ -1,11 +1,12 @@
 import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
-import ShadLinearLineChart from "@/components/dashboard/ShadLinearLineChart";
+import ShadLineChart from "@/components/dashboard/ShadLineChart";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetSessionReport } from "@/hooks/sessions";
+import usePerformanceChart from "@/hooks/usePerformanceChart";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, UserRound } from "lucide-react";
@@ -17,15 +18,17 @@ import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-    // const sessionType = 'pitch';
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const { id } = useParams();
+
     const { data, isPending, refetch } = useGetSessionReport(id);
+    const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
+
     const pdfRef = useRef<HTMLDivElement>(null);
 
     const handlePDFDownload = useCallback(async () => {
-        const element = document.getElementById("pdf-container");
+        const element = pdfRef.current;
 
         if (!element) {
             return;
@@ -44,10 +47,11 @@ const PitchSessionReport: React.FC = () => {
             format: "a4",
         });
 
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const margin = 10;
+        const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+        const pdfHeight = pdf.internal.pageSize.getHeight() - margin * 2;
 
-        pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.addImage(data, "PNG", margin, margin, pdfWidth, pdfHeight);
         pdf.save(`Session-Report-${id}.pdf`);
 
         setIsGeneratingPDF(false);
@@ -79,21 +83,6 @@ const PitchSessionReport: React.FC = () => {
         return elements.map((str) => str.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1"));
     }, []);
 
-    const chartData = [
-        { minute: 0, Impact: 0, TriggerResponse: 0, Conviction: 0 },
-        { minute: 5, Impact: 305, TriggerResponse: 200, Conviction: 100 },
-        { minute: 10, Impact: 237, TriggerResponse: 120, Conviction: 100 },
-        { minute: 15, Impact: 73, TriggerResponse: 190, Conviction: 100 },
-        { minute: 20, Impact: 209, TriggerResponse: 130, Conviction: 100 },
-        { minute: 25, Impact: 214, TriggerResponse: 140, Conviction: 100 },
-    ];
-
-    const chartColors = {
-        Impact: "#252A39",
-        TriggerResponse: "#40B869",
-        Conviction: "#F5B546",
-    };
-
     const variety = [
         // {
         //     bg: "bg-sunray/15",
@@ -120,6 +109,24 @@ const PitchSessionReport: React.FC = () => {
             bg: "bg-grey/15",
             title: "Pauses",
             percent: data?.pauses,
+        },
+    ];
+
+    const slideAnalysis = [
+        {
+            bg: "bg-alice-blue",
+            title: "Slide Efficiency",
+            percent: data?.slide_efficiency,
+        },
+        {
+            bg: "bg-green-sheen/15",
+            title: "Text Economy",
+            percent: data?.text_economy,
+        },
+        {
+            bg: "bg-seashell",
+            title: "Visual Communication",
+            percent: data?.visual_communication,
         },
     ];
 
@@ -186,7 +193,7 @@ const PitchSessionReport: React.FC = () => {
                     </div>
                 </div>
             ) : (
-                <div id="pdf-container" ref={pdfRef} className="py-4 text-primary-blue">
+                <div ref={pdfRef} className="py-4 text-primary-blue">
                     <section className="px-4 lg:px-8 border-b-1 border-bright-gray">
                         <div data-html2canvas-ignore className="py-3 flex flex-wrap justify-between items-center">
                             <button
@@ -281,14 +288,24 @@ const PitchSessionReport: React.FC = () => {
                     </section>
 
                     <section className="px-4 lg:px-8 py-4">
-                        <div className="flex md:flex-row w-full items-stretch gap-3">
+                        <div className="flex flex-col md:flex-row w-full items-stretch gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                                 <div className="border-1 border-bright-gray rounded-xl p-4">
                                     <h6 className="mb-3">Audience Engagement</h6>
-                                    <ShadLinearLineChart data={chartData} colors={chartColors} />
+                                    <div className="chart__div">
+                                        <ShadLineChart
+                                            data={chartData.filter(Boolean).map((item) => ({
+                                                month: item.chunk_offset,
+                                                Impact: item.impact,
+                                                Trigger: item.trigger,
+                                                Conviction: item.conviction,
+                                            }))}
+                                            colors={chartColors}
+                                        />
+                                    </div>
                                     <p className="mt-2">
                                         <span className="text-medium-sea-green">Trigger Response</span> is the
-                                        audience’s engagement, where a trigger evokes the audience to respond in some
+                                        audience’s engagement, where a trigger word or phrase evokes the audience to respond in some
                                         shape or form as a reaction to the information they’ve heard.
                                     </p>
                                 </div>
@@ -415,6 +432,33 @@ const PitchSessionReport: React.FC = () => {
                             </div>
                         </div>
                     </section>
+
+                    {data.slides_file && (
+                        <section className="px-4 lg:px-8 pt-4">
+                            <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
+                                <h5 className="mb-6">Slide Analysis</h5>
+
+                                <div className="flex flex-wrap gap-4">
+                                    {slideAnalysis.map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]"
+                                        >
+                                            <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
+                                                <div className="flex flex-col justify-between py-3">
+                                                    <p>{item.title}</p>
+                                                    <h5>{item.percent}%</h5>
+                                                </div>
+                                                <div>
+                                                    <FullCircleProgress percent={item.percent!} color={"#64BA9F"} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                    )}
 
                     <section className="px-4 lg:px-8 py-4">
                         <div className="border-1 border-bright-gray rounded-xl py-5 px-4">

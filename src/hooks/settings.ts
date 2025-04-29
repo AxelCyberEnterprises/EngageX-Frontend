@@ -4,10 +4,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
 export interface UserProfile {
-  id: number | undefined;
-  first_name: string;
-  last_name: string;
-  email: string;
+  id?: number | undefined;
+  first_name: string | null | undefined;
+  last_name: string | null | undefined; 
+  email: string | null | undefined;
   date_of_birth?: string;
   gender?: string;
   profile_picture?: any;

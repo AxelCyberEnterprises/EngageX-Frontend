@@ -101,113 +101,112 @@ const ProgressTracking: React.FC = () => {
     {
       title: "Vocal Variety",
       wordRate: "85% pitch score",
-      percentage: goalsAndAchievement?.vocal_variety ?? 0,
+      percentage: (goalsAndAchievement?.vocal_variety ?? 0) * 10,
     },
     {
       title: "Overall ⁠Captured Impact",
       wordRate: "85% impact score",
-      percentage: goalsAndAchievement?.overall_captured_impact ?? 0,
+      percentage: (goalsAndAchievement?.overall_captured_impact ?? 0) * 10,
     },
     {
       title: "Emotional Impact",
       wordRate: "85% speaker",
-      percentage: goalsAndAchievement?.emotional_impact ?? 0,
+      percentage: (goalsAndAchievement?.emotional_impact ?? 0) * 10,
     },
     {
       title: "Body Language",
       wordRate: "85% clarity score",
-      percentage: goalsAndAchievement?.body_language ?? 0,
+      percentage: (goalsAndAchievement?.body_language ?? 0) * 10,
     },
     {
       title: "Transformative Communication",
       wordRate: "85% brevity score",
-      percentage: goalsAndAchievement?.transformative_communication ?? 0,
+      percentage: (goalsAndAchievement?.transformative_communication ?? 0) * 10,
     },
     {
       title: "Audience Engagement",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.audience_engagement ?? 0,
+      percentage: (goalsAndAchievement?.audience_engagement ?? 0) * 10,
     },
     {
       title: "Structure & Clarity",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.structure_and_clarity ?? 0,
+      percentage: (goalsAndAchievement?.structure_and_clarity ?? 0) * 10,
     },
     {
       title: "Language & Word Choice",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.language_and_word_choice ?? 0,
+      percentage: (goalsAndAchievement?.language_and_word_choice ?? 0) * 10,
     },
   ];
-
+  
   const achievementData: Achievement[] = [
     {
       id: 1,
       title: "Vocal Variety Mastery",
-      score: (goalsAndAchievement?.vocal_variety ? (goalsAndAchievement?.vocal_variety / 10) : 0),
-      level: getLevel(Math.round(goalsAndAchievement?.vocal_variety ? (goalsAndAchievement?.vocal_variety / 10) : 0)),
+      score: goalsAndAchievement?.vocal_variety ?? 0,
+      level: getLevel(Math.round(goalsAndAchievement?.vocal_variety ?? 0)),
       total: 10,
       note: "Pitch, tone, pace, and pauses.",
     },
     {
       id: 2,
       title: "Overall Captured Impact Mastery",
-      score: (goalsAndAchievement?.overall_captured_impact ? (goalsAndAchievement?.overall_captured_impact / 10) : 0),
-      level: getLevel(Math.round(goalsAndAchievement?.overall_captured_impact ? (goalsAndAchievement?.overall_captured_impact / 10) : 0)),
+      score: goalsAndAchievement?.overall_captured_impact ?? 0,
+      level: getLevel(Math.round(goalsAndAchievement?.overall_captured_impact ?? 0)),
       total: 10,
       note: "The impact of the overall speech.",
     },
     {
       id: 3,
       title: "Emotional Impact Mastery",
-      score: (goalsAndAchievement?.emotional_impact ? (goalsAndAchievement?.emotional_impact / 10) : 0),
-      level: getLevel(Math.round(goalsAndAchievement?.emotional_impact ? (goalsAndAchievement?.emotional_impact / 10) : 0)),
+      score: goalsAndAchievement?.emotional_impact ?? 0,
+      level: getLevel(Math.round(goalsAndAchievement?.emotional_impact ?? 0)),
       total: 10,
       note: "Compels to the audience's emotions.",
     },
     {
       id: 4,
       title: "Body Language Mastery",
-      score: (goalsAndAchievement?.body_language ? (goalsAndAchievement?.body_language / 10) : 0),
-      level: getLevel(Math.round(goalsAndAchievement?.body_language ? (goalsAndAchievement?.body_language / 10) : 0)),
+      score: goalsAndAchievement?.body_language ?? 0,
+      level: getLevel(Math.round(goalsAndAchievement?.body_language ?? 0)),
       total: 10,
       note: "Body posture, motion and hand gestures.",
     },
     {
       id: 5,
       title: "Transformative Communication Mastery",
-      score: (goalsAndAchievement?.transformative_communication ? (goalsAndAchievement?.transformative_communication / 10) : 0),
-      level: getLevel(Math.round(goalsAndAchievement?.transformative_communication ? (goalsAndAchievement?.transformative_communication / 10) : 0)),
+      score: goalsAndAchievement?.transformative_communication ?? 0,
+      level: getLevel(Math.round(goalsAndAchievement?.transformative_communication ?? 0)),
       total: 10,
       note: "Inspires change or shifts thinking.",
     },
     {
       id: 6,
       title: "Audience Engagement Mastery",
-      score: (goalsAndAchievement?.audience_engagement ? (goalsAndAchievement?.audience_engagement / 10) : 0),
-      level: getLevel(Math.round(goalsAndAchievement?.audience_engagement ? (goalsAndAchievement?.audience_engagement / 10) : 0)),
+      score: goalsAndAchievement?.audience_engagement ?? 0,
+      level: getLevel(Math.round(goalsAndAchievement?.audience_engagement ?? 0)),
       total: 10,
       note: "Triggers the audience to respond.",
     },
     {
       id: 7,
       title: "Structure & Clarity Mastery",
-      score: (goalsAndAchievement?.structure_and_clarity ? (goalsAndAchievement?.structure_and_clarity / 10) : 0),
-      level: getLevel(Math.round(goalsAndAchievement?.structure_and_clarity ? (goalsAndAchievement?.structure_and_clarity / 10) : 0)),
+      score: goalsAndAchievement?.structure_and_clarity ?? 0,
+      level: getLevel(Math.round(goalsAndAchievement?.structure_and_clarity ?? 0)),
       total: 10,
       note: "How clearly ideas are organized and expressed.",
     },
     {
       id: 8,
       title: "Language & Word Choice Mastery",
-      score: (goalsAndAchievement?.language_and_word_choice ? (goalsAndAchievement?.language_and_word_choice / 10) : 0),
-      level: getLevel(Math.round(goalsAndAchievement?.language_and_word_choice ? (goalsAndAchievement?.language_and_word_choice / 10) : 0)),
+      score: goalsAndAchievement?.language_and_word_choice ?? 0,
+      level: getLevel(Math.round(goalsAndAchievement?.language_and_word_choice ?? 0)),
       total: 10,
       note: "Avoid filler words and use good grammar.",
     },
   ];
-
-
+  
 
   const streakStats = [
     {

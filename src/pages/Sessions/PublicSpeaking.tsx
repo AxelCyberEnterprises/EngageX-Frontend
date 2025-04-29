@@ -38,10 +38,11 @@ const PublicSpeaking: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/curiosity/1.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/uncertain/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
+    const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -50,6 +51,7 @@ const PublicSpeaking: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
+        setAllowSwitch(false);
         setDialogOneOpen(false);
         setIsMuted(false);
         setVideoUrl(
@@ -58,7 +60,7 @@ const PublicSpeaking: React.FC = () => {
         setTimeout(() => {
             setDialogTwoOpen(true);
         }, 7000);
-    }
+    };
 
     useEffect(() => {
         const seshData = localStorage.getItem("sessionData");
@@ -113,7 +115,9 @@ const PublicSpeaking: React.FC = () => {
                     setFeedback(parsed);
                 } else if (parsed.type === "window_emotion_update") {
                     console.log(parsed);
-                    setVideoUrl(parsed.emotion_s3_url);
+                    if (allowSwitch) {
+                        setVideoUrl(parsed.emotion_s3_url);
+                    }
                 }
             } catch (e) {
                 console.error("Invalid JSON from server:", e);
@@ -132,7 +136,7 @@ const PublicSpeaking: React.FC = () => {
         return () => {
             ws.close();
         };
-    }, [sessionId]);
+    }, [sessionId, allowSwitch]);
 
     return (
         <div className="text-primary-blue">
@@ -294,6 +298,7 @@ const PublicSpeaking: React.FC = () => {
                                 preload={true}
                                 muted={isMuted}
                                 requireFullPlay={isMuted}
+                                allowSwitch={allowSwitch}
                             />
                             {!isLargeScreen && (
                                 <div
@@ -319,6 +324,7 @@ const PublicSpeaking: React.FC = () => {
                                             ws={socket.current}
                                             isWsReady={isSocketConnected}
                                             border={isExpanded ? "rounded-2xl" : ""}
+                                            sessionId={sessionId}
                                         />
                                     </div>
                                 </div>
@@ -370,6 +376,7 @@ const PublicSpeaking: React.FC = () => {
                                     ws={socket.current}
                                     isWsReady={isSocketConnected}
                                     border={isExpanded ? "rounded-2xl" : ""}
+                                    sessionId={sessionId}
                                 />
                             </div>
                         </div>
