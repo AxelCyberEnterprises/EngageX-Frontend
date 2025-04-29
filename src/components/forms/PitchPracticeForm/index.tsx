@@ -1,19 +1,25 @@
 import PracticeSetUpControlsLayout from "@/components/forms/form-layouts/PracticeSetUpControlsLayout";
 import PracticeSetupLayout from "@/components/forms/form-layouts/PracticeSetupLayout";
 import { Form } from "@/components/ui/form";
+import { isFilePDFOrPPTX, pdfToImages, pptxToImages } from "@/lib/utils";
 import { PitchPracticeSchema } from "@/schemas/dashboard/user";
 import { RootState, useAppDispatch } from "@/store";
-import { setActiveSlideIndex, setNumSlides, setslidePreviews } from "@/store/slices/dashboard/user/pitchPracticeSlice";
+import {
+    setActiveSlideIndex,
+    setIsGeneratingPreview,
+    setslidePreviews,
+} from "@/store/slices/dashboard/user/pitchPracticeSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
-
 export type FormType = z.infer<typeof PitchPracticeSchema>;
 
 const PitchPracticeForm = () => {
-    const { activeSlideIndex, slidePreviews, numSlides } = useSelector((state: RootState) => state.pitchPractice);
+    const { activeSlideIndex, isGeneratingPreview, slidePreviews } = useSelector(
+        (state: RootState) => state.pitchPractice,
+    );
     const dispatch = useAppDispatch();
 
     const form = useForm<FormType>({
@@ -27,12 +33,15 @@ const PitchPracticeForm = () => {
 
             if (name !== "slides" || !("slides" in values && values.slides)) return;
 
-            const slides = values.slides.filter(
-                (slide): slide is { file: File; preview: string } => slide !== undefined && slide.preview !== undefined,
-            );
-            const slidePreviews = slides.map((slide) => slide.preview);
+            const slides = values.slides.filter((slide): slide is File => slide !== undefined);
+            const slideType = isFilePDFOrPPTX(slides[0]);
 
-            dispatch(setslidePreviews(slidePreviews));
+            setIsGeneratingPreview(true);
+
+            if (slideType === "pdf") pdfToImages(slides[0]).then((images) => dispatch(setslidePreviews(images)));
+            else if (slideType === "pptx") pptxToImages(slides[0]).then((images) => dispatch(setslidePreviews(images)));
+
+            setIsGeneratingPreview(false);
         });
 
         return () => subscription.unsubscribe();
@@ -43,7 +52,7 @@ const PitchPracticeForm = () => {
             <form>
                 <PracticeSetUpControlsLayout {...{ form }}>
                     <PracticeSetupLayout
-                        {...{ form, activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
+                        {...{ form, activeSlideIndex, isGeneratingPreview, slidePreviews, setActiveSlideIndex }}
                     />
                 </PracticeSetUpControlsLayout>
             </form>
