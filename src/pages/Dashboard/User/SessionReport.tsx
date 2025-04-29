@@ -289,7 +289,7 @@ const PitchSessionReport: React.FC = () => {
                     </section>
 
                     <section className="px-4 lg:px-8 py-4">
-                        <div className="flex md:flex-row w-full items-stretch gap-3">
+                        <div className="flex flex-col md:flex-row w-full items-stretch gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                                 <div className="border-1 border-bright-gray rounded-xl p-4">
                                     <h6 className="mb-3">Audience Engagement</h6>
