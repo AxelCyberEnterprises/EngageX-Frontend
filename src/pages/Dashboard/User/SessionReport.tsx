@@ -2,6 +2,7 @@ import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
 import ShadLineChart from "@/components/dashboard/ShadLineChart";
+import SlideFeedbackChart from "@/components/dashboard/SlideFeedbackChart";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -305,8 +306,8 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                     <p className="mt-2">
                                         <span className="text-medium-sea-green">Trigger Response</span> is the
-                                        audience’s engagement, where a trigger evokes the audience to respond in some
-                                        shape or form as a reaction to the information they’ve heard.
+                                        audience's engagement, where a trigger evokes the audience to respond in some
+                                        shape or form as a reaction to the information they've heard.
                                     </p>
                                 </div>
                             </div>
@@ -349,6 +350,14 @@ const PitchSessionReport: React.FC = () => {
                     <section className="px-4 lg:px-8">
                         <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
                             <h5 className="mb-6">Performance Analytics</h5>
+
+                            {data.slides_file && (
+                                <div className="border-1 border-bright-gray rounded-xl p-4 mb-5">
+                                    <h6>Slide-Based Feedback</h6>
+                                    <SlideFeedbackChart />
+                                </div>
+                            )}
+
                             <h6 className="mb-3">Vocal Variety</h6>
 
                             <div className="flex flex-wrap gap-4">
