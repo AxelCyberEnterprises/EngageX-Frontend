@@ -41,8 +41,8 @@ function Navbar() {
               </Link>
             ))}
           </ul>
-          <button className="h-[3rem] pl-8 pr-6 lg:hidden space-x-4 rounded-lg border !border-green-sheen">
-            <p>Login</p>
+          <button className="h-[3rem] pl-8 pr-6 lg:hidden space-x-4 rounded-lg border bg-green-sheen">
+            <p>Get started</p>
             <svg
               width="26"
               height="26"
@@ -59,8 +59,8 @@ function Navbar() {
           </button>
         </div>
         <Link to="/auth/login">
-          <button className="h-[3rem] pl-8 pr-6 space-x-4 hidden lg:flex border rounded-lg !border-green-sheen">
-            <p>Login</p>
+          <button className="h-[3rem] pl-8 pr-6 space-x-4 hidden lg:flex border rounded-lg bg-green-sheen">
+            <p>Get started</p>
             <svg
               width="26"
               height="26"
