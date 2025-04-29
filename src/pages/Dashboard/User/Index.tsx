@@ -300,7 +300,11 @@ const UserDashboardHome: React.FC = () => {
                         <small className="independence mb-3.5">Session Credits</small>
                         <h4 className="gunmetal mb-5.5">{data?.available_credit}</h4>
                         <Link className="w-full" to={"/dashboard/user/settings?section=credits"}>
-                            <button className="p-3 w-full rounded-md">Buy more sessions</button>
+                            {data?.available_credit === 0 ? (
+                                <button className="p-3 w-full rounded-md">Buy credits</button>
+                            ) : (
+                                <button className="p-3 w-full rounded-md">Buy more credits</button>
+                            )}
                         </Link>
                     </div>
                 </div>
