@@ -1,4 +1,4 @@
-import { cn, convertFileToDataUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { HTMLAttributes, useCallback, useEffect } from "react";
 import Dropzone, { DropzoneProps, FileRejection } from "react-dropzone";
 import { FieldValues, Path, useFormContext } from "react-hook-form";
@@ -17,7 +17,7 @@ export type IFilesWithPreview = {
 }[];
 
 const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
-    accept = { "application/*": [".pdf", ".ppt", ".pptx"] },
+    accept = { "application/*": [".pdf", ".pptx"] },
     maxSize = 10 * 1024 * 1024, // 10MB
     className,
     children,
@@ -66,15 +66,8 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
                 return;
             }
 
-            const newFiles = await Promise.all(
-                acceptedFiles.map(async (file) => ({
-                    file,
-                    preview: await convertFileToDataUrl(file),
-                })),
-            );
-
             // Store the file in the form state
-            setValue(name, newFiles as unknown as T[K], { shouldValidate: true });
+            setValue(name, acceptedFiles as unknown as T[K], { shouldValidate: true });
         },
         [maxSize, name, setValue],
     );

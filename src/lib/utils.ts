@@ -2,8 +2,9 @@ import { IFilesWithPreview } from "@/components/widgets/UploadMediaTrigger";
 import { clsx, type ClassValue } from "clsx";
 import { eachMonthOfInterval, endOfYear, format, parseISO, startOfYear } from "date-fns";
 import Cookies from "js-cookie";
-import { twMerge } from "tailwind-merge";
+import JSZip from "jszip";
 import * as pdfjsLib from "pdfjs-dist";
+import { twMerge } from "tailwind-merge";
 // Set the worker source URL to the path of the worker script
 pdfjsLib.GlobalWorkerOptions.workerSrc = "pdfjs-dist/build/pdf.worker.min.js";
 
@@ -128,6 +129,18 @@ export const isDataUrlPdf = (dataUrl: string) => {
     return dataUrl.startsWith("data:application/pdf");
 };
 
+export const isFilePDFOrPPTX = (file: File): "pdf" | "pptx" => {
+    const fileType = file.type;
+
+    if (fileType === "application/pdf") {
+        return "pdf";
+    } else if (fileType === "application/vnd.openxmlformats-officedocument.presentationml.presentation") {
+        return "pptx";
+    } else {
+        throw new Error("Unsupported file type. Only PDF and PPTX are allowed.");
+    }
+};
+
 export const convertFileToDataUrl = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -158,8 +171,8 @@ export const convertDataUrlToFile = (dataUrl: string, filename: string): File =>
     return new File([u8arr], filename, { type: mime });
 };
 
-export const pdfToImages = async (url: string): Promise<string[]> => {
-    const response = await fetch(url);
+export const pdfToImages = async (input: string | File): Promise<string[]> => {
+    const response = typeof input === "string" ? await fetch(input) : input;
     const arrayBuffer = await response.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
@@ -180,3 +193,69 @@ export const pdfToImages = async (url: string): Promise<string[]> => {
 
     return images;
 };
+
+// Simple text wrapping helper
+function wrapText(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    x: number,
+    y: number,
+    maxWidth: number,
+    lineHeight: number,
+) {
+    const words = text.split(" ");
+    let line = "";
+
+    for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + " ";
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+
+        if (testWidth > maxWidth && n > 0) {
+            ctx.fillText(line, x, y);
+            line = words[n] + " ";
+            y += lineHeight;
+        } else {
+            line = testLine;
+        }
+    }
+    ctx.fillText(line, x, y);
+}
+
+// Returns base64 PNGs per slide (text only, no design)
+export const pptxToImages = async (file: File): Promise<string[]> => {
+    const zip = await JSZip.loadAsync(file);
+    const slideFiles = Object.keys(zip.files)
+        .filter((name) => name.match(/^ppt\/slides\/slide\d+\.xml$/))
+        .sort();
+
+    const images: string[] = [];
+
+    for (const slidePath of slideFiles) {
+        const xml = await zip.files[slidePath].async("string");
+
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xml, "text/xml");
+        const texts = [...xmlDoc.getElementsByTagName("a:t")].map((el) => el.textContent).join(" ");
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d")!;
+        canvas.width = 800;
+        canvas.height = 600;
+
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#000";
+        ctx.font = "20px Arial";
+        wrapText(ctx, texts, 20, 40, canvas.width - 40, 30);
+
+        images.push(canvas.toDataURL("image/png"));
+    }
+
+    return images;
+};
+
+export function splitCamelCase(input: string): string {
+    return input.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
