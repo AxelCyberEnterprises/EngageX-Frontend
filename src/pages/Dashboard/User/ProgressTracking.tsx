@@ -84,6 +84,8 @@ const ProgressTracking: React.FC = () => {
     error: compareSequencesEerror,
   } = useCompareSequences(selectedSequence?.id);
 
+  console.log(sequencesData, compareSequencesData, sequencesLoading, compareSequencesLoading)
+
   useEffect(() => {
     if (fetchGoalsAndAchievement) {
       toast.error(
