@@ -25,25 +25,34 @@ export interface UserProfile {
   session_analysis?: string;
 }
 
-export function useUserProfile() {
-  const user = useSelector((state: RootState) => state.auth.user);
+export function useUserProfile(id: any) {
   return useQuery<UserProfile>({
     queryKey: ["user-profile"],
     queryFn: async () => {
-      const response = await apiGet<UserProfile>(`/users/userprofiles/${user?.user_id}/`);
+      const response = await apiGet<UserProfile>(`/users/userprofiles/${id}/`);
+      return response;
+    },
+    enabled: !!id,
+  });
+}
+
+export function useFullUserProfile() {
+  return useQuery<any>({
+    queryKey: ["full-profile"],
+    queryFn: async () => {
+      const response = await apiGet<any>(`/users/userprofiles/`);
       return response;
     },
   });
 }
 
-export function useUpdateUserProfile() {
+export function useUpdateUserProfile(id: any) {
   const queryClient = useQueryClient();
-  const user = useSelector((state: RootState) => state.auth.user);
 
   return useMutation({
     mutationKey: ["update-user-profile"],
     mutationFn: async (data: FormData) => {
-      return await apiPatch<UserProfile>(`/users/userprofiles/${user?.user_id}/`, data);
+      return await apiPatch<UserProfile>(`/users/userprofiles/${id}/`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-profile"] });

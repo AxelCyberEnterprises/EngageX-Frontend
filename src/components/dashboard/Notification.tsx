@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { useUserProfile, useUpdateUserProfile } from '@/hooks/settings';
+import { useUserProfile, useUpdateUserProfile, useFullUserProfile } from '@/hooks/settings';
 import { toast } from 'sonner';
 import { LoaderCircle } from 'lucide-react';
 
@@ -21,9 +21,10 @@ interface NotificationCategory {
 }
 
 const NotificationSettings: React.FC = () => {
-  const { data: profile, isLoading } = useUserProfile();
-  const { mutate: updateProfile, isPending: isUpdating } = useUpdateUserProfile();
-  
+  const { data: fullProfile } = useFullUserProfile();
+  const { data: profile, isLoading } = useUserProfile(fullProfile?.results?.[0]?.id);
+  const { mutate: updateProfile, isPending: isUpdating } = useUpdateUserProfile(fullProfile?.results?.[0]?.id);
+
   // Initial state structure
   const [categories, setCategories] = useState<NotificationCategory[]>([
     {
@@ -108,20 +109,20 @@ const NotificationSettings: React.FC = () => {
   const handleSave = () => {
     // Create an object with the notification settings
     const notificationSettings: Record<string, boolean> = {};
-    
+
     // Collect all notification settings
     categories.forEach(category => {
       category.options.forEach(option => {
         notificationSettings[option.apiField] = option.enabled;
       });
     });
-    
+
     // Create FormData for the API request
     const formData = new FormData();
     Object.keys(notificationSettings).forEach(key => {
       formData.append(key, notificationSettings[key].toString());
     });
-    
+
     // Update profile
     updateProfile(formData, {
       onSuccess: () => {
