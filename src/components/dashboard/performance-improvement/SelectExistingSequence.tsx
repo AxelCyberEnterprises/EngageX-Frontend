@@ -18,7 +18,7 @@ function SelectExistingSequence() {
       <div className="py-6 flex w-full gap-8 justify-between items-center">
         <div>
           <h6 className="pb-1">Improve a past session</h6>
-          <small className="text-[#474D63]">
+          <small className="text-[#474D63] hidden">
             Need help setting up?{" "}
             <span className="text-pantone-green">Click here</span>
           </small>
