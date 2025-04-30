@@ -87,7 +87,7 @@ function Pricing({
 
               <div className="lg:w-[70%] text-center mx-auto space-y-4 flex flex-col items-center">
                   <h4 className="h-max font-montreal leading-snug">
-                      Share this dynamic Corporate Enterprise Solutions platform with your team or organization
+                      Share this dynamic corporate enterprise solutions platform with your team or organization
                   </h4>
                   <p className="text-dark-electric-blue leading-normal">
                       {subtext
