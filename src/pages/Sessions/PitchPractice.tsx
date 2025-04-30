@@ -1,25 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { SquareArrowUpRight, MessageCircleMore, ChevronRight } from "lucide-react";
 import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
-import EngagementMetrics from "@/components/session/VoiceAnalytics";
 import CountdownTimer from "@/components/session/CountdownTimer";
-import TimerProgressBar from "@/components/session/TimerProgressBar";
-import pitchRoom from "../../assets/images/pngs/pitch-room.png";
-import VideoStreamer from "@/components/session/RecordView";
-import { useParams } from "react-router-dom";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import alert from "../../assets/images/svgs/alert.svg";
-import questionImage from "../../assets/images/pngs/question-image.png";
-import TimerComponent from "@/components/session/TimerComponent";
+import VideoStreamer from "@/components/session/RecordView";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
+import TimerComponent from "@/components/session/TimerComponent";
+import TimerProgressBar from "@/components/session/TimerProgressBar";
+import EngagementMetrics from "@/components/session/VoiceAnalytics";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEndSession, useGetSessionData } from "@/hooks/sessions";
 import { pdfToImages } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import pitchRoom from "../../assets/images/pngs/pitch-room.png";
+import questionImage from "../../assets/images/pngs/question-image.png";
+import alert from "../../assets/images/svgs/alert.svg";
 
 const PresentationPractice: React.FC = () => {
     const [stop, setStop] = useState(false);

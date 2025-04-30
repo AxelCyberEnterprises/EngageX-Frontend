@@ -7,8 +7,11 @@ import ExistingSequenceCard from "./ExistingSequenceCard";
 import { ExistingSequenceTable } from "./ExistingSequenceTable";
 import { RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
+import { useGetSequences } from "@/hooks/sessions";
 
 function SelectExistingSequence() {
+  const sequences = useGetSequences();
+  console.log("sequences: ", sequences.data);
   const { existing_sessions, active_screen } = useSelector(
     (state: RootState) => state.performance_improvement
   );

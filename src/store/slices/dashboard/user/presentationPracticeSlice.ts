@@ -2,13 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IPresentationPracticeState {
     activeSlideIndex: number;
-    numSlides: number;
+    isGeneratingPreview: boolean;
     slidePreviews: string[];
 }
 
 const initialState: IPresentationPracticeState = {
     activeSlideIndex: 0,
-    numSlides: 0,
+    isGeneratingPreview: false,
     slidePreviews: [],
 };
 
@@ -19,8 +19,8 @@ const presentationPracticeSlice = createSlice({
         setActiveSlideIndex: (state, action: PayloadAction<number>) => {
             state.activeSlideIndex = action.payload;
         },
-        setNumSlides: (state, action: PayloadAction<number>) => {
-            state.numSlides = action.payload;
+        setIsGeneratingPreview: (state, action: PayloadAction<boolean>) => {
+            state.isGeneratingPreview = action.payload;
         },
         setslidePreviews: (state, action: PayloadAction<string[]>) => {
             state.slidePreviews = action.payload;
@@ -28,5 +28,5 @@ const presentationPracticeSlice = createSlice({
     },
 });
 
-export const { setActiveSlideIndex, setslidePreviews, setNumSlides } = presentationPracticeSlice.actions;
+export const { setActiveSlideIndex, setslidePreviews, setIsGeneratingPreview } = presentationPracticeSlice.actions;
 export default presentationPracticeSlice.reducer;
