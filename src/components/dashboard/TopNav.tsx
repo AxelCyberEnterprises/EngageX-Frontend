@@ -81,7 +81,7 @@ const TopNav: React.FC = () => {
                 </Button>
                 <div className="line h-4.5 mx-3 w-0.5 bg-gray"></div>
                 <div className="user__image">
-                    <img src={profile?.profile_picture} alt="user image"className="w-11 h-11 rounded-full"/>
+                    <img src={profile?.profile_picture} alt="user image" className="w-11 h-11 rounded-full object-cover"/>
                 </div>
             </div>
             <SidebarTrigger className="md:hidden p-5" />
