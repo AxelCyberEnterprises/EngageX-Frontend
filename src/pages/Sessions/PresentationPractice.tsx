@@ -337,7 +337,6 @@ const PresentationPractice: React.FC = () => {
                                 muted={isMuted}
                                 requireFullPlay={isMuted}
                                 allowSwitch={allowSwitch}
-                                fadeOnSrcChange={true}
                             />
                         </div>
 
