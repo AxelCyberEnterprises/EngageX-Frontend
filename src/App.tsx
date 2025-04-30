@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import AppRoutes from "./components/AppRoutes";
 import "./styles/index.scss";
+// import ScrollToTop from "./hooks/useScrollToTop";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      {/* <ScrollToTop /> */}
       <AppRoutes />
     </QueryClientProvider>
   );
