@@ -54,7 +54,7 @@ const UploadSlideSection = ({
                         <span className="text-center">
                             Drag and drop slides here
                             <br />
-                            PDF, PPTX
+                            PPT, PPTX
                             <br /> (10mb max)
                         </span>
                         <span>Or</span>

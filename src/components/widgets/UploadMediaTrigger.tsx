@@ -17,7 +17,10 @@ export type IFilesWithPreview = {
 }[];
 
 const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
-    accept = { "application/*": [".pdf", ".pptx"] },
+    accept = {
+        "application/vnd.ms-powerpoint": [".ppt"],
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
+    },
     maxSize = 10 * 1024 * 1024, // 10MB
     className,
     children,
@@ -35,11 +38,12 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
                 ] = rejectedFiles;
 
                 if (error.code === "file-invalid-type") {
+                    console.log("Error: ", error.message);
                     toast(
                         <ErrorToast
                             {...{
                                 heading: "Invalid file type",
-                                description: error.message.replace(" application/*,", ""),
+                                description: error.message.replace(/application\/[a-zA-Z0-9.\-+]+,?\s*/g, ""),
                             }}
                         />,
                     );
