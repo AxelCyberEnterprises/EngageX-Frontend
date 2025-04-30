@@ -19,7 +19,6 @@ interface VideoPlayerProps {
     muted?: boolean;
     requireFullPlay?: boolean;
     allowSwitch?: boolean;
-    fadeOnSrcChange?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -38,7 +37,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     muted = false,
     requireFullPlay = false,
     allowSwitch = true,
-    fadeOnSrcChange = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -52,7 +50,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [currentSrc, setCurrentSrc] = useState<string>(src);
     const [nextSrc, setNextSrc] = useState<string | null>(null);
-    const [isFading, setIsFading] = useState(false);
 
     const togglePlay = (): void => {
         if (videoRef.current) {
@@ -136,29 +133,22 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     useEffect(() => {
         if (!preload) {
-            if (fadeOnSrcChange) {
-                setIsFading(true);
-                setTimeout(() => {
-                    setCurrentSrc(src);
-                    setHasPlayedOnce(false);
-                    setIsFading(false);
-                }, 300); // match your CSS transition duration
-            } else {
-                setCurrentSrc(src);
-                setHasPlayedOnce(false);
-            }
+            // immediate switch if preload is false
+            setCurrentSrc(src);
+            setHasPlayedOnce(false);
             return;
         }
 
-        if (src === currentSrc || src === nextSrc) return;
+        if (src === currentSrc || src === nextSrc) return; // no need to preload again
 
         if (requireFullPlay && !hasPlayedOnce) {
+            // preload into buffer but don’t switch yet
             const tempVideo = document.createElement("video");
             tempVideo.src = src;
             tempVideo.preload = "auto";
 
             const handleLoaded = () => {
-                setNextSrc(src);
+                setNextSrc(src); // preload and queue it
             };
 
             tempVideo.addEventListener("loadeddata", handleLoaded);
@@ -169,19 +159,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 tempVideo.load();
             };
         } else {
-            if (fadeOnSrcChange) {
-                setIsFading(true);
-                setTimeout(() => {
-                    setCurrentSrc(src);
-                    setHasPlayedOnce(false);
-                    setIsFading(false);
-                }, 300);
-            } else {
-                setCurrentSrc(src);
-                setHasPlayedOnce(false);
-            }
+            // either not required to play full OR already has played
+            setCurrentSrc(src);
+            setHasPlayedOnce(false);
         }
-    }, [src, preload, requireFullPlay, hasPlayedOnce, currentSrc, nextSrc, fadeOnSrcChange]);
+    }, [src, preload, requireFullPlay, hasPlayedOnce, currentSrc, nextSrc]);
 
     useEffect(() => {
         const videoElement = videoRef.current;
@@ -290,20 +272,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             onKeyDown={handleKeyDown}
             tabIndex={0}
         >
-            <div className={`transition-opacity duration-300 ${isFading ? "opacity-0" : "opacity-100"}`}>
-                <video
-                    ref={videoRef}
-                    src={currentSrc}
-                    poster={poster}
-                    className={`block w-full h-full object-cover cursor-pointer ${border}`}
-                    onClick={handleVideoClick}
-                    controls={false}
-                    playsInline
-                    preload={preload ? "auto" : "metadata"}
-                    loop={loop && (!requireFullPlay || !nextSrc)}
-                    muted={isMuted}
-                />
-            </div>
+            <video
+                ref={videoRef}
+                src={currentSrc}
+                poster={poster}
+                className={`block w-full h-full object-cover cursor-pointer ${border}`}
+                onClick={handleVideoClick}
+                controls={false}
+                playsInline
+                preload={preload ? "auto" : "metadata"}
+                loop={loop && (!requireFullPlay || !nextSrc)}
+                muted={isMuted}
+            />
 
             {!isPlaying && showPauseOverlay && (
                 <div className="absolute inset-0 bg-[#0000006c] bg-opacity-30 flex items-center justify-center cursor-pointer">
