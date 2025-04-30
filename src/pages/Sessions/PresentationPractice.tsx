@@ -321,7 +321,7 @@ const PresentationPractice: React.FC = () => {
             <section className="flex flex-wrap">
                 {/* left side  */}
                 <div className="left__side w-full md:w-9/12 lg:w-9/12 md:px-8 lg:pe-4 py-4">
-                    <div className="md:p-5 lg:p-10 border-primary-blue bg-primary-blue rounded-3xl w-full h-80 md:h-140">
+                    <div className="md:p-5 lg:p-10 border-primary-blue bg-primary-blue rounded-3xl w-full h-80 md:h-140 relative">
                         <div className="relative w-full h-full rounded-3xl overflow-hidden">
                             <VideoPlayer
                                 height="h-full"
@@ -337,31 +337,30 @@ const PresentationPractice: React.FC = () => {
                                 muted={isMuted}
                                 requireFullPlay={isMuted}
                                 allowSwitch={allowSwitch}
+                                fadeOnSrcChange={true}
                             />
+                        </div>
 
-                            <div className="w-45 h-25 md:w-80 md:h-55 absolute left-0 bottom-0">
-                                {!slides.length && seshData?.slides_file ? (
-                                    <Skeleton className="w-full h-full bg-gray" />
-                                ) : (
-                                    <ImageSlider
-                                        ref={sliderRef}
-                                        images={slides}
-                                        start={startTimer}
-                                        stop={stop}
-                                        onStop={(durationArr) => {
-                                            stopTimer(undefined, durationArr);
-                                        }}
-                                    />
-                                )}
-                            </div>
+                        <div className="w-45 h-25 md:w-75 md:h-45 absolute left-0 bottom-0">
+                            {!slides.length && seshData?.slides_file ? (
+                                <Skeleton className="w-full h-full bg-gray" />
+                            ) : (
+                                <ImageSlider
+                                    ref={sliderRef}
+                                    images={slides}
+                                    start={startTimer}
+                                    stop={stop}
+                                    onStop={(durationArr) => {
+                                        stopTimer(undefined, durationArr);
+                                    }}
+                                />
+                            )}
                         </div>
                     </div>
 
                     <div className="mt-3 px-4 md:px-0">
                         <div className="flex items-center justify-between md:justify-start">
-                            <p className="ms-3 text-grey">
-                                <CountdownTimer minutes={time} />
-                            </p>
+                            <CountdownTimer minutes={time} />
                         </div>
                     </div>
 

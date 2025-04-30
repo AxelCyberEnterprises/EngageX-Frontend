@@ -37,9 +37,9 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ minutes }) => {
     };
 
     return (
-        <div>
+        <p className="ms-3 text-gray">
             Time: <span className="text-maximum-yellow-red">{formatTime(timeLeft)}</span>
-        </div>
+        </p>
     );
 };
 
