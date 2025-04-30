@@ -1,7 +1,5 @@
 import { apiGet, apiPatch, apiPost } from "@/lib/api";
-import { RootState } from "@/store";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
 
 export interface UserProfile {
   id?: number | undefined;

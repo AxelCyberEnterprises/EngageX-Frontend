@@ -6,7 +6,7 @@ import * as z from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Upload, Globe, Clock, LoaderCircle } from 'lucide-react';
+import { Upload, Globe, Clock } from 'lucide-react';
 import uploadCloud from '../../assets/images/svgs/upload-cloud.svg';
 import verified from '../../assets/images/svgs/verified.svg';
 import profileEdit from '../../assets/images/svgs/profile-edit.svg';
