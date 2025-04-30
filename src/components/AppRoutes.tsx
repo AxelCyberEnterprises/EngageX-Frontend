@@ -18,7 +18,7 @@ import {
   BrowserRouter as Router,
   Routes,
   useLocation,
-} from "react-router";
+} from "react-router-dom";
 import DashboardLayout from "../components/layouts/DashboardLayout";
 import SessionsLayout from "../components/layouts/SessionsLayout";
 import AuthPage from "../pages/auth";
@@ -51,6 +51,7 @@ import Press from "@/pages/Press/Press";
 import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
 import CancellationPolicy from "@/pages/CancellationPolicy";
 import WebsiteLayout from "./layouts/WebsiteLayout";
+import ScrollToTop from "@/hooks/useScrollToTop";
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const isAuthenticated = useSelector(
@@ -198,6 +199,7 @@ function MainRoutes() {
 export default function AppRoutes() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route
           path="/"

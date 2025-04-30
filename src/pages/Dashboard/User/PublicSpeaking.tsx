@@ -22,7 +22,7 @@ const PublicSpeaking = () => {
                         <ArrowLeft className="md:size-4 size-5" />
                         <span className="font-normal md:inline hidden">Back</span>
                     </Button>
-                    <div className="md:flex hidden items-center gap-x-1 text-sm font-medium">
+                    <div className="md:flex hidden md:hidden items-center gap-x-1 text-sm font-medium">
                         <span>Need help setting up?</span>
                         <Button
                             className="size-fit bg-transparent hover:bg-transparent p-0 shadow-none"
@@ -42,7 +42,7 @@ const PublicSpeaking = () => {
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-y-2">
                         <h5>Set up Public Speaking Session</h5>
-                        <div className="md:hidden flex items-center gap-x-1 text-sm font-medium">
+                        <div className="md:hidden flex items-center gap-x-1 text-sm font-medium hidden">
                             <span>Need help setting up?</span>
                             <Button
                                 className="size-fit bg-transparent hover:bg-transparent p-0 shadow-none"

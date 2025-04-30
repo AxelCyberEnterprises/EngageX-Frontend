@@ -35,7 +35,7 @@ import SequenceSelector, {
 } from "@/components/dashboard/SequenceSelect";
 import RecentAchievementsModal from "@/components/modals/modalVariants/RecentAchievementsModal";
 import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
-import { useProgressTracking } from "@/hooks/progressTracking";
+import { useCompareSequences, useGetSequence, useProgressTracking } from "@/hooks/progressTracking";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
@@ -52,6 +52,8 @@ const ProgressTracking: React.FC = () => {
   const [selectedSequence, setSelectedSequence] = useState<Sequence>();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailureModal, setShowFailureModal] = useState(false);
+  const [sequencesData, setSequencesData] = useState(false);
+  const [compareSequencesData, setCompareSequencesData] = useState(false);
   const [
     showRecentAchievementsModal,
     setShowRecentAchievementsModal,
@@ -71,6 +73,18 @@ const ProgressTracking: React.FC = () => {
     isLoading: progressTrackingLoading,
     error: progressTrackingEerror,
   } = useProgressTracking();
+  const {
+    data: sequencesResponse,
+    isLoading: sequencesLoading,
+    error: sequencesEerror,
+  } = useGetSequence();
+  const {
+    data: compareSequencesResponse,
+    isLoading: compareSequencesLoading,
+    error: compareSequencesEerror,
+  } = useCompareSequences(selectedSequence?.id);
+
+  console.log(sequencesData, compareSequencesData, sequencesLoading, compareSequencesLoading)
 
   useEffect(() => {
     if (fetchGoalsAndAchievement) {
@@ -89,6 +103,39 @@ const ProgressTracking: React.FC = () => {
       );
     }
   }, []);
+
+  useEffect(() => {
+    if (sequencesEerror) {
+      toast.error(
+        "Failed to fetch sequences: " +
+        (sequencesEerror.message || "Unknown error")
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (compareSequencesEerror) {
+      toast.error(
+        "Failed to fetch sequence comparison: " +
+        (compareSequencesEerror.message || "Unknown error")
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (sequencesResponse) {
+      setSequencesData(sequencesResponse);
+      console.log(sequencesResponse)
+    }
+  }, []);
+
+  useEffect(() => {
+    if (compareSequencesResponse) {
+      setCompareSequencesData(compareSequencesResponse);
+      console.log(compareSequencesResponse)
+    }
+  }, [selectedSequence, sequencesResponse]);
+
 
   const getLevel = (score: number) => {
     if (score >= 1 && score <= 3) return 1;

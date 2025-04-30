@@ -25,7 +25,7 @@ const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews 
         <section className={cn("flex flex-col gap-y-6", className)}>
             <div className="space-y-5">
                 <div>
-                    <div className="lg:flex hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
+                    <div className="lg:flex lg:hidden hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
                         <span>Need help setting up?</span>
                         <Button
                             type="button"

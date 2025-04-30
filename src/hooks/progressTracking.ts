@@ -10,3 +10,23 @@ export function useProgressTracking() {
     },
   });
 }
+
+export function useGetSequence() {
+  return useQuery<any>({
+    queryKey: ["get-sequence"],
+    queryFn: async () => {
+      const response = await apiGet<any>(`/sessions/sequences/`);
+      return response;
+    },
+  });
+}
+
+export function useCompareSequences(id: any) {
+  return useQuery<any>({
+    queryKey: ["get-sequence"],
+    queryFn: async () => {
+      const response = await apiGet<any>(`/sessions/compare-sequences/${id}`);
+      return response;
+    },
+  });
+}
