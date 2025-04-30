@@ -160,7 +160,7 @@ const PitchSessionReport: React.FC = () => {
         {
             bg: "bg-seashell",
             title: "Hand Gestures",
-            percent: 80,
+            percent: data?.gestures_score_for_body_language,
         },
     ];
 
