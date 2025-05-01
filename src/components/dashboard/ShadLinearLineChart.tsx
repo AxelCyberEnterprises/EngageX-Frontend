@@ -1,7 +1,8 @@
-import { CartesianGrid, Line, LineChart, XAxis, Legend, YAxis, LegendProps } from "recharts";
+import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import CustomLegend from "./CustomLegend";
 
 type ChartData = {
     minute: number;
@@ -11,28 +12,6 @@ type ChartData = {
 type Props = {
     data: ChartData[];
     colors: Record<string, string>;
-};
-
-function splitCamelCase(input: string): string {
-    return input.replace(/([a-z])([A-Z])/g, "$1 $2");
-}
-
-const CustomLegend = (props: LegendProps) => {
-    const { payload } = props;
-    if (!payload) return null;
-
-    return (
-        <div className="flex justify-center gap-4 pt-4">
-            {payload.map((entry, index) => (
-                <div key={index} className="flex items-center gap-2">
-                    <div className="w-1.5 h-4 rounded-xs" style={{ backgroundColor: entry.color }} />
-                    <span className="text-sm" style={{ color: entry.color }}>
-                        {splitCamelCase(entry.value as string)}
-                    </span>
-                </div>
-            ))}
-        </div>
-    );
 };
 
 export default function ShadLinearLineChart({ data, colors }: Props) {

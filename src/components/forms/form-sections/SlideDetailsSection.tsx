@@ -5,42 +5,27 @@ import SessionNameSection from "@/components/forms/form-sections/SessionNameSect
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { cn, convertDataUrlToFile } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
-import { HTMLAttributes, useId, useMemo } from "react";
+import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
-import PDFDocument from "../../widgets/pdf-viewer/PDFDocument";
-import PDFPage from "../../widgets/pdf-viewer/PDFPage";
 
 interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     form: UseFormReturn<any>;
     activeSlideIndex: number;
     slidePreviews: string[];
-    numSlides: number;
 }
 
-const SlideDetailsSection = ({
-    className,
-    form,
-    activeSlideIndex,
-    slidePreviews,
-    numSlides,
-}: ISlideDetailsSectionProps) => {
-    const slideId = useId();
-    const [slidePreview] = useMemo(() => slidePreviews, [slidePreviews]);
-    const slidePreviewFile = useMemo(
-        () => (slidePreview ? convertDataUrlToFile(slidePreview, `Slide-${slideId}`) : null),
-        [slideId, slidePreview],
-    );
+const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews }: ISlideDetailsSectionProps) => {
     const dispatch = useAppDispatch();
 
     return (
         <section className={cn("flex flex-col gap-y-6", className)}>
             <div className="space-y-5">
                 <div>
-                    <div className="lg:flex hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
+                    <div className="lg:flex lg:hidden hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
                         <span>Need help setting up?</span>
                         <Button
                             type="button"
@@ -66,10 +51,8 @@ const SlideDetailsSection = ({
                 <div className="space-y-5 lg:pl-4 md:pr-4">
                     <h6 className="text-lg">Slide {activeSlideIndex + 1}</h6>
                     <div className="w-auto h-90 rounded-lg overflow-hidden">
-                        {numSlides > 0 ? (
-                            <PDFDocument file={slidePreviewFile}>
-                                {numSlides > 0 && <PDFPage pageNumber={activeSlideIndex + 1} />}
-                            </PDFDocument>
+                        {slidePreviews.length > 0 ? (
+                            <img src={slidePreviews[activeSlideIndex]} alt="" className="size-full object-cover" />
                         ) : (
                             <div className="size-full grid place-content-center bg-ghost-white text-primary-base rounded-lg border border-bright-gray">
                                 <span>Upload slide to get started</span>

@@ -12,13 +12,14 @@ import { Play } from "lucide-react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import userImg from "../../assets/images/pngs/avater.png";
 import FeatureWalkthrough from "../dialogs/dialog-contents/FeatureWalkthrough";
 import { Button } from "../ui/button";
+import { useUserProfile } from "@/hooks/settings";
 
 const TopNav: React.FC = () => {
     const location = useLocation();
     const dispatch = useDispatch();
+    const { data: profile } = useUserProfile();
     const pathnames = location.pathname.split("/").filter((path) => path);
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
@@ -80,7 +81,7 @@ const TopNav: React.FC = () => {
                 </Button>
                 <div className="line h-4.5 mx-3 w-0.5 bg-gray"></div>
                 <div className="user__image">
-                    <img src={userImg} alt="user image" />
+                    <img src={profile?.profile_picture} alt="user image" className="w-11 h-11 rounded-full object-cover"/>
                 </div>
             </div>
             <SidebarTrigger className="md:hidden p-5" />

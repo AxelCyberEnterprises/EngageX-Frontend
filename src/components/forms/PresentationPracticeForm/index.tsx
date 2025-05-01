@@ -1,11 +1,12 @@
 import PracticeSetUpControlsLayout from "@/components/forms/form-layouts/PracticeSetUpControlsLayout";
 import PracticeSetupLayout from "@/components/forms/form-layouts/PracticeSetupLayout";
 import { Form } from "@/components/ui/form";
+import { isFilePDFOrPPTX, pdfToImages, pptxToImages } from "@/lib/utils";
 import { PresentationPracticeSchema } from "@/schemas/dashboard/user";
 import { RootState, useAppDispatch } from "@/store";
 import {
     setActiveSlideIndex,
-    setNumSlides,
+    setIsGeneratingPreview,
     setslidePreviews,
 } from "@/store/slices/dashboard/user/presentationPracticeSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +18,7 @@ import { z } from "zod";
 export type FormType = z.infer<typeof PresentationPracticeSchema>;
 
 const PresentationPracticeForm = () => {
-    const { activeSlideIndex, slidePreviews, numSlides } = useSelector(
+    const { activeSlideIndex, isGeneratingPreview, slidePreviews } = useSelector(
         (state: RootState) => state.presentationPractice,
     );
     const dispatch = useAppDispatch();
@@ -33,13 +34,15 @@ const PresentationPracticeForm = () => {
 
             if (name !== "slides" || !("slides" in values && values.slides)) return;
 
-            const slides = values.slides.filter(
-                (slide): slide is { file: File; preview: string } =>
-                    slide !== undefined && slide.file !== undefined && slide.preview !== undefined,
-            );
-            const slidePreviews = slides.map((slide) => slide.preview);
+            const slides = values.slides.filter((slide): slide is File => slide !== undefined);
+            const slideType = isFilePDFOrPPTX(slides[0]);
 
-            dispatch(setslidePreviews(slidePreviews));
+            setIsGeneratingPreview(true);
+
+            if (slideType === "pdf") pdfToImages(slides[0]).then((images) => dispatch(setslidePreviews(images)));
+            else if (slideType === "pptx") pptxToImages(slides[0]).then((images) => dispatch(setslidePreviews(images)));
+
+            setIsGeneratingPreview(false);
         });
 
         return () => subscription.unsubscribe();
@@ -50,7 +53,7 @@ const PresentationPracticeForm = () => {
             <form>
                 <PracticeSetUpControlsLayout {...{ form }}>
                     <PracticeSetupLayout
-                        {...{ form, activeSlideIndex, slidePreviews, numSlides, setActiveSlideIndex, setNumSlides }}
+                        {...{ form, activeSlideIndex, isGeneratingPreview, slidePreviews, setActiveSlideIndex }}
                     />
                 </PracticeSetUpControlsLayout>
             </form>

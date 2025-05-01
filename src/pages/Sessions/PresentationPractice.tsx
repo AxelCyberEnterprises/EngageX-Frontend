@@ -1,26 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { SquareArrowUpRight, MessageCircleMore, ChevronRight } from "lucide-react";
 import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
-import EngagementMetrics from "@/components/session/VoiceAnalytics";
 import CountdownTimer from "@/components/session/CountdownTimer";
-import TimerProgressBar from "@/components/session/TimerProgressBar";
-import boardRoom1 from "../../assets/images/pngs/presentation-practice-room.png";
-import boardRoom2 from "../../assets/images/pngs/boardroom-2.png";
-import VideoStreamer from "@/components/session/RecordView";
-import { useParams } from "react-router-dom";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import alert from "../../assets/images/svgs/alert.svg";
-import questionImage from "../../assets/images/pngs/question-image.png";
-import TimerComponent from "@/components/session/TimerComponent";
+import VideoStreamer from "@/components/session/RecordView";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
+import TimerComponent from "@/components/session/TimerComponent";
+import TimerProgressBar from "@/components/session/TimerProgressBar";
+import EngagementMetrics from "@/components/session/VoiceAnalytics";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEndSession, useGetSessionData } from "@/hooks/sessions";
 import { pdfToImages } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import boardRoom2 from "../../assets/images/pngs/boardroom-2.png";
+import boardRoom1 from "../../assets/images/pngs/presentation-practice-room.png";
+import questionImage from "../../assets/images/pngs/question-image.png";
+import alert from "../../assets/images/svgs/alert.svg";
 
 const PresentationPractice: React.FC = () => {
     const [stop, setStop] = useState(false);
@@ -45,9 +45,9 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        sessionData?.virtual_environment === "board_room_1" ?
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4" :
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_2/uncertain/1.mp4"
+        sessionData?.virtual_environment === "board_room_1"
+            ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4"
+            : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_2/uncertain/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -321,7 +321,7 @@ const PresentationPractice: React.FC = () => {
             <section className="flex flex-wrap">
                 {/* left side  */}
                 <div className="left__side w-full md:w-9/12 lg:w-9/12 md:px-8 lg:pe-4 py-4">
-                    <div className="md:p-5 lg:p-10 border-primary-blue bg-primary-blue rounded-3xl w-full h-80 md:h-140">
+                    <div className="md:p-5 lg:p-10 border-primary-blue bg-primary-blue rounded-3xl w-full h-80 md:h-140 relative">
                         <div className="relative w-full h-full rounded-3xl overflow-hidden">
                             <VideoPlayer
                                 height="h-full"
@@ -338,30 +338,28 @@ const PresentationPractice: React.FC = () => {
                                 requireFullPlay={isMuted}
                                 allowSwitch={allowSwitch}
                             />
+                        </div>
 
-                            <div className="w-45 h-25 md:w-80 md:h-55 absolute left-0 bottom-0">
-                                {!slides.length && seshData?.slides_file ? (
-                                    <Skeleton className="w-full h-full bg-gray" />
-                                ) : (
-                                    <ImageSlider
-                                        ref={sliderRef}
-                                        images={slides}
-                                        start={startTimer}
-                                        stop={stop}
-                                        onStop={(durationArr) => {
-                                            stopTimer(undefined, durationArr);
-                                        }}
-                                    />
-                                )}
-                            </div>
+                        <div className="w-45 h-25 md:w-75 md:h-45 absolute left-0 bottom-0">
+                            {!slides.length && seshData?.slides_file ? (
+                                <Skeleton className="w-full h-full bg-gray" />
+                            ) : (
+                                <ImageSlider
+                                    ref={sliderRef}
+                                    images={slides}
+                                    start={startTimer}
+                                    stop={stop}
+                                    onStop={(durationArr) => {
+                                        stopTimer(undefined, durationArr);
+                                    }}
+                                />
+                            )}
                         </div>
                     </div>
 
                     <div className="mt-3 px-4 md:px-0">
                         <div className="flex items-center justify-between md:justify-start">
-                            <p className="ms-3 text-grey">
-                                <CountdownTimer minutes={time} />
-                            </p>
+                            <CountdownTimer minutes={time} />
                         </div>
                     </div>
 

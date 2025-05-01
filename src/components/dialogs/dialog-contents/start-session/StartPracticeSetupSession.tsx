@@ -35,7 +35,7 @@ const StartPracticeSetupSession = ({
     const slidesFormData = new FormData();
     const { session_type: sessionType, slides } = getValues();
 
-    if (slides) slides.forEach(({ file }) => slidesFormData.append("slides_file", file));
+    if (slides) slides.forEach((file) => slidesFormData.append("slides_file", file));
 
     const { data, isPending: isGetSessionsPending } = useSessionHistory();
 
