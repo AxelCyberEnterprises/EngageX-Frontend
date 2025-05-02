@@ -33,7 +33,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                     </Button>
                     <div className="flex flex-col gap-y-2">
                         <h5>{capitalize(form.getValues("session_type"))} Setup</h5>
-                        <div className="flex items-center gap-x-1 text-sm font-medium hidden">
+                        <div className="hidden items-center gap-x-1 text-sm font-medium">
                             <span>Need help setting up?</span>
                             <Button
                                 type="button"
