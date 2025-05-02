@@ -35,7 +35,7 @@ function Hero() {
           AI-powered environment. Our web-based, mobile-friendly platform and
           ios app are built for sales professionals, entrepreneurs, athletes,
           and corporate leaders. Designed to sharpen communication, captivate
-          audiences, and elevate influence, the platform features a hybrid
+          audiences, and elevate influence. The platform features a hybrid
           coaching model that combines AI technology with insights from
           certified coaches, delivering expert guidance that goes beyond
           peer-based feedback.

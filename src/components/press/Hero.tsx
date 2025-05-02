@@ -5,7 +5,7 @@ function Hero() {
         <h1>EngageX™ in the news</h1>
         <h6 className="text-[#475467]">
           For press enquiries, please contact{" "}
-          <span className="text-gunmetal underline underline-offset-4">
+          <span className="">
             info@engagexai.io
           </span>
         </h6>

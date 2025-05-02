@@ -13,13 +13,13 @@ import jsPDF from "jspdf";
 import { ArrowLeft, Download, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import avatar from "../../../assets/images/pngs/avater.png";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
+import { useUserProfile } from "@/hooks/settings";
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-
+    const { data: profile } = useUserProfile();
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -116,17 +116,17 @@ const PitchSessionReport: React.FC = () => {
     const slideAnalysis = [
         {
             bg: "bg-alice-blue",
-            title: "Slide Efficiency",
+            title: "Slide Count Efficiency",
             percent: data?.slide_efficiency,
         },
         {
             bg: "bg-green-sheen/15",
-            title: "Text Economy",
+            title: "Slide Wordiness",
             percent: data?.text_economy,
         },
         {
             bg: "bg-seashell",
-            title: "Visual Communication",
+            title: "Aesthetic Balance",
             percent: data?.visual_communication,
         },
     ];
@@ -160,7 +160,7 @@ const PitchSessionReport: React.FC = () => {
         {
             bg: "bg-seashell",
             title: "Hand Gestures",
-            percent: 80,
+            percent: data?.gestures_score_for_body_language,
         },
     ];
 
@@ -269,7 +269,7 @@ const PitchSessionReport: React.FC = () => {
 
                             <div className="flex lg:me-5 mt-6 lg:mt-0">
                                 <div className="flex pe-5 me-5 border-r-2 border-bright-gray">
-                                    <img src={avatar} alt="avatar" />
+                                    <img src={profile?.profile_picture} alt="avatar" className="w-11 h-11 rounded-full object-cover"/>
                                     <div className="flex flex-col justify-between ps-2">
                                         <h6>{data.full_name}</h6>
                                         <p className="text-independence">{data.user_email}</p>
@@ -451,7 +451,7 @@ const PitchSessionReport: React.FC = () => {
                                     {slideAnalysis.map((item, index) => (
                                         <div
                                             key={index}
-                                            className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]"
+                                            className="w-full md:w-[calc(33.33%-10px)] lg:w-2/7"
                                         >
                                             <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
                                                 <div className="flex flex-col justify-between py-3">

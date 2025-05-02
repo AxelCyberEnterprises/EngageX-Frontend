@@ -41,6 +41,7 @@ export interface ISession {
     posture: number;
     motion: number;
     gestures: boolean;
+    gestures_score_for_body_language: number;
     transformative_potential: number;
     general_feedback_summary: string | null;
     strength: string | null;

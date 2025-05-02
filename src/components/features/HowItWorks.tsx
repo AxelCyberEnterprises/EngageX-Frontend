@@ -16,7 +16,7 @@ function HowItWorks() {
               "Custom questions aligned with key industries including healthcare, pharma and biotech, marketing, operations, sports, and technology.",
           },
           {
-            title: "Over 100 Intuitive Interview Question Options",
+            title: "Over 100 Intuitive Interview questions per industry",
             content:
               "Dynamic prompts that adapt based on your responses to simulate real conversations.",
           },
