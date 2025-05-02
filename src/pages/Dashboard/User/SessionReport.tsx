@@ -116,17 +116,17 @@ const PitchSessionReport: React.FC = () => {
     const slideAnalysis = [
         {
             bg: "bg-alice-blue",
-            title: "Slide Efficiency",
+            title: "Slide Count Efficiency",
             percent: data?.slide_efficiency,
         },
         {
             bg: "bg-green-sheen/15",
-            title: "Text Economy",
+            title: "Slide Wordiness",
             percent: data?.text_economy,
         },
         {
             bg: "bg-seashell",
-            title: "Visual Communication",
+            title: "Aesthetic Balance",
             percent: data?.visual_communication,
         },
     ];
@@ -451,7 +451,7 @@ const PitchSessionReport: React.FC = () => {
                                     {slideAnalysis.map((item, index) => (
                                         <div
                                             key={index}
-                                            className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]"
+                                            className="w-full md:w-[calc(33.33%-10px)] lg:w-2/7"
                                         >
                                             <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
                                                 <div className="flex flex-col justify-between py-3">

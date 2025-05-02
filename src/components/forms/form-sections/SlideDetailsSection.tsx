@@ -25,7 +25,7 @@ const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews 
         <section className={cn("flex flex-col gap-y-6", className)}>
             <div className="space-y-5">
                 <div>
-                    <div className="lg:flex lg:hidden hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
+                    <div className="hidden items-center justify-end gap-x-1 text-sm font-medium pt-4 pr-4">
                         <span>Need help setting up?</span>
                         <Button
                             type="button"
@@ -44,7 +44,7 @@ const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews 
                     </div>
                     <SessionNameSection
                         {...{ form }}
-                        className="[&_h6]:text-lg lg:pl-4 md:pl-0 pl-3 md:pr-4 pr-3 lg:pt-0 pt-3 md:pb-0 pb-3 md:border-0 border border-bright-gray md:rounded-none rounded-lg"
+                        className="[&_h6]:text-lg lg:pl-4 md:pl-0 pl-3 md:pr-4 pr-3 lg:pt-4 pt-3 md:pb-0 pb-3 md:border-0 border border-bright-gray md:rounded-none rounded-lg"
                     />
                 </div>
                 <Separator />
