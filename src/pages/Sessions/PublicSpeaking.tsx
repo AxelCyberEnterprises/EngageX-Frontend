@@ -19,7 +19,7 @@ import MobileEngagementMetrics from "@/components/session/MobileEngagementMetric
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import { useEffect } from "react";
 import { useEndSession } from "@/hooks/sessions";
-import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
+import VideoPlayer from "@/components/session/VideoPlayer";
 
 const PublicSpeaking: React.FC = () => {
     const [stop, setStop] = useState(false);
@@ -168,9 +168,13 @@ const PublicSpeaking: React.FC = () => {
                         const parsed = JSON.parse(event.data);
                         if (parsed.text) {
                             console.log(parsed.text);   
-                            const random = Math.floor(Math.random() * 5) + 1;
-                            const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
-                            setVideoUrl(newUrl);
+                            const validEmotions = ["thinking", "empathy", "excitement", "laughter", "surprise", "interested"];
+                            if (validEmotions.includes(parsed.text)) {
+                                const random = Math.floor(Math.random() * 5) + 1;
+                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
+                                console.log("videoUrl", newUrl);
+                                setVideoUrl(newUrl);
+                            }
                         }
                     } catch (err) {
                         console.warn("Invalid message:", event.data, err);
@@ -376,18 +380,11 @@ const PublicSpeaking: React.FC = () => {
                         <div className="rounded-xl w-full md:h-120 h-80 relative">
                             <h6 className="ps-4 md:ps-0 mb-3">Live Audience</h6>
                             <VideoPlayer
-                                height="h-full"
-                                width="w-full"
                                 src={videoUrl}
-                                autoPlay={true}
+                                autoplay={true}
                                 loop={true}
-                                showPauseOverlay={false}
-                                hideControls={true}
-                                border="rounded-2xl"
-                                pauseOnClick={false}
-                                preload={true}
-                                muted={isMuted}
-                                allowSwitch={allowSwitch}
+                                isMuted={isMuted}
+                                className="h-full w-full rounded-2xl"
                             />
                             {!isLargeScreen && (
                                 <div
