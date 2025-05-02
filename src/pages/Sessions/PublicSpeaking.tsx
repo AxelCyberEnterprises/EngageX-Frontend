@@ -388,7 +388,6 @@ const PublicSpeaking: React.FC = () => {
                                 preload={true}
                                 muted={isMuted}
                                 allowSwitch={allowSwitch}
-                                requireFullPlay={true}
                             />
                             {!isLargeScreen && (
                                 <div
