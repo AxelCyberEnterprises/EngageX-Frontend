@@ -9,10 +9,11 @@ interface PresentationMetricsTableProps<TData, TValue> {
   pageSize: number;
   hidePagination?: boolean;
   tableContainerClassName?: string;
+  isLoading?: boolean;
 }
 
 function PresentationMetricsTable<TData, TValue>({
-  columns, data, pageSize, hidePagination, tableContainerClassName
+  columns, data, pageSize, hidePagination, tableContainerClassName, isLoading
 }: PresentationMetricsTableProps<TData, TValue>) {
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -33,6 +34,8 @@ function PresentationMetricsTable<TData, TValue>({
         tableContainerClassName={tableContainerClassName}
         pagination={pagination}
         setPagination={setPagination}
+        isLoading={isLoading}
+
       />
     </div>
   );

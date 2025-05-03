@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import circleCheck from "../../../assets/images/svgs/circle-check.svg";
 import circleExclamation from "../../../assets/images/svgs/circle-exclamation.svg";
 // import menuWhite from '../../../assets/images/svgs/menu-white.svg';
@@ -29,15 +29,15 @@ import { RecentSessionsTable } from "@/components/tables/recent-sessions-table/u
 import { Session } from "@/components/tables/recent-sessions-table/user/data";
 import { useSearchParams } from "react-router-dom";
 import { columns } from "@/components/tables/performance-metric-table/user/columns";
-import { data } from "@/components/tables/performance-metric-table/user/data";
 import SequenceSelector, {
   Sequence,
 } from "@/components/dashboard/SequenceSelect";
 import RecentAchievementsModal from "@/components/modals/modalVariants/RecentAchievementsModal";
 import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
-import { useProgressTracking } from "@/hooks/progressTracking";
+import { useCompareSequences, useGetSequence, useProgressTracking } from "@/hooks/progressTracking";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import { formatThreeSessionMetrics } from "@/components/tables/performance-metric-table/user/data";
 
 interface Achievement {
   id: number;
@@ -48,10 +48,34 @@ interface Achievement {
   note: string;
 }
 
+export interface Metric {
+  metric: string;
+  category: string;
+  session1: number;
+  session2: number;
+  session3: number;
+  trend: 'Progressing' | 'Declining' | 'Stable';
+};
+
 const ProgressTracking: React.FC = () => {
-  const [selectedSequence, setSelectedSequence] = useState<Sequence>();
+  const defaultSequence = {
+    id: '',
+    title: '',
+    startDate: '',
+    lastUpdated: '',
+    totalCompleted: 1,
+    inProgress: 1
+  }
+  const [selectedSequence, setSelectedSequence] = useState<Sequence>(defaultSequence);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailureModal, setShowFailureModal] = useState(false);
+  const [sequencesData, setSequencesData] = useState<Sequence[]>([{
+    id: "1",
+    title: "Keynote Delivery Refinement",
+    startDate: "February 15, 2025",
+    lastUpdated: "February 22, 2025",
+    totalCompleted: 3,
+  },]);
   const [
     showRecentAchievementsModal,
     setShowRecentAchievementsModal,
@@ -60,7 +84,7 @@ const ProgressTracking: React.FC = () => {
   const sectionFromUrl = searchParams.get("section");
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
   const sectionItems = ["Goals & Achievements", "Performance Analysis"];
-
+  const isDefaultSequence = JSON.stringify(selectedSequence) === JSON.stringify(defaultSequence);
   const {
     data: goalsAndAchievement,
     isLoading,
@@ -71,12 +95,41 @@ const ProgressTracking: React.FC = () => {
     isLoading: progressTrackingLoading,
     error: progressTrackingEerror,
   } = useProgressTracking();
+  const {
+    data: sequencesResponse,
+    isLoading: sequencesLoading,
+    error: sequencesEerror,
+  } = useGetSequence();
+
+  const {
+    data: compareSequencesResponse,
+    isLoading: compareSequencesLoading,
+    error: compareSequencesEerror,
+    refetch: compareSequences
+  } = useCompareSequences(selectedSequence.id);
+
+  useEffect(() => {
+    if (sequencesResponse?.sequences && !sequencesLoading) {
+      const transformedSequences: Sequence[] = sequencesResponse?.sequences?.map((seq: any, index: any) => {
+        return {
+          id: seq?.sequence_id,
+          title: seq?.sequence_name,
+          startDate: "February 15, 2025",
+          lastUpdated: "February 22, 2025",
+          totalCompleted: 3,
+          ...(index % 2 === 1 ? { inProgress: 1 } : {}),
+        };
+      });
+
+      setSequencesData(transformedSequences);
+    }
+  }, [sequencesResponse, sequencesLoading]);
 
   useEffect(() => {
     if (fetchGoalsAndAchievement) {
       toast.error(
         "Failed to fetch goals and achievement: " +
-          (fetchGoalsAndAchievement.message || "Unknown error")
+        (fetchGoalsAndAchievement.message || "Unknown error")
       );
     }
   }, []);
@@ -85,10 +138,44 @@ const ProgressTracking: React.FC = () => {
     if (progressTrackingEerror) {
       toast.error(
         "Failed to fetch goals and achievement: " +
-          (progressTrackingEerror.message || "Unknown error")
+        (progressTrackingEerror.message || "Unknown error")
       );
     }
   }, []);
+
+  useEffect(() => {
+    if (sequencesEerror) {
+      toast.error(
+        "Failed to fetch sequences: " +
+        (sequencesEerror.message || "Unknown error")
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (compareSequencesEerror) {
+      toast.error(
+        "Failed to fetch sequence comparison: " +
+        (compareSequencesEerror.message || "Unknown error")
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (sequencesResponse) {
+      setSequencesData(sequencesResponse);
+      console.log(sequencesResponse)
+    }
+  }, []);
+
+  const formattedData = useMemo(() => {
+    if (!compareSequencesLoading && compareSequencesResponse) {
+      return formatThreeSessionMetrics(compareSequencesResponse);
+    }
+  }, [compareSequencesLoading, compareSequencesResponse]);
+  
+
+  console.log('format data: ', formattedData);
 
   const getLevel = (score: number) => {
     if (score >= 1 && score <= 3) return 1;
@@ -101,42 +188,42 @@ const ProgressTracking: React.FC = () => {
     {
       title: "Vocal Variety",
       wordRate: "85% pitch score",
-      percentage: goalsAndAchievement?.vocal_variety ? (goalsAndAchievement?.vocal_variety * 10) : 0,
+      percentage: (goalsAndAchievement?.vocal_variety ?? 0) * 10,
     },
     {
       title: "Overall ⁠Captured Impact",
       wordRate: "85% impact score",
-      percentage: goalsAndAchievement?.overall_captured_impact ? (goalsAndAchievement?.overall_captured_impact * 10) : 0,
+      percentage: (goalsAndAchievement?.overall_captured_impact ?? 0) * 10,
     },
     {
       title: "Emotional Impact",
       wordRate: "85% speaker",
-      percentage: goalsAndAchievement?.emotional_impact ? (goalsAndAchievement?.emotional_impact * 10) : 0,
+      percentage: (goalsAndAchievement?.emotional_impact ?? 0) * 10,
     },
     {
       title: "Body Language",
       wordRate: "85% clarity score",
-      percentage: goalsAndAchievement?.body_language ? (goalsAndAchievement?.body_language * 10) : 0,
+      percentage: (goalsAndAchievement?.body_language ?? 0) * 10,
     },
     {
       title: "Transformative Communication",
       wordRate: "85% brevity score",
-      percentage: goalsAndAchievement?.transformative_communication ? (goalsAndAchievement?.transformative_communication * 10) : 0,
+      percentage: (goalsAndAchievement?.transformative_communication ?? 0) * 10,
     },
     {
       title: "Audience Engagement",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.audience_engagement ? (goalsAndAchievement?.audience_engagement * 10) : 0,
+      percentage: (goalsAndAchievement?.audience_engagement ?? 0) * 10,
     },
     {
       title: "Structure & Clarity",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.structure_and_clarity ? (goalsAndAchievement?.structure_and_clarity * 10) : 0,
+      percentage: (goalsAndAchievement?.structure_and_clarity ?? 0) * 10,
     },
     {
       title: "Language & Word Choice",
       wordRate: "85% posture",
-      percentage: goalsAndAchievement?.language_and_word_choice ? (goalsAndAchievement?.language_and_word_choice * 10) : 0,
+      percentage: (goalsAndAchievement?.language_and_word_choice ?? 0) * 10,
     },
   ];
 
@@ -144,69 +231,69 @@ const ProgressTracking: React.FC = () => {
     {
       id: 1,
       title: "Vocal Variety Mastery",
-      score: Math.round(goalsAndAchievement?.vocal_variety ? (goalsAndAchievement?.vocal_variety * 10) : 0),
+      score: goalsAndAchievement?.vocal_variety ?? 0,
       level: getLevel(Math.round(goalsAndAchievement?.vocal_variety ?? 0)),
-      total: 100,
+      total: 10,
       note: "Pitch, tone, pace, and pauses.",
     },
     {
       id: 2,
       title: "Overall Captured Impact Mastery",
-      score: Math.round(goalsAndAchievement?.overall_captured_impact ? (goalsAndAchievement?.overall_captured_impact * 10) : 0),
+      score: goalsAndAchievement?.overall_captured_impact ?? 0,
       level: getLevel(Math.round(goalsAndAchievement?.overall_captured_impact ?? 0)),
-      total: 100,
+      total: 10,
       note: "The impact of the overall speech.",
     },
     {
       id: 3,
       title: "Emotional Impact Mastery",
-      score: Math.round(goalsAndAchievement?.emotional_impact ? (goalsAndAchievement?.emotional_impact * 10) : 0),
+      score: goalsAndAchievement?.emotional_impact ?? 0,
       level: getLevel(Math.round(goalsAndAchievement?.emotional_impact ?? 0)),
-      total: 100,
+      total: 10,
       note: "Compels to the audience's emotions.",
     },
     {
       id: 4,
       title: "Body Language Mastery",
-      score: Math.round(goalsAndAchievement?.body_language ? (goalsAndAchievement?.body_language * 10) : 0),
+      score: goalsAndAchievement?.body_language ?? 0,
       level: getLevel(Math.round(goalsAndAchievement?.body_language ?? 0)),
-      total: 100,
+      total: 10,
       note: "Body posture, motion and hand gestures.",
     },
     {
       id: 5,
       title: "Transformative Communication Mastery",
-      score: Math.round(goalsAndAchievement?.transformative_communication ? (goalsAndAchievement?.transformative_communication * 10) : 0),
+      score: goalsAndAchievement?.transformative_communication ?? 0,
       level: getLevel(Math.round(goalsAndAchievement?.transformative_communication ?? 0)),
-      total: 100,
+      total: 10,
       note: "Inspires change or shifts thinking.",
     },
     {
       id: 6,
       title: "Audience Engagement Mastery",
-      score: Math.round(goalsAndAchievement?.audience_engagement ? (goalsAndAchievement?.audience_engagement * 10) : 0),
+      score: goalsAndAchievement?.audience_engagement ?? 0,
       level: getLevel(Math.round(goalsAndAchievement?.audience_engagement ?? 0)),
-      total: 100,
+      total: 10,
       note: "Triggers the audience to respond.",
     },
     {
       id: 7,
       title: "Structure & Clarity Mastery",
-      score: Math.round(goalsAndAchievement?.structure_and_clarity ? (goalsAndAchievement?.structure_and_clarity * 10) : 0),
+      score: goalsAndAchievement?.structure_and_clarity ?? 0,
       level: getLevel(Math.round(goalsAndAchievement?.structure_and_clarity ?? 0)),
-      total: 100,
+      total: 10,
       note: "How clearly ideas are organized and expressed.",
     },
     {
       id: 8,
       title: "Language & Word Choice Mastery",
-      score: Math.round(goalsAndAchievement?.language_and_word_choice ? (goalsAndAchievement?.language_and_word_choice * 10) : 0),
+      score: goalsAndAchievement?.language_and_word_choice ?? 0,
       level: getLevel(Math.round(goalsAndAchievement?.language_and_word_choice ?? 0)),
-      total: 100,
+      total: 10,
       note: "Avoid filler words and use good grammar.",
     },
   ];
-  
+
 
   const streakStats = [
     {
@@ -324,14 +411,14 @@ const ProgressTracking: React.FC = () => {
       const date = new Date(item.month);
       const monthName = date.toLocaleString("default", { month: "long" });
 
-    return {
-      month: monthName,
-      Impact: item.impact,
-      AudienceEngagement: item.audience_engagement,
-      Clarity: item.clarity,
-      Confidence: 90
-    };
-  }) || [];
+      return {
+        month: monthName,
+        Impact: item.impact,
+        AudienceEngagement: item.audience_engagement,
+        Clarity: item.clarity,
+        Confidence: 90
+      };
+    }) || [];
 
   const chartColors = {
     Impact: "#252A39",
@@ -374,32 +461,6 @@ const ProgressTracking: React.FC = () => {
     { value: "duration-asc", label: "Duration (Shortest)" },
   ];
 
-  const sequences: Sequence[] = [
-    {
-      id: "1",
-      title: "Keynote Delivery Refinement",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-    },
-    {
-      id: "2",
-      title: "Pitch Mastery Programme",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1,
-    },
-    {
-      id: "3",
-      title: "Presentation Programme",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1,
-    },
-  ];
-
   const [activeFilter, setActiveFilter] = useState("all");
   const [activeSort, setActiveSort] = useState("date-desc");
 
@@ -407,8 +468,8 @@ const ProgressTracking: React.FC = () => {
     activeFilter === "all"
       ? sessions
       : sessions.filter((session) =>
-          session.type.toLowerCase().includes(activeFilter.toLowerCase())
-        );
+        session.type.toLowerCase().includes(activeFilter.toLowerCase())
+      );
 
   const handleFilterChange = (value: string) => {
     setActiveFilter(value);
@@ -446,6 +507,10 @@ const ProgressTracking: React.FC = () => {
 
   const handleSelectSequence = (sequence: Sequence) => {
     setSelectedSequence(sequence);
+    console.log(sequence?.id)
+    if (sequence?.id && !compareSequencesLoading) {
+      compareSequences();
+    }
   };
 
   const handleNewSession = (sequenceId: number | string) => {
@@ -487,11 +552,10 @@ const ProgressTracking: React.FC = () => {
               {sectionItems.map((item, index) => (
                 <Button
                   onClick={() => handleSectionChange(index)}
-                  className={`${
-                    activeIndex === index
-                      ? "bg-white text-[#252A39] hover:bg-white "
-                      : "text-[#6F7C8E] bg-[#F2F2F2] hover:bg-[#F2F2F2]"
-                  } py-1 px-3 rounded-[6px] shadow-none hover:text-inherit hover:shadow-none`}
+                  className={`${activeIndex === index
+                    ? "bg-white text-[#252A39] hover:bg-white "
+                    : "text-[#6F7C8E] bg-[#F2F2F2] hover:bg-[#F2F2F2]"
+                    } py-1 px-3 rounded-[6px] shadow-none hover:text-inherit hover:shadow-none`}
                 >
                   {item}
                 </Button>
@@ -829,15 +893,21 @@ const ProgressTracking: React.FC = () => {
                 />
               </div>
             </section>
-            <section className="mb-10">
+            <section className="mb-10 relative">
               <SequenceSelector
-                sequences={sequences}
+                sequences={sequencesData}
                 onNewSession={handleNewSession}
                 onSelectSequence={handleSelectSequence}
                 trendUpIcon={trendUpIcon}
+                disabled={sequencesLoading || !sequencesData}
               />
+
+              {(sequencesLoading || !sequencesData) && (
+                <div className="absolute inset-0 bg-white/70 z-10 pointer-events-auto" />
+              )}
             </section>
-            {selectedSequence && (
+
+            {!isDefaultSequence &&
               <section className="mt-10 mb-6 border border-[#E0E0E0] sm:p-6 p-4 bg-white rounded-[16px]">
                 <div className="mb-6">
                   <h3 className="text-xl font-medium text-#252A39">
@@ -847,13 +917,14 @@ const ProgressTracking: React.FC = () => {
                     Track your progress across key speaking metrics{" "}
                   </p>
                 </div>
-                <PresentationMetricsTable
+                {formattedData && <PresentationMetricsTable
                   columns={columns}
-                  data={data}
+                  data={formattedData}
                   pageSize={7}
-                />
+                  hidePagination={true}
+                />}
               </section>
-            )}
+            }
           </div>
         )}
       </div>

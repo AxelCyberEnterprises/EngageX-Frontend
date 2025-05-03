@@ -6,7 +6,7 @@ import * as z from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Upload, Globe, Clock, LoaderCircle } from 'lucide-react';
+import { Upload, Globe, Clock } from 'lucide-react';
 import uploadCloud from '../../assets/images/svgs/upload-cloud.svg';
 import verified from '../../assets/images/svgs/verified.svg';
 import profileEdit from '../../assets/images/svgs/profile-edit.svg';
@@ -19,13 +19,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SearchableSelect } from '../select/CustomSelect';
-import { useUserProfile } from '@/hooks/settings';
+import { useFullUserProfile, useUserProfile } from '@/hooks/settings';
 import { toast } from 'sonner';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
 import { tokenManager } from "@/lib/utils";
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
+import { Skeleton } from '../ui/skeleton';
 
 const personalInfoSchema = z.object({
   first_name: z.string().min(1, 'First name is required').optional(),
@@ -40,15 +39,22 @@ const personalInfoSchema = z.object({
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
 const PersonalInfoForm: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { data: fullProfile } = useFullUserProfile();
   const queryClient = useQueryClient();
-  const { data: profile, isLoading, error: fetchProfileError } = useUserProfile();
+  const {
+    data: profile,
+    isLoading,
+    error: fetchProfileError,
+  } = useUserProfile(fullProfile?.results?.[0]?.id);
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
+  console.log(fullProfile);
+
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
@@ -73,46 +79,48 @@ const PersonalInfoForm: React.FC = () => {
 
   const submit = (data: PersonalInfoFormData) => {
     const formData = new FormData();
-    
+
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value);
       }
     });
-    
+
     if (selectedPhoto) {
       formData.append('profile_picture', selectedPhoto);
     }
-    
+
     const token = tokenManager.getToken();
-    const userId = user?.user_id;
-  
+
     setIsUpdating(true);
-  
-    axios.patch(
-      `https://api.engagexai.io/users/userprofiles/${userId}/`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Token ${token}`
+
+    if (fullProfile?.results?.[0]?.id) {
+
+      axios.patch(
+        `https://api.engagexai.io/users/userprofiles/${fullProfile?.results?.[0]?.id}/`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Token ${token}`
+          }
         }
-      }
-    ).then(() => {
-      toast.success('Profile updated successfully');
-      setIsEditMode(false);
-      setSelectedPhoto(null);
-      queryClient.invalidateQueries({ queryKey: ["user-profile"] });
-    })
-    .catch((error) => {
-      console.error('Profile update error:', error);
-      toast.error('Failed to update profile: ' + (error.response?.data?.message || error.message || 'Unknown error'));
-    })
-    .finally(() => {
-      setIsUpdating(false);
-    });
+      ).then(() => {
+        toast.success('Profile updated successfully');
+        setIsEditMode(false);
+        setSelectedPhoto(null);
+        queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+      })
+        .catch((error) => {
+          console.error('Profile update error:', error);
+          toast.error('Failed to update profile: ' + (error.response?.data?.message || error.message || 'Unknown error'));
+        })
+        .finally(() => {
+          setIsUpdating(false);
+        });
+    }
   };
-  
+
   const countries = [
     { value: "Canada", label: "Canada", icon: "🇨🇦" },
     { value: "Nigeria", label: "Nigeria", icon: "🇳🇬" },
@@ -157,7 +165,7 @@ const PersonalInfoForm: React.FC = () => {
         country: profile.country || "",
         timezone: profile.timezone || "",
       });
-      
+
       if (profile.profile_picture) {
         setPhotoPreview(profile.profile_picture);
       }
@@ -217,9 +225,49 @@ const PersonalInfoForm: React.FC = () => {
             </div>
           </CardHeader>
           {isUpdating || isLoading ?
-            <div className='flex items-center justify-center py-[200px]'>
-              <LoaderCircle className="size-10 animate-spin" />
-            </div>
+            <CardContent className="space-y-6 px-0 w-full lg:w-[55%]">
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-24" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Skeleton className="h-10 w-full" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-36" />
+                <Skeleton className="h-4 w-56" />
+                <div className="flex flex-col sm:flex-row items-start gap-6 py-3">
+                  <Skeleton className="h-16 w-16 rounded-full" />
+                  <Skeleton className="h-32 w-full" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-36" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="pt-4 border-t">
+                <div className="flex flex-col space-y-2">
+                  <Skeleton className="h-5 w-40" />
+                  <Skeleton className="h-4 w-48" />
+                </div>
+              </div>
+            </CardContent>
             : <CardContent className="space-y-6 px-0 w-full lg:w-[55%]">
               <div className="space-y-1">
                 <Label htmlFor="first_name">Enter name</Label>

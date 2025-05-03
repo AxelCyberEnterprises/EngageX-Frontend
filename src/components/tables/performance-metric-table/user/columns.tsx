@@ -1,34 +1,16 @@
-import ShadSelect from "@/components/dashboard/Select";
 import { ColumnDef } from "@tanstack/react-table";
-import reload from '../../../../assets/images/svgs/reload.svg';
-import document from '../../../../assets/images/svgs/document.svg';
+import trendUpIcon from '../../../../assets/images/svgs/trend-up.svg';
+import trendDownIcon from '../../../../assets/images/svgs/trend-down.svg';
 
 export type Metric = {
   metric: string;
   category: string;
-  sessionType: number;
+  // sessionType: number;
+  sequence1: number;
   sequence2: number;
   sequence3: number;
-  sequence4: number;
-  sequence5: number;
-  sequence6: number;
-};
-
-const sessionOptions = [
-  {
-    value: "compare-session",
-    label: "Compare Session",
-    icon: reload
-  },
-  {
-    value: "full-report",
-    label: "View Full Report",
-    icon: document
-  },
-];
-
-const handleSessionTypeChange = (value: string) => {
-  console.log("Selected session:", value);
+  trend12: any
+  trend23: any
 };
 
 export const columns: ColumnDef<Metric, any>[] = [
@@ -61,61 +43,41 @@ export const columns: ColumnDef<Metric, any>[] = [
       }
 
       return (
-        <span className={`px-3 py-1 rounded-full text-sm border border-[#E0E0E0] ${bgColor}`}>
+        <span className={`px-3 py-1 rounded-full text-sm border border-gray-200 ${bgColor}`}>
           {category}
         </span>
       );
     }
   },
   {
-    accessorKey: "sessionType",
-    header: () => {
-      return <ShadSelect
-        options={sessionOptions}
-        onChange={handleSessionTypeChange}
-        placeholder="Session Type"
-        className='w-fit sm:rounded-[10px] rounded-[5px] shadow-none sm:py-3 py-1 sm:px-4 px-2 sm:h-9 h-7 text-[#252A39] focus-visible:ring-0 active:shadow-none border-none bg-transparent'
-        showIcon={false}
-        placeholderClassname="text-[#252A39] "
-      />
-    },
-    cell: ({ row }) => {
-      return renderScoreCell(row.getValue("sessionType"));
-    }
+    accessorKey: "sequence1",
+    header: () => <div className="text-center w-full">Sequence 1</div>,
+    cell: ({ row }) => renderScoreCell(row.getValue("sequence1")),
   },
   {
     accessorKey: "sequence2",
-    header: "Sequence 2",
-    cell: ({ row }) => {
-      return renderScoreCell(row.getValue("sequence2"));
-    }
+    header: () => <div className="text-center w-full">Sequence 2</div>,
+    cell: ({ row }) => renderScoreCell(row.getValue("sequence2")),
   },
   {
     accessorKey: "sequence3",
-    header: "Sequence 3",
+    header: () => <div className="text-center w-full">Sequence 3</div>,
+    cell: ({ row }) => renderScoreCell(row.getValue("sequence3")),
+  },
+  {
+    accessorKey: "trend12",
+    header: "Trend 1-2",
     cell: ({ row }) => {
-      return renderScoreCell(row.getValue("sequence3"));
+      const trend: 'Progressing' | 'Declining' = row.getValue("trend12");
+      return <TrendCell trend={trend} />;
     }
   },
   {
-    accessorKey: "sequence4",
-    header: "Sequence 4",
+    accessorKey: "trend23",
+    header: "Trend 2-3",
     cell: ({ row }) => {
-      return renderScoreCell(row.getValue("sequence4"));
-    }
-  },
-  {
-    accessorKey: "sequence5",
-    header: "Sequence 5",
-    cell: ({ row }) => {
-      return renderScoreCell(row.getValue("sequence5"));
-    }
-  },
-  {
-    accessorKey: "sequence6",
-    header: "Sequence 6",
-    cell: ({ row }) => {
-      return renderScoreCell(row.getValue("sequence6"));
+      const trend: 'Progressing' | 'Declining' = row.getValue("trend23");
+      return <TrendCell trend={trend} />;
     }
   },
 ];
@@ -136,10 +98,31 @@ const renderScoreCell = (score: number) => {
   }
 
   return (
-    <div className="flex justify-center">
-      <span className={`${bgColor} ${textColor} w-8 h-8 rounded-full flex items-center justify-center font-medium !text-xs`}>
+    <div className="flex justify-center ml-auto">
+      <span className={`${bgColor} ${textColor} w-8 h-8 rounded-full flex items-center justify-center font-medium text-xs`}>
         {score}
       </span>
     </div>
   );
+};
+  
+// Trend cell component
+// eslint-disable-next-line react-refresh/only-export-components
+const TrendCell = ({ trend }: { trend: 'Progressing' | 'Declining' }) => {
+  if (trend === 'Progressing') {
+    return (
+      <div className="flex gap-2 items-center text-green-700">
+        <img src={trendUpIcon} alt="trend Icon" className="w-3 h-3"/>
+        {trend}
+      </div>
+    );
+  } else if (trend === 'Declining') {
+    return (
+      <div className="flex gap-2 items-center text-red-700">
+        <img src={trendDownIcon} alt="trend Icon" className="w-3 h-3"/>
+        {trend}
+      </div>
+    );
+  }
+  return null;
 };
