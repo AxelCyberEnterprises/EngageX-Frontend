@@ -169,7 +169,7 @@ const PublicSpeaking: React.FC = () => {
                         if (parsed.text) {
                             console.log(parsed.text);   
                             const validEmotions = ["thinking", "empathy", "excitement", "laughter", "surprise", "interested"];
-                            if (validEmotions.includes(parsed.text)) {
+                            if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
                                 const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
