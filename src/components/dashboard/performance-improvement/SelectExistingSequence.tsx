@@ -1,21 +1,38 @@
 import {
   PIScreens,
+  Sequence,
   handleActiveScreen,
   handleSelectedScreen,
+  setExistingSequence,
 } from "@/store/slices/performance_improvement_slice";
 import ExistingSequenceCard from "./ExistingSequenceCard";
 import { ExistingSequenceTable } from "./ExistingSequenceTable";
 import { RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetSequences } from "@/hooks/sessions";
+import { useEffect } from "react";
 
 function SelectExistingSequence() {
   const sequences = useGetSequences();
   console.log("sequences: ", sequences.data);
-  const { existing_sessions, active_screen } = useSelector(
+  const { existing_sequences, active_screen } = useSelector(
     (state: RootState) => state.performance_improvement
   );
+
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (!sequences.data) return;
+
+    const updatedSequences = ((sequences.data as unknown) as Sequence[]).map(
+      (seq) => ({
+        ...seq,
+        is_active: false,
+      })
+    );
+
+    dispatch(setExistingSequence(updatedSequences));
+  }, [sequences.data, dispatch]);
+
   return (
     <main className="px-4 lg:px-10 pb-10 bg-[#F9F9F9] font-montreal mb-20">
       <div className="py-6 flex w-full gap-8 justify-between items-center">
@@ -39,11 +56,11 @@ function SelectExistingSequence() {
         </button>
       </div>
       <div className="space-y-6">
-        {existing_sessions.map((session, idx) => (
+        {existing_sequences.map((sequence, idx) => (
           <div className="space-y-4">
-            <ExistingSequenceCard key={idx} session={session} idx={idx} />
-            {session.is_active && (
-              <ExistingSequenceTable sequences={session.sequences} />
+            <ExistingSequenceCard key={idx} sequence={sequence} idx={idx} />
+            {sequence.is_active && (
+              <ExistingSequenceTable sessions={sequence.sessions} />
             )}
           </div>
         ))}

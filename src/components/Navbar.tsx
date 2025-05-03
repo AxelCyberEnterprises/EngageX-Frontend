@@ -29,7 +29,7 @@ function Navbar() {
               { path: "/contact", label: "Contact" },
               // { path: "/press", label: "Contact" },
             ].map(({ path, label }) => (
-              <Link key={path} to={path}>
+              <Link key={path} to={path} onClick={() => setShowMenu(false)}>
                 <li
                   className={clsx(
                     "py-4 lg:py-0",
@@ -42,12 +42,16 @@ function Navbar() {
             ))}
           </ul>
           <div className="space-y-4 flex flex-col items-center">
-            <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border border-green-sheen">
-              <p>Login</p>
-            </button>
-            <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border bg-green-sheen">
-              <p>Get started</p>
-            </button>
+            <Link to="/auth/login">
+              <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border border-green-sheen">
+                <p>Login</p>
+              </button>
+            </Link>
+            <Link to="/auth/signup">
+              <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border bg-green-sheen">
+                <p>Get started</p>
+              </button>
+            </Link>
           </div>
         </div>
         <div className="flex gap-4">
