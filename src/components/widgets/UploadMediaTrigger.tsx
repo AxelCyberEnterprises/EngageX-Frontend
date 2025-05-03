@@ -21,7 +21,7 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
         "application/vnd.ms-powerpoint": [".ppt"],
         "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
     },
-    maxSize = 10 * 1024 * 1024, // 10MB
+    maxSize = 20 * 1024 * 1024, // 20MB
     className,
     children,
     name,
