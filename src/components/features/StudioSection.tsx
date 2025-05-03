@@ -29,7 +29,7 @@ function StudioSection() {
           "Dynamic prompts that adapt based on your responses to simulate real conversations.",
       },
       {
-        title: "AI STAR Feedback Analysis",
+        title: "AI S`AR Feedback Analysis",
         content:
           "Real time evaluation based on the SAR method to strengthen structured response skills.",
       },
