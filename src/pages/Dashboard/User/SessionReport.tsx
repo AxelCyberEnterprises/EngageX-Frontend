@@ -14,12 +14,13 @@ import { ArrowLeft, Download, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
-import { useUserProfile } from "@/hooks/settings";
+import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-    const { data: profile } = useUserProfile();
+    const { data: fullProfile } = useFullUserProfile();
+    const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -269,7 +270,7 @@ const PitchSessionReport: React.FC = () => {
 
                             <div className="flex lg:me-5 mt-6 lg:mt-0">
                                 <div className="flex pe-5 me-5 border-r-2 border-bright-gray">
-                                    <img src={profile?.profile_picture} alt="avatar" className="w-11 h-11 rounded-full object-cover"/>
+                                    <img src={profile?.profile_picture} alt="avatar" className="w-11 h-11 rounded-full object-cover" />
                                     <div className="flex flex-col justify-between ps-2">
                                         <h6>{data.full_name}</h6>
                                         <p className="text-independence">{data.user_email}</p>

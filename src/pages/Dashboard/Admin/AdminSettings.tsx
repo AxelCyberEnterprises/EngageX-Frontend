@@ -8,11 +8,8 @@ import NotificationSettings from "@/components/dashboard/Notification";
 import AccountSecurity from "@/components/dashboard/AccountSecurity";
 import Credits from "@/components/dashboard/Credits";
 import { useSearchParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 
 const AdminSettings: React.FC = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   // const [showFailureModal, setShowFailureModal] = useState(false);
@@ -27,18 +24,25 @@ const AdminSettings: React.FC = () => {
     "Account & Security",
     "Credits",
   ];
-  console.log(user);
+
   useEffect(() => {
     if (sectionFromUrl) {
-      const newIndex = sectionItems.indexOf(sectionFromUrl);
-      if (newIndex !== -1) setActiveIndex(newIndex);
+      const normalizedUrlSection = sectionFromUrl.toLowerCase().trim();
+      const newIndex = sectionItems.findIndex(item => {
+        const normalizedItem = item.toLowerCase().split('&')[0].trim();
+        return normalizedItem.includes(normalizedUrlSection) || 
+               normalizedUrlSection.includes(normalizedItem);
+      });
+      
+      if (newIndex !== -1) {
+        setActiveIndex(newIndex);
+      }
     }
-  }, [sectionFromUrl]);
+  }, [sectionFromUrl, sectionItems]);
 
   const handleSectionChange = (index: number) => {
-    const sectionName = sectionItems[index].split("&")[0].trim();
     setActiveIndex(index);
-    setSearchParams({ section: sectionName });
+    setSearchParams({ section: sectionItems[index] });
   };
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -50,17 +54,6 @@ const AdminSettings: React.FC = () => {
       });
     }
   };
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const section = searchParams.get("section");
-    const index = sectionItems.findIndex(
-      (item) => item.toLowerCase() === section?.toLowerCase()
-    );
-    if (index !== -1) {
-      setActiveIndex(index);
-    }
-  }, []);
 
   return (
     <>
@@ -84,10 +77,10 @@ const AdminSettings: React.FC = () => {
       />
       <ActionModal
         show={planFailureModal}
-        onClose={() => setPlanFailureModal(false)}
+        onClose={() => setPlanSuccessModal(false)}
         icon={circleCheck}
-        head="Payment Failed"
-        message="Your credit was not processed! Try again later."
+        head="Payment Successful"
+        message="Your credit has been successfully processed! Thank you for your transaction."
         cta="Go to Home"
         ctaClassName="border border-[#D5D7DA] text-[#FFFFFF]"
       />
@@ -139,13 +132,13 @@ const AdminSettings: React.FC = () => {
 
         <section className="flex-1 overflow-y-auto scrollbar-hide">
           {activeIndex === 0 && (
-            <PersonalInfoForm />
+            <PersonalInfoForm/>
           )}
           {activeIndex === 1 && (
-            <NotificationSettings />
+            <NotificationSettings/>
           )}
           {activeIndex === 2 && (
-            <AccountSecurity />
+            <AccountSecurity/>
           )}
           {activeIndex === 3 && (
             <Credits

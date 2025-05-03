@@ -10,7 +10,7 @@ import modalFirstImage from "../../../assets/images/pngs/user-agreement-image-1.
 import cloudCheck from "../../../assets/images/svgs/cloud-check.svg";
 import cloudCheckGray from "../../../assets/images/svgs/cloud-check-gray.svg";
 import { Label } from "@/components/ui/label";
-import { useUpdateUserProfile } from "@/hooks/settings";
+import { useFullUserProfile, useUpdateUserProfile } from "@/hooks/settings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/rootReducer";
 
@@ -32,8 +32,8 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
     // useEffect(()=>{
     //   console.log("Agreement State:", agreementState);
     // }, [agreementState])
-
-    const { mutate: updateUserProfile } = useUpdateUserProfile();
+    const { data: fullProfile } = useFullUserProfile();
+    const { mutate: updateUserProfile } = useUpdateUserProfile(fullProfile?.results?.[0]?.id);
     const signupData = useSelector((state: RootState) => state.auth.signupData);
     // console.log("Signup Data:", signupData)
     useEffect(() => {
@@ -127,9 +127,8 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
             <DialogTitle></DialogTitle>
             <DialogContent
                 aria-describedby={undefined}
-                className={` ${
-                    step === 4 || step === 5 || step === 1 ? "w-[min(100%,25rem)]" : "w-[85vw] md:max-w-[50vw]"
-                }  my-auto mx-auto  max-md:mt-5 max-md:max-h-[90vh] [&>button]:hidden`}
+                className={` ${step === 4 || step === 5 || step === 1 ? "w-[min(100%,25rem)]" : "w-[85vw] md:max-w-[50vw]"
+                    }  my-auto mx-auto  max-md:mt-5 max-md:max-h-[90vh] [&>button]:hidden`}
                 onInteractOutside={(e) => e.preventDefault()}
                 onEscapeKeyDown={(e) => e.preventDefault()}
             >
@@ -180,9 +179,8 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
                 <DialogFooter className="flex flex-col sm:flex-row gap-2 font-[Inter] justify-between">
                     <Button
                         variant="default"
-                        className={`${
-                            step === 1 ? "bg-[rgba(255,0,0,0.1)] text-[#f00]" : "bg-white border text-[#344054]"
-                        } ${step > 3 ? "hidden" : ""} w-full py-4 h-fit border-[#1018280D] hover:bg-accent rounded-lg`}
+                        className={`${step === 1 ? "bg-[rgba(255,0,0,0.1)] text-[#f00]" : "bg-white border text-[#344054]"
+                            } ${step > 3 ? "hidden" : ""} w-full py-4 h-fit border-[#1018280D] hover:bg-accent rounded-lg`}
                         onClick={prevStep}
                     >
                         {step === 1 ? "Cancel" : "Back"}
@@ -410,9 +408,8 @@ function StepThree({
             <p className="text-base">Upload Picture (optional)</p>
             <p className="text-muted-foreground text-sm text-center">Upload your picture for easy identification.</p>
             <div
-                className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${
-                    isDragging ? "bg-gray-100" : ""
-                }`}
+                className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${isDragging ? "bg-gray-100" : ""
+                    }`}
                 onDragEnter={handleDragEnter}
                 onDragLeave={handleDragLeave}
                 onDragOver={handleDragOver}
