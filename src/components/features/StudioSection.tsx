@@ -73,7 +73,7 @@ function StudioSection() {
         </div>
 
         <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
-          <h4 className="h-max font-montreal leading-snug">Interview Studio</h4>
+          <h2 className="h-max font-montreal leading-snug">Interview Studio</h2>
           <p>
             An exciting new vertical Interview Studio will soon be available for
             specified industry professionals in: Marketing, Biotech/Pharma,

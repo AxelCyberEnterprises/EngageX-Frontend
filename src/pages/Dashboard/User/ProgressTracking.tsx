@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import circleCheck from "../../../assets/images/svgs/circle-check.svg";
 import circleExclamation from "../../../assets/images/svgs/circle-exclamation.svg";
 // import menuWhite from '../../../assets/images/svgs/menu-white.svg';
@@ -29,7 +29,6 @@ import { RecentSessionsTable } from "@/components/tables/recent-sessions-table/u
 import { Session } from "@/components/tables/recent-sessions-table/user/data";
 import { useSearchParams } from "react-router-dom";
 import { columns } from "@/components/tables/performance-metric-table/user/columns";
-import { data } from "@/components/tables/performance-metric-table/user/data";
 import SequenceSelector, {
   Sequence,
 } from "@/components/dashboard/SequenceSelect";
@@ -38,6 +37,7 @@ import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
 import { useCompareSequences, useGetSequence, useProgressTracking } from "@/hooks/progressTracking";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import { formatThreeSessionMetrics } from "@/components/tables/performance-metric-table/user/data";
 
 interface Achievement {
   id: number;
@@ -48,12 +48,34 @@ interface Achievement {
   note: string;
 }
 
+export interface Metric {
+  metric: string;
+  category: string;
+  session1: number;
+  session2: number;
+  session3: number;
+  trend: 'Progressing' | 'Declining' | 'Stable';
+};
+
 const ProgressTracking: React.FC = () => {
-  const [selectedSequence, setSelectedSequence] = useState<Sequence>();
+  const defaultSequence = {
+    id: '',
+    title: '',
+    startDate: '',
+    lastUpdated: '',
+    totalCompleted: 1,
+    inProgress: 1
+  }
+  const [selectedSequence, setSelectedSequence] = useState<Sequence>(defaultSequence);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailureModal, setShowFailureModal] = useState(false);
-  const [sequencesData, setSequencesData] = useState(false);
-  const [compareSequencesData, setCompareSequencesData] = useState(false);
+  const [sequencesData, setSequencesData] = useState<Sequence[]>([{
+    id: "1",
+    title: "Keynote Delivery Refinement",
+    startDate: "February 15, 2025",
+    lastUpdated: "February 22, 2025",
+    totalCompleted: 3,
+  },]);
   const [
     showRecentAchievementsModal,
     setShowRecentAchievementsModal,
@@ -62,7 +84,7 @@ const ProgressTracking: React.FC = () => {
   const sectionFromUrl = searchParams.get("section");
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
   const sectionItems = ["Goals & Achievements", "Performance Analysis"];
-
+  const isDefaultSequence = JSON.stringify(selectedSequence) === JSON.stringify(defaultSequence);
   const {
     data: goalsAndAchievement,
     isLoading,
@@ -78,13 +100,30 @@ const ProgressTracking: React.FC = () => {
     isLoading: sequencesLoading,
     error: sequencesEerror,
   } = useGetSequence();
+
   const {
     data: compareSequencesResponse,
     isLoading: compareSequencesLoading,
     error: compareSequencesEerror,
-  } = useCompareSequences(selectedSequence?.id);
+    refetch: compareSequences
+  } = useCompareSequences(selectedSequence.id);
 
-  console.log(sequencesData, compareSequencesData, sequencesLoading, compareSequencesLoading)
+  useEffect(() => {
+    if (sequencesResponse?.sequences && !sequencesLoading) {
+      const transformedSequences: Sequence[] = sequencesResponse?.sequences?.map((seq: any, index: any) => {
+        return {
+          id: seq?.sequence_id,
+          title: seq?.sequence_name,
+          startDate: "February 15, 2025",
+          lastUpdated: "February 22, 2025",
+          totalCompleted: 3,
+          ...(index % 2 === 1 ? { inProgress: 1 } : {}),
+        };
+      });
+
+      setSequencesData(transformedSequences);
+    }
+  }, [sequencesResponse, sequencesLoading]);
 
   useEffect(() => {
     if (fetchGoalsAndAchievement) {
@@ -129,13 +168,14 @@ const ProgressTracking: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (compareSequencesResponse) {
-      setCompareSequencesData(compareSequencesResponse);
-      console.log(compareSequencesResponse)
+  const formattedData = useMemo(() => {
+    if (!compareSequencesLoading && compareSequencesResponse) {
+      return formatThreeSessionMetrics(compareSequencesResponse);
     }
-  }, [selectedSequence, sequencesResponse]);
+  }, [compareSequencesLoading, compareSequencesResponse]);
+  
 
+  console.log('format data: ', formattedData);
 
   const getLevel = (score: number) => {
     if (score >= 1 && score <= 3) return 1;
@@ -186,7 +226,7 @@ const ProgressTracking: React.FC = () => {
       percentage: (goalsAndAchievement?.language_and_word_choice ?? 0) * 10,
     },
   ];
-  
+
   const achievementData: Achievement[] = [
     {
       id: 1,
@@ -253,7 +293,7 @@ const ProgressTracking: React.FC = () => {
       note: "Avoid filler words and use good grammar.",
     },
   ];
-  
+
 
   const streakStats = [
     {
@@ -421,32 +461,6 @@ const ProgressTracking: React.FC = () => {
     { value: "duration-asc", label: "Duration (Shortest)" },
   ];
 
-  const sequences: Sequence[] = [
-    {
-      id: "1",
-      title: "Keynote Delivery Refinement",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-    },
-    {
-      id: "2",
-      title: "Pitch Mastery Programme",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1,
-    },
-    {
-      id: "3",
-      title: "Presentation Programme",
-      startDate: "February 15, 2025",
-      lastUpdated: "February 22, 2025",
-      totalCompleted: 3,
-      inProgress: 1,
-    },
-  ];
-
   const [activeFilter, setActiveFilter] = useState("all");
   const [activeSort, setActiveSort] = useState("date-desc");
 
@@ -493,6 +507,10 @@ const ProgressTracking: React.FC = () => {
 
   const handleSelectSequence = (sequence: Sequence) => {
     setSelectedSequence(sequence);
+    console.log(sequence?.id)
+    if (sequence?.id && !compareSequencesLoading) {
+      compareSequences();
+    }
   };
 
   const handleNewSession = (sequenceId: number | string) => {
@@ -535,8 +553,8 @@ const ProgressTracking: React.FC = () => {
                 <Button
                   onClick={() => handleSectionChange(index)}
                   className={`${activeIndex === index
-                      ? "bg-white text-[#252A39] hover:bg-white "
-                      : "text-[#6F7C8E] bg-[#F2F2F2] hover:bg-[#F2F2F2]"
+                    ? "bg-white text-[#252A39] hover:bg-white "
+                    : "text-[#6F7C8E] bg-[#F2F2F2] hover:bg-[#F2F2F2]"
                     } py-1 px-3 rounded-[6px] shadow-none hover:text-inherit hover:shadow-none`}
                 >
                   {item}
@@ -875,15 +893,21 @@ const ProgressTracking: React.FC = () => {
                 />
               </div>
             </section>
-            <section className="mb-10">
+            <section className="mb-10 relative">
               <SequenceSelector
-                sequences={sequences}
+                sequences={sequencesData}
                 onNewSession={handleNewSession}
                 onSelectSequence={handleSelectSequence}
                 trendUpIcon={trendUpIcon}
+                disabled={sequencesLoading || !sequencesData}
               />
+
+              {(sequencesLoading || !sequencesData) && (
+                <div className="absolute inset-0 bg-white/70 z-10 pointer-events-auto" />
+              )}
             </section>
-            {selectedSequence && (
+
+            {!isDefaultSequence &&
               <section className="mt-10 mb-6 border border-[#E0E0E0] sm:p-6 p-4 bg-white rounded-[16px]">
                 <div className="mb-6">
                   <h3 className="text-xl font-medium text-#252A39">
@@ -893,13 +917,14 @@ const ProgressTracking: React.FC = () => {
                     Track your progress across key speaking metrics{" "}
                   </p>
                 </div>
-                <PresentationMetricsTable
+                {formattedData && <PresentationMetricsTable
                   columns={columns}
-                  data={data}
+                  data={formattedData}
                   pageSize={7}
-                />
+                  hidePagination={true}
+                />}
               </section>
-            )}
+            }
           </div>
         )}
       </div>

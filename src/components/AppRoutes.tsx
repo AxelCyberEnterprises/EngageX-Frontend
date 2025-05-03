@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { tokenManager } from "@/lib/utils";
 import Contact from "@/pages/Contact";
 import HelpPage from "@/pages/Dashboard/User/help";
@@ -11,14 +12,7 @@ import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import PresentationPracticeSession from "@/pages/Sessions/PresentationPractice";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
-import {
-  Link,
-  Navigate,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { Link, Navigate, Route, BrowserRouter as Router, Routes, useLocation } from "react-router";
 import DashboardLayout from "../components/layouts/DashboardLayout";
 import SessionsLayout from "../components/layouts/SessionsLayout";
 import AuthPage from "../pages/auth";
@@ -51,262 +45,238 @@ import Press from "@/pages/Press/Press";
 import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
 import CancellationPolicy from "@/pages/CancellationPolicy";
 import WebsiteLayout from "./layouts/WebsiteLayout";
-import ScrollToTop from "@/hooks/useScrollToTop";
+import ScrollToTop from "./ScrollToTop";
 
 function RequireAuth({ children }: { children: ReactNode }) {
-  const isAuthenticated = useSelector(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (state: any) => state.auth.isAuthenticated
-  );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const isUser =
-    useSelector((state: any) => state.auth.user)?.is_admin === false;
+    const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
+    const isUser = useSelector((state: any) => state.auth.user)?.is_admin === false;
 
-  const location = useLocation();
+    const location = useLocation();
 
-  if (!isAuthenticated && !tokenManager.getToken()) {
-    return <Navigate replace to="/auth/login" state={{ from: location }} />;
-  }
-
-  // Redirect users trying to access the wrong dashboard
-  if (location.pathname.startsWith("/dashboard")) {
-    if (isUser && location.pathname.startsWith("/dashboard/admin")) {
-      return <Navigate replace to="/dashboard/user" />;
+    if (!isAuthenticated && !tokenManager.getToken()) {
+        return <Navigate replace to="/auth/login" state={{ from: location }} />;
     }
-    if (!isUser && location.pathname.startsWith("/dashboard/user")) {
-      return <Navigate replace to="/dashboard/admin" />;
-    }
-    if (location.pathname === "/dashboard") {
-      return (
-        <Navigate
-          replace
-          to={isUser ? "/dashboard/user" : "/dashboard/admin"}
-        />
-      );
-    }
-  }
 
-  return children;
+    // Redirect users trying to access the wrong dashboard
+    if (location.pathname.startsWith("/dashboard")) {
+        if (isUser && location.pathname.startsWith("/dashboard/admin")) {
+            return <Navigate replace to="/dashboard/user" />;
+        }
+        if (!isUser && location.pathname.startsWith("/dashboard/user")) {
+            return <Navigate replace to="/dashboard/admin" />;
+        }
+        if (location.pathname === "/dashboard") {
+            return <Navigate replace to={isUser ? "/dashboard/user" : "/dashboard/admin"} />;
+        }
+    }
+
+    return children;
 }
 
 function UserDashboardRoutes() {
-  return (
-    <Routes>
-      <Route index element={<UserDashboardHome />} />
-      <Route path="public-speaking" element={<PublicSpeaking />} />
-      <Route path="pitch-practice" element={<PitchPractice />} />
-      <Route path="presentation-practice" element={<PresentationPractice />} />
-      <Route path="progress-tracking" element={<ProgressTracking />} />
-      <Route path="session-history" element={<UserSessionHistory />} />
-      <Route path="session-history/:id" element={<UserSessionReport />} />
-      <Route path="session-comparison" element={<SessionComparison />} />
-      <Route
-        path="performance-improvement"
-        element={<PerformanceImprovement />}
-      />
-      <Route path="analytics" element={<UserAnalytics />} />
-      <Route path="settings" element={<UserSettings />} />
-      <Route path="help" element={<HelpPage />}>
-        <Route index element={<Help />} />
-        <Route path="safety" element={<SafetyPrivacy />} />
-        <Route path="message" element={<Chat />} />
-      </Route>
+    return (
+        <Routes>
+            <Route index element={<UserDashboardHome />} />
+            <Route path="public-speaking" element={<PublicSpeaking />} />
+            <Route path="pitch-practice" element={<PitchPractice />} />
+            <Route path="presentation-practice" element={<PresentationPractice />} />
+            <Route path="progress-tracking" element={<ProgressTracking />} />
+            <Route path="session-history" element={<UserSessionHistory />} />
+            <Route path="session-history/:id" element={<UserSessionReport />} />
+            <Route path="session-comparison" element={<SessionComparison />} />
+            <Route path="performance-improvement" element={<PerformanceImprovement />} />
+            <Route path="analytics" element={<UserAnalytics />} />
+            <Route path="settings" element={<UserSettings />} />
+            <Route path="help" element={<HelpPage />}>
+                <Route index element={<Help />} />
+                <Route path="safety" element={<SafetyPrivacy />} />
+                <Route path="message" element={<Chat />} />
+            </Route>
 
-      <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
-    </Routes>
-  );
+            <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
+        </Routes>
+    );
 }
 
 function AdminDashboardRoutes() {
-  return (
-    <Routes>
-      <Route index element={<AdminDashboardHome />} />
-      <Route path="session-history" element={<AdminSessionHistory />} />
-      <Route path="session-history/:id" element={<AdminSessionReport />} />
-      <Route path="analytics" element={<UserAnalytics />} />
-      <Route path="settings" element={<AdminSettings />} />
-      <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route index element={<AdminDashboardHome />} />
+            <Route path="session-history" element={<AdminSessionHistory />} />
+            <Route path="session-history/:id" element={<AdminSessionReport />} />
+            <Route path="analytics" element={<UserAnalytics />} />
+            <Route path="settings" element={<AdminSettings />} />
+            <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
+        </Routes>
+    );
 }
 
 function SessionRoutes() {
-  return (
-    <Routes>
-      <Route
-        path="pitch-practice-session/:id"
-        element={<PitchPracticeSession />}
-      />
-      <Route
-        path="public-speaking-session/:id"
-        element={<PublicSpeakingSession />}
-      />
-      <Route
-        path="presentation-practice-session/:id"
-        element={<PresentationPracticeSession />}
-      />
-      <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route path="pitch-practice-session/:id" element={<PitchPracticeSession />} />
+            <Route path="public-speaking-session/:id" element={<PublicSpeakingSession />} />
+            <Route path="presentation-practice-session/:id" element={<PresentationPracticeSession />} />
+            <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
+        </Routes>
+    );
 }
 
 function AuthRoutes() {
-  return (
-    <Routes>
-      <Route path="signup" element={<AuthPage />} />
-      <Route path="login" element={<LoginPage />} />
-      <Route path="forgot-password" element={<ForgotPassword />} />
-      <Route path="reset-password" element={<ResetPassword />} />
-      <Route path="tutorial" element={<Tutorial />} />
-      <Route path="*" element={<Navigate replace to="/auth/signup" />} />
-    </Routes>
-  );
+    return (
+        <Routes>
+            <Route path="signup" element={<AuthPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="tutorial" element={<Tutorial />} />
+            <Route path="*" element={<Navigate replace to="/auth/signup" />} />
+        </Routes>
+    );
 }
 
 function MainRoutes() {
-  return (
-    <>
-      <Routes>
-        <Route
-          path="dashboard/user/*"
-          element={
-            <DashboardLayout>
-              <UserDashboardRoutes />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path="dashboard/admin/*"
-          element={
-            <DashboardLayout>
-              <AdminDashboardRoutes />
-            </DashboardLayout>
-          }
-        />
-        <Route
-          path="sessions/*"
-          element={
-            <SessionsLayout>
-              <SessionRoutes />
-            </SessionsLayout>
-          }
-        />
-      </Routes>
-    </>
-  );
+    return (
+        <>
+            <Routes>
+                <Route
+                    path="dashboard/user/*"
+                    element={
+                        <DashboardLayout>
+                            <UserDashboardRoutes />
+                        </DashboardLayout>
+                    }
+                />
+                <Route
+                    path="dashboard/admin/*"
+                    element={
+                        <DashboardLayout>
+                            <AdminDashboardRoutes />
+                        </DashboardLayout>
+                    }
+                />
+                <Route
+                    path="sessions/*"
+                    element={
+                        <SessionsLayout>
+                            <SessionRoutes />
+                        </SessionsLayout>
+                    }
+                />
+            </Routes>
+        </>
+    );
 }
 
 export default function AppRoutes() {
-  return (
-    <Router>
-      <ScrollToTop />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <WebsiteLayout>
-              <HomePage />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="features"
-          element={
-            <WebsiteLayout>
-              <Features />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="privacy-policy"
-          element={
-            <WebsiteLayout>
-              <PrivacyPolicy />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="cookie-policy"
-          element={
-            <WebsiteLayout>
-              <CookiePolicy />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="pricing"
-          element={
-            <WebsiteLayout>
-              <Pricing />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="contact"
-          element={
-            <WebsiteLayout>
-              <Contact />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="terms-of-service"
-          element={
-            <WebsiteLayout>
-              <TermsOfService />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="cancellation-policy"
-          element={
-            <WebsiteLayout>
-              <CancellationPolicy />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="press"
-          element={
-            <WebsiteLayout>
-              <Press />
-            </WebsiteLayout>
-          }
-        />
-        <Route
-          path="auth/*"
-          element={
-            <UserPlan>
-              <AuthRoutes />
-            </UserPlan>
-          }
-        />
-        <Route
-          path="/*"
-          element={
-            <RequireAuth>
-              <MainRoutes />
-            </RequireAuth>
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
-  );
+    return (
+        <Router>
+            <ScrollToTop />
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <WebsiteLayout>
+                            <HomePage />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="features"
+                    element={
+                        <WebsiteLayout>
+                            <Features />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="privacy-policy"
+                    element={
+                        <WebsiteLayout>
+                            <PrivacyPolicy />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="cookie-policy"
+                    element={
+                        <WebsiteLayout>
+                            <CookiePolicy />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="pricing"
+                    element={
+                        <WebsiteLayout>
+                            <Pricing />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="contact"
+                    element={
+                        <WebsiteLayout>
+                            <Contact />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="terms-of-service"
+                    element={
+                        <WebsiteLayout>
+                            <TermsOfService />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="cancellation-policy"
+                    element={
+                        <WebsiteLayout>
+                            <CancellationPolicy />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="press"
+                    element={
+                        <WebsiteLayout>
+                            <Press />
+                        </WebsiteLayout>
+                    }
+                />
+                <Route
+                    path="auth/*"
+                    element={
+                        <UserPlan>
+                            <AuthRoutes />
+                        </UserPlan>
+                    }
+                />
+                <Route
+                    path="/*"
+                    element={
+                        <RequireAuth>
+                            <MainRoutes />
+                        </RequireAuth>
+                    }
+                />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </Router>
+    );
 }
 
 function NotFound() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6">
-      <h1 className="text-6xl font-bold text-foreground">404</h1>
-      <p className="text-xl text-muted-foreground">Oops! Page not found</p>
-      <Separator className="my-4 h-1 w-24 rounded bg-primary" />
-      <p className="mb-6 text-muted-foreground">
-        The page you're looking for doesn't exist or has been moved.
-      </p>
-      <Button asChild size="lg">
-        <Link to="/">Go Home</Link>
-      </Button>
-    </div>
-  );
+    return (
+        <div className="flex min-h-screen flex-col items-center justify-center gap-6">
+            <h1 className="text-6xl font-bold text-foreground">404</h1>
+            <p className="text-xl text-muted-foreground">Oops! Page not found</p>
+            <Separator className="my-4 h-1 w-24 rounded bg-primary" />
+            <p className="mb-6 text-muted-foreground">The page you're looking for doesn't exist or has been moved.</p>
+            <Button asChild size="lg">
+                <Link to="/">Go Home</Link>
+            </Button>
+        </div>
+    );
 }

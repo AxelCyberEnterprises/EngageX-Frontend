@@ -328,7 +328,6 @@ const PresentationPractice: React.FC = () => {
                                 pauseOnClick={false}
                                 preload={true}
                                 muted={isMuted}
-                                requireFullPlay={isMuted}
                                 allowSwitch={allowSwitch}
                             />
 
