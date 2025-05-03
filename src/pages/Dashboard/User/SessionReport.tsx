@@ -1,8 +1,10 @@
+import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
 import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
 import ShadLineChart from "@/components/dashboard/ShadLineChart";
 import SlideFeedbackChart from "@/components/dashboard/SlideFeedbackChart";
+import EmptyState from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -188,6 +190,7 @@ const PitchSessionReport: React.FC = () => {
                     <Skeleton className="h-15 w-100 mb-3" />
                     <Skeleton className="h-7 w-full mb-3" />
                     <Skeleton className="h-7 w-full mb-3" />
+                    <Skeleton className="h-100 w-full rounded-3xl mb-5" />
                     <div className="flex flex-wrap justify-between gap-3">
                         {[...Array(4)].map((_, index) => (
                             <Skeleton key={index} className="w-[49%] h-100 mb-5" />
@@ -290,6 +293,28 @@ const PitchSessionReport: React.FC = () => {
                     </section>
 
                     <section className="px-4 lg:px-8 py-4">
+                        <div className="w-full mb-5">
+                            {data.slides_file ? (
+                                <>
+                                    <div className="relative rounded-3xl mb-2 overflow-hidden">
+                                        <VideoPlayer
+                                            height="h-100"
+                                            width="w-full"
+                                            src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4"
+                                            border="rounded-3xl"
+                                            canDownload
+                                            preload={true}
+                                        />
+                                    </div>
+                                    <small className="border-l-2 border-l-maximum-yellow-red pl-3 py-1">
+                                        Your recording may take 2-5 minutes to be ready for download
+                                    </small>
+                                </>
+                            ) : (
+                                <Skeleton className="h-100 w-full rounded-3xl" />
+                            )}
+                        </div>
+
                         <div className="flex flex-col md:flex-row w-full items-stretch gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                                 <div className="border-1 border-bright-gray rounded-xl p-4">
@@ -351,16 +376,16 @@ const PitchSessionReport: React.FC = () => {
                     <section className="px-4 lg:px-8">
                         <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
                             <h5 className="mb-6">Performance Analytics</h5>
-
-                            {data.slides_file && (
-                                <div className="border-1 border-bright-gray rounded-xl p-4 mb-5">
-                                    <h6>Slide-Based Feedback</h6>
+                            <div className="border-1 border-bright-gray rounded-xl p-4 mb-5">
+                                <h6 className="mb-3">Slide-Based Feedback</h6>
+                                {data.slides_file ? (
                                     <SlideFeedbackChart />
-                                </div>
-                            )}
+                                ) : (
+                                    <EmptyState text="No data available" className="h-100" />
+                                )}
+                            </div>
 
                             <h6 className="mb-3">Vocal Variety</h6>
-
                             <div className="flex flex-wrap gap-4">
                                 {variety.map((item, index) => (
                                     <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
@@ -376,7 +401,6 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-
                             <div className="mt-8">
                                 <h6 className="mb-3">Delivery and Structure Metrics</h6>
 
@@ -399,9 +423,7 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-
                             <h6 className="mt-8 mb-3">Body Language</h6>
-
                             <div className="flex flex-wrap gap-4">
                                 {variety2.map((item, index) => (
                                     <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
@@ -417,7 +439,6 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-
                             <div className="mt-8">
                                 <h6 className="mb-3">Language and word choice</h6>
 
@@ -450,10 +471,7 @@ const PitchSessionReport: React.FC = () => {
 
                                 <div className="flex flex-wrap gap-4">
                                     {slideAnalysis.map((item, index) => (
-                                        <div
-                                            key={index}
-                                            className="w-full md:w-[calc(33.33%-10px)] lg:w-2/7"
-                                        >
+                                        <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-2/7">
                                             <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
                                                 <div className="flex flex-col justify-between py-3">
                                                     <p>{item.title}</p>
