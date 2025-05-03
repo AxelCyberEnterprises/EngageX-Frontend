@@ -3,10 +3,12 @@ import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
 import ShadLineChart from "@/components/dashboard/ShadLineChart";
 import SlideFeedbackChart from "@/components/dashboard/SlideFeedbackChart";
+import EmptyState from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetSessionReport } from "@/hooks/sessions";
+import { useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
@@ -14,7 +16,6 @@ import { ArrowLeft, Download, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
-import { useUserProfile } from "@/hooks/settings";
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
@@ -269,7 +270,11 @@ const PitchSessionReport: React.FC = () => {
 
                             <div className="flex lg:me-5 mt-6 lg:mt-0">
                                 <div className="flex pe-5 me-5 border-r-2 border-bright-gray">
-                                    <img src={profile?.profile_picture} alt="avatar" className="w-11 h-11 rounded-full object-cover"/>
+                                    <img
+                                        src={profile?.profile_picture}
+                                        alt="avatar"
+                                        className="w-11 h-11 rounded-full object-cover"
+                                    />
                                     <div className="flex flex-col justify-between ps-2">
                                         <h6>{data.full_name}</h6>
                                         <p className="text-independence">{data.user_email}</p>
@@ -350,16 +355,16 @@ const PitchSessionReport: React.FC = () => {
                     <section className="px-4 lg:px-8">
                         <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
                             <h5 className="mb-6">Performance Analytics</h5>
-
-                            {data.slides_file && (
-                                <div className="border-1 border-bright-gray rounded-xl p-4 mb-5">
-                                    <h6>Slide-Based Feedback</h6>
+                            <div className="border-1 border-bright-gray rounded-xl p-4 mb-5">
+                                <h6 className="mb-3">Slide-Based Feedback</h6>
+                                {data.slides_file ? (
                                     <SlideFeedbackChart />
-                                </div>
-                            )}
+                                ) : (
+                                    <EmptyState text="No data available" className="h-100" />
+                                )}
+                            </div>
 
                             <h6 className="mb-3">Vocal Variety</h6>
-
                             <div className="flex flex-wrap gap-4">
                                 {variety.map((item, index) => (
                                     <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
@@ -375,7 +380,6 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-
                             <div className="mt-8">
                                 <h6 className="mb-3">Delivery and Structure Metrics</h6>
 
@@ -398,9 +402,7 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-
                             <h6 className="mt-8 mb-3">Body Language</h6>
-
                             <div className="flex flex-wrap gap-4">
                                 {variety2.map((item, index) => (
                                     <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
@@ -416,7 +418,6 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-
                             <div className="mt-8">
                                 <h6 className="mb-3">Language and word choice</h6>
 
@@ -449,10 +450,7 @@ const PitchSessionReport: React.FC = () => {
 
                                 <div className="flex flex-wrap gap-4">
                                     {slideAnalysis.map((item, index) => (
-                                        <div
-                                            key={index}
-                                            className="w-full md:w-[calc(33.33%-10px)] lg:w-2/7"
-                                        >
+                                        <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-2/7">
                                             <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
                                                 <div className="flex flex-col justify-between py-3">
                                                     <p>{item.title}</p>

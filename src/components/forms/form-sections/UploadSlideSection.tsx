@@ -1,4 +1,4 @@
-import NoUploadedSlides from "@/assets/images/svgs/no-uploaded-slides.svg";
+import EmptyState from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import UploadMediaTrigger from "@/components/widgets/UploadMediaTrigger";
@@ -95,10 +95,7 @@ const UploadSlideSection = ({
                             ))}
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-y-3 p-4 items-center bg-ghost-white text-sm text-primary-base rounded-lg">
-                            <img src={NoUploadedSlides} alt="" className="object-cover" />
-                            <span>No slide uploaded yet</span>
-                        </div>
+                        <EmptyState text="No slide uploaded yet" />
                     )}
                 </div>
             </section>
