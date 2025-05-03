@@ -297,7 +297,7 @@ const PitchSessionReport: React.FC = () => {
 
                     <section className="px-4 lg:px-8 py-4">
                         <div className="w-full mb-5">
-                            {!data.slides_file ? (
+                            {data.slides_file ? (
                                 <>
                                     <div className="relative rounded-3xl mb-2 overflow-hidden">
                                         <VideoPlayer
