@@ -1,5 +1,5 @@
 import {
-  Session,
+  Sequence,
   formatTimestamp,
   updateActiveExistingSession,
 } from "@/store/slices/performance_improvement_slice";
@@ -7,11 +7,11 @@ import clsx from "clsx";
 import { useDispatch } from "react-redux";
 
 function ExistingSequenceCard({
-  session,
+  sequence,
   idx,
 }: {
   className?: string;
-  session: Session;
+  sequence: Sequence;
   idx: number;
 }) {
   const dispatch = useDispatch();
@@ -20,12 +20,12 @@ function ExistingSequenceCard({
       onClick={() => dispatch(updateActiveExistingSession(idx))}
       className={clsx(
         "p-4 space-y-5  border border-gray rounded-xl cursor-pointer",
-        session.is_active ? "bg-alice-blue" : "bg-white"
+        sequence.is_active ? "bg-alice-blue" : "bg-white"
       )}
     >
       <div className="flex justify-between">
-        <h6 className="flex items-center">
-          {session.title}
+        <h6 className="flex items-center capitalize">
+          {sequence.sequence_name}
           <span className="inline-block ml-2">
             <svg
               width="24"
@@ -44,7 +44,7 @@ function ExistingSequenceCard({
         <button
           className={clsx(
             "hidden border lg:block border-gray rounded-xl py-3 px-3 text-gunmetal",
-            session.is_active ? "bg-gunmetal text-white" : "bg-transparent"
+            sequence.is_active ? "bg-gunmetal text-white" : "bg-transparent"
           )}
         >
           New Session
@@ -55,34 +55,34 @@ function ExistingSequenceCard({
           <p
             className={clsx(
               "small",
-              session.is_active ? "text-success-green" : "text-[#6B7186]"
+              sequence.is_active ? "text-success-green" : "text-[#6B7186]"
             )}
           >
             Start Date
           </p>
-          <p className="small">{formatTimestamp(session.start_date)}</p>
+          <p className="small">{formatTimestamp(sequence.start_date)}</p>
         </div>
         <div className="flex justify-between lg:flex-col">
           <p
             className={clsx(
               "small",
-              session.is_active ? "text-success-green" : "text-[#6B7186]"
+              sequence.is_active ? "text-success-green" : "text-[#6B7186]"
             )}
           >
             Last Updated
           </p>
-          <p className="small">{formatTimestamp(session.last_updated_date)}</p>
+          <p className="small">{formatTimestamp(sequence.updated_at)}</p>
         </div>
         <div className="flex justify-between lg:flex-col">
           <p
             className={clsx(
               "small",
-              session.is_active ? "text-success-green" : "text-[#6B7186]"
+              sequence.is_active ? "text-success-green" : "text-[#6B7186]"
             )}
           >
             Total Sessions
           </p>
-          <p className="small">{session.sequences.length} sessions completed</p>
+          <p className="small">{sequence.sessions.length} sessions completed</p>
         </div>
       </div>
       <button className="bg-transparent border-2 w-full lg:hidden !border-black rounded-xl py-3 px-3 text-black">

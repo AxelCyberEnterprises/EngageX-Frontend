@@ -24,25 +24,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Sequence,
+  Session,
   formatTimestamp,
 } from "@/store/slices/performance_improvement_slice";
 
 // Define the type for your session data
 export type SessionData = {
-  session_name: string;
+  name: string;
   date: string;
   duration: number;
 };
 
 // Define table columns
-export const columns: ColumnDef<Sequence>[] = [
+export const columns: ColumnDef<Session>[] = [
   {
-    accessorKey: "title",
+    accessorKey: "name",
     header: () => <div className="lg:pl-10">Session Name</div>,
     cell: ({ row }) => (
       <div className="lg:pl-10 py-2 text-[#333333]">
-        <p>{row.getValue("title")}</p>
+        <p>{row.getValue("name")}</p>
       </div>
     ),
   },
@@ -60,18 +60,14 @@ export const columns: ColumnDef<Sequence>[] = [
     header: () => <div className="text-right lg:pr-10">Duration (mins)</div>,
     cell: ({ row }) => (
       <div className="text-right lg:pr-10 text-[#333333]">
-        <p>{row.getValue("duration")} min</p>
+        <p>{row.getValue("duration")}</p>
       </div>
     ),
   },
 ];
 
 // Table Component
-export function ExistingSequenceTable({
-  sequences,
-}: {
-  sequences: Sequence[];
-}) {
+export function ExistingSequenceTable({ sessions }: { sessions: Session[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -81,8 +77,8 @@ export function ExistingSequenceTable({
   >({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const table = useReactTable<Sequence>({
-    data: sequences,
+  const table = useReactTable<Session>({
+    data: sessions,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -99,6 +95,8 @@ export function ExistingSequenceTable({
       rowSelection,
     },
   });
+
+  console.log("sessions: ", sessions);
 
   return (
     <div className="w-full">

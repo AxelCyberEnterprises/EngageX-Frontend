@@ -47,7 +47,7 @@ function FeaturesSection() {
     },
   ];
   return (
-    <section className="px-10 lg:px-20 pb-20 space-y-20 font-montserrat">
+    <section className="px-10 lg:px-20 py-24 space-y-20 font-montserrat">
       <div className="space-y-10 flex flex-col items-center font-montserrat">
         <div className="px-3 py-3 flex gap-2 items-center w-max border rounded-[6px] bg-white border-[#E1E5E7] mx-auto">
           <svg
