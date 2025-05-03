@@ -1,0 +1,28 @@
+import { MediaSchema } from "@/schemas/media-schema";
+import { z } from "zod";
+
+export const BaseSessionSetupSchema = z.object({
+    session_name: z.string({ required_error: "Session name is required" }).min(1, "Session name is required"),
+    session_type: z.enum(["pitch", "public", "presentation"]),
+    goals: z.array(
+        z.object({
+            id: z.number(),
+            goal: z.string(),
+        }),
+    ),
+    virtual_environment: z.enum(["conference_room", "pitch_studio", "board_room_1", "board_room_2"], {
+        required_error: "Virtual environment is required",
+    }),
+    notes: z.string().optional(),
+    allow_ai_questions: z.boolean().optional(),
+});
+
+export const PublicSpeakingSchema = BaseSessionSetupSchema;
+
+export const PitchPracticeSchema = BaseSessionSetupSchema.extend({
+    slides: MediaSchema.optional(),
+});
+
+export const PresentationPracticeSchema = BaseSessionSetupSchema.extend({
+    slides: MediaSchema.optional(),
+});

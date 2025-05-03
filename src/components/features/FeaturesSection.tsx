@@ -1,52 +1,53 @@
+import { Link } from "react-router-dom";
 import FeaturesSectionCard from "./FeaturesSectionCard";
-import FeatureCardFiveSVG from "./svgs/FeatureCardFiveSVG";
-import FeatureCardFourSVG from "./svgs/FeatureCardFourSVG";
-import FeatureCardOneSVG from "./svgs/FeatureCardOneSVG";
-import FeatureCardSixSVG from "./svgs/FeatureCardSixSVG";
-import FeatureCardThreeSVG from "./svgs/FeatureCardThreeSVG";
-import FeatureCardTwoSVG from "./svgs/FeatureCardTwoSVG";
 
 function FeaturesSection() {
   let features = [
     {
-      svg: <FeatureCardOneSVG />,
-      title: "Prompt and Cue Card System",
+      className: "",
+      img: "./assets/featuresimg1.png",
+      title: "Offers prompt and cue card system",
       content:
-        "Get a heads up on your next speaking point and be better prepared to deliver the best way possible",
+        "Stay prepared with a preview of your next speaking point for a confident delivery",
     },
     {
-      svg: <FeatureCardTwoSVG />,
-      title: "Speaker Analytics and Self-Assessment Tools",
+      className: "pt-6",
+      img: "./assets/featuresimg2.png",
+      title: "Speaker analytics and self-assessment tools",
       content:
-        "Live Analysis and feedback to your speech powered by unparalleled AI Technology",
+        "Real-time analysis and feedback on your speech, powered by unparalleled AI technology",
     },
     {
-      svg: <FeatureCardThreeSVG />,
-      title: "Realistic Environment Enhancements",
+      className: "",
+      img: "./assets/featuresimg3.png",
+      title: "Realistic speaking room simulations",
       content:
-        "Immersive Speaking Rooms that give you a taste of the real thing even including reactions from your Audience and Listeners",
+        "Immersive speaking rooms that give you a taste of the real thing even including reactions from your audience and listeners",
     },
     {
-      svg: <FeatureCardFourSVG />,
-      title: "Post-Speech Feedback Summary",
+      className: "",
+      img: "./assets/featuresimg4.png",
+      title: "Progress tracking for improvement",
       content:
-        "We enable you to be aware of your Progress and stay goal oriented while you train",
+        "We enable you to be aware of your progress and stay goal oriented while you train",
     },
     {
-      svg: <FeatureCardFiveSVG />,
-      title: "Prompt and Cue Card System",
+      className: "",
+      img: "./assets/featuresimg5.png",
+      title: "Post session feedback reporting",
       content:
-        "In-depth Analysis ensuring you can give your best the next time by understanding what you need to do better in detail",
+        "We provide in-depth analysis to ensure you give your best in every session by understanding where you need to improve",
     },
     {
-      svg: <FeatureCardSixSVG />,
-      title: "Speech Progress & Phase Indicators",
+      className: "pt-6",
+      img: "./assets/featuresimg6.png",
+      title: " Speech progress & phase indicator alerts",
       content:
-        "Know where you are in the Journey of your  delivery so you can flow with an awareness of how much time you take, every time you train",
+        "Keep track of your speaking journey, maintain your flow, and monitor the timing of every session as you train",
     },
   ];
   return (
-    <section className="px-10 lg:px-20 pb-20 space-y-20 font-montserrat">
+    <section className="px-10 lg:px-20 py-24 space-y-20 font-montserrat">
       <div className="space-y-10 flex flex-col items-center font-montserrat">
         <div className="px-3 py-3 flex gap-2 items-center w-max border rounded-[6px] bg-white border-[#E1E5E7] mx-auto">
           <svg
@@ -80,22 +81,24 @@ function FeaturesSection() {
       </div>
 
       <div className="relative w-full flex justify-center">
-        <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative">
-          <p>Start Practicing Today</p>
-          <svg
-            width="15"
-            height="18"
-            className="h-6 w-7"
-            viewBox="0 0 15 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11.0243 6.32818C11.1897 6.32894 11.3481 6.39499 11.4651 6.51196C11.5821 6.62893 11.6481 6.78737 11.6489 6.95279L11.6489 12.8453C11.6518 12.9292 11.6379 13.0128 11.6078 13.0912C11.5778 13.1696 11.5322 13.2411 11.4739 13.3015C11.4156 13.3619 11.3458 13.4099 11.2685 13.4427C11.1913 13.4755 11.1082 13.4924 11.0243 13.4924C10.9403 13.4924 10.8573 13.4755 10.78 13.4427C10.7027 13.4099 10.6329 13.3619 10.5746 13.3015C10.5163 13.2411 10.4708 13.1696 10.4407 13.0912C10.4107 13.0128 10.3967 12.9292 10.3996 12.8453L10.3996 8.46128L4.39513 14.4658C4.27792 14.583 4.11895 14.6489 3.95319 14.6489C3.78743 14.6489 3.62846 14.583 3.51125 14.4658C3.39404 14.3486 3.32819 14.1896 3.32819 14.0239C3.32819 13.8581 3.39404 13.6991 3.51125 13.5819L9.51576 7.5774L5.1317 7.5774C4.96986 7.57169 4.81655 7.50338 4.70408 7.38687C4.59161 7.27035 4.52875 7.11473 4.52875 6.95279C4.52875 6.79085 4.59161 6.63523 4.70408 6.51871C4.81655 6.4022 4.96986 6.33389 5.1317 6.32818L11.0243 6.32818Z"
-              fill="white"
-            />
-          </svg>
-        </button>
+        <Link to="/dashboard/user/">
+          <button className="flex gap-2 mx-auto lg:mx-0 w-full lg:w-max py-4 px-6 items-center justify-center rounded-2xl relative">
+            <p>Start practicing today</p>
+            <svg
+              width="15"
+              height="18"
+              className="h-6 w-7"
+              viewBox="0 0 15 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.0243 6.32818C11.1897 6.32894 11.3481 6.39499 11.4651 6.51196C11.5821 6.62893 11.6481 6.78737 11.6489 6.95279L11.6489 12.8453C11.6518 12.9292 11.6379 13.0128 11.6078 13.0912C11.5778 13.1696 11.5322 13.2411 11.4739 13.3015C11.4156 13.3619 11.3458 13.4099 11.2685 13.4427C11.1913 13.4755 11.1082 13.4924 11.0243 13.4924C10.9403 13.4924 10.8573 13.4755 10.78 13.4427C10.7027 13.4099 10.6329 13.3619 10.5746 13.3015C10.5163 13.2411 10.4708 13.1696 10.4407 13.0912C10.4107 13.0128 10.3967 12.9292 10.3996 12.8453L10.3996 8.46128L4.39513 14.4658C4.27792 14.583 4.11895 14.6489 3.95319 14.6489C3.78743 14.6489 3.62846 14.583 3.51125 14.4658C3.39404 14.3486 3.32819 14.1896 3.32819 14.0239C3.32819 13.8581 3.39404 13.6991 3.51125 13.5819L9.51576 7.5774L5.1317 7.5774C4.96986 7.57169 4.81655 7.50338 4.70408 7.38687C4.59161 7.27035 4.52875 7.11473 4.52875 6.95279C4.52875 6.79085 4.59161 6.63523 4.70408 6.51871C4.81655 6.4022 4.96986 6.33389 5.1317 6.32818L11.0243 6.32818Z"
+                fill="white"
+              />
+            </svg>
+          </button>
+        </Link>
       </div>
     </section>
   );

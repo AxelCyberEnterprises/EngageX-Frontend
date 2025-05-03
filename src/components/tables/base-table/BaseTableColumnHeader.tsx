@@ -44,35 +44,35 @@ export default function BaseTableColumnHeader<TData, TValue>({
                               ? "Sorted ascending. Click to sort descending."
                               : "Not sorted. Click to sort ascending."
                     }
-                    className="p-4 -ml-4 h-8 w-fit border-none font-semibold text-primary-0 gap-1.5 data-[placeholder]:text-primary-0 hover:bg-bright-gray hover:text-primary-0 shadow-none data-[state=open]:bg-bright-gray [&>svg:last-child]:hidden focus-visible:border-none focus-visible:ring-0"
+                    className="p-4 -ml-4 h-8 w-fit border-none font-semibold text-primary-base gap-1.5 data-[placeholder]:text-primary-base hover:bg-bright-gray hover:text-primary-base shadow-none data-[state=open]:bg-bright-gray [&>svg:last-child]:hidden focus-visible:border-none focus-visible:ring-0"
                 >
                     <span>{title}</span>
                     <SelectIcon asChild>
                         {column.getCanSort() && column.getIsSorted() === "desc" ? (
-                            <ArrowDown className="size-4 text-primary-0 stroke-3" aria-hidden="true" />
+                            <ArrowDown className="size-4 text-primary-base stroke-3" aria-hidden="true" />
                         ) : column.getIsSorted() === "asc" ? (
-                            <ArrowUp className="size-4 text-primary-0 stroke-3" aria-hidden="true" />
+                            <ArrowUp className="size-4 text-primary-base stroke-3" aria-hidden="true" />
                         ) : (
-                            <ChevronsUpDown className="size-4 text-primary-0 stroke-3" aria-hidden="true" />
+                            <ChevronsUpDown className="size-4 text-primary-base stroke-3" aria-hidden="true" />
                         )}
                     </SelectIcon>
                 </SelectTrigger>
-                <SelectContent align="start" className="[&_.select-viewport]:p-0">
+                <SelectContent align="start" className="[&_.select-viewport]:p-0 border-bright-gray">
                     {column.getCanSort() && (
                         <>
                             <SelectItem value={ascValue} className="px-4 py-2">
-                                <ArrowUp aria-hidden="true" className="text-primary-0" />
+                                <ArrowUp aria-hidden="true" className="text-primary-base" />
                                 <span>Asc</span>
                             </SelectItem>
                             <SelectItem value={descValue} className="px-4 py-2">
-                                <ArrowDown aria-hidden="true" className="text-primary-0" />
+                                <ArrowDown aria-hidden="true" className="text-primary-base" />
                                 <span>Desc</span>
                             </SelectItem>
                         </>
                     )}
                     {column.getCanHide() && (
                         <SelectItem value={hideValue} className="px-4 py-2">
-                            <EyeOff aria-hidden="true" className="text-primary-0" />
+                            <EyeOff aria-hidden="true" className="text-primary-base" />
                             <span>Hide</span>
                         </SelectItem>
                     )}

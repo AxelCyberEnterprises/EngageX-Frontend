@@ -1,38 +1,43 @@
 @import "tailwindcss" important;
 
 @theme {
-    --font-montserrat: "Montserrat";
-    --font-montreal: "Neue Montreal";
+  --font-montserrat: "Montserrat";
+  --font-montreal: "Neue Montreal";
 
-    --color-white: #FFF;
-    --color-black: #000;
-    --color-primary-blue: #252A39;
-    --color-dark-electric-blue: #62717A;
-    --color-gunmetal: #262B3A;
-    --color-chinese-black: #10161E;
-    --color-cultured: #F7F6F2;
-    --color-alice-blue: #EFF6FC;
-    --color-new-car: #2154CB;
-    --color-gray: #BDBDBD;
-    --color-grey: #818181;
-    --color-green-sheen: #64BA9E;
-    --color-medium-sea-green: #40B869;
-    --color-dark-charcoal: #333333;
-    --color-dark-orange: #ECB25E;
-    --color-dull-electric-blue: #4C5C75;
-    --color-light-silver: #d0d5dd;
-    --color-ghost-white: #f9f9f9;
-    --color-independence: #474d63;
-    --color-slate-gray: #6f7c8d;
-    --color-bright-gray: #e4e7ec;
-    --color-artichoke: #999b84;
-    --color-pale-taupe: #c29c81;
-    --color-gold-crayola: #eebc89;
-    --color-pantone-green: #07a042;
-    --color-crimson-red: #940803;
-    --color-auro-metal-saurus: #6b7186;
-    --color-maximum-yellow-red: #F5B546;
-    --color-jelly-bean: #DD524D;
+  --color-white: #FFF;
+  --color-black: #000;
+  --color-primary-blue: #252A39;
+  --color-dark-electric-blue: #62717A;
+  --color-gunmetal: #262B3A;
+  --color-chinese-black: #10161E;
+  --color-cultured: #F7F6F2;
+  --color-alice-blue: #EFF6FC;
+  --color-new-car: #2154CB;
+  --color-gray: #BDBDBD;
+  --color-grey: #818181;
+  --color-green-sheen: #64BA9E;
+  --color-medium-sea-green: #40B869;
+  --color-dark-charcoal: #333333;
+  --color-dark-orange: #ECB25E;
+  --color-dull-electric-blue: #4C5C75;
+  --color-light-silver: #d0d5dd;
+  --color-ghost-white: #f9f9f9;
+  --color-independence: #474d63;
+  --color-slate-gray: #6f7c8d;
+  --color-bright-gray: #e4e7ec;
+  --color-artichoke: #999b84;
+  --color-pale-taupe: #c29c81;
+  --color-gold-crayola: #eebc89;
+  --color-pantone-green: #07a042;
+  --color-crimson-red: #940803;
+  --color-auro-metal-saurus: #6b7186;
+  --color-maximum-yellow-red: #F5B546;
+  --color-jelly-bean: #DD524D;
+  --color-mauvelous: #EE9C9D;
+  --color-sunray: #ECB25E;
+  --color-seashell: #FCF0EF;
+  --color-dark-gray: #D0D5DD;
+  --color-success-green: #0E7B33;
 }
 
 @plugin "tailwindcss-animate";
@@ -80,8 +85,11 @@
   --color-dark-charcoal: #333333;
   --color-gunmetal: #262B3A;
   --color-light-silver: #D0D5DD;
-  --color-primary-0: #252A39;
-  --color-primary-80: #9095A8;
+  --color-primary-base: #252A39;
+  --color-gray-blue: #9095A8;
+  --color-independence: #474D63;
+  --color-alice-blue: #EFF6FC;
+  --color-medium-sea-green: #40B869;
 }
 
 .dark {
@@ -163,17 +171,81 @@
   --color-dark-charcoal: var(--color-dark-charcoal);
   --color-gunmetal: var(--color-gunmetal);
   --color-light-silver: var(--color-light-silver);
-  --color-primary-0: var(--color-primary-0);
-  --color-primary-80: var(--color-primary-80);
+  --color-primary-base: var(--color-primary-base);
+  --color-gray-blue: var(--color-gray-blue);
+  --color-independence: var(--color-independence);
+  --color-alice-blue: var(--color-alice-blue);
+  --color-medium-sea-green: var(--color-medium-sea-green);
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
   body {
     @apply bg-background text-foreground;
   }
 }
 
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.typing-dots span {
+  animation: blink 1.4s infinite;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none;
+  /* Hide scrollbar for Firefox */
+}
+
+@utility hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility input-arrow-hidden {
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+#dialog-content {
+  display: none !important;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}

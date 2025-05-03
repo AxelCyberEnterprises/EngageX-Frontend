@@ -1,17 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/svgs/logo.svg";
+// import { Input } from "../ui/input";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "../ui/sidebar";
-import { Input } from "../ui/input";
+import { useDispatch } from "react-redux";
+import { openDialog } from "@/store/slices/dynamicDialogSlice";
+import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
 
 const SideNav: React.FC = () => {
     const location = useLocation();
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
 
+    const dispatch = useDispatch();
     const userLinks = [
         {
-            name: "Home",
+            name: "Dashboard",
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +115,30 @@ const SideNav: React.FC = () => {
             path: "/dashboard/user/pitch-practice",
         },
         {
-            name: "Reports & Analytics",
+            name: "Presentation Practice",
+            icon: (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="me-5"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    color="#BDBDBD"
+                    fill="none"
+                >
+                    <path
+                        d="M3 21H21M11 16H13M8 11C9.838 8.405 14.119 8.263 16 11M5.409 17.118C5.05 15.602 4.871 14.844 5.106 14.26C5.252 13.897 5.502 13.584 5.826 13.36C6.346 13 7.13 13 8.702 13H15.299C16.869 13 17.654 13 18.174 13.36C18.498 13.584 18.748 13.897 18.894 14.26C19.129 14.844 18.95 15.602 18.591 17.118C18.238 18.612 18.061 19.358 17.621 19.895C17.3436 20.2335 16.9954 20.5073 16.601 20.697C15.973 21 15.199 21 13.652 21H10.348C8.801 21 8.028 21 7.4 20.697C7.00557 20.5073 6.65742 20.2335 6.38 19.895C5.938 19.358 5.762 18.612 5.409 17.118ZM14 5C14 5.53043 13.7893 6.03914 13.4142 6.41421C13.0391 6.78929 12.5304 7 12 7C11.4696 7 10.9609 6.78929 10.5858 6.41421C10.2107 6.03914 10 5.53043 10 5C10 4.46957 10.2107 3.96086 10.5858 3.58579C10.9609 3.21071 11.4696 3 12 3C12.5304 3 13.0391 3.21071 13.4142 3.58579C13.7893 3.96086 14 4.46957 14 5Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            ),
+            path: "/dashboard/user/presentation-practice",
+        },
+        {
+            name: "Session History",
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -137,10 +165,10 @@ const SideNav: React.FC = () => {
                     />
                 </svg>
             ),
-            path: "/dashboard/user/reports",
+            path: "/dashboard/user/session-history",
         },
         {
-            name: "Progress Tracking",
+            name: "Progress & Performance",
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -152,13 +180,37 @@ const SideNav: React.FC = () => {
                     fill="none"
                 >
                     <path
-                        d="M21 21H10C6.70017 21 5.05025 21 4.02513 19.9749C3 18.9497 3 17.2998 3 14V3"
+                        d="M17.1995 2H6.79854C5.34054 2 4.06154 2.985 4.00354 4.404C3.92954 6.189 5.18554 7.374 6.50354 8.487C8.32854 10.027 9.24054 10.797 9.33554 11.771C9.35087 11.9237 9.35087 12.0763 9.33554 12.229C9.24054 13.204 8.32854 13.973 6.50354 15.513C5.14854 16.656 3.92554 17.72 4.00354 19.596C4.06054 21.016 5.33854 22 6.79754 22H17.1985C18.6565 22 19.9355 21.015 19.9945 19.596C20.0405 18.466 19.6215 17.342 18.7325 16.56C18.3275 16.203 17.9065 15.862 17.4925 15.513C15.6685 13.973 14.7565 13.203 14.6615 12.229C14.6463 12.0767 14.6463 11.9233 14.6615 11.771C14.7565 10.796 15.6695 10.027 17.4935 8.487C18.8335 7.356 20.0705 6.258 19.9935 4.404C19.9375 2.984 18.6575 2 17.1995 2Z"
                         stroke="currentColor"
-                        strokeWidth="1.5"
+                        strokeWidth="0.75"
                         strokeLinecap="round"
+                        strokeLinejoin="round"
                     />
                     <path
-                        d="M7.99707 16.999C11.5286 16.999 18.9122 15.5348 18.6979 6.43269M16.4886 8.04302L18.3721 6.14612C18.5656 5.95127 18.8798 5.94981 19.0751 6.14286L20.9971 8.04302"
+                        d="M8.99854 21.638C8.99854 21.196 8.99854 20.975 9.08654 20.782C9.10035 20.7512 9.1157 20.7212 9.13254 20.692C9.23954 20.509 9.42054 20.38 9.78254 20.121C10.7885 19.402 11.2925 19.043 11.8635 19.005C11.9535 18.999 12.0435 18.999 12.1335 19.005C12.7055 19.043 13.2085 19.402 14.2135 20.121C14.5765 20.38 14.7575 20.509 14.8645 20.692C14.8819 20.722 14.8972 20.752 14.9105 20.782C14.9985 20.975 14.9985 21.196 14.9985 21.638V22H8.99854V21.638Z"
+                        stroke="currentColor"
+                        strokeWidth="0.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            ),
+            path: "/dashboard/user/progress-tracking",
+        },
+        {
+            name: "Session Comparison",
+            icon: (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="me-5"
+                    width="24"
+                    height="24"
+                    color="#BDBDBD"
+                    fill="none"
+                >
+                    <path
+                        d="M20.5 5.5H9.5C5.787 5.5 3 8.185 3 12M3.5 18.5H14.5C18.213 18.5 21 15.815 21 12M18.5 3C18.5 3 21 4.841 21 5.5C21 6.159 18.5 8 18.5 8M5.5 16C5.5 16 3 17.841 3 18.5C3 19.159 5.5 21 5.5 21"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         strokeLinecap="round"
@@ -166,7 +218,7 @@ const SideNav: React.FC = () => {
                     />
                 </svg>
             ),
-            path: "/dashboard/user/progress-tracking",
+            path: "/dashboard/user/session-comparison",
         },
     ];
 
@@ -287,7 +339,7 @@ const SideNav: React.FC = () => {
         },
     ];
 
-    const bottomLinks = [
+    const userBottomLinks = [
         {
             name: "Help & Support",
             icon: (
@@ -373,49 +425,162 @@ const SideNav: React.FC = () => {
                 </svg>
             ),
             path: "/dashboard/user/logout",
+            function: (e: any) => {
+                e.preventDefault();
+                dispatch(
+                    openDialog({
+                        key: "default",
+                        children: <LogoutConfirmation />,
+                    }),
+                );
+            },
+        },
+    ];
+    const adminBottomLinks = [
+        {
+            name: "Help & Support",
+            icon: (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="me-5"
+                    width="24"
+                    height="24"
+                    color="#BDBDBD"
+                    fill="none"
+                >
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+                    <path
+                        d="M10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9C14 9.39815 13.8837 9.76913 13.6831 10.0808C13.0854 11.0097 12 11.8954 12 13V13.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                    />
+                    <path
+                        d="M11.992 17H12.001"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            ),
+            path: "/dashboard/user/help",
+        },
+        {
+            name: "Settings",
+            icon: (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="me-5"
+                    width="24"
+                    height="24"
+                    color="#BDBDBD"
+                    fill="none"
+                >
+                    <path
+                        d="M15.5 12C15.5 13.933 13.933 15.5 12 15.5C10.067 15.5 8.5 13.933 8.5 12C8.5 10.067 10.067 8.5 12 8.5C13.933 8.5 15.5 10.067 15.5 12Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                    />
+                    <path
+                        d="M21.011 14.0965C21.5329 13.9558 21.7939 13.8854 21.8969 13.7508C22 13.6163 22 13.3998 22 12.9669V11.0332C22 10.6003 22 10.3838 21.8969 10.2493C21.7938 10.1147 21.5329 10.0443 21.011 9.90358C19.0606 9.37759 17.8399 7.33851 18.3433 5.40087C18.4817 4.86799 18.5509 4.60156 18.4848 4.44529C18.4187 4.28902 18.2291 4.18134 17.8497 3.96596L16.125 2.98673C15.7528 2.77539 15.5667 2.66972 15.3997 2.69222C15.2326 2.71472 15.0442 2.90273 14.6672 3.27873C13.208 4.73448 10.7936 4.73442 9.33434 3.27864C8.95743 2.90263 8.76898 2.71463 8.60193 2.69212C8.43489 2.66962 8.24877 2.77529 7.87653 2.98663L6.15184 3.96587C5.77253 4.18123 5.58287 4.28891 5.51678 4.44515C5.45068 4.6014 5.51987 4.86787 5.65825 5.4008C6.16137 7.3385 4.93972 9.37763 2.98902 9.9036C2.46712 10.0443 2.20617 10.1147 2.10308 10.2492C2 10.3838 2 10.6003 2 11.0332V12.9669C2 13.3998 2 13.6163 2.10308 13.7508C2.20615 13.8854 2.46711 13.9558 2.98902 14.0965C4.9394 14.6225 6.16008 16.6616 5.65672 18.5992C5.51829 19.1321 5.44907 19.3985 5.51516 19.5548C5.58126 19.7111 5.77092 19.8188 6.15025 20.0341L7.87495 21.0134C8.24721 21.2247 8.43334 21.3304 8.6004 21.3079C8.76746 21.2854 8.95588 21.0973 9.33271 20.7213C10.7927 19.2644 13.2088 19.2643 14.6689 20.7212C15.0457 21.0973 15.2341 21.2853 15.4012 21.3078C15.5682 21.3303 15.7544 21.2246 16.1266 21.0133L17.8513 20.034C18.2307 19.8187 18.4204 19.711 18.4864 19.5547C18.5525 19.3984 18.4833 19.132 18.3448 18.5991C17.8412 16.6616 19.0609 14.6226 21.011 14.0965Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                    />
+                </svg>
+            ),
+            path: "/dashboard/admin/settings",
+        },
+        {
+            name: "Logout",
+            icon: (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="me-5"
+                    width="24"
+                    height="24"
+                    color="#BDBDBD"
+                    fill="none"
+                >
+                    <path
+                        d="M11 3L10.3374 3.23384C7.75867 4.144 6.46928 4.59908 5.73464 5.63742C5 6.67576 5 8.0431 5 10.7778V13.2222C5 15.9569 5 17.3242 5.73464 18.3626C6.46928 19.4009 7.75867 19.856 10.3374 20.7662L11 21"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                    />
+                    <path
+                        d="M21 12L11 12M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            ),
+            path: "/dashboard/user/logout",
+            function: (e: any) => {
+                e.preventDefault();
+                dispatch(
+                    openDialog({
+                        key: "default",
+                        children: <LogoutConfirmation />,
+                    }),
+                );
+            },
         },
     ];
 
     return (
-        <Sidebar className="side__nav py-5 px-4">
+        <Sidebar className="side__nav mobile_color text-white py-5 px-4">
             <SidebarHeader className="py-7 lg:py-3 px-4">
-                <img src={logo} alt="EngageX Logo" className="w-8/12 px-3 lg:px-0" />
+                <Link to="/">
+                    <img src={logo} alt="EngageX™ Logo" className="w-8/12 px-3 lg:px-0" />
+                </Link>
             </SidebarHeader>
 
             <SidebarContent className="top__links lg:px-0 px-4">
-                <div className="relative my-4 mx-2">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        className="absolute left-2 top-1 w-4.5 aspect-square"
-                        width="24"
-                        height="24"
-                        color="#BDBDBD"
-                        fill="none"
-                    >
-                        <path
-                            d="M17.5 17.5L22 22"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                        <path
-                            d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
-                    <Input type="text" tabIndex={-1} placeholder="Search" className="ps-8 py-3 lg:py-2 rounded-[4px]" />
-                </div>
+                {/* <div className="relative my-4 mx-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            className="absolute left-2 top-2 w-4.5 h-4.5"
+            width="24"
+            height="24"
+            color="#BDBDBD"
+            fill="none"
+          >
+            <path
+              d="M17.5 17.5L22 22"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20C15.9706 20 20 15.9706 20 11Z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <Input
+            type="text"
+            tabIndex={-1}
+            placeholder="Search"
+            className="ps-8 py-3 lg:py-2 rounded-[4px]"
+          />
+        </div> */}
 
                 {lastSegment === "user" &&
                     userLinks.map((link, index) => (
                         <Link
                             to={link.path}
                             key={index}
-                            className={`link flex items-center w-full py-2 px-3 mb-0.5 text-white ${
+                            className={`link flex items-center  mobile_links w-full py-2 px-3 mb-0.5 ${
                                 location.pathname === link.path ? "active" : ""
                             }`}
                         >
@@ -428,7 +593,7 @@ const SideNav: React.FC = () => {
                         <Link
                             to={link.path}
                             key={index}
-                            className={`link flex items-center w-full py-2 px-3 mb-0.5 text-white ${
+                            className={`link flex mobile_links items-center w-full py-2 px-3 mb-0.5 ${
                                 location.pathname === link.path ? "active" : ""
                             }`}
                         >
@@ -438,19 +603,35 @@ const SideNav: React.FC = () => {
                     ))}
             </SidebarContent>
 
-            <SidebarFooter className="bottom__links w-full px-4">
-                {bottomLinks.map((link, index) => (
-                    <Link
-                        to={link.path}
-                        key={index}
-                        className={`link flex items-center w-full py-2 px-1 mb-0.5 text-white ${
-                            location.pathname === link.path ? "active" : ""
-                        }`}
-                    >
-                        {link.icon}
-                        <p>{link.name}</p>
-                    </Link>
-                ))}
+            <SidebarFooter className="bottom__links w-full p-0">
+                {lastSegment === "user" &&
+                    userBottomLinks.map((link, index) => (
+                        <Link
+                            to={link.path}
+                            onClick={link.function}
+                            key={index}
+                            className={`link flex items-center mobile_links w-full  py-2 px-3 mb-0.5 ${
+                                location.pathname === link.path ? "active" : ""
+                            }`}
+                        >
+                            {link.icon}
+                            <p>{link.name}</p>
+                        </Link>
+                    ))}
+                {lastSegment === "admin" &&
+                    adminBottomLinks.map((link, index) => (
+                        <Link
+                            to={link.path}
+                            onClick={link.function}
+                            key={index}
+                            className={`link flex items-center mobile_links w-full py-2 px-3 mb-0.5 ${
+                                location.pathname === link.path ? "active" : ""
+                            }`}
+                        >
+                            {link.icon}
+                            <p>{link.name}</p>
+                        </Link>
+                    ))}
             </SidebarFooter>
         </Sidebar>
     );

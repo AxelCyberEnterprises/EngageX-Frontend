@@ -546,9 +546,9 @@ function TestimonialSVG() {
           width="378"
           height="235"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -568,8 +568,8 @@ function TestimonialSVG() {
           y2="229"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C1C2B4" />
-          <stop offset="1" stop-color="#999999" stop-opacity="0" />
+          <stop stopColor="#C1C2B4" />
+          <stop offset="1" stopColor="#999999" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>

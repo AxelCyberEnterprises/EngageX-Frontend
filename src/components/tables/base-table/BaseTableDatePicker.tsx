@@ -26,9 +26,9 @@ export default function BaseTableDatePicker<TData>({ className }: IBaseTableDate
                     <Button
                         id="date"
                         variant={"outline"}
-                        className={cn("w-fit justify-start text-left text-primary-0 font-normal")}
+                        className={cn("w-fit justify-start text-left text-primary-base font-normal")}
                     >
-                        <CalendarIcon className="size-4 text-primary-0" />
+                        <CalendarIcon className="size-4 text-primary-base" />
                         {date?.from ? (
                             date.to ? (
                                 <>

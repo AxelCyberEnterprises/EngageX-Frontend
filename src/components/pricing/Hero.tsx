@@ -1,9 +1,6 @@
-import Navbar from "../Navbar";
-
 function Hero() {
   return (
-    <section className="h-max lg:min-h-[100vh] relative border-2">
-      <Navbar />
+    <section className="h-max lg:min-h-[100vh] relative">
       <div className="space-y-10 flex h-full lg:min-h-[calc(100vh-5rem)] flex-col font-montserrat">
         <svg
           width="1439"
@@ -24,9 +21,9 @@ function Hero() {
               width="1459"
               height="1062"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feBlend
                 mode="normal"
                 in="SourceGraphic"
@@ -53,7 +50,7 @@ function Hero() {
               </h1>
               <p className="big">
                 Our plans ensure flexibility and affordability, making sure you
-                get the best Value for your specific Speech improvement needs
+                get the best value for your specific speech improvement needs
               </p>
             </div>
           </div>
@@ -77,7 +74,7 @@ function Hero() {
               />
             </div>
             <p className="">
-              Over <span className="font-semibold">+2k</span> Careers Impacted
+              Over <span className="font-semibold">+2k</span> careers impacted
             </p>
           </div>
         </div>

@@ -17,23 +17,23 @@ const BaseTableToolbar = <TData,>({ table }: IBaseTableTolbarProps<TData>) => {
             <div className="flex items-center justify-between">
                 <div className="relative">
                     <div className="grid place-content-center absolute h-full w-8">
-                        <Search className="size-4 text-primary-0" />
+                        <Search className="size-4 text-primary-base" />
                     </div>
                     <Input
                         placeholder="Search session by name"
                         value={(table.getColumn("sessionName")?.getFilterValue() as string) ?? ""}
                         onChange={(e) => table.getColumn("sessionName")?.setFilterValue(e.target.value)}
-                        className="min-w-xs text-primary-0 placeholder:text-primary-0/80 pl-8 border-light-silver focus-visible:border-none focus-visible:ring-1 focus-visible:ring-primatext-primary-0 transition duration-300"
+                        className="min-w-xs text-primary-base placeholder:text-primary-base/80 pl-8 border-light-silver focus-visible:border-none focus-visible:ring-1 focus-visible:ring-primatext-primary-base transition duration-300"
                     />
                 </div>
                 <div className="md:flex hidden items-center gap-x-3">
-                    <Button className="bg-transparent hover:bg-transparent border border-bright-gray text-primary-0 font-normal">
+                    <Button className="bg-transparent hover:bg-transparent border border-bright-gray text-primary-base font-normal">
                         <ListFilter className="size-4" />
                         <span>Filter</span>
                     </Button>
                     <BaseTableSortOptions table={table} />
                 </div>
-                <Button className="md:hidden bg-transparent hover:bg-transparent border border-bright-gray text-primary-0 font-normal">
+                <Button className="md:hidden bg-transparent hover:bg-transparent border border-bright-gray text-primary-base font-normal">
                     <ListFilter className="size-4" />
                 </Button>
             </div>

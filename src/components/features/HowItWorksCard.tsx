@@ -1,11 +1,13 @@
 import clsx from "clsx";
-import { JSX } from "react";
 
 interface Params {
   item: {
+    header: string;
     title: string;
     content: string;
-    svg: JSX.Element;
+    list?: string[];
+    carousel?: any[];
+    img?: string;
   };
   className?: string;
 }
@@ -14,12 +16,12 @@ function HowItWorksCard({ className, item }: Params) {
   return (
     <div
       className={clsx(
-        "flex flex-col lg:flex-col px-10 lg:px-20 lg:space-x-22 items-center py-22 w-full justify-between",
+        "flex flex-col lg:flex-row px-10 lg:px-20 lg:!space-x-22 items-center py-22 w-full justify-between",
         className
       )}
     >
       <div className="space-y-6 flex-1 w-full font-montserrat">
-        <div className="px-3 py-3 flex gap-2 w-max items-center border rounded-xl bg-white border-[#E1E5E7]">
+        <div className="px-3 py-3 flex gap-2 w-max items-center border rounded-xl bg-white !border-[#E1E5E7]">
           <svg
             width="16"
             height="16"
@@ -33,16 +35,29 @@ function HowItWorksCard({ className, item }: Params) {
               fill="#4C5C75"
             />
           </svg>
-          <p className="small text-dull-electric-blue">HOW IT WORKS</p>
+          <p className="small text-dull-electric-blue">{item.header}</p>
         </div>
 
         <div className="space-y-4">
           <h4 className="h-max font-montreal leading-snug">{item.title}</h4>
           <p className="text-dark-electric-blue">{item.content}</p>
+          {item.list && (
+            <ul className="list-disc pl-5 space-y-2">
+              {item.list.map((listItem, idx) => (
+                <li key={idx} className="text-dark-electric-blue">
+                  {listItem}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
-      <div className="flex-1 flex items-start justify-start">{item.svg}</div>
+      {item.img && (
+        <div className="flex-1 flex mt-22 lg:mt-0 lg:mr-22 items-start justify-start">
+          <img src={item.img} alt="" />
+        </div>
+      )}
     </div>
   );
 }

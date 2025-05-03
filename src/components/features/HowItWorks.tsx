@@ -1,32 +1,21 @@
 import clsx from "clsx";
 import HowItWorksCard from "./HowItWorksCard";
-import HowItWorksCardOneSVG from "./svgs/HowItWorksCardOneSVG";
-import HowItWorksCardThreeSVG from "./svgs/HowItWorksCardThreeSVG";
-import HowItWorksCardTwoSVG from "./svgs/HowItWorksCardTwoSVG";
 
 function HowItWorks() {
-  let how_it_works_sections = [
+  const how_it_works_sections = [
     {
-      title: "AI Realistic Enhancements for users",
+      header: "FEATURES",
+      title: "AI progress tracking for pitch improvement",
       content:
-        "Our AI progress tracking for Pitch Improvement is a cutting-edge solution for individuals and teams to help refine their pitch delivery. Every session is automatically recorded, allowing you to improve your performance. Whether for business, sales, or public speaking, this tool ensures continuous improvement and success.",
-      svg: <HowItWorksCardOneSVG className="w-full h-[20rem]" />,
+        "Our AI progress tracking for public speaking improvement is a cutting-edge solution for individuals and teams to refine their pitch delivery. Whether for business, sales, or investor opportunity pitches, this tool ensures continuous improvement and success",
+      img: "./assets/HowItWorksImg2.png",
     },
     {
-      title: "AI Progress Tracking for Pitch Improvement",
+      header: "FEATURES",
+      title: "Feedback score dashboard",
       content:
-        "Our AI progress tracking for Pitch Improvement is a cutting-edge solution for individuals and teams to help refine their pitch delivery. Every session is automatically recorded, allowing you to improve your performance. Whether for business, sales, or public speaking, this tool ensures continuous improvement and success.",
-      svg: (
-        <HowItWorksCardTwoSVG className="w-[24rem] h-[20rem] mt-22 lg:mt-0" />
-      ),
-    },
-    {
-      title: "Feedback Score Dashboard",
-      content:
-        "Our AI progress tracking for Pitch Improvement is a cutting-edge solution for individuals and teams to help refine their pitch delivery. Every session is automatically recorded, allowing you to improve your performance. Whether for business, sales, or public speaking, this tool ensures continuous improvement and success.",
-      svg: (
-        <HowItWorksCardThreeSVG className="w-full h-[20rem] mt-22 lg:mt-0" />
-      ),
+        "Get a snapshot of overall feedback scores and analyzed metrics to understand strengths and areas for improvement. Interpretation of feedback patterns and customer satisfaction levels. Session reporting will outline steps to enhance feedback scores and improve user performance",
+      img: "./assets/HowItWorksImg3.png",
     },
   ];
   return (

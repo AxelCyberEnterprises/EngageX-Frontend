@@ -1,8 +1,9 @@
 interface SemiCircleProgressProps {
     percent: number;
+    color: string;
 }
 
-const SemiCircleProgress = ({ percent }: SemiCircleProgressProps) => {
+const SemiCircleProgress = ({ percent, color }: SemiCircleProgressProps) => {
     const r = 100; // Radius of the arc
     const centerX = 125; // Center X
     const centerY = 125; // Adjusted to remove bottom space
@@ -41,14 +42,14 @@ const SemiCircleProgress = ({ percent }: SemiCircleProgressProps) => {
                 {/* Progress Arc */}
                 <path
                     d={`M ${startX} ${startY} A ${r} ${r} 0 0 1 ${progressX} ${progressY}`}
-                    stroke="#7387FF"
+                    stroke={color}
                     strokeWidth="20"
                     strokeLinecap="round"
                     fill="none"
                 />
 
                 {/* Moving Thumb */}
-                <circle cx={progressX} cy={progressY} r="12" fill="#7387FF" stroke="#fff" strokeWidth="3" />
+                <circle cx={progressX} cy={progressY} r="12" fill={color} stroke={color} strokeWidth="3" />
             </svg>
         </div>
     );

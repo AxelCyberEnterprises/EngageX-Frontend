@@ -51,7 +51,7 @@ export default function BaseTableSelectFilters<TData>({ table }: IBaseTableSelec
                         variant="outline"
                         role="combobox"
                         size="sm"
-                        className="bg-transparent hover:bg-transparent text-primary-0 border-light-silver gap-1.5"
+                        className="bg-transparent hover:bg-transparent text-primary-base border-light-silver gap-1.5"
                     >
                         <ChevronDown className="size-4 shrink-0" />
                         <span className="font-normal">All Users</span>
@@ -61,7 +61,7 @@ export default function BaseTableSelectFilters<TData>({ table }: IBaseTableSelec
                     <Command>
                         <CommandInput
                             placeholder="Search"
-                            className="border-none text-primary-0 placeholder:text-primary-0/80"
+                            className="border-none text-primary-base placeholder:text-primary-base/80"
                         />
                         <CommandList>
                             <CommandEmpty>No columns found.</CommandEmpty>
@@ -76,7 +76,7 @@ export default function BaseTableSelectFilters<TData>({ table }: IBaseTableSelec
                                                 onSelect={() => column.toggleVisibility(!column.getIsVisible())}
                                                 className="px-4 py-2"
                                             >
-                                                <span className="truncate text-primary-0">
+                                                <span className="truncate text-primary-base">
                                                     {toSentenceCase(column.id)}
                                                 </span>
                                             </CommandItem>
@@ -89,7 +89,7 @@ export default function BaseTableSelectFilters<TData>({ table }: IBaseTableSelec
             </Popover>
             {BaseTableSelectOptions.map(({ id, placeholder, options }) => (
                 <Select key={id}>
-                    <SelectTrigger className="w-fit text-primary-0 data-[placeholder]:text-primary-0 [&_svg]:opacity-100 [&_svg:not([class*='text-'])]:text-primary-0 flex-row-reverse gap-1.5 focus-visible:ring-0">
+                    <SelectTrigger className="w-fit text-primary-base data-[placeholder]:text-primary-base [&_svg]:opacity-100 [&_svg:not([class*='text-'])]:text-primary-base flex-row-reverse gap-1.5 focus-visible:ring-0">
                         <SelectValue placeholder={placeholder} />
                     </SelectTrigger>
                     <SelectContent className="[&_.select-viewport]:p-0">

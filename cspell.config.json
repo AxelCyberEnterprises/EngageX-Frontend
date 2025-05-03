@@ -1,0 +1,55 @@
+{
+    "version": "0.2",
+    "language": "en",
+    "allowCompoundWords": true,
+    "dictionaries": [
+      "typescript",
+      "node",
+      "softwareTerms",
+      "html",
+      "css",
+      "npm"
+    ],
+    "ignorePaths": [
+      "node_modules",
+      "dist",
+      "build",
+      "public",
+      ".next",
+      ".vercel",
+      ".git",
+      "package-lock.json",
+      "yarn.lock",
+      "**/*.min.*",
+      "**/*.map"
+    ],
+    "words": [
+      "jsx",
+      "tsx",
+      "tailwindcss",
+      "eslint",
+      "prettier",
+      "reactjs",
+      "bevy",
+      "useState",
+      "useEffect",
+      "useMemo",
+      "svgs",
+      "pngs",
+      "IGET",
+      "IPOST",
+      "sonner",
+      "IPDF",
+      "vaul",
+      "cmdk",
+      "saurus",
+      "auro"
+    ],
+    "overrides": [
+      {
+        "filename": "**/*.{ts,tsx,js,jsx}",
+        "language": "en"
+      }
+    ]
+  }
+  

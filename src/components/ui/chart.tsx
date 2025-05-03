@@ -132,20 +132,21 @@ function ChartTooltipContent({
     }
 
     const [item] = payload
+
+    if (labelFormatter) {
+      return (
+        <div className={cn("font-medium", labelClassName)}>
+          {labelFormatter(label, payload)}
+        </div>
+      )
+    }
+
     const key = `${labelKey || item?.dataKey || item?.name || "value"}`
     const itemConfig = getPayloadConfigFromPayload(config, item, key)
     const value =
       !labelKey && typeof label === "string"
         ? config[label as keyof typeof config]?.label || label
         : itemConfig?.label
-
-    if (labelFormatter) {
-      return (
-        <div className={cn("font-medium", labelClassName)}>
-          {labelFormatter(value, payload)}
-        </div>
-      )
-    }
 
     if (!value) {
       return null
@@ -175,7 +176,9 @@ function ChartTooltipContent({
         className
       )}
     >
-      {!nestLabel ? tooltipLabel : null}
+      <span className="flex gap-1">
+        {!nestLabel ? tooltipLabel : null}
+      </span>
       <div className="grid gap-1.5">
         {payload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`
@@ -224,10 +227,11 @@ function ChartTooltipContent({
                       nestLabel ? "items-end" : "items-center"
                     )}
                   >
-                    <div className="grid gap-1.5">
+                    <div className="grid gap-1.5 mr-3">
                       {nestLabel ? tooltipLabel : null}
                       <span className="text-muted-foreground">
                         {itemConfig?.label || item.name}
+                        {item.name === "Trigger" ? " Response" : null}
                       </span>
                     </div>
                     {item.value && (
@@ -245,6 +249,7 @@ function ChartTooltipContent({
     </div>
   )
 }
+
 
 const ChartLegend = RechartsPrimitive.Legend
 

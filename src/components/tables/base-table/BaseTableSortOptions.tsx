@@ -22,7 +22,7 @@ export default function BaseTableSortOptions<TData>({ table }: IBaseTableSortOpt
                     variant="outline"
                     role="combobox"
                     size="sm"
-                    className="bg-transparent hover:bg-transparent text-primary-0 border-light-silver gap-1 p-0 h-9"
+                    className="bg-transparent hover:bg-transparent text-primary-base border-light-silver gap-1 p-0 h-9"
                 >
                     <ChevronsUpDown className="size-4 shrink-0" />
                     <span className="font-normal">Sort</span>
@@ -32,7 +32,7 @@ export default function BaseTableSortOptions<TData>({ table }: IBaseTableSortOpt
                 <Command>
                     <CommandInput
                         placeholder="Search columns..."
-                        className="border-none text-primary-0 placeholder:text-primary-0/80"
+                        className="border-none text-primary-base placeholder:text-primary-base/80"
                     />
                     <CommandList>
                         <CommandEmpty>No columns found.</CommandEmpty>
@@ -47,10 +47,10 @@ export default function BaseTableSortOptions<TData>({ table }: IBaseTableSortOpt
                                             onSelect={() => column.toggleVisibility(!column.getIsVisible())}
                                             className="px-4 py-2"
                                         >
-                                            <span className="truncate text-primary-0">{toSentenceCase(column.id)}</span>
+                                            <span className="truncate text-primary-base">{toSentenceCase(column.id)}</span>
                                             <Check
                                                 className={cn(
-                                                    "ml-auto size-4 shrink-0 text-primary-0",
+                                                    "ml-auto size-4 shrink-0 text-primary-base",
                                                     column.getIsVisible() ? "opacity-100" : "opacity-0",
                                                 )}
                                             />

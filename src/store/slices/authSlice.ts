@@ -1,18 +1,35 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { tokenManager } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
+import { LoginResponse } from "@/hooks/auth";
 
 interface Question {
     id: number;
     question: string;
-    content: { contentId: number; plan?: string; role?: string }[];
+    content: { contentId: number; plan?: string; role?: string; apiName: string }[];
 }
 
 interface SignupData {
-    fullName: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     confirmPassword: string;
     planQuestion: string;
     roleQuestion: string;
+    userId: string;
+}
+
+export interface AuthUser {
+    is_admin: boolean;
+    token: string;
+    email: string;
+    first_name: string | null;
+    last_name: string | null;
+    user_id: number;
 }
 
 interface AuthState {
@@ -21,38 +38,60 @@ interface AuthState {
     signupFlow: string;
     routeFromLogin: boolean;
     signupData: SignupData | null;
+    user: AuthUser | null;
+    isAuthenticated: boolean;
+    hasCheckedAuth: boolean;
+    emailForPasswordReset: string;
+    apiError: string | null;
+    successMessage: string | null;
+    authPageImage: string;
+    userIdAfterSignup: string;
+    contactStatus: string;
+    otpSent: boolean;
 }
 
+const storedUser = localStorage.getItem("user");
 const initialState: AuthState = {
     questions: [
         {
             id: 1,
             question: "What do you plan on doing?",
             content: [
-                { contentId: 1, plan: "Pitch" },
-                { contentId: 2, plan: "Present" },
-                { contentId: 3, plan: "Speak" },
+                { contentId: 1, plan: "Pitch", apiName: "pitch" },
+                { contentId: 2, plan: "Present", apiName: "presenting" },
+                { contentId: 3, plan: "Speak/Storytelling", apiName: "public_speaking" },
+                { contentId: 4, plan: "Interview", apiName: "public_speakin" },
             ],
         },
         {
             id: 2,
             question: "What role are you?",
             content: [
-                { contentId: 1, role: "Early Career Professional" },
-                { contentId: 2, role: "Mid-level Professionals" },
-                { contentId: 3, role: "Executives" },
-                { contentId: 4, role: "C-suites" },
-                { contentId: 5, role: "Athletes" },
-                { contentId: 6, role: "Entrepreneurs" },
-                { contentId: 7, role: "Sales Professionals" },
+                { contentId: 1, role: "Early Career Professional", apiName: "early" },
+                { contentId: 2, role: "Mid-level Professionals", apiName: "mid" },
+                { contentId: 3, role: "Sales Professionals", apiName: "sales" },
+                { contentId: 4, role: "C-suites", apiName: "c_suite" },
+                { contentId: 5, role: "Entrepreneurs", apiName: "entrepreneurs" },
+                { contentId: 6, role: "Major League Sports Athlete", apiName: "athlete" },
+                { contentId: 7, role: "Major League Sports Executive", apiName: "executive" },
             ],
         },
     ],
     topicQuestion: "What do you plan on doing?",
 
-    signupFlow: "authQuestions",
+    signupFlow: "signup",
     routeFromLogin: false,
     signupData: null, // Stores signup details
+    user: storedUser ? (JSON.parse(storedUser) as AuthUser) : null,
+    isAuthenticated: false,
+    hasCheckedAuth: false,
+    emailForPasswordReset: "jnr@gmail.com",
+    apiError: null,
+    successMessage: "",
+    authPageImage: authPageImage1,
+    userIdAfterSignup: "",
+    contactStatus: "",
+    otpSent: false,
 };
 
 const authSlice = createSlice({
@@ -62,18 +101,95 @@ const authSlice = createSlice({
         setTopicQuestion: (state, action: PayloadAction<string>) => {
             state.topicQuestion = action.payload;
         },
-
+        setEmailForPasswordReset: (state, action: PayloadAction<string>) => {
+            state.emailForPasswordReset = action.payload;
+        },
+        setApiError: (state, action: PayloadAction<string>) => {
+            state.apiError = action.payload;
+        },
+        setSuccessMessage: (state, action: PayloadAction<string>) => {
+            state.successMessage = action.payload;
+        },
         setSignupFlow: (state, action: PayloadAction<string>) => {
             state.signupFlow = action.payload;
+        },
+        setContactStatus: (state, action: PayloadAction<string>) => {
+            state.contactStatus = action.payload;
+        },
+        setAuthPageImage: (state, action: PayloadAction<string>) => {
+            state.authPageImage = action.payload;
         },
         setRouteFromLogin: (state, action: PayloadAction<boolean>) => {
             state.routeFromLogin = action.payload;
         },
+        setOtpSent: (state, action: PayloadAction<boolean>) => {
+            state.otpSent = action.payload;
+        },
+        setUserIdAfterSignup: (state, action: PayloadAction<string>) => {
+            state.userIdAfterSignup = action.payload;
+        },
         setSignupData: (state, action: PayloadAction<Partial<SignupData>>) => {
             state.signupData = { ...state.signupData!, ...action.payload };
+        },
+        setUser: (state, action: PayloadAction<AuthUser | null>) => {
+            state.user = action.payload;
+        },
+        logout: (state) => {
+            tokenManager.clearToken();
+            localStorage.clear();
+            state.user = null;
+            state.isAuthenticated = false;
+            state.hasCheckedAuth = true;
+        },
+        login: (state, action: PayloadAction<LoginResponse>) => {
+            const user = action.payload.data;
+
+            if (!user.token || !user.email) {
+                throw new Error("Invalid data");
+            }
+
+            try {
+                tokenManager.setToken(user.token);
+                console.log(user);
+                localStorage.setItem("user", JSON.stringify(user));
+                state.isAuthenticated = true;
+                state.user = user;
+            } catch (error) {
+                console.error("Failed to set tokens:", error);
+                state.user = null;
+                state.isAuthenticated = false;
+            }
         },
     },
 });
 
-export const { setTopicQuestion, setSignupFlow, setRouteFromLogin, setSignupData } = authSlice.actions;
+export function useAutoClearSuccessMessage() {
+    const dispatch = useDispatch();
+    const location = useLocation();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            dispatch(setSuccessMessage(""));
+        }, 5000);
+
+        return () => clearTimeout(timer);
+    }, [location.pathname]);
+}
+
+export const {
+    setTopicQuestion,
+    setSignupFlow,
+    setAuthPageImage,
+    setOtpSent,
+    setContactStatus,
+    setUserIdAfterSignup,
+    setRouteFromLogin,
+    setSignupData,
+    logout,
+    login,
+    setApiError,
+    setEmailForPasswordReset,
+    setSuccessMessage,
+    setUser,
+} = authSlice.actions;
 export default authSlice.reducer;

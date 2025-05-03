@@ -56,6 +56,20 @@ p {
             font-size: calc($vw / 500px * 30px);
         }
     }
+
+  &.xs {
+    $vw: 100vw;
+    font-size: calc($vw / 1440px * 12px);
+  
+    @include media('<phone') {
+      font-size: calc($vw / 750px * 12px);
+    }
+  
+    @include media('<small') {
+      font-size: calc($vw / 500px * 11px);
+    }
+  }
+  
 }
 
 small {
@@ -70,6 +84,7 @@ small {
         font-size: calc($vw / 500px * 13px);
     }
 }
+
 
 h1 {
     line-height: 1.2;
@@ -206,11 +221,11 @@ textarea {
 }
 
 button {
-    padding: 16px 30px;
+    // padding: 16px 30px;
     background-color: $color-gunmetal;
     color: $color-white;
     border-radius: 20px;
-    border: none;
+    border-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -228,6 +243,7 @@ button {
         background-color: $color-green-sheen;
     }
 }
+
 
 .desktop {
     display: auto !important;

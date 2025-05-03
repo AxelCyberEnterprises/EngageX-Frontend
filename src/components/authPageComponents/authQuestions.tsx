@@ -1,111 +1,145 @@
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/index";
-import { setTopicQuestion, setSignupData, setSignupFlow } from "../../store/slices/authSlice";
+import { setAuthPageImage, setSignupData } from "../../store/slices/authSlice";
 import { welcomeMessage } from "@/components/layouts/userAuth";
+import { useLocation, useNavigate} from "react-router-dom";
+import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg"
 
 const AuthQuestions: React.FC = () => {
-    const [selectedOptions, setSelectedOptions] = useState<{
-        plan?: string;
-        role?: string;
-    }>({});
+    const [selectedOptions, setSelectedOptions] = useState<{ plan?: string; role?: string, apiName?:string; }>({});
     const signupData = useSelector((state: RootState) => state.auth.signupData);
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const questions = useSelector((state: RootState) => state.auth.questions);
-    const topicQuestion = useSelector((state: RootState) => state.auth.topicQuestion);
+        const location = useLocation()
+                useEffect(()=>{
+                    dispatch(setAuthPageImage(authPageImage2))
+                },[location.pathname])
 
-    const filteredQuestions = questions.filter((question) => question.question === topicQuestion);
+    // Separate the two question sets
+    const planQuestion = questions.find((q) => q.question === "What do you plan on doing?");
+    const roleQuestion = questions.find((q) => q.question === "What role are you?");
 
-    const handleInputContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputContent = (e: React.ChangeEvent<HTMLInputElement>, questionType: "plan" | "role") => {
         const selectedContentId = e.target.value;
-        const selectedOption = filteredQuestions[0].content.find(
-            (option) => option.contentId === Number(selectedContentId),
+        
+        // Find the selected option based on the question type
+        const selectedOption = (questionType === "plan" ? planQuestion?.content : roleQuestion?.content)?.find(
+            (option) => option.contentId === Number(selectedContentId)
         );
-
+    
         if (selectedOption) {
-            if (topicQuestion === "What do you plan on doing?") {
-                setSelectedOptions((prev) => ({ ...prev, plan: selectedOption.plan }));
-
-                // Save to Redux state (signupData.planQuestion)
-                dispatch(
-                    setSignupData({
-                        ...signupData,
-                        planQuestion: selectedOption.plan || "",
-                    }),
-                );
-
-                setTimeout(() => {
-                    dispatch(setTopicQuestion("What role are you?"));
-                }, 800);
-            } else if (topicQuestion === "What role are you?") {
-                setSelectedOptions((prev) => ({ ...prev, role: selectedOption.role }));
-
-                // Save to Redux state (signupData.roleQuestion)
-                dispatch(
-                    setSignupData({
-                        ...signupData,
-                        roleQuestion: selectedOption.role || "",
-                    }),
-                );
-
-                setTimeout(() => {
-                    dispatch(setSignupFlow("signup"));
-                }, 400);
-            }
+            setSelectedOptions((prev) => ({ ...prev, [questionType]: selectedOption[questionType] }));
+    
+            dispatch(
+                setSignupData({
+                    ...signupData,
+                    [`${questionType}Question`]: selectedOption[questionType] || "",
+                }),
+            );
         }
     };
+    
+    // const {mutate: addAuthQuestion} = useAddAuthQuestion()
+    const handleContinue = () => {
+        if (!selectedOptions.plan || !selectedOptions.role) {
+            return;
+        }
+    
+       
+    
+        localStorage.setItem(
+            "userQuestions",
+            JSON.stringify({
+                plan: selectedOptions.apiName,
+                role: selectedOptions.apiName,
+            })
+        );
+    
+        navigate("../Tutorial");
+    };
+    
 
     return (
-        <div className="  md:flex flex-col md:h-[90vh]  max-lg:p-5 justify-center  h-full">
+        <div className="flex flex-col my-5 md:justify-center md:pt-12 scrollbar-hide overflow-y-auto scroll-smooth h-[100dvh] md:pb-10  lg:w-4/5 md:mx-auto max-lg:p-5">
             {welcomeMessage()}
-            <div className="font-[Montserrat] mt-10 w-full md:w-[80%] mx-auto lg:w-full md:mt-5">
-                {filteredQuestions.map((item) => (
-                    <div key={item.id}>
-                        <p className="text-[#344054]">{item.question}</p>
-                        <div
-                            className={`mt-3 w-full ${
-                                topicQuestion === "What do you plan on doing?"
-                                    ? "lg:flex-row max-lg:w-full   flex-col max-lg:space-y-4 flex space-x-4"
-                                    : "md:flex lg:grid md:flex-row md:justify-between flex-wrap flex-col max-md:space-y-4 flex grid-cols-[repeat(auto-fit,minmax(220px,1fr))] md:gap-5"
-                            }`}
-                        >
-                            {item.content.map((option) => {
-                                const isSelected =
-                                    topicQuestion === "What do you plan on doing?"
-                                        ? selectedOptions.plan === option.plan
-                                        : selectedOptions.role === option.role;
+            <div className="font-[Montserrat] mt-10 w-full md:w-[80%] mx-auto lg:w-full md:mt-0 space-y-8">
+                {/* Plan Question */}
+                {planQuestion && (
+                    <div>
+                        <p className="text-[#344054]">{planQuestion.question}</p>
+                        <div className="mt-3 w-full flex flex-col md:flex-row gap-4 space-y-">
+                            {planQuestion.content.map((option) => {
+                                const isSelected = selectedOptions.plan === option.plan;
 
                                 return (
                                     <label
                                         key={option.contentId}
-                                        className={`flex items-center font-normal text-sm px-4  justify-start  md:py-6 py-3 lg:py-4 w-full ${
-                                            topicQuestion === "What do you plan on doing?"
-                                                ? "lg:w-[180px] "
-                                                : "md:w-[160px] lg:w-[220px]"
-                                        } ${
+                                        className={`flex items-center text-sm px-3 py-3 w-full rounded-lg border cursor-pointer ${
                                             isSelected
                                                 ? "bg-[#2154cb11] text-[#2154cb]"
                                                 : "text-black bg-white border-[#b7b7b7]"
-                                        } space-x-2 rounded-[10px] border cursor-pointer`}
+                                        }`}
                                     >
                                         <input
                                             type="radio"
-                                            name={topicQuestion === "What do you plan on doing?" ? "plans" : "roles"}
-                                            value={option.contentId} // Use contentId as the value
+                                            name="plan"
+                                            value={option.contentId}
                                             className="mt-0 mb-0 w-fit accent-[#2154cb]"
-                                            checked={isSelected} // Reflect whether the option is selected
-                                            onChange={handleInputContent}
+                                            checked={isSelected}
+                                            onChange={(e) => handleInputContent(e, "plan")}
                                         />
-                                        <span className="text-gray-70">{option.plan || option.role}</span>
+                                        <span className="ml-2">{option.plan}</span>
                                     </label>
                                 );
                             })}
                         </div>
                     </div>
-                ))}
+                )}
+
+                {/* Role Question */}
+                {roleQuestion && (
+                    <div className="-mt-2">
+                        <p className="text-[#344054]">{roleQuestion.question}</p>
+                        <div className="mt-3 w-full md:flex-row justify-center items-center mx-auto grid-cols-2 gap-2 flex-wrap flex flex-col space-y-4">
+                            {roleQuestion.content.map((option) => {
+                                const isSelected = selectedOptions.role === option.role;
+
+                                return (
+                                    <label
+                                        key={option.contentId}
+                                        className={`flex items-center  md:max-w-[48%] ${option.contentId === 7 && "md:max-w-max"} text-sm px-3 py-3 w-full max-w-fi rounded-lg border cursor-pointer ${
+                                            isSelected
+                                                ? "bg-[#2154cb11] text-[#2154cb]"
+                                                : "text-black bg-white border-[#b7b7b7]"
+                                        }`}
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="role"
+                                            value={option.contentId}
+                                            className="mt-0 mb-0 w-fit accent-[#2154cb]"
+                                            checked={isSelected}
+                                            onChange={(e) => handleInputContent(e, "role")}
+                                        />
+                                        <span className="ml-2">{option.role}</span>
+                                    </label>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
             </div>
+
+            <button
+                onClick={handleContinue}
+                className={`w-full md:w-[80%]  ${(!selectedOptions.plan || !selectedOptions.role) ? "bg-[#3d3d3d62] hover:bg-[#3d3d3d62] cursor-not-allowed" : " hover:bg-accent-foreground  "} mx-auto lg:w-full rounded-lg font-[montserrat] mt-7 py-4 text-white`}
+            >
+                Continue
+            </button>
         </div>
     );
 };
