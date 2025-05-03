@@ -189,6 +189,7 @@ const PitchSessionReport: React.FC = () => {
                     <Skeleton className="h-15 w-100 mb-3" />
                     <Skeleton className="h-7 w-full mb-3" />
                     <Skeleton className="h-7 w-full mb-3" />
+                    <Skeleton className="h-100 w-full rounded-3xl mb-5" />
                     <div className="flex flex-wrap justify-between gap-3">
                         {[...Array(4)].map((_, index) => (
                             <Skeleton key={index} className="w-[49%] h-100 mb-5" />
@@ -295,17 +296,25 @@ const PitchSessionReport: React.FC = () => {
                     </section>
 
                     <section className="px-4 lg:px-8 py-4">
-                        <div className="relative w-full h-full rounded-3xl mb-4 overflow-hidden">
-                            {data.slides_file ? (
-                                <VideoPlayer
-                                    height="h-100"
-                                    width="w-full"
-                                    src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4"
-                                    border="rounded-2xl"
-                                    preload={true}
-                                />
+                        <div className="w-full mb-5">
+                            {!data.slides_file ? (
+                                <>
+                                    <div className="relative rounded-3xl mb-2 overflow-hidden">
+                                        <VideoPlayer
+                                            height="h-100"
+                                            width="w-full"
+                                            src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4"
+                                            border="rounded-3xl"
+                                            canDownload
+                                            preload={true}
+                                        />
+                                    </div>
+                                    <small className="border-l-2 border-l-maximum-yellow-red pl-3 py-1">
+                                        Your recording may take 2-5 minutes to be ready for download
+                                    </small>
+                                </>
                             ) : (
-                                <Skeleton className="h-100 w-full" />
+                                <Skeleton className="h-100 w-full rounded-3xl" />
                             )}
                         </div>
 
