@@ -56,7 +56,6 @@ const RecentAchievementsModal: React.FC<RecentAchievementsModalProps> = ({ show,
     return (score / total) * 100;
   };
 
-  console.log(achievementData)
 
   return (
     <>

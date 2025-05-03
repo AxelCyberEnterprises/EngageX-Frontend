@@ -21,12 +21,16 @@ export function useGetSequence() {
   });
 }
 
-export function useCompareSequences(id: any) {
+export function useCompareSequences(id?: string) {
+  const isValidId = typeof id === "string" && id.trim() !== "";
+
   return useQuery<any>({
-    queryKey: ["get-sequence"],
+    queryKey: ["get-sequence", id],
     queryFn: async () => {
+      if (!isValidId) return null; // Optional: safety fallback
       const response = await apiGet<any>(`/sessions/compare-sequences/${id}`);
       return response;
     },
+    enabled: isValidId,
   });
 }
