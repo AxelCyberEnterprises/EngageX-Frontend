@@ -1,3 +1,4 @@
+import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
 import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
@@ -294,6 +295,20 @@ const PitchSessionReport: React.FC = () => {
                     </section>
 
                     <section className="px-4 lg:px-8 py-4">
+                        <div className="relative w-full h-full rounded-3xl mb-4 overflow-hidden">
+                            {data.slides_file ? (
+                                <VideoPlayer
+                                    height="h-100"
+                                    width="w-full"
+                                    src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4"
+                                    border="rounded-2xl"
+                                    preload={true}
+                                />
+                            ) : (
+                                <Skeleton className="h-100 w-full" />
+                            )}
+                        </div>
+
                         <div className="flex flex-col md:flex-row w-full items-stretch gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                                 <div className="border-1 border-bright-gray rounded-xl p-4">
