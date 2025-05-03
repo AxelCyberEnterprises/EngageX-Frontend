@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // src/components/VideoPlayer.tsx
-import React, { useState, useRef, useEffect } from "react";
+import { Download } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaCompress, FaExpand } from "react-icons/fa";
 
 interface VideoPlayerProps {
@@ -19,6 +20,7 @@ interface VideoPlayerProps {
     muted?: boolean;
     requireFullPlay?: boolean;
     allowSwitch?: boolean;
+    canDownload?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -37,6 +39,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     muted = false,
     requireFullPlay = false,
     allowSwitch = true,
+    canDownload = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -369,7 +372,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                             </span>
                         </div>
 
-                        <div>
+                        <div className="flex items-center gap-4">
+                            {canDownload && (
+                                <a
+                                    title="Download"
+                                    href={currentSrc}
+                                    download="video.mp4"
+                                    className="text-white hover:text-gray-300 transition-colors"
+                                >
+                                    <Download size={16} />
+                                </a>
+                            )}
+
                             <button
                                 onClick={toggleFullscreen}
                                 aria-label="Toggle fullscreen"

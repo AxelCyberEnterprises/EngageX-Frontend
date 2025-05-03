@@ -27,10 +27,7 @@ const UserSettings: React.FC = () => {
 
   useEffect(() => {
     if (sectionFromUrl) {
-      // Normalize the section name from URL for comparison
       const normalizedUrlSection = sectionFromUrl.toLowerCase().trim();
-      
-      // Find matching section index with more flexible matching
       const newIndex = sectionItems.findIndex(item => {
         const normalizedItem = item.toLowerCase().split('&')[0].trim();
         return normalizedItem.includes(normalizedUrlSection) || 
