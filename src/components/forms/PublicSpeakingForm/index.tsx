@@ -35,10 +35,10 @@ const PublicSpeakingForm = () => {
                     <TimeAllocationSection />
                     <InputSpeakerNotesSection {...{ form }} />
                 </section>
-                <section className="lg:space-y-6 space-y-12">
+                <section className="lg:space-y-6 space-y-12 lg:max-w-100">
                     <VirtualEnvironmentSection
                         {...{ form }}
-                        className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full [&_[data-slot='form-label']>div]:w-85"
+                        className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
                         options={publicSpeakingVEOptions}
                     />
                     <div className="flex items-start justify-between gap-x-8">
