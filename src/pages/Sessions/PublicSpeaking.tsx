@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useRef, useState } from "react";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
 import questionImage from "../../assets/images/pngs/question-image.png";
@@ -18,7 +19,7 @@ import MobileEngagementMetrics from "@/components/session/MobileEngagementMetric
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import { useEffect } from "react";
 import { useEndSession } from "@/hooks/sessions";
-import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
+import VideoPlayer from "@/components/session/VideoPlayer";
 
 const PublicSpeaking: React.FC = () => {
     const [stop, setStop] = useState(false);
@@ -43,6 +44,8 @@ const PublicSpeaking: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
+    const pcRef = useRef<RTCPeerConnection | null>(null);
+    const mediaStreamRef = useRef<MediaStream | null>(null);
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -115,9 +118,6 @@ const PublicSpeaking: React.FC = () => {
                     setFeedback(parsed);
                 } else if (parsed.type === "window_emotion_update") {
                     console.log(parsed);
-                    if (allowSwitch) {
-                        setVideoUrl(parsed.emotion_s3_url);
-                    }
                 }
             } catch (e) {
                 console.error("Invalid JSON from server:", e);
@@ -137,6 +137,100 @@ const PublicSpeaking: React.FC = () => {
             ws.close();
         };
     }, [sessionId, allowSwitch]);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const connectToRealtime = async () => {
+            try {
+                // Get ephemeral token
+                const tokenRes = await axios.get("https://api.engagexai.io/sessions/api/openai/realtime-token/");
+                const EPHEMERAL_KEY = tokenRes.data.client_secret.value;
+
+                if (!isMounted) return;
+
+                // Create peer connection
+                const pc = new RTCPeerConnection();
+                pcRef.current = pc;
+
+                // Get mic input
+                const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaStreamRef.current = mediaStream;
+
+                const [audioTrack] = mediaStream.getAudioTracks();
+                if ((pc.signalingState as string) === "closed") return;
+                pc.addTrack(audioTrack);
+
+                // Listen for text events
+                const dc = pc.createDataChannel("oai-events");
+                dc.addEventListener("message", (event) => {
+                    try {
+                        const parsed = JSON.parse(event.data);
+                        if (parsed.text) {
+                            console.log(parsed.text);   
+                            const validEmotions = ["thinking", "empathy", "excitement", "laughter", "surprise", "interested"];
+                            if (validEmotions.includes(parsed.text)) {
+                                const random = Math.floor(Math.random() * 5) + 1;
+                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
+                                console.log("videoUrl", newUrl);
+                                setVideoUrl(newUrl);
+                            }
+                        }
+                    } catch (err) {
+                        console.warn("Invalid message:", event.data, err);
+                    }
+                });
+
+                // Offer/Answer SDP exchange
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+
+                const sdpRes = await axios.post(
+                    "https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview",
+                    offer.sdp,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${EPHEMERAL_KEY}`,
+                            "Content-Type": "application/sdp",
+                        },
+                    },
+                );
+
+                const answer: RTCSessionDescriptionInit = {
+                    type: "answer",
+                    sdp: sdpRes.data as string,
+                };
+
+                if (isMounted && (pc.signalingState as string) !== "closed") {
+                    await pc.setRemoteDescription(answer);
+                }
+            } catch (error) {
+                console.error("Error setting up real-time transcription:", error);
+            }
+        };
+
+        connectToRealtime();
+
+        return () => {
+            isMounted = false;
+
+            console.log("Cleaning up WebRTC and media stream...");
+
+            if (pcRef.current) {
+                try {
+                    pcRef.current.close();
+                } catch (err) {
+                    console.log("Error closing peer connection:", err);
+                }
+                pcRef.current = null;
+            }
+
+            if (mediaStreamRef.current) {
+                mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+                mediaStreamRef.current = null;
+            }
+        };
+    }, [setVideoUrl]);
 
     return (
         <div className="text-primary-blue">
@@ -286,19 +380,11 @@ const PublicSpeaking: React.FC = () => {
                         <div className="rounded-xl w-full md:h-120 h-80 relative">
                             <h6 className="ps-4 md:ps-0 mb-3">Live Audience</h6>
                             <VideoPlayer
-                                height="h-full"
-                                width="w-full"
                                 src={videoUrl}
-                                autoPlay={true}
+                                autoplay={true}
                                 loop={true}
-                                showPauseOverlay={false}
-                                hideControls={true}
-                                border="rounded-2xl"
-                                pauseOnClick={false}
-                                preload={true}
-                                muted={isMuted}
-                                requireFullPlay={isMuted}
-                                allowSwitch={allowSwitch}
+                                isMuted={isMuted}
+                                className="h-full w-full rounded-2xl"
                             />
                             {!isLargeScreen && (
                                 <div
