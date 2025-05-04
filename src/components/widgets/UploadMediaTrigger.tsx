@@ -8,6 +8,7 @@ import ErrorToast from "../ui/custom-toasts/error-toast";
 type IUploadMediaTriggerProps<T extends FieldValues, K extends Path<T>> = HTMLAttributes<HTMLElement> & {
     accept?: DropzoneProps["accept"];
     maxSize?: DropzoneProps["maxSize"];
+    disabled?: DropzoneProps["disabled"];
     multiple?: boolean;
     name: K;
 };
@@ -25,6 +26,7 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
     className,
     children,
     name,
+    disabled,
 }: IUploadMediaTriggerProps<T, K>) => {
     const { register, unregister, setValue } = useFormContext();
 
@@ -70,8 +72,14 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
                 return;
             }
 
+            const uploadedSlides = acceptedFiles.map((file) => {
+                return {
+                    file,
+                };
+            });
+
             // Store the file in the form state
-            setValue(name, acceptedFiles as unknown as T[K], { shouldValidate: true });
+            setValue(name, uploadedSlides as unknown as T[K], { shouldValidate: true });
         },
         [maxSize, name, setValue],
     );
@@ -84,7 +92,7 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
     }, [register, unregister, name]);
 
     return (
-        <Dropzone accept={accept} maxFiles={1} maxSize={maxSize} onDrop={handleDrop}>
+        <Dropzone accept={accept} maxFiles={1} maxSize={maxSize} onDrop={handleDrop} disabled={disabled}>
             {({ getRootProps, getInputProps }) => (
                 <div {...getRootProps()} className={cn(className)}>
                     <input {...getInputProps()} />

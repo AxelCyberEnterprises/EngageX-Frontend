@@ -71,4 +71,17 @@ export interface IGETSessionsResponse {
 export type IPOSTSessionPayload = Omit<z.infer<typeof BaseSessionSetupSchema>, "goals"> & {
     goals?: string[];
     slide?: string;
+    slide_preview_id?: number;
 };
+
+export interface IPreviewSlideUploadResponse {
+    status: string;
+    message: string;
+    data: {
+        id: number;
+        slides_file: string;
+        is_linked: boolean;
+        created_at: string;
+        user: number;
+    };
+}
