@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,9 +10,15 @@ import modalFirstImage from "../../../assets/images/pngs/user-agreement-image-1.
 import cloudCheck from "../../../assets/images/svgs/cloud-check.svg";
 import cloudCheckGray from "../../../assets/images/svgs/cloud-check-gray.svg";
 import { Label } from "@/components/ui/label";
-import { useFullUserProfile, useUpdateUserProfile } from "@/hooks/settings";
+import { useFullUserProfile } from "@/hooks/settings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/rootReducer";
+import { toast } from 'sonner';
+import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
+import { SearchableSelect } from '../../select/CustomSelect';
+import { Globe } from 'lucide-react';
+import { tokenManager } from "@/lib/utils";
 
 function engageXImage() {
     return <img src={engageXModalLogo} alt="EngageX™ Logo" className="w-28" />;
@@ -20,61 +26,36 @@ function engageXImage() {
 
 export default function MultiStepAgreement({ open, onClose }: { open: boolean; onClose: () => void }) {
     const [step, setStep] = useState(1);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const user = useSelector((state: RootState) => state.auth.user);   
     const [agreementState, setAgreementState] = useState({
         initials: "",
         agree: false,
         filePreview: null as string | null,
         canProceed: true,
-        industryState: "",
-        industryType: "",
+        company: "",
+        industry: "",
+        first_name: user?.first_name,
+        last_name: user?.last_name,
+        email: user?.email,
     });
-
-    // useEffect(()=>{
-    //   console.log("Agreement State:", agreementState);
-    // }, [agreementState])
+    const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
     const { data: fullProfile } = useFullUserProfile();
-    const { mutate: updateUserProfile } = useUpdateUserProfile(fullProfile?.results?.[0]?.id);
+    const queryClient = useQueryClient();
     const signupData = useSelector((state: RootState) => state.auth.signupData);
-    // console.log("Signup Data:", signupData)
+
+    // Initialize form with signup data
     useEffect(() => {
-        const updateProfile = async () => {
-            if (step === 5) {
-                const userProfileUpdate = new FormData();
-                userProfileUpdate.append("first_name", signupData?.firstName || "");
-                userProfileUpdate.append("last_name", signupData?.lastName || "");
-                userProfileUpdate.append("email", signupData?.email || "");
-                userProfileUpdate.append("company", agreementState.industryState || "");
-                userProfileUpdate.append("industry", agreementState.industryType || "");
+        if (signupData) {
+            setAgreementState(prev => ({
+                ...prev,
+                first_name: user?.first_name || "",
+                last_name: user?.last_name || "",
+                email: user?.email || "",
+            }));
+        }
+    }, [signupData]);
 
-                if (agreementState.filePreview) {
-                    const blob = await fetch(agreementState.filePreview).then((res) => res.blob());
-
-                    const fileDataUrl = await new Promise<string>((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            if (typeof reader.result === "string") {
-                                resolve(reader.result);
-                            } else {
-                                reject(new Error("FileReader result is not a string"));
-                            }
-                        };
-                        reader.onerror = reject;
-                        reader.readAsDataURL(blob);
-                    });
-                    console.log("File Data URL:", fileDataUrl);
-
-                    // userProfileUpdate.append("profile_picture", fileDataUrl);
-
-                    console.log([...userProfileUpdate.entries()]);
-                    console.log(userProfileUpdate);
-                }
-
-                updateUserProfile(userProfileUpdate);
-            }
-        };
-
-        updateProfile();
-    }, [step, agreementState.industryState, agreementState.industryType]);
     const nextStep = () => setStep((prev) => prev + 1);
     const prevStep = () => {
         if (step === 1) onClose();
@@ -91,44 +72,96 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
         }
 
         if (file) {
-            const allowedTypes = ["image/jpeg", "image/png", "video/mp4"];
+            const allowedTypes = ["image/jpeg", "image/png", "image/svg+xml", "image/gif"];
             if (!allowedTypes.includes(file.type)) {
-                alert("Invalid file type! Only JPG, PNG, and MP4 are allowed.");
+                toast.error("Invalid file type! Only JPG, PNG, SVG, and GIF are allowed.");
                 return;
             }
             if (file.size > 3 * 1024 * 1024) {
-                alert("File size exceeds 3MB limit!");
+                toast.error("File size exceeds 3MB limit!");
                 return;
             }
-            if (file.type.startsWith("image/")) {
-                const imageURL = URL.createObjectURL(file);
-                setAgreementState((prevState) => ({
-                    ...prevState,
-                    filePreview: imageURL,
-                }));
-            } else {
-                setAgreementState((prevState) => ({ ...prevState, filePreview: null }));
-            }
+            
+            setSelectedPhoto(file);
+            const imageURL = URL.createObjectURL(file);
+            setAgreementState((prevState) => ({
+                ...prevState,
+                filePreview: imageURL,
+            }));
         }
     };
 
-    const handleConfirm = () => {
-        console.log("Final Agreement State:", agreementState);
-        onClose();
+    const handleConfirm = async () => {
+        if (step === 5) {
+            setIsUpdating(true);
+            
+            try {
+                const formData = new FormData();
+                
+                // Add user profile data
+                formData.append("first_name", agreementState.first_name);
+                formData.append("last_name", agreementState.last_name);
+                formData.append("email", agreementState.email);
+                formData.append("company", agreementState.company);
+                formData.append("industry", agreementState.industry);
+                
+                // Add profile picture if selected
+                if (selectedPhoto) {
+                    formData.append("profile_picture", selectedPhoto);
+                }
+                
+                const token = tokenManager.getToken();
+                
+                if (fullProfile?.results?.[0]?.id) {
+                    await axios.patch(
+                        `https://api.engagexai.io/users/userprofiles/${fullProfile?.results?.[0]?.id}/`,
+                        formData,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                                'Authorization': `Token ${token}`
+                            }
+                        }
+                    );
+                    
+                    toast.success('Profile created successfully!');
+                    queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+                    onClose();
+                } else {
+                    toast.error('User profile ID not found.');
+                }
+            } catch (error: any) {
+                console.error('Profile update error:', error);
+                toast.error('Failed to create profile: ' + (error.response?.data?.message || error.message || 'Unknown error'));
+            } finally {
+                setIsUpdating(false);
+            }
+        } else {
+            onClose();
+        }
     };
+
+    const industryOptions = [
+        { value: "Media & Presentation", label: "Media & Presentation" },
+        { value: "Technology", label: "Technology" },
+        { value: "Healthcare", label: "Healthcare" },
+        { value: "Finance", label: "Finance" },
+        { value: "Major League Sports", label: "Major League Sports" },
+        { value: "Other", label: "Other" }
+    ];
 
     return (
         <Dialog
             open={open}
             onOpenChange={(isOpen) => {
-                if (step === 6 && !isOpen) onClose();
+                if (!isOpen) onClose();
             }}
         >
             <DialogTitle></DialogTitle>
             <DialogContent
                 aria-describedby={undefined}
-                className={` ${step === 4 || step === 5 || step === 1 ? "w-[min(100%,25rem)]" : "w-[85vw] md:max-w-[50vw]"
-                    }  my-auto mx-auto  max-md:mt-5 max-md:max-h-[90vh] [&>button]:hidden`}
+                className={`${step === 4 || step === 5 || step === 1 ? "w-[min(100%,25rem)]" : "w-[85vw] md:max-w-[50vw]"} 
+                    my-auto mx-auto max-md:mt-5 max-md:max-h-[90vh] [&>button]:hidden`}
                 onInteractOutside={(e) => e.preventDefault()}
                 onEscapeKeyDown={(e) => e.preventDefault()}
             >
@@ -157,31 +190,33 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
                     )}
                     {step === 4 && (
                         <StepFour
-                            industryType={agreementState.industryType}
-                            industryState={agreementState.industryState}
-                            setIndustryState={(value) =>
+                            industry={agreementState.industry}
+                            company={agreementState.company}
+                            setCompany={(value) =>
                                 setAgreementState((prevState) => ({
                                     ...prevState,
-                                    industryState: value,
+                                    company: value,
                                 }))
                             }
-                            setIndustryType={(value) =>
+                            setIndustry={(value) =>
                                 setAgreementState((prevState) => ({
                                     ...prevState,
-                                    industryType: value,
+                                    industry: value,
                                 }))
                             }
+                            industryOptions={industryOptions}
                         />
                     )}
-                    {step === 5 && <StepFive />}
+                    {step === 5 && <StepFive isUpdating={isUpdating} />}
                 </div>
 
                 <DialogFooter className="flex flex-col sm:flex-row gap-2 font-[Inter] justify-between">
                     <Button
                         variant="default"
                         className={`${step === 1 ? "bg-[rgba(255,0,0,0.1)] text-[#f00]" : "bg-white border text-[#344054]"
-                            } ${step > 3 ? "hidden" : ""} w-full py-4 h-fit border-[#1018280D] hover:bg-accent rounded-lg`}
+                            } ${step > 3 && !isUpdating ? "hidden" : ""} w-full py-4 h-fit border-[#1018280D] hover:bg-accent rounded-lg`}
                         onClick={prevStep}
+                        disabled={isUpdating}
                     >
                         {step === 1 ? "Cancel" : "Back"}
                     </Button>
@@ -190,9 +225,9 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
                             className="w-full py-4 h-fit rounded-lg"
                             onClick={nextStep}
                             disabled={
-                                (step === 2 && (!agreementState.agree || agreementState.initials === "")) ||
-                                (step === 4 &&
-                                    (agreementState.industryState === "" || agreementState.industryType === ""))
+                                (step === 2 && (!agreementState.agree)) ||
+                                (step === 4 && (agreementState.company === "" || agreementState.industry === "")) ||
+                                isUpdating
                             }
                         >
                             {step === 1 ? "Read Agreement" : (step === 3 && !agreementState.filePreview) ? "Next Step" : "Proceed"}
@@ -201,9 +236,9 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
                         <Button
                             onClick={handleConfirm}
                             className="rounded-lg w-full py-4 h-fit"
-                            disabled={agreementState.industryState === ""}
+                            disabled={isUpdating}
                         >
-                            Go to homepage
+                            {isUpdating ? "Creating profile..." : "Go to homepage"}
                         </Button>
                     )}
                 </DialogFooter>
@@ -245,9 +280,7 @@ function StepTwo({
     return (
         <div className="pr-2">
             <article
-                // ref={agreementRef}
-                // onScroll={handleScroll}
-                className="text-[#101828] overflow-y-scroll max-md:pr-2 md:h-[55vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[50vh]  flex flex-col gap-2 font-medium text-sm  font-[montserrat]"
+                className="text-[#101828] overflow-y-scroll max-md:pr-2 md:h-[55vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[50vh] flex flex-col gap-2 font-medium text-sm font-[montserrat]"
             >
                 {engageXImage()}
                 <p className="font-semibold">Welcome to EngageX™!</p>
@@ -256,7 +289,7 @@ function StepTwo({
                     Agreement (ULA), which governs your access and use of our AI-powered public speaking and
                     presentation practice environment.
                 </p>
-                <p>By clicking “I Agree” and providing your initials, you confirm your acceptance of these terms.</p>
+                <p>By clicking "I Agree" and providing your initials, you confirm your acceptance of these terms.</p>
                 <div>
                     <div className="font-[montserrat]">
                         <p>
@@ -336,14 +369,14 @@ function StepTwo({
 
                 <p className="font-semibold font-[Montserrat]">Agreement & Acceptance</p>
                 <div className="font-medium font-[montserrat]">
-                    <p>By checking "I Agree" and entering your initials, you confirm:</p>
+                    <p>By checking "I Agree", you confirm:</p>
                     <ul className="leading-7">
                         <li>✔ You understand and accept EngageX™'s policies.</li>
                         <li>✔ You acknowledge session data is deleted after 24 hours.</li>
                         <li>✔ You take full responsibility for downloaded recordings.</li>
                     </ul>
                 </div>
-                <div>
+                {/* <div>
                     <label htmlFor="initials" className="font-[Inter]">
                         Enter initials here
                     </label>
@@ -354,7 +387,7 @@ function StepTwo({
                         id="initials"
                         onChange={(e) => setInitials(e.target.value)}
                     />
-                </div>
+                </div> */}
                 <div className="flex items-center gap-2">
                     <Checkbox
                         className="border-2 p-2 border-gray-300 rounded-md checked:bg-transparent bg-transparent data-[state=checked]:bg-transparent data-[state=checked]:text-black"
@@ -367,7 +400,7 @@ function StepTwo({
                     </label>
                 </div>
                 <p className="mt-2">
-                    By clicking “I Agree” and providing your initials, you confirm your acceptance of these terms.
+                    By clicking "I Agree" and providing your initials, you confirm your acceptance of these terms.
                 </p>
             </article>
         </div>
@@ -402,14 +435,14 @@ function StepThree({
         setIsDragging(false);
         handleFileChange(e);
     };
+    
     return (
         <div className="flex flex-col font-medium font-[montserrat] items-center overflow-hidden gap-1">
             <img src={cloudCheck} alt="checkSvg" />
             <p className="text-base">Upload Picture (optional)</p>
             <p className="text-muted-foreground text-sm text-center">Upload your picture for easy identification.</p>
             <div
-                className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${isDragging ? "bg-gray-100" : ""
-                    }`}
+                className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${isDragging ? "bg-gray-100" : ""}`}
                 onDragEnter={handleDragEnter}
                 onDragLeave={handleDragLeave}
                 onDragOver={handleDragOver}
@@ -420,11 +453,11 @@ function StepThree({
                 )}
                 <img src={cloudCheckGray} className="mb-2" alt="checkSvg" />
                 <p className="text-sm">Choose a file or drag & drop it here</p>
-                <p className="text-muted-foreground text-[12px] text-center">JPEG or PNG formats, up to 3MB</p>
+                <p className="text-muted-foreground text-[12px] text-center">SVG, PNG, JPG or GIF (max. 3MB)</p>
                 <input
                     type="file"
                     className="hidden"
-                    accept="image/jpeg, image/png"
+                    accept="image/svg+xml,image/png,image/jpeg,image/gif"
                     onChange={handleFileChange}
                 />
                 <Button
@@ -440,15 +473,17 @@ function StepThree({
 }
 
 function StepFour({
-    industryType,
-    industryState,
-    setIndustryState,
-    setIndustryType,
+    industry,
+    company,
+    setCompany,
+    setIndustry,
+    industryOptions
 }: {
-    industryType: string;
-    industryState: string;
-    setIndustryState: (value: string) => void;
-    setIndustryType: (value: string) => void;
+    industry: string;
+    company: string;
+    setCompany: (value: string) => void;
+    setIndustry: (value: string) => void;
+    industryOptions: { value: string; label: string }[];
 }) {
     return (
         <div className="flex flex-col gap-1">
@@ -457,33 +492,18 @@ function StepFour({
             <p className="text-muted-foreground mx-auto font-[montserrat] text-sm text-center">
                 Choose your industry and input your <br /> company name
             </p>
+            
             <div className="relative w-full my-5">
-                <label htmlFor="industry type">Choose your type of industry</label>
-                <select
-                    name="industry type"
-                    value={industryType}
-                    onChange={(e) => setIndustryType(e.target.value)}
-                    className="font-normal py-2 my-2 w-full font-[Inter]"
-                    id="industry type"
-                >
-                    <option className="text-gray-300" value="">
-                        Choose industry type
-                    </option>
-                    <option value="Finance">Finance & Banking</option>
-                    {/* <option value="marketing_advertising">Marketing & Advertising</option> */}
-                    <option value="Healthcare">Healthcare & Pharmaceuticals</option>
-                    {/* <option value="engineering_manufacturing">Engineering & Manufacturing</option> */}
-                    <option value="Media & Presentation">Media & Entertainment</option>
-                    {/* <option value="law_government">Law & Government</option> */}
-                    <option value="Technology">Technology & Software Development</option>
-                    {/* <option value="retail_ecommerce">Retail & E-Commerce</option> */}
-                    {/* <option value="hospitality_tourism">Hospitality & Tourism</option> */}
-                    {/* <option value="major_league_sports_athlete">Major League Sports Athlete</option> */}
-                    {/* <option value="major_league_sports_executive">Major League Sports Executive</option> */}
-                    {/* <option value="production">Production</option> */}
-                    <option value="Education">Education</option>
-                    <option value="Other">Other</option>
-                </select>
+                <SearchableSelect
+                    label="Industry"
+                    defaultValue={industry}
+                    onValueChange={(value) => setIndustry(value)}
+                    isEditable={true}
+                    placeholder="Select industry"
+                    inputPlaceholder="Search industries..."
+                    options={industryOptions}
+                    Icon={Globe}
+                />
             </div>
 
             <Label htmlFor="company-name">Enter company name here</Label>
@@ -491,27 +511,36 @@ function StepFour({
                 placeholder="Enter company name"
                 id="company-name"
                 className="text-black font-normal mt-1 font-[Inter]"
-                value={industryState}
-                onChange={(e) => setIndustryState(e.target.value)}
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
             />
         </div>
     );
 }
 
-function StepFive() {
+function StepFive({ isUpdating }: { isUpdating: boolean }) {
     return (
         <div className="flex flex-col font-medium font-[montserrat] items-center overflow-hidden gap-1">
-            <div className="flex gap-2 mx-auto justify-center w-full items-center">
-                <p className="sm:text-2xl text-3xl text-nowrap font-medium font-[Neue Montreal]">Welcome to</p>
-                <img
-                    src={engageXModalLogo}
-                    className="h-[1.7rem] sm:h-[1.7rem] mt-[0.45rem] lg:mt-[0.3rem] w-auto"
-                    alt=""
-                />
-            </div>
-            <p className="text-center leading-7 my-2">
-                You’ve finally completed the user level agreement, you can now proceed to the dashboard homepage
-            </p>
+            {isUpdating ? (
+                <div className="flex flex-col items-center justify-center p-4 gap-3">
+                    <div className="w-8 h-8 border-4 border-t-blue-500 border-r-transparent border-b-blue-500 border-l-transparent rounded-full animate-spin"></div>
+                    <p>Creating your profile...</p>
+                </div>
+            ) : (
+                <>
+                    <div className="flex gap-2 mx-auto justify-center w-full items-center">
+                        <p className="sm:text-2xl text-3xl text-nowrap font-medium font-[Neue Montreal]">Welcome to</p>
+                        <img
+                            src={engageXModalLogo}
+                            className="h-[1.7rem] sm:h-[1.7rem] mt-[0.45rem] lg:mt-[0.3rem] w-auto"
+                            alt=""
+                        />
+                    </div>
+                    <p className="text-center leading-7 my-2">
+                        You've completed the user level agreement, you can now proceed to the dashboard homepage
+                    </p>
+                </>
+            )}
         </div>
     );
 }

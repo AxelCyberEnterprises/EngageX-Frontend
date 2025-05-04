@@ -48,6 +48,7 @@ const UploadSlideSection = ({
                     </p>
                     <UploadMediaTrigger
                         name="slides"
+                        disabled={isGeneratingPreview}
                         className="flex flex-col gap-y-3 p-4 items-center bg-ghost-white text-sm text-independence rounded-lg"
                     >
                         <UploadCloud className="size-5 text-gunmetal" />
@@ -60,6 +61,7 @@ const UploadSlideSection = ({
                         <span>Or</span>
                         <Button
                             type="button"
+                            disabled={isGeneratingPreview}
                             isLoading={isGeneratingPreview}
                             className="bg-green-sheen hover:bg-green-sheen/80 transition-colors"
                         >

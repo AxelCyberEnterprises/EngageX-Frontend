@@ -38,7 +38,6 @@ const AdminDashboardHome: React.FC = () => {
         }
     }
 
-    console.log(data);
     const recentData = useMemo(
         () =>
             data?.recent_sessions?.map((item: any) => ({

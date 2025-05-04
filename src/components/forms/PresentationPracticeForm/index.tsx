@@ -1,7 +1,9 @@
 import PracticeSetUpControlsLayout from "@/components/forms/form-layouts/PracticeSetUpControlsLayout";
 import PracticeSetupLayout from "@/components/forms/form-layouts/PracticeSetupLayout";
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 import { Form } from "@/components/ui/form";
-import { isFilePDFOrPPTX, pdfToImages, pptxToImages } from "@/lib/utils";
+import { usePreviewUploadSlides } from "@/hooks/sessions";
+import { pdfToImages } from "@/lib/utils";
 import { PresentationPracticeSchema } from "@/schemas/dashboard/user";
 import { RootState, useAppDispatch } from "@/store";
 import {
@@ -13,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export type FormType = z.infer<typeof PresentationPracticeSchema>;
@@ -22,6 +25,7 @@ const PresentationPracticeForm = () => {
         (state: RootState) => state.presentationPractice,
     );
     const dispatch = useAppDispatch();
+    const { mutate: uploadSlides } = usePreviewUploadSlides();
 
     const form = useForm<FormType>({
         resolver: zodResolver(PresentationPracticeSchema),
@@ -30,23 +34,58 @@ const PresentationPracticeForm = () => {
 
     useEffect(() => {
         const subscription = form.watch((values, { name }) => {
-            // console.log("Values: ", values);
-
             if (name !== "slides" || !("slides" in values && values.slides)) return;
 
-            const slides = values.slides.filter((slide): slide is File => slide !== undefined);
-            const slideType = isFilePDFOrPPTX(slides[0]);
+            const slidesFormData = new FormData();
+            const [slides] = values.slides.filter((slide): slide is { file: File; id: number } => slide !== undefined);
 
-            setIsGeneratingPreview(true);
+            slidesFormData.append("slides_file", slides.file);
 
-            if (slideType === "pdf") pdfToImages(slides[0]).then((images) => dispatch(setslidePreviews(images)));
-            else if (slideType === "pptx") pptxToImages(slides[0]).then((images) => dispatch(setslidePreviews(images)));
+            dispatch(setIsGeneratingPreview(true));
 
-            setIsGeneratingPreview(false);
+            if (slidesFormData.get("slides_file"))
+                uploadSlides(slidesFormData, {
+                    onSuccess: ({ data: { id, slides_file } }) => {
+                        form.setValue("slides", [{ id, file: slides.file }]);
+
+                        pdfToImages(slides_file)
+                            .then((images) => {
+                                dispatch(setslidePreviews(images));
+                                dispatch(setIsGeneratingPreview(false));
+                            })
+                            .catch((error) => {
+                                console.error("Error generating preview: ", error);
+
+                                dispatch(setIsGeneratingPreview(false));
+                                toast(
+                                    <ErrorToast
+                                        {...{
+                                            heading: "Error generating preview",
+                                            description:
+                                                "An error occurred while generating preview, please try again.",
+                                        }}
+                                    />,
+                                );
+                            });
+                    },
+                    onError: (error) => {
+                        console.error("Error uploading slides: ", error);
+
+                        dispatch(setIsGeneratingPreview(false));
+                        toast(
+                            <ErrorToast
+                                {...{
+                                    heading: "Error uploading slides",
+                                    description: "An error occurred while uploading slides, please try again.",
+                                }}
+                            />,
+                        );
+                    },
+                });
         });
 
         return () => subscription.unsubscribe();
-    }, [dispatch, form]);
+    }, [dispatch, form, uploadSlides]);
 
     return (
         <Form {...form}>

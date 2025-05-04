@@ -12,6 +12,7 @@ import { IGETSessionsResponse } from "@/types/sessions";
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export function useSignup() {
     const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export function useSignup() {
 }
 
 interface AuthQuestionData {
-    userId: string; // ensure you pass this when calling the mutation
+    userId: string;
     user_intent: string;
     purpose: string;
     password: string | null | undefined;
@@ -42,20 +43,18 @@ interface AuthQuestionData {
 
 export function useAddAuthQuestion() {
     // const dispatch = useDispatch();
+    // const authToken = useSelector((state: RootState) => state.auth.token);
 
     return useMutation({
         mutationKey: ["addAuthQuestion"],
         mutationFn: async ({ userId, user_intent, purpose }: AuthQuestionData) => {
-            console.log(userId, user_intent, purpose);
             return await apiPatch(`/users/users/${userId}/`, { user_intent, purpose });
         },
-        onSuccess: () => {
-            console.log("Auth question added successfully.");
-            // dispatch(setSignupFlow("login"));
-            // navigate("../Tutorial");
+        onSuccess: (data: any) => {
+            toast.info("Auth questions added successfully:", data);
         },
         onError: (error: any) => {
-            console.error("Failed to add auth question:", error.message);
+            toast.info("Failed to add auth questions:", error);
         },
     });
 }
@@ -169,17 +168,28 @@ export function useEmailConfirmation() {
     return useMutation({
         mutationKey: ["emailConfirmation"],
         mutationFn: async (data: { verification_code: string; email: string }) => {
-            return await apiPost<{ email: string }>("/users/auth/verify-email/", data);
+            return await apiPost<any>("/users/auth/verify-email/", data);
         },
-        onSuccess: () => {
-            console.log("Email confirmed successfully.");
-            dispatch(setSuccessMessage("Email verified successfully! Redirecting..."));
-            setTimeout(() => {
-                dispatch(setSignupFlow("authQuestions"));
-            }, 2000);
+        onSuccess: (response: any) => {
+            const userData = response.data[0];
+            if (userData && userData.token) {
+                const formattedData = {
+                    data: userData
+                };
+                dispatch(login(formattedData));
+                if (userData.user_id) {
+                    localStorage.setItem("userId", userData.user_id.toString());
+                }
+                dispatch(setSuccessMessage("Email verified successfully! Redirecting..."));
+                setTimeout(() => {
+                    dispatch(setSignupFlow("authQuestions"));
+                }, 2000);
+            } else {
+                console.error("Invalid response format:", response);
+            }
         },
         onError: (error) => {
-            console.error(error.message);
+            console.error("Email confirmation failed:", error);
         },
     });
 }
@@ -216,34 +226,34 @@ function getDateRange(filter: string) {
     const formattedToday = today.toISOString().split('T')[0];
     let startDate = formattedToday;
     let endDate = formattedToday;
-  
+
     if (filter === 'last_week') {
-      const lastWeek = new Date();
-      lastWeek.setDate(today.getDate() - 7);
-      startDate = lastWeek.toISOString().split('T')[0];
+        const lastWeek = new Date();
+        lastWeek.setDate(today.getDate() - 7);
+        startDate = lastWeek.toISOString().split('T')[0];
     } else if (filter === 'last_month') {
-      const lastMonth = new Date();
-      lastMonth.setMonth(today.getMonth() - 1);
-      startDate = lastMonth.toISOString().split('T')[0];
+        const lastMonth = new Date();
+        lastMonth.setMonth(today.getMonth() - 1);
+        startDate = lastMonth.toISOString().split('T')[0];
     } else if (filter === 'last_year') {
-      const lastYear = new Date();
-      lastYear.setFullYear(today.getFullYear() - 1);
-      startDate = lastYear.toISOString().split('T')[0];
+        const lastYear = new Date();
+        lastYear.setFullYear(today.getFullYear() - 1);
+        startDate = lastYear.toISOString().split('T')[0];
     }
     // else if filter is "today", default today is already correct
-  
+
     return { startDate, endDate };
-  }
-  
-  export function useDashboardData(filter = 'today') {
+}
+
+export function useDashboardData(filter = 'today') {
     const { startDate, endDate } = getDateRange(filter);
-  
+
     return useQuery({
-      queryKey: ['dashboardData', filter], // 👈 Add filter to key to refetch properly
-      queryFn: () => 
-        apiGet(`/sessions/dashboard/?start_date=${startDate}&end_date=${endDate}`),
+        queryKey: ['dashboardData', filter], // 👈 Add filter to key to refetch properly
+        queryFn: () =>
+            apiGet(`/sessions/dashboard/?start_date=${startDate}&end_date=${endDate}`),
     });
-  }
+}
 
 export function useSessionHistory(page = 1) {
     return useQuery({
@@ -262,12 +272,12 @@ export function useSessionHistoryById(id: string) {
 
 export function useSessionComparison(id1: string | undefined, id2: string | undefined) {
     return useQuery({
-      queryKey: ["sessionComparison", id1, id2],
-      queryFn: () => apiGet<any>(`/sessions/compare-sessions/${id1}/${id2}`),
-      enabled: Boolean(id1 && id2),
+        queryKey: ["sessionComparison", id1, id2],
+        queryFn: () => apiGet<any>(`/sessions/compare-sessions/${id1}/${id2}`),
+        enabled: Boolean(id1 && id2),
     });
-  }
-  
+}
+
 
 export function useContactUs({ onSuccess, onError }: { onSuccess?: () => void; onError?: () => void }) {
     return useMutation({
