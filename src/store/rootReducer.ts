@@ -8,6 +8,7 @@ import presentationPracticeReducer from "./slices/dashboard/user/presentationPra
 import dynamicDialogReducer from "./slices/dynamicDialogSlice";
 import sessionReducer from "./slices/sessionSlice";
 import floatingChatbotReducer from "./slices/floatingChatbotSlice";
+import profileReducer from "./slices/profileSlice";
 
 const rootReducer = combineReducers({
   counter: counterReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   presentationPractice: presentationPracticeReducer,
   session: sessionReducer,
   floating_chatbot: floatingChatbotReducer,
+  profile: profileReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

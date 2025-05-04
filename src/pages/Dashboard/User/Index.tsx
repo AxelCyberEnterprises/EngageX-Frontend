@@ -45,6 +45,7 @@ interface DashboardData {
 }
 
 const UserDashboardHome: React.FC = () => {
+    const profile = useSelector((state: RootState) => state.profile.data);
     const [showAgreementModal, setShowAgreementModal] = useState(false);
     const { data, isLoading } = useDashboardData() as UseQueryResult<DashboardData, Error>;
 
@@ -105,13 +106,16 @@ const UserDashboardHome: React.FC = () => {
     console.log(userQuestions.role);
     console.log(signupData);
     useEffect(() => {
-        authQuestions({
-            userId: String(user?.user_id),
-            purpose: signupData?.planQuestion.toLowerCase() ?? "",
-            user_intent: signupData?.roleQuestion.toLowerCase() ?? "",
-            email: user?.email,
-            password: signupData?.password,
-        });
+        if (profile?.user_intent && profile?.purpose) {
+            authQuestions({
+                userId: String(user?.user_id),
+                purpose: signupData?.planQuestion.toLowerCase() ?? "",
+                user_intent: signupData?.roleQuestion.toLowerCase() ?? "",
+                email: user?.email,
+                password: signupData?.password,
+            });
+        }
+
     }, []);
     const score = data?.latest_session_dict?.session_score || 0;
     const agreementTrigger: number = data?.performance_analytics?.length || 0;
@@ -458,8 +462,8 @@ const UserDashboardHome: React.FC = () => {
                                                     goal.percent >= 80
                                                         ? "#64BA9E"
                                                         : goal.percent >= 10
-                                                          ? "#ECB25E"
-                                                          : "#C29C81"
+                                                            ? "#ECB25E"
+                                                            : "#C29C81"
                                                 }
                                                 divisions={10}
                                             />
