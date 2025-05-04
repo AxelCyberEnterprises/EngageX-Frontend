@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
-import { LoginResponse } from "@/hooks/auth";
 
 interface Question {
     id: number;
@@ -171,8 +170,6 @@ const authSlice = createSlice({
                 } else {
                     user = action.payload;
                 }
-                console.log("Processing user data:", user);
-
                 if (!user || !user.token) {
                     console.error("Invalid user data format:", user);
                     return;
