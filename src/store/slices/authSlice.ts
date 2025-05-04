@@ -29,6 +29,7 @@ export interface AuthUser {
     first_name: string | null;
     last_name: string | null;
     user_id: number;
+    first_login?: boolean;
 }
 
 interface AuthState {

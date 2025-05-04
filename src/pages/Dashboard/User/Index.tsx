@@ -48,17 +48,12 @@ const UserDashboardHome: React.FC = () => {
     const profile = useSelector((state: RootState) => state.profile.data);
     const [showAgreementModal, setShowAgreementModal] = useState(false);
     const { data, isLoading } = useDashboardData() as UseQueryResult<DashboardData, Error>;
-
+    const user = useSelector((state: RootState) => state.auth.user);
     useEffect(() => {
-        const hasShownAgreement = localStorage.getItem("hasShownAgreement");
-
-        if (!hasShownAgreement && agreementTrigger < 1) {
+        if (user?.first_login === true) {
             setShowAgreementModal(true);
-            localStorage.setItem("hasShownAgreement", "true");
         }
     }, []);
-
-    console.log(data);
 
     const [goalsData, setGoalsData] = useState({
         audience_engagement: 0,
@@ -98,7 +93,6 @@ const UserDashboardHome: React.FC = () => {
         console.log(`You have completed ${fraction} of your goals`);
     }, [goalsData]);
     const [numerator, denominator] = goalFraction.split("/").map(Number);
-    const user = useSelector((state: RootState) => state.auth.user);
     const { mutate: authQuestions } = useAddAuthQuestion();
     // const userIdAfterSignup = useSelector((state: RootState) => state.auth.userIdAfterSignup);
     const userQuestions = JSON.parse(localStorage.getItem("userQuestions") || "{}");
@@ -290,6 +284,7 @@ const UserDashboardHome: React.FC = () => {
     if (isLoading) {
         return <UserDashboardSkeleton />;
     }
+
     return (
         <div className="user__dashboard__index p-4 md:px-8">
             {(score ?? 0) > 10 && (score ?? 0) <= 99 && (
@@ -387,7 +382,7 @@ const UserDashboardHome: React.FC = () => {
                                 </Link>
                             </div>
                         </div>
-                        {showAgreementModal && (
+                        {user?.first_login && (
                             <MultiStepAgreement
                                 open={showAgreementModal}
                                 onClose={() => setShowAgreementModal(false)}
