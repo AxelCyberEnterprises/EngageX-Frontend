@@ -33,22 +33,18 @@ const StartPracticeSetupSession = ({
     const navigate = useNavigate();
 
     const slidesFormData = new FormData();
-    const { session_type: sessionType, slides } = getValues();
-
-    if (slides) slides.forEach((file) => slidesFormData.append("slides_file", file));
+    const { session_type: sessionType } = getValues();
 
     const { data, isPending: isGetSessionsPending } = useSessionHistory();
 
-    const { mutate: uploadSlides, isPending: isUploadSlidesPending } = useMutation({
-        mutationKey: ["uploadSlides"],
+    const { mutate: generateSummary, isPending: isSummaryGenerationPending } = useMutation({
+        mutationKey: ["generateSummary"],
         mutationFn: async (sessionId: number) => {
-            await apiPut(`/sessions/practice-sessions/${sessionId}/upload-slides/`, slidesFormData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
+            await apiPut(`/sessions/practice-sessions/${sessionId}/upload-slides/`);
 
             return sessionId;
         },
-        onSettled(sessionId) {
+        onSuccess(sessionId) {
             dispatch(closeDialog());
             navigate(`/sessions/${sessionType}-practice-session/${sessionId}`);
         },
@@ -74,7 +70,7 @@ const StartPracticeSetupSession = ({
             return await apiPost<ISession>(`/sessions/sessions/`, data);
         },
         onSuccess: async (data) => {
-            if (slidesFormData.get("slides_file")) uploadSlides(data.id);
+            if (slidesFormData.get("slides_file")) generateSummary(data.id);
             else {
                 dispatch(closeDialog());
                 navigate(`/sessions/${sessionType}-practice-session/${data.id}`);
@@ -100,7 +96,7 @@ const StartPracticeSetupSession = ({
             const payload = {
                 ...values,
                 goals: values.goals.map(({ goal }) => goal),
-                // slide: values.slides?.pop()?.preview,
+                slide_preview_id: values.slides?.pop()?.id,
             };
             delete payload.slides;
 
@@ -123,7 +119,7 @@ const StartPracticeSetupSession = ({
     return (
         <StartSession>
             <Button
-                disabled={isPending || isUploadSlidesPending}
+                disabled={isPending || isSummaryGenerationPending}
                 variant="outline"
                 className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal w-full h-11"
                 onClick={() => dispatch(closeDialog())}
@@ -131,8 +127,8 @@ const StartPracticeSetupSession = ({
                 Cancel
             </Button>
             <Button
-                disabled={isPending || isGetSessionsPending || isUploadSlidesPending}
-                isLoading={isPending || isUploadSlidesPending}
+                disabled={isPending || isGetSessionsPending || isSummaryGenerationPending}
+                isLoading={isPending || isSummaryGenerationPending}
                 className="bg-gunmetal hover:bg-gunmetal/90 font-normal w-full h-11"
                 onClick={handleProceed}
             >

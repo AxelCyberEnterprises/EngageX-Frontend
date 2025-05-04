@@ -45,19 +45,15 @@ interface DashboardData {
 }
 
 const UserDashboardHome: React.FC = () => {
+    const profile = useSelector((state: RootState) => state.profile.data);
     const [showAgreementModal, setShowAgreementModal] = useState(false);
     const { data, isLoading } = useDashboardData() as UseQueryResult<DashboardData, Error>;
-
+    const user = useSelector((state: RootState) => state.auth.user);
     useEffect(() => {
-        const hasShownAgreement = localStorage.getItem("hasShownAgreement");
-
-        if (!hasShownAgreement && agreementTrigger < 1) {
+        if (user?.first_login === true) {
             setShowAgreementModal(true);
-            localStorage.setItem("hasShownAgreement", "true");
         }
     }, []);
-
-    console.log(data);
 
     const [goalsData, setGoalsData] = useState({
         audience_engagement: 0,
@@ -97,7 +93,6 @@ const UserDashboardHome: React.FC = () => {
         console.log(`You have completed ${fraction} of your goals`);
     }, [goalsData]);
     const [numerator, denominator] = goalFraction.split("/").map(Number);
-    const user = useSelector((state: RootState) => state.auth.user);
     const { mutate: authQuestions } = useAddAuthQuestion();
     // const userIdAfterSignup = useSelector((state: RootState) => state.auth.userIdAfterSignup);
     const userQuestions = JSON.parse(localStorage.getItem("userQuestions") || "{}");
@@ -105,13 +100,16 @@ const UserDashboardHome: React.FC = () => {
     console.log(userQuestions.role);
     console.log(signupData);
     useEffect(() => {
-        authQuestions({
-            userId: String(user?.user_id),
-            purpose: signupData?.planQuestion.toLowerCase() ?? "",
-            user_intent: signupData?.roleQuestion.toLowerCase() ?? "",
-            email: user?.email,
-            password: signupData?.password,
-        });
+        if (profile?.user_intent && profile?.purpose) {
+            authQuestions({
+                userId: String(user?.user_id),
+                purpose: signupData?.planQuestion.toLowerCase() ?? "",
+                user_intent: signupData?.roleQuestion.toLowerCase() ?? "",
+                email: user?.email,
+                password: signupData?.password,
+            });
+        }
+
     }, []);
     const score = data?.latest_session_dict?.session_score || 0;
     const agreementTrigger: number = data?.performance_analytics?.length || 0;
@@ -286,6 +284,7 @@ const UserDashboardHome: React.FC = () => {
     if (isLoading) {
         return <UserDashboardSkeleton />;
     }
+
     return (
         <div className="user__dashboard__index p-4 md:px-8">
             {(score ?? 0) > 10 && (score ?? 0) <= 99 && (
@@ -383,7 +382,7 @@ const UserDashboardHome: React.FC = () => {
                                 </Link>
                             </div>
                         </div>
-                        {showAgreementModal && (
+                        {user?.first_login && (
                             <MultiStepAgreement
                                 open={showAgreementModal}
                                 onClose={() => setShowAgreementModal(false)}
@@ -458,8 +457,8 @@ const UserDashboardHome: React.FC = () => {
                                                     goal.percent >= 80
                                                         ? "#64BA9E"
                                                         : goal.percent >= 10
-                                                          ? "#ECB25E"
-                                                          : "#C29C81"
+                                                            ? "#ECB25E"
+                                                            : "#C29C81"
                                                 }
                                                 divisions={10}
                                             />

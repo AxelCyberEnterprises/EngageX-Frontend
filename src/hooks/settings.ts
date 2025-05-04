@@ -1,4 +1,5 @@
 import { apiGet, apiPatch, apiPost } from "@/lib/api";
+import { tokenManager } from "@/lib/utils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface UserProfile {
@@ -24,8 +25,9 @@ export interface UserProfile {
 }
 
 export function useUserProfile(id: any) {
+  const token = tokenManager.getToken()
   return useQuery<UserProfile>({
-    queryKey: ["user-profile"],
+    queryKey: ["user-profile", token],
     queryFn: async () => {
       const response = await apiGet<UserProfile>(`/users/userprofiles/${id}/`);
       return response;
@@ -35,12 +37,14 @@ export function useUserProfile(id: any) {
 }
 
 export function useFullUserProfile() {
+  const token = tokenManager.getToken()
   return useQuery<any>({
-    queryKey: ["full-profile"],
+    queryKey: ["full-profile", token],
     queryFn: async () => {
       const response = await apiGet<any>(`/users/userprofiles/`);
       return response;
     },
+    enabled: !!token
   });
 }
 

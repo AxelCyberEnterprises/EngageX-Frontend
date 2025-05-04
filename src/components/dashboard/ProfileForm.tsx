@@ -10,6 +10,8 @@ import { Upload, Globe, Clock } from 'lucide-react';
 import uploadCloud from '../../assets/images/svgs/upload-cloud.svg';
 import verified from '../../assets/images/svgs/verified.svg';
 import profileEdit from '../../assets/images/svgs/profile-edit.svg';
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
 import {
   Form,
   FormControl,
@@ -25,6 +27,8 @@ import { tokenManager } from "@/lib/utils";
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { Skeleton } from '../ui/skeleton';
+import moment from 'moment-timezone';
+countries.registerLocale(enLocale);
 
 const personalInfoSchema = z.object({
   first_name: z.string().min(1, 'First name is required').optional(),
@@ -46,14 +50,30 @@ const PersonalInfoForm: React.FC = () => {
     isLoading,
     error: fetchProfileError,
   } = useUserProfile(fullProfile?.results?.[0]?.id);
-
   const [isEditMode, setIsEditMode] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  console.log(fullProfile);
+  function getFlagEmoji(countryCode: string): string {
+    return countryCode
+      .toUpperCase()
+      .replace(/./g, (char) =>
+        String.fromCodePoint(char.charCodeAt(0) + 127397)
+      );
+  }
+  
+  const countryOptions = Object.entries(
+    countries.getNames("en", { select: "official" })
+  ).map(([code, name]) => ({
+    value: code,
+    label: name,
+    icon: getFlagEmoji(code), // e.g., 🇺🇸
+  }));
+  const timezoneOptions = moment.tz.names().map((zone) => ({
+    value: zone,
+    label: `${zone} (UTC${moment.tz(zone).format('Z')})`,
+  }));
 
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
@@ -121,37 +141,37 @@ const PersonalInfoForm: React.FC = () => {
     }
   };
 
-  const countries = [
-    { value: "Canada", label: "Canada", icon: "🇨🇦" },
-    { value: "Nigeria", label: "Nigeria", icon: "🇳🇬" },
-    { value: "United Kingdom", label: "United Kingdom", icon: "🇬🇧" },
-    { value: "United States", label: "United States", icon: "🇺🇸" },
-  ];
+  // const countries = [
+  //   { value: "Canada", label: "Canada", icon: "🇨🇦" },
+  //   { value: "Nigeria", label: "Nigeria", icon: "🇳🇬" },
+  //   { value: "United Kingdom", label: "United Kingdom", icon: "🇬🇧" },
+  //   { value: "United States", label: "United States", icon: "🇺🇸" },
+  // ];
 
-  const timezoneOptions = [
-    {
-      value: "Pacific Standard Time (PST)",
-      label: "Pacific Standard Time (PST)",
-      icon: <span className="text-[#667085] ml-1">UTC-08:00</span>,
-    },
-    {
-      value: "Eastern Standard Time (EST)",
-      label: "Eastern Standard Time (EST)",
-      icon: <span className="text-[#667085] ml-1">UTC-05:00</span>,
-    },
-    {
-      value: "Central European Time (CET)",
-      label: "Central European Time (CET)",
-      icon: <span className="text-[#667085] ml-1">UTC+01:00</span>,
-    },
-  ];
+  // const timezoneOptions = [
+  //   {
+  //     value: "Pacific Standard Time (PST)",
+  //     label: "Pacific Standard Time (PST)",
+  //     icon: <span className="text-[#667085] ml-1">UTC-08:00</span>,
+  //   },
+  //   {
+  //     value: "Eastern Standard Time (EST)",
+  //     label: "Eastern Standard Time (EST)",
+  //     icon: <span className="text-[#667085] ml-1">UTC-05:00</span>,
+  //   },
+  //   {
+  //     value: "Central European Time (CET)",
+  //     label: "Central European Time (CET)",
+  //     icon: <span className="text-[#667085] ml-1">UTC+01:00</span>,
+  //   },
+  // ];
 
   const industryOptions = [
     { value: "Media & Presentation", label: "Media & Presentation" },
     { value: "Technology", label: "Technology" },
     { value: "Healthcare", label: "Healthcare" },
     { value: "Finance", label: "Finance" },
-    { value: "Education", label: "Education" },
+    { value: "Major League Sports", label: "Major League Sports" },
   ];
 
   useEffect(() => {
@@ -419,7 +439,7 @@ const PersonalInfoForm: React.FC = () => {
                 label="Country"
                 defaultValue={profile?.country || ""}
                 onValueChange={(value) => form.setValue('country', value)}
-                options={countries}
+                options={countryOptions}
                 placeholder="Select country"
                 inputPlaceholder="Search countries..."
                 isEditable={isEditMode}
