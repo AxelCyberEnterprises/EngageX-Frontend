@@ -46,7 +46,9 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${sessionData?.virtual_environment}/thinking/1.mp4`,
+        sessionData?.virtual_environment === "board_room_1"
+            ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/thinking/1.mp4"
+            : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_2/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -228,7 +230,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${sessionData?.virtual_environment}/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
@@ -287,7 +289,7 @@ const PresentationPractice: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl]);
+    }, [setVideoUrl, allowSwitch]);
 
     return (
         <div className="text-primary-blue">

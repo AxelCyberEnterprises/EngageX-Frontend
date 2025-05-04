@@ -282,7 +282,7 @@ const PresentationPractice: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl]);
+    }, [setVideoUrl, allowSwitch]);
 
     return (
         <div className="text-primary-blue">

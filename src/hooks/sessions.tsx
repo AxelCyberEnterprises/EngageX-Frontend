@@ -90,7 +90,7 @@ export function useEndSession(
     mutationFn: async () => {
       await apiPost(`/sessions/sessions-report/${sessionId}/`, {
         duration: duration,
-        slide_specific_timing: slidesDuration,
+        ...(slidesDuration && slidesDuration.length > 1 && { slide_specific_timing: slidesDuration }),
       });
     },
     onSuccess: () => {

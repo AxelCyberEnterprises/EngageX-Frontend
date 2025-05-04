@@ -19,6 +19,7 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
     const recorderRef = useRef<MediaRecorder | null>(null);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const isRecordingRef = useRef(false);
 
     const arrayBufferToBase64 = (buffer: ArrayBuffer): Promise<string> => {
         return new Promise((resolve) => {
@@ -63,6 +64,7 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
 
             onStart();
             setIsRecording(true);
+            isRecordingRef.current = true;
 
             startRecorder();
 
@@ -106,7 +108,9 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
             }
 
             // Immediately start a new recorder after sending
-            startRecorder();
+            if (isRecordingRef.current) {
+                startRecorder();
+            }
         };
 
         recorder.start();
@@ -124,12 +128,18 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
 
         streamRef.current?.getTracks().forEach((track) => track.stop());
 
+        if (videoRef.current) {
+            videoRef.current.srcObject = null;
+        }
+
         if (timerRef.current) clearTimeout(timerRef.current);
         if (intervalRef.current) clearInterval(intervalRef.current);
 
         setIsRecording(false);
+        isRecordingRef.current = false;
         onStop();
     };
+
 
     return <video ref={videoRef} className={`w-full h-full object-cover ${border}`} autoPlay playsInline muted />;
 };
