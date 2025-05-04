@@ -55,7 +55,7 @@ const UploadSlideSection = ({
                             Drag and drop slides here
                             <br />
                             PPT, PPTX
-                            <br /> (10mb max)
+                            <br /> (20MB max)
                         </span>
                         <span>Or</span>
                         <Button
