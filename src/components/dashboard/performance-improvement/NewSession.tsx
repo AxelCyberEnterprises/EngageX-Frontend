@@ -26,7 +26,7 @@ function NewSession() {
           }}
           className="px-6 py-2 h-12 rounded-2xl bg-transparent text-gunmetal border border-gray"
         >
-          Cancel
+          Back
         </button>
       </div>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 rounded-lg">

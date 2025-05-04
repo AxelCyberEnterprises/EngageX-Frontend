@@ -52,7 +52,7 @@ function SelectExistingSequence() {
           }}
           className="px-6 py-2 h-12 rounded-2xl bg-transparent text-gunmetal border border-gray"
         >
-          Cancel
+          Back
         </button>
       </div>
       <div className="space-y-6">

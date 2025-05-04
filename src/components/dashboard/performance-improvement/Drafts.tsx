@@ -7,7 +7,7 @@ function Drafts() {
           <small>Select session saved in your draft and proceed</small>
         </div>
         <button className="bg-transparent border border-dark-gray rounded-lg py-3 text-black">
-          Cancel
+          Back
         </button>
       </div>
       <div className="flex flex-wrap"></div>
