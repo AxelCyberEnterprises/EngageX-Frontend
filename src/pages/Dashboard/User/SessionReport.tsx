@@ -15,6 +15,7 @@ import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, LoaderCircle, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
+import Markdown from "react-markdown";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 
@@ -502,7 +503,7 @@ const PitchSessionReport: React.FC = () => {
                                     <h5 className="mb-5">Personal Goal Summary</h5>
                                     <p className="text-independence">Session feedback summary</p>
                                     <div className="p-4 rounded-md border-bright-gray border-1 w-full">
-                                        <p className="whitespace-pre-line">{data.general_feedback_summary}</p>
+                                        <Markdown>{data.general_feedback_summary}</Markdown>
                                     </div>
                                 </div>
 
