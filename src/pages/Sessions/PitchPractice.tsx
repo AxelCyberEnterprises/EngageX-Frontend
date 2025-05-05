@@ -18,7 +18,6 @@ import { ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-reac
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import pitchRoom from "../../assets/images/pngs/pitch-room.png";
-import questionImage from "../../assets/images/pngs/question-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import axios from "axios";
 
@@ -78,7 +77,9 @@ const PresentationPractice: React.FC = () => {
         setAllowSwitch(false);
         setDialogOneOpen(false);
         setIsMuted(false);
-        setVideoUrl("https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4");
+        setVideoUrl(
+            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/Pitchroom+clap.mp4",
+        );
         setTimeout(() => {
             setDialogTwoOpen(true);
         }, 7000);
@@ -327,7 +328,11 @@ const PresentationPractice: React.FC = () => {
                     {/* <TimerComponent minutes={time} start={startTimer} /> */}
 
                     <img
-                        src={questionImage}
+                        src={
+                            Math.random() < 0.5
+                                ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
+                                : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png"
+                        }
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />

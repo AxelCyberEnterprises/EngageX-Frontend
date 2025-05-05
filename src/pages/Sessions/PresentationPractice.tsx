@@ -19,7 +19,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import boardRoom2 from "../../assets/images/pngs/boardroom-2.png";
 import boardRoom1 from "../../assets/images/pngs/presentation-practice-room.png";
-import questionImage from "../../assets/images/pngs/question-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import axios from "axios";
 
@@ -312,9 +311,7 @@ const PresentationPractice: React.FC = () => {
                             <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
                                 Question from Elizabeth Wang
                             </DialogTitle>
-                            <DialogDescription className="text-primary-blue big">
-                                { question }
-                            </DialogDescription>
+                            <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
 
                             <div className="flex justify-end gap-3">
                                 <Button
@@ -336,7 +333,11 @@ const PresentationPractice: React.FC = () => {
                     {/* <TimerComponent minutes={time} start={startTimer} /> */}
 
                     <img
-                        src={questionImage}
+                        src={
+                            Math.random() < 0.5
+                                ? `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`
+                                : `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/wm_handraise.png`
+                        }
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />
