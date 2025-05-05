@@ -72,14 +72,8 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
                 return;
             }
 
-            const uploadedSlides = acceptedFiles.map((file) => {
-                return {
-                    file,
-                };
-            });
-
             // Store the file in the form state
-            setValue(name, uploadedSlides as unknown as T[K], { shouldValidate: true });
+            setValue(name, acceptedFiles as unknown as T[K], { shouldValidate: true });
         },
         [maxSize, name, setValue],
     );

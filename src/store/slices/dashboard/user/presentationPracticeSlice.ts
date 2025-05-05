@@ -22,11 +22,11 @@ const presentationPracticeSlice = createSlice({
         setIsGeneratingPreview: (state, action: PayloadAction<boolean>) => {
             state.isGeneratingPreview = action.payload;
         },
-        setslidePreviews: (state, action: PayloadAction<string[]>) => {
+        setSlidePreviews: (state, action: PayloadAction<string[]>) => {
             state.slidePreviews = action.payload;
         },
     },
 });
 
-export const { setActiveSlideIndex, setslidePreviews, setIsGeneratingPreview } = presentationPracticeSlice.actions;
+export const { setActiveSlideIndex, setSlidePreviews, setIsGeneratingPreview } = presentationPracticeSlice.actions;
 export default presentationPracticeSlice.reducer;
