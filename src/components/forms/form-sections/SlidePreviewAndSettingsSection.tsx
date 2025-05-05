@@ -15,13 +15,15 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
     const sessionType = form.watch("session_type") as "pitch" | "presentation";
 
     return (
-        <section className={cn("md:flex hidden flex-col gap-y-4", className)}>
+        <section className={cn("flex flex-col gap-y-4", className)}>
             <>
                 <VirtualEnvironmentSection
                     {...{ form }}
-                    instruction={sessionType === "presentation" ? "Select a suitable environment for your speaking needs" : ""}
+                    instruction={
+                        sessionType === "presentation" ? "Select a suitable environment for your speaking needs" : ""
+                    }
                     options={sessionType === "pitch" ? pitchPracticeVEOptions : presentationPracticeVEOptions}
-                    className="md:block hidden p-0 border-0 [&_[data-slot='form-label']>div]:h-38 [&_h6]:text-lg"
+                    className="p-0 border-0 [&_[data-slot='form-label']>div]:h-38 [&_h6]:text-lg"
                 />
                 <Separator className="md:block hidden bg-bright-gray" />
                 <div className="flex items-start justify-between">

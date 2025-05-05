@@ -39,7 +39,7 @@ const PracticeSetupLayout = ({
             />
             <SlidePreviewAndSettingsSection
                 {...{ form }}
-                className="flex-1 lg:h-[calc(100vh-56.53px)] h-full lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] md:pb-[20vh] border-x border-bright-gray"
+                className="md:flex hidden flex-1 lg:h-[calc(100vh-56.53px)] h-full lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] md:pb-[20vh] border-x border-bright-gray"
             />
         </div>
     );

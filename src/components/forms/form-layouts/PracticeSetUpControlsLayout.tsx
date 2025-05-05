@@ -58,7 +58,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                             <Button
                                 type="button"
                                 variant="outline"
-                                className="md:hidden inline-flex text-gunmetal hover:text-gunmetal border-bright-gray font-normal"
+                                className="hidden text-gunmetal hover:text-gunmetal border-bright-gray font-normal"
                             >
                                 <Settings className="size-4" />
                                 <span className="md:inline hidden">Slide Settings</span>

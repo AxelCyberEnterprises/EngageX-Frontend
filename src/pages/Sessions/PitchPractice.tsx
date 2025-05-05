@@ -45,7 +45,7 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/thinking/1.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -228,7 +228,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
@@ -305,9 +305,7 @@ const PresentationPractice: React.FC = () => {
                             <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
                                 Question from Elizabeth Wang
                             </DialogTitle>
-                            <DialogDescription className="text-primary-blue big">
-                                {question}
-                            </DialogDescription>
+                            <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
 
                             <div className="flex justify-end gap-3">
                                 <Button
@@ -424,7 +422,7 @@ const PresentationPractice: React.FC = () => {
             <section className="flex flex-wrap">
                 {/* left side  */}
                 <div className="left__side w-full md:w-9/12 lg:w-9/12 md:px-8 lg:pe-4 py-4">
-                    <div className="md:p-5 lg:p-10 border-primary-blue bg-primary-blue rounded-3xl w-full h-80 md:h-140">
+                    <div className="md:p-5 lg:p-10 border-primary-blue bg-primary-blue rounded-3xl w-full h-80 md:h-140 relative">
                         <div className="relative w-full h-full rounded-3xl overflow-hidden">
                             <VideoPlayer
                                 src={videoUrl}
@@ -433,22 +431,22 @@ const PresentationPractice: React.FC = () => {
                                 isMuted={isMuted}
                                 className="h-full w-full rounded-2xl"
                             />
+                        </div>
 
-                            <div className="w-45 h-25 md:w-60 md:h-35 absolute left-5 bottom-5">
-                                {!slides.length && seshData?.slides_file ? (
-                                    <Skeleton className="w-full h-full bg-gray" />
-                                ) : (
-                                    <ImageSlider
-                                        ref={sliderRef}
-                                        images={slides}
-                                        start={startTimer}
-                                        stop={stop}
-                                        onStop={(durationArr) => {
-                                            stopTimer(undefined, durationArr);
-                                        }}
-                                    />
-                                )}
-                            </div>
+                        <div className="w-45 h-25 md:w-60 md:h-35 absolute left-0 bottom-0 z-5">
+                            {!slides.length && seshData?.slides_file ? (
+                                <Skeleton className="w-full h-full bg-gray" />
+                            ) : (
+                                <ImageSlider
+                                    ref={sliderRef}
+                                    images={slides}
+                                    start={startTimer}
+                                    stop={stop}
+                                    onStop={(durationArr) => {
+                                        stopTimer(undefined, durationArr);
+                                    }}
+                                />
+                            )}
                         </div>
                     </div>
 

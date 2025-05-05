@@ -10,6 +10,7 @@ import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
+import SlidePreviewAndSettingsSection from "./SlidePreviewAndSettingsSection";
 
 interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,6 +74,7 @@ const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews 
                             )}
                         />
                         <GoalsSection {...{ form }} className="[&_h6]:text-lg" />
+                        <SlidePreviewAndSettingsSection {...{ form }} className="md:hidden flex" />
                     </div>
                 </div>
             </div>
