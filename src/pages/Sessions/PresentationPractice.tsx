@@ -442,7 +442,7 @@ const PresentationPractice: React.FC = () => {
                             />
                         </div>
 
-                        <div className="w-45 h-25 md:w-75 md:h-45 absolute left-0 bottom-0">
+                        <div className="w-45 h-25 md:w-75 md:h-45 absolute left-0 bottom-0 z-5">
                             {!slides.length && seshData?.slides_file ? (
                                 <Skeleton className="w-full h-full bg-gray" />
                             ) : (
