@@ -1,3 +1,4 @@
+import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
 import StartPublicSpeakingSession from "@/components/dialogs/dialog-contents/start-session/StartPublicSpeakingSession";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -23,7 +24,10 @@ const PublicSpeakingForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PublicSpeakingSchema),
-        defaultValues: useMemo(() => ({ session_type: "public", virtual_environment: "conference_room" }), []),
+        defaultValues: useMemo(
+            () => ({ session_type: "public", virtual_environment: "conference_room", allow_ai_questions: true }),
+            [],
+        ),
     });
 
     return (
@@ -41,13 +45,19 @@ const PublicSpeakingForm = () => {
                         className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
                         options={publicSpeakingVEOptions}
                     />
-                    <div className="flex items-start justify-between gap-x-8">
-                        <p>Enable AI Audience Generated Session Questions</p>
-                        <Switch
-                            onCheckedChange={(checked) => form.setValue("allow_ai_questions", checked)}
-                            className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
-                        />
-                    </div>
+                    <ControlledFieldWrapper
+                        control={form.control}
+                        name="allow_ai_questions"
+                        label="Enable AI Audience Generated Session Questions"
+                        className="flex items-start justify-between gap-x-8 [&_[data-slot='form-label']]:text-base [&_[data-slot='form-label']]:font-normal"
+                        render={({ field }) => (
+                            <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                                className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
+                            />
+                        )}
+                    />
                 </section>
                 <div className="md:absolute bottom-0 inset-x-0 md:p-4 md:mt-0 mt-6 flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center justify-between md:border-t border-bright-gray bg-white">
                     <Button
