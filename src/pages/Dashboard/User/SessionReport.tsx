@@ -13,7 +13,7 @@ import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
-import { ArrowLeft, Download, UserRound } from "lucide-react";
+import { ArrowLeft, Download, Loader, LoaderCircle, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
@@ -299,24 +299,24 @@ const PitchSessionReport: React.FC = () => {
                     <section className="px-4 lg:px-8 py-4">
                         <div data-html2canvas-ignore className="w-full mb-5">
                             {data.compiled_video_url ? (
-                                <>
-                                    <div className="relative rounded-3xl mb-2 overflow-hidden">
-                                        <VideoPlayer
-                                            height="h-100"
-                                            width="w-full"
-                                            src={data.compiled_video_url}
-                                            border="rounded-3xl"
-                                            canDownload
-                                            preload={true}
-                                        />
-                                    </div>
-                                    <small className="border-l-2 border-l-maximum-yellow-red pl-3 py-1">
-                                        Your recording may take 1-3 minutes to be ready for download
-                                    </small>
-                                </>
+                                <div className="relative rounded-3xl mb-2 overflow-hidden">
+                                    <VideoPlayer
+                                        height="h-100"
+                                        width="w-full"
+                                        src={data.compiled_video_url}
+                                        border="rounded-3xl"
+                                        canDownload
+                                        preload={true}
+                                    />
+                                </div>
                             ) : (
-                                <Skeleton className="h-100 w-full rounded-3xl" />
+                                <div className="h-100 w-full rounded-3xl mb-2 grid place-content-center bg-black/90">
+                                    <LoaderCircle className="size-6 animate-spin stroke-white" />
+                                </div>
                             )}
+                            <small className="border-l-2 border-l-maximum-yellow-red pl-3 py-1">
+                                Your recording may take 1-3 minutes to be ready for download
+                            </small>
                         </div>
 
                         <div className="flex flex-col md:flex-row w-full items-stretch gap-3">
