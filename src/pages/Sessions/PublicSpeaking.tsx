@@ -13,7 +13,7 @@ import EngagementMetrics from "@/components/session/EngagementMetrics";
 import { useParams } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import alert from "../../assets/images/svgs/alert.svg";
-import TimerComponent from "@/components/session/TimerComponent";
+// import TimerComponent from "@/components/session/TimerComponent";
 import { useMediaQuery } from "react-responsive";
 import MobileEngagementMetrics from "@/components/session/MobileEngagementMetrics";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
@@ -39,13 +39,14 @@ const PublicSpeaking: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/uncertain/1.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
+    const [question, setQuestion] = useState<string | undefined>(undefined);
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -111,7 +112,8 @@ const PublicSpeaking: React.FC = () => {
         ws.onmessage = (event) => {
             try {
                 const parsed = JSON.parse(event.data);
-                if (parsed.type === "question") {
+                if (parsed.type === "audience_question") {
+                    setQuestion(parsed.question);
                     setQuestionDialogOpen(true);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
@@ -133,10 +135,15 @@ const PublicSpeaking: React.FC = () => {
             setIsSocketConnected(false);
         };
 
+        if (stop) {
+            console.log("Closing WebSocket because stop is true");
+            ws.close();
+        }
+
         return () => {
             ws.close();
         };
-    }, [sessionId, allowSwitch]);
+    }, [sessionId, allowSwitch, stop]);
 
     useEffect(() => {
         let isMounted = true;
@@ -167,9 +174,16 @@ const PublicSpeaking: React.FC = () => {
                     try {
                         const parsed = JSON.parse(event.data);
                         if (parsed.text) {
-                            console.log(parsed.text);   
-                            const validEmotions = ["thinking", "empathy", "excitement", "laughter", "surprise", "interested"];
-                            if (validEmotions.includes(parsed.text)) {
+                            console.log(parsed.text);
+                            const validEmotions = [
+                                "thinking",
+                                "empathy",
+                                "excitement",
+                                "laughter",
+                                "surprise",
+                                "interested",
+                            ];
+                            if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
                                 const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
@@ -209,7 +223,9 @@ const PublicSpeaking: React.FC = () => {
             }
         };
 
-        connectToRealtime();
+        if (!stop) {
+            connectToRealtime();
+        }
 
         return () => {
             isMounted = false;
@@ -230,7 +246,7 @@ const PublicSpeaking: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl]);
+    }, [setVideoUrl, allowSwitch, stop]);
 
     return (
         <div className="text-primary-blue">
@@ -273,9 +289,7 @@ const PublicSpeaking: React.FC = () => {
                             <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
                                 Question from Elizabeth Wang
                             </DialogTitle>
-                            <DialogDescription className="text-primary-blue big">
-                                How does your proposal address potential scalability challenges?
-                            </DialogDescription>
+                            <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
 
                             <div className="flex justify-end gap-3">
                                 <Button
@@ -294,7 +308,7 @@ const PublicSpeaking: React.FC = () => {
                         </div>
                     </div>
 
-                    <TimerComponent minutes={time} start={startTimer} />
+                    {/* <TimerComponent minutes={time} start={startTimer} /> */}
 
                     <img
                         src={questionImage}

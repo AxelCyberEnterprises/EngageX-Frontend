@@ -85,31 +85,38 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
 
 export function useEndSession(sessionId: string | undefined, duration: any, slidesDuration?: any[]) {
     const navigate = useNavigate();
+    const convertDurationToSeconds = (duration: string): number => {
+        const [minutes, seconds] = duration.split(":").map(Number);
+        return minutes * 60 + seconds;
+    };
 
-    return useMutation({
-        mutationKey: ["endSession"],
-        mutationFn: async () => {
-            await apiPost(`/sessions/sessions-report/${sessionId}/`, {
-                duration: duration,
-                slide_specific_timing: slidesDuration,
-            });
-        },
-        onSuccess: () => {
-            console.log("Session ended and posted successfully.");
-            navigate(`/dashboard/user/session-history/${sessionId}`);
-        },
-        onError: (error) => {
-            console.error("End session failed:", error);
-            toast(
-                <ErrorToast
-                    {...{
-                        heading: "Error ending session",
-                        description: "An error occurred while ending session, please try again.",
-                    }}
-                />,
-            );
-        },
-    });
+    const durationInSeconds = convertDurationToSeconds(duration);
+
+  return useMutation({
+    mutationKey: ["endSession"],
+    mutationFn: async () => {
+      await apiPost(`/sessions/sessions-report/${sessionId}/`, {
+        duration: durationInSeconds,
+        ...(slidesDuration && slidesDuration.length > 1 && { slide_specific_timing: slidesDuration }),
+      });
+    },
+    onSuccess: () => {
+      console.log("Session ended and posted successfully.");
+      navigate(`/dashboard/user/session-history/${sessionId}`);
+    },
+    onError: (error) => {
+      console.error("End session failed:", error);
+      toast(
+        <ErrorToast
+          {...{
+            heading: "Error ending session",
+            description:
+              "An error occurred while ending session, please try again.",
+          }}
+        />
+      );
+    },
+  });
 }
 
 export function useGetSessionReport(sessionId: string | undefined) {
