@@ -13,7 +13,7 @@ import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
-import { ArrowLeft, Download, Loader, LoaderCircle, UserRound } from "lucide-react";
+import { ArrowLeft, Download, LoaderCircle, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
