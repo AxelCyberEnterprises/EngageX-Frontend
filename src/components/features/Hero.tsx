@@ -12,11 +12,11 @@ function Hero() {
               Transform your speaking skills with EngageX™
             </h2>
             <p className="big text-[#62717A]">
-              Step into the future of public speaking, pitching, and
-              presentations with EngageX™, a training platform designed to
-              enhance your confidence, delivery, and audience engagement using
-              cutting edge technology combined with AI and award-winning
-              coaches.
+              Step into the future of public speaking, persuasive storytelling,
+              pitching, and presentations with EngageX™, a training platform
+              designed to enhance your confidence, delivery, and audience
+              engagement using cutting edge technology combined with AI and
+              award-winning coaches.
             </p>
           </div>
           <Link to="/dashboard/user/">
