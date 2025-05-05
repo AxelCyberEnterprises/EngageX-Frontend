@@ -135,10 +135,15 @@ const PublicSpeaking: React.FC = () => {
             setIsSocketConnected(false);
         };
 
+        if (stop) {
+            console.log("Closing WebSocket because stop is true");
+            ws.close();
+        }
+
         return () => {
             ws.close();
         };
-    }, [sessionId, allowSwitch]);
+    }, [sessionId, allowSwitch, stop]);
 
     useEffect(() => {
         let isMounted = true;
@@ -218,7 +223,9 @@ const PublicSpeaking: React.FC = () => {
             }
         };
 
-        connectToRealtime();
+        if (!stop) {
+            connectToRealtime();
+        }
 
         return () => {
             isMounted = false;
@@ -239,7 +246,7 @@ const PublicSpeaking: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl, allowSwitch]);
+    }, [setVideoUrl, allowSwitch, stop]);
 
     return (
         <div className="text-primary-blue">
@@ -282,9 +289,7 @@ const PublicSpeaking: React.FC = () => {
                             <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
                                 Question from Elizabeth Wang
                             </DialogTitle>
-                            <DialogDescription className="text-primary-blue big">
-                                {question}
-                            </DialogDescription>
+                            <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
 
                             <div className="flex justify-end gap-3">
                                 <Button
