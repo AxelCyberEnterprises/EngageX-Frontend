@@ -4,7 +4,6 @@ import React, { useRef, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
-import questionImage from "../../assets/images/pngs/question-image.png";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import VoiceAnalytics from "@/components/session/VoiceAnalytics";
 import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
@@ -311,7 +310,11 @@ const PublicSpeaking: React.FC = () => {
                     {/* <TimerComponent minutes={time} start={startTimer} /> */}
 
                     <img
-                        src={questionImage}
+                        src={
+                            Math.random() < 0.5
+                                ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
+                                : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png"
+                        }
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />
