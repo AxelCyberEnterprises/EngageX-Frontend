@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
-import { LoginResponse } from "@/hooks/auth";
 
 interface Question {
     id: number;
@@ -30,6 +29,7 @@ export interface AuthUser {
     first_name: string | null;
     last_name: string | null;
     user_id: number;
+    first_login?: boolean;
 }
 
 interface AuthState {
@@ -58,9 +58,9 @@ const initialState: AuthState = {
             question: "What do you plan on doing?",
             content: [
                 { contentId: 1, plan: "Pitch", apiName: "pitch" },
-                { contentId: 2, plan: "Present", apiName: "presenting" },
-                { contentId: 3, plan: "Speak/Storytelling", apiName: "public_speaking" },
-                { contentId: 4, plan: "Interview", apiName: "public_speakin" },
+                { contentId: 2, plan: "Present", apiName: "present" },
+                { contentId: 3, plan: "Speak/Storytelling", apiName: "speak_storytelling" },
+                { contentId: 4, plan: "Interview", apiName: "interview" },
             ],
         },
         {
@@ -71,14 +71,13 @@ const initialState: AuthState = {
                 { contentId: 2, role: "Mid-level Professionals", apiName: "mid" },
                 { contentId: 3, role: "Sales Professionals", apiName: "sales" },
                 { contentId: 4, role: "C-suites", apiName: "c_suite" },
-                { contentId: 5, role: "Entrepreneurs", apiName: "entrepreneurs" },
+                { contentId: 5, role: "Entrepreneurs", apiName: "entrepreneur" },
                 { contentId: 6, role: "Major League Sports Athlete", apiName: "athlete" },
                 { contentId: 7, role: "Major League Sports Executive", apiName: "executive" },
             ],
         },
     ],
     topicQuestion: "What do you plan on doing?",
-
     signupFlow: "signup",
     routeFromLogin: false,
     signupData: null, // Stores signup details
@@ -141,25 +140,54 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             state.hasCheckedAuth = true;
         },
-        login: (state, action: PayloadAction<LoginResponse>) => {
-            const user = action.payload.data;
+        // login: (state, action: PayloadAction<LoginResponse>) => {
+        //     const user = action.payload.data;
+        //     console.log(user);
+        //     if (!user.token || !user.email) {
+        //         throw new Error("Invalid data");
+        //     }
 
-            if (!user.token || !user.email) {
-                throw new Error("Invalid data");
-            }
-
+        //     try {
+        //         tokenManager.setToken(user.token);
+        //         console.log(user);
+        //         localStorage.setItem("user", JSON.stringify(user));
+        //         state.isAuthenticated = true;
+        //         state.user = user;
+        //     } catch (error) {
+        //         console.error("Failed to set tokens:", error);
+        //         state.user = null;
+        //         state.isAuthenticated = false;
+        //     }
+        // },
+        login: (state, action: PayloadAction<any>) => {
             try {
+                let user;
+                if (action.payload.data) {
+                    if (Array.isArray(action.payload.data)) {
+                        user = action.payload.data[0];
+                    } else {
+                        user = action.payload.data;
+                    }
+                } else {
+                    user = action.payload;
+                }
+                if (!user || !user.token) {
+                    console.error("Invalid user data format:", user);
+                    return;
+                }
                 tokenManager.setToken(user.token);
-                console.log(user);
                 localStorage.setItem("user", JSON.stringify(user));
                 state.isAuthenticated = true;
                 state.user = user;
+                if (user.user_id) {
+                    localStorage.setItem("userId", user.user_id.toString());
+                }
             } catch (error) {
-                console.error("Failed to set tokens:", error);
+                console.error("Failed to process login:", error);
                 state.user = null;
                 state.isAuthenticated = false;
             }
-        },
+        }
     },
 });
 

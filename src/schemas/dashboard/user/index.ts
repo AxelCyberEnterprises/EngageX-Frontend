@@ -20,9 +20,11 @@ export const BaseSessionSetupSchema = z.object({
 export const PublicSpeakingSchema = BaseSessionSetupSchema;
 
 export const PitchPracticeSchema = BaseSessionSetupSchema.extend({
+    slide_preview_id: z.number().optional(),
     slides: MediaSchema.optional(),
 });
 
 export const PresentationPracticeSchema = BaseSessionSetupSchema.extend({
+    slide_preview_id: z.number().optional(),
     slides: MediaSchema.optional(),
 });
