@@ -178,10 +178,15 @@ const PresentationPractice: React.FC = () => {
             setIsSocketConnected(false);
         };
 
+        if (stop) {
+            console.log("Closing WebSocket because stop is true");
+            ws.close();
+        }
+
         return () => {
             ws.close();
         };
-    }, [sessionId, allowSwitch]);
+    }, [sessionId, allowSwitch, stop]);
 
     useEffect(() => {
         let isMounted = true;
@@ -261,7 +266,9 @@ const PresentationPractice: React.FC = () => {
             }
         };
 
-        connectToRealtime();
+        if (!stop) {
+            connectToRealtime();
+        }
 
         return () => {
             isMounted = false;
@@ -282,7 +289,7 @@ const PresentationPractice: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl, allowSwitch]);
+    }, [setVideoUrl, allowSwitch, stop]);
 
     return (
         <div className="text-primary-blue">
