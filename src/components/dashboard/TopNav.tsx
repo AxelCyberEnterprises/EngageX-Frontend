@@ -24,7 +24,7 @@ const TopNav: React.FC = () => {
     const pathnames = location.pathname.split("/").filter((path) => path);
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
-
+    const initials = `${profile?.first_name?.[0] ?? ''}${profile?.last_name?.[0] ?? ''}`.toUpperCase();
     const formatBreadcrumb = (segment: string) =>
         segment.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
@@ -82,7 +82,19 @@ const TopNav: React.FC = () => {
                 </Button>
                 <div className="line h-4.5 mx-3 w-0.5 bg-gray"></div>
                 <div className="user__image">
-                    <img src={profile?.profile_picture} alt="user image" className="w-11 h-11 rounded-full object-cover" />
+                    <div
+                        className={`w-11 h-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 ${!profile?.profile_picture &&  'border border-[#D0D5DD] bg-[#D0D5DD]'}`}
+                    >
+                        {profile?.profile_picture ? (
+                            <img src={profile?.profile_picture} alt={`user image`} className="w-full h-full object-cover" />
+                        ) : (
+                            <span
+                                className="font-medium text-sm leading-none mt-1 text-[#10161e]"
+                            >
+                                {initials}
+                            </span>
+                        )}
+                    </div>
                 </div>
             </div>
             <SidebarTrigger className="md:hidden p-5" />

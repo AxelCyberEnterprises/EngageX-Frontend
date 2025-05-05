@@ -27,6 +27,7 @@ export interface ISession {
     slide_specific_timing: Record<string, unknown>;
     allow_ai_questions: boolean;
     virtual_environment: string;
+    compiled_video_url: string | null;
     volume: number;
     pitch_variability: number;
     pace: number;

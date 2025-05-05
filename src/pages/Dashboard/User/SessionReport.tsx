@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetSessionReport } from "@/hooks/sessions";
+import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
@@ -16,7 +17,6 @@ import { ArrowLeft, Download, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
-import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
@@ -273,7 +273,11 @@ const PitchSessionReport: React.FC = () => {
 
                             <div className="flex lg:me-5 mt-6 lg:mt-0">
                                 <div className="flex pe-5 me-5 border-r-2 border-bright-gray">
-                                    <img src={profile?.profile_picture} alt="avatar" className="w-11 h-11 rounded-full object-cover" />
+                                    <img
+                                        src={profile?.profile_picture}
+                                        alt="avatar"
+                                        className="w-11 h-11 rounded-full object-cover"
+                                    />
                                     <div className="flex flex-col justify-between ps-2">
                                         <h6>{data.full_name}</h6>
                                         <p className="text-independence">{data.user_email}</p>
@@ -293,21 +297,21 @@ const PitchSessionReport: React.FC = () => {
                     </section>
 
                     <section className="px-4 lg:px-8 py-4">
-                        <div className="w-full mb-5">
-                            {data.slides_file ? (
+                        <div data-html2canvas-ignore className="w-full mb-5">
+                            {data.compiled_video_url ? (
                                 <>
                                     <div className="relative rounded-3xl mb-2 overflow-hidden">
                                         <VideoPlayer
                                             height="h-100"
                                             width="w-full"
-                                            src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/uncertain/1.mp4"
+                                            src={data.compiled_video_url}
                                             border="rounded-3xl"
                                             canDownload
                                             preload={true}
                                         />
                                     </div>
                                     <small className="border-l-2 border-l-maximum-yellow-red pl-3 py-1">
-                                        Your recording may take 2-5 minutes to be ready for download
+                                        Your recording may take 1-3 minutes to be ready for download
                                     </small>
                                 </>
                             ) : (
@@ -376,7 +380,7 @@ const PitchSessionReport: React.FC = () => {
                     <section className="px-4 lg:px-8">
                         <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
                             <h5 className="mb-6">Performance Analytics</h5>
-                            <div className="border-1 border-bright-gray rounded-xl p-4 mb-5">
+                            <div className="hidden border-1 border-bright-gray rounded-xl p-4 mb-5">
                                 <h6 className="mb-3">Slide-Based Feedback</h6>
                                 {data.slides_file ? (
                                     <SlideFeedbackChart />
@@ -495,7 +499,7 @@ const PitchSessionReport: React.FC = () => {
                                     <h5 className="mb-5">Personal Goal Summary</h5>
                                     <p className="text-independence">Session feedback summary</p>
                                     <div className="p-4 rounded-md border-bright-gray border-1 w-full">
-                                        <p>{data.general_feedback_summary}</p>
+                                        <p className="whitespace-pre-line">{data.general_feedback_summary}</p>
                                     </div>
                                 </div>
 

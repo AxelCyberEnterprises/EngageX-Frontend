@@ -32,6 +32,11 @@ function FAQs() {
       answer:
         "Session plans are paid upfront before session engagement using any major credit card and must be used within 12 months from the date of purchase",
     },
+    {
+      question: "Is the platform available as an app?",
+      answer:
+        "Yes, coming soon the platform will be available to iOS Apple users",
+    },
   ];
   return (
     <section className="font-montserrat px-10 lg:px-20 space-y-20 py-26 bg-alice-blue">

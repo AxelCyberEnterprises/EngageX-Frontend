@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function StudioSection() {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -11,7 +12,7 @@ function StudioSection() {
     list: [
       "Industry Interviewing",
       "Question Library",
-      "STAR Feedback",
+      "SAR Feedback",
       "AI Interviewers",
       "Feedback Report",
       "Session Analysis",
@@ -28,9 +29,9 @@ function StudioSection() {
           "Dynamic prompts that adapt based on your responses to simulate real conversations.",
       },
       {
-        title: "AI STAR Feedback Analysis",
+        title: "AI SAR Feedback Analysis",
         content:
-          "Real time evaluation based on the STAR method to strengthen structured response skills.",
+          "Real time evaluation based on the SAR method to strengthen structured response skills.",
       },
       {
         title: "3D Animated AI Model Simulated Interviewers",
@@ -105,23 +106,25 @@ function StudioSection() {
                 {data.carousel[activeIdx].title}
               </h3>
               <p>{data.carousel[activeIdx].content}</p>
-              <button className="hidden lg:flex px-5 py-4 gap-4 rounded-md mt-20">
-                <p>Reach Out</p>
-                <svg
-                  width="10"
-                  height="20"
-                  viewBox="0 0 10 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M8.4633 10.5927L3.74913 15.3069L2.5708 14.1285L6.6958 10.0035L2.5708 5.87853L3.74913 4.7002L8.4633 9.41436C8.61953 9.57063 8.70729 9.78256 8.70729 10.0035C8.70729 10.2245 8.61953 10.4364 8.4633 10.5927Z"
-                    fill="white"
-                  />
-                </svg>
-              </button>
+              <Link to={"/contact"}>
+                <button className="hidden lg:flex px-5 py-4 gap-4 rounded-md mt-20">
+                  <p>Reach Out</p>
+                  <svg
+                    width="10"
+                    height="20"
+                    viewBox="0 0 10 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.4633 10.5927L3.74913 15.3069L2.5708 14.1285L6.6958 10.0035L2.5708 5.87853L3.74913 4.7002L8.4633 9.41436C8.61953 9.57063 8.70729 9.78256 8.70729 10.0035C8.70729 10.2245 8.61953 10.4364 8.4633 10.5927Z"
+                      fill="white"
+                    />
+                  </svg>
+                </button>
+              </Link>
             </div>
             <img
               src={"/assets/studioimg" + (activeIdx + 1) + ".png"}
@@ -129,23 +132,25 @@ function StudioSection() {
               className="w-full lg:w-1/2"
             />
             <div className="flex items-start lg:hidden w-full">
-              <button className="px-5 py-4 flex gap-4 rounded-md">
-                <p>Reach Out</p>
-                <svg
-                  width="10"
-                  height="20"
-                  viewBox="0 0 10 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M8.4633 10.5927L3.74913 15.3069L2.5708 14.1285L6.6958 10.0035L2.5708 5.87853L3.74913 4.7002L8.4633 9.41436C8.61953 9.57063 8.70729 9.78256 8.70729 10.0035C8.70729 10.2245 8.61953 10.4364 8.4633 10.5927Z"
-                    fill="white"
-                  />
-                </svg>
-              </button>
+              <Link to={"/contact"}>
+                <button className="px-5 py-4 flex gap-4 rounded-md">
+                  <p>Reach Out</p>
+                  <svg
+                    width="10"
+                    height="20"
+                    viewBox="0 0 10 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.4633 10.5927L3.74913 15.3069L2.5708 14.1285L6.6958 10.0035L2.5708 5.87853L3.74913 4.7002L8.4633 9.41436C8.61953 9.57063 8.70729 9.78256 8.70729 10.0035C8.70729 10.2245 8.61953 10.4364 8.4633 10.5927Z"
+                      fill="white"
+                    />
+                  </svg>
+                </button>
+              </Link>
             </div>
           </div>
         </section>

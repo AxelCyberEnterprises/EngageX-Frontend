@@ -85,13 +85,19 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
 
 export function useEndSession(sessionId: string | undefined, duration: any, slidesDuration?: any[]) {
     const navigate = useNavigate();
+    const convertDurationToSeconds = (duration: string): number => {
+        const [minutes, seconds] = duration.split(":").map(Number);
+        return minutes * 60 + seconds;
+    };
+
+    const durationInSeconds = convertDurationToSeconds(duration ? duration : slidesDuration?.[0] ?? "0:00");
 
     return useMutation({
         mutationKey: ["endSession"],
         mutationFn: async () => {
             await apiPost(`/sessions/sessions-report/${sessionId}/`, {
-                duration: duration,
-                slide_specific_timing: slidesDuration,
+                duration: durationInSeconds,
+                // ...(slidesDuration && slidesDuration.length > 1 && { slide_specific_timing: slidesDuration }),
             });
         },
         onSuccess: () => {
