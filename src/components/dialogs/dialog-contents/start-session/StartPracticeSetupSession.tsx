@@ -5,6 +5,8 @@ import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 import { useSessionHistory } from "@/hooks/auth";
 import { apiPost, apiPut } from "@/lib/api";
 import { useAppDispatch } from "@/store";
+import { setSlidePreviews as setPitchSlidePreviews } from "@/store/slices/dashboard/user/pitchPracticeSlice";
+import { setSlidePreviews as setPresentationSlidePreviews } from "@/store/slices/dashboard/user/presentationPracticeSlice";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { IPOSTSessionPayload, ISession } from "@/types/sessions";
 import { capitalize } from "@mui/material";
@@ -46,6 +48,10 @@ const StartPracticeSetupSession = ({
         },
         onSuccess(sessionId) {
             dispatch(closeDialog());
+
+            if (sessionType === "presentation") dispatch(setPresentationSlidePreviews([]));
+            else dispatch(setPitchSlidePreviews([]));
+
             navigate(`/sessions/${sessionType}-practice-session/${sessionId}`);
         },
         onError: (error) => {
@@ -73,6 +79,10 @@ const StartPracticeSetupSession = ({
             if (slidesFormData.get("slides_file")) generateSummary(data.id);
             else {
                 dispatch(closeDialog());
+
+                if (sessionType === "presentation") dispatch(setPresentationSlidePreviews([]));
+                else dispatch(setPitchSlidePreviews([]));
+
                 navigate(`/sessions/${sessionType}-practice-session/${data.id}`);
             }
         },
@@ -96,7 +106,6 @@ const StartPracticeSetupSession = ({
             const payload = {
                 ...values,
                 goals: values.goals.map(({ goal }) => goal),
-                slide_preview_id: values.slides?.pop()?.id,
             };
             delete payload.slides;
 

@@ -9,11 +9,11 @@ import { RootState, useAppDispatch } from "@/store";
 import {
     setActiveSlideIndex,
     setIsGeneratingPreview,
-    setslidePreviews,
+    setSlidePreviews,
 } from "@/store/slices/dashboard/user/presentationPracticeSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -32,60 +32,50 @@ const PresentationPracticeForm = () => {
         defaultValues: useMemo(() => ({ session_type: "presentation" }), []),
     });
 
+    const slides = useWatch({ control: form.control, name: "slides" });
+
     useEffect(() => {
-        const subscription = form.watch((values, { name }) => {
-            if (name !== "slides" || !("slides" in values && values.slides)) return;
+        if (!slides || slides.length === 0) return;
 
-            const slidesFormData = new FormData();
-            const [slides] = values.slides.filter((slide): slide is { file: File; id: number } => slide !== undefined);
+        const [slide] = slides;
 
-            slidesFormData.append("slides_file", slides.file);
+        const slidesFormData = new FormData();
+        slidesFormData.append("slides_file", slide);
 
-            dispatch(setIsGeneratingPreview(true));
+        dispatch(setIsGeneratingPreview(true));
 
-            if (slidesFormData.get("slides_file"))
-                uploadSlides(slidesFormData, {
-                    onSuccess: ({ data: { id, slides_file } }) => {
-                        form.setValue("slides", [{ id, file: slides.file }]);
+        uploadSlides(slidesFormData, {
+            onSuccess: ({ data: { id, slides_file } }) => {
+                form.setValue("slide_preview_id", id);
 
-                        pdfToImages(slides_file)
-                            .then((images) => {
-                                dispatch(setslidePreviews(images));
-                                dispatch(setIsGeneratingPreview(false));
-                            })
-                            .catch((error) => {
-                                console.error("Error generating preview: ", error);
-
-                                dispatch(setIsGeneratingPreview(false));
-                                toast(
-                                    <ErrorToast
-                                        {...{
-                                            heading: "Error generating preview",
-                                            description:
-                                                "An error occurred while generating preview, please try again.",
-                                        }}
-                                    />,
-                                );
-                            });
-                    },
-                    onError: (error) => {
-                        console.error("Error uploading slides: ", error);
-
+                pdfToImages(slides_file)
+                    .then((images) => {
+                        dispatch(setSlidePreviews(images));
+                        dispatch(setIsGeneratingPreview(false));
+                    })
+                    .catch((error) => {
+                        console.error("Error generating preview: ", error);
                         dispatch(setIsGeneratingPreview(false));
                         toast(
                             <ErrorToast
-                                {...{
-                                    heading: "Error uploading slides",
-                                    description: "An error occurred while uploading slides, please try again.",
-                                }}
+                                heading="Error generating preview"
+                                description="An error occurred while generating preview, please try again."
                             />,
                         );
-                    },
-                });
+                    });
+            },
+            onError: (error) => {
+                console.error("Error uploading slides: ", error);
+                dispatch(setIsGeneratingPreview(false));
+                toast(
+                    <ErrorToast
+                        heading="Error uploading slides"
+                        description="An error occurred while uploading slides, please try again."
+                    />,
+                );
+            },
         });
-
-        return () => subscription.unsubscribe();
-    }, [dispatch, form, uploadSlides]);
+    }, [dispatch, form, slides, uploadSlides]);
 
     return (
         <Form {...form}>
