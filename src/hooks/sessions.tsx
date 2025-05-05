@@ -90,33 +90,32 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
         return minutes * 60 + seconds;
     };
 
-    const durationInSeconds = convertDurationToSeconds(duration ? duration : "00:00");
+    const durationInSeconds = convertDurationToSeconds(duration ? duration : slidesDuration?.[0] ?? "0:00");
 
-  return useMutation({
-    mutationKey: ["endSession"],
-    mutationFn: async () => {
-      await apiPost(`/sessions/sessions-report/${sessionId}/`, {
-        duration: durationInSeconds,
-        ...(slidesDuration && slidesDuration.length > 1 && { slide_specific_timing: slidesDuration }),
-      });
-    },
-    onSuccess: () => {
-      console.log("Session ended and posted successfully.");
-      navigate(`/dashboard/user/session-history/${sessionId}`);
-    },
-    onError: (error) => {
-      console.error("End session failed:", error);
-      toast(
-        <ErrorToast
-          {...{
-            heading: "Error ending session",
-            description:
-              "An error occurred while ending session, please try again.",
-          }}
-        />
-      );
-    },
-  });
+    return useMutation({
+        mutationKey: ["endSession"],
+        mutationFn: async () => {
+            await apiPost(`/sessions/sessions-report/${sessionId}/`, {
+                duration: durationInSeconds,
+                // ...(slidesDuration && slidesDuration.length > 1 && { slide_specific_timing: slidesDuration }),
+            });
+        },
+        onSuccess: () => {
+            console.log("Session ended and posted successfully.");
+            navigate(`/dashboard/user/session-history/${sessionId}`);
+        },
+        onError: (error) => {
+            console.error("End session failed:", error);
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Error ending session",
+                        description: "An error occurred while ending session, please try again.",
+                    }}
+                />,
+            );
+        },
+    });
 }
 
 export function useGetSessionReport(sessionId: string | undefined) {
