@@ -90,7 +90,7 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
         return minutes * 60 + seconds;
     };
 
-    const durationInSeconds = convertDurationToSeconds(duration);
+    const durationInSeconds = convertDurationToSeconds(duration ? duration : "00:00");
 
   return useMutation({
     mutationKey: ["endSession"],
