@@ -49,8 +49,8 @@ const FeatureWalkthrough = () => {
                 {videos.map((video) => (
                     <div
                         key={video.id}
-                        className={`flex justify-between items-center cursor-pointer ${
-                            activeVideo === video.id ? "text-green-sheen" : ""
+                        className={`flex justify-between items-center cursor-pointer p-3 rounded-md ${
+                            activeVideo === video.id ? "text-green-sheen bg-bright-gray" : ""
                         }`}
                         onClick={() => handleVideoClick(video.id)}
                     >
