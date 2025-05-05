@@ -15,7 +15,7 @@ import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, LoaderCircle, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 
 const PitchSessionReport: React.FC = () => {
@@ -240,12 +240,15 @@ const PitchSessionReport: React.FC = () => {
                                                 Click the button below to schedule a session with any of our coaches
                                             </DialogDescription>
                                         </DialogHeader>
-                                        <Button
-                                            className="bg-primary-blue hover:bg-primary-blue/90"
+                                        <Link
+                                            to="https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="bg-primary-blue hover:bg-primary-blue/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
                                             onClick={() => setDialogOneOpen(false)}
                                         >
                                             Speak with a Coach
-                                        </Button>
+                                        </Link>
                                     </DialogContent>
                                 </Dialog>
                             </div>
