@@ -22,11 +22,11 @@ const pitchPracticeSlice = createSlice({
         setIsGeneratingPreview: (state, action: PayloadAction<boolean>) => {
             state.isGeneratingPreview = action.payload;
         },
-        setslidePreviews: (state, action: PayloadAction<string[]>) => {
+        setSlidePreviews: (state, action: PayloadAction<string[]>) => {
             state.slidePreviews = action.payload;
         },
     },
 });
 
-export const { setActiveSlideIndex, setslidePreviews, setIsGeneratingPreview } = pitchPracticeSlice.actions;
+export const { setActiveSlideIndex, setSlidePreviews, setIsGeneratingPreview } = pitchPracticeSlice.actions;
 export default pitchPracticeSlice.reducer;
