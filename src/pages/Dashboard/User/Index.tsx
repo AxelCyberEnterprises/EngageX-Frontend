@@ -53,7 +53,7 @@ const UserDashboardHome: React.FC = () => {
   >;
   const user = useSelector((state: RootState) => state.auth.user);
   useEffect(() => {
-    if (user?.first_login === true) {
+    if (user?.first_login || user?.first_time_verification) {
       setShowAgreementModal(true);
     }
   }, []);
@@ -457,7 +457,7 @@ const UserDashboardHome: React.FC = () => {
                 </Link>
               </div>
             </div>
-            {user?.first_login && (
+            {(user?.first_login || user?.first_time_verification) && (
               <MultiStepAgreement
                 open={showAgreementModal}
                 onClose={() => setShowAgreementModal(false)}

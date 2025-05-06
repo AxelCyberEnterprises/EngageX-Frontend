@@ -171,7 +171,7 @@ export function useEmailConfirmation() {
             return await apiPost<any>("/users/auth/verify-email/", data);
         },
         onSuccess: (response: any) => {
-            const userData = response.data[0];
+            const userData = response.data;
             if (userData && userData.token) {
                 const formattedData = {
                     data: userData
