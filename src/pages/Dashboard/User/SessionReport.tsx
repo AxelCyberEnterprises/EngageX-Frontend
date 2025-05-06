@@ -8,12 +8,13 @@ import EmptyState from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
 import { useGetSessionReport } from "@/hooks/sessions";
 import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
-import { ArrowLeft, Download, LoaderCircle, UserRound } from "lucide-react";
+import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -98,24 +99,28 @@ const PitchSessionReport: React.FC = () => {
         {
             bg: "bg-alice-blue",
             title: "Volume",
+            key: "volume",
             percent: data?.volume,
         },
         {
             bg: "bg-green-sheen/15",
             title: "Pitch",
+            key: "pitch",
             percent: data?.pitch_variability,
         },
         {
             bg: "bg-seashell",
             title: "Pace",
+            key: "pace",
             percent: data?.pace,
         },
         {
             bg: "bg-grey/15",
             title: "Pauses",
+            key: "pauses",
             percent: data?.pauses,
         },
-    ];
+    ] as const;
 
     const slideAnalysis = [
         {
@@ -138,50 +143,59 @@ const PitchSessionReport: React.FC = () => {
     const deliveryMetrics = [
         {
             title: "Structure and Clarity",
+            key: "clarity",
             rating: data?.structure_and_clarity,
         },
         {
             title: "Transformative Communication",
+            key: "transformative-potential",
             rating: data?.transformative_communication,
         },
         {
             title: "Emotional Impact",
+            key: "impact",
             rating: data?.emotional_impact,
         },
-    ];
+    ] as const;
 
     const variety2 = [
         {
             bg: "bg-alice-blue",
             title: "Posture",
+            key: "body-posture",
             percent: data?.posture,
         },
         {
             bg: "bg-green-sheen/15",
             title: "Motion",
+            key: "body-motion",
             percent: data?.motion,
         },
         {
             bg: "bg-seashell",
             title: "Hand Gestures",
+            key: "hand-gestures",
             percent: data?.gestures_score_for_body_language,
         },
-    ];
+    ] as const;
 
     const deliveryMetrics2 = [
         {
             title: "Brevity",
+            key: "brevity",
             rating: data?.brevity,
         },
         {
             title: "Filler Words",
+            key: "filler-words",
             rating: data?.filler_words,
         },
         {
             title: "Grammar",
+            key: "grammar",
             rating: data?.grammar,
         },
-    ];
+    ] as const;
 
     return (
         <div>
@@ -400,7 +414,16 @@ const PitchSessionReport: React.FC = () => {
                                     <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
                                         <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
                                             <div className="flex flex-col justify-between py-3">
-                                                <p>{item.title}</p>
+                                                <div className="flex items-center gap-2">
+                                                    <p>{item.title}</p>
+                                                    <DynamicTooltip
+                                                        tooltipKey={item.key}
+                                                        sideOffset={5}
+                                                        className="[&_svg]:hidden [&>p]:text-black/80"
+                                                    >
+                                                        <Info className="size-4 shrink-0" />
+                                                    </DynamicTooltip>
+                                                </div>
                                                 <h5>{item.percent}%</h5>
                                             </div>
                                             <div>
@@ -416,7 +439,16 @@ const PitchSessionReport: React.FC = () => {
                                 {deliveryMetrics.map((metric, index) => (
                                     <div key={index} className="flex flex-wrap w-full mb-3 items-center">
                                         <div className="w-full lg:w-3/12 flex justify-between">
-                                            <p>{metric.title}</p>
+                                            <div className="flex items-center gap-2">
+                                                <p>{metric.title}</p>
+                                                <DynamicTooltip
+                                                    tooltipKey={metric.key}
+                                                    sideOffset={5}
+                                                    className="[&_svg]:hidden [&>p]:text-black/80"
+                                                >
+                                                    <Info className="size-4 shrink-0" />
+                                                </DynamicTooltip>
+                                            </div>
                                             <p className="lg:hidden block">{metric.rating}%</p>
                                         </div>
                                         <div className="w-full lg:w-8/12 mt-3 lg:mt-0">
@@ -438,7 +470,16 @@ const PitchSessionReport: React.FC = () => {
                                     <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
                                         <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
                                             <div className="flex flex-col justify-between py-3">
-                                                <p>{item.title}</p>
+                                                <div className="flex items-center gap-2">
+                                                    <p>{item.title}</p>
+                                                    <DynamicTooltip
+                                                        tooltipKey={item.key}
+                                                        sideOffset={5}
+                                                        className="[&_svg]:hidden [&>p]:text-black/80"
+                                                    >
+                                                        <Info className="size-4 shrink-0" />
+                                                    </DynamicTooltip>
+                                                </div>
                                                 <h5>{item.percent}%</h5>
                                             </div>
                                             <div>
@@ -454,7 +495,16 @@ const PitchSessionReport: React.FC = () => {
                                 {deliveryMetrics2.map((metric, index) => (
                                     <div key={index} className="flex flex-wrap w-full mb-3 items-center">
                                         <div className="w-full lg:w-3/12 flex justify-between">
-                                            <p>{metric.title}</p>
+                                            <div className="flex items-center gap-2">
+                                                <p>{metric.title}</p>
+                                                <DynamicTooltip
+                                                    tooltipKey={metric.key}
+                                                    sideOffset={5}
+                                                    className="[&_svg]:hidden [&>p]:text-black/80"
+                                                >
+                                                    <Info className="size-4 shrink-0" />
+                                                </DynamicTooltip>
+                                            </div>
                                             <p className="lg:hidden block">{metric.rating}%</p>
                                         </div>
                                         <div className="w-full lg:w-8/12 mt-3 lg:mt-0">
