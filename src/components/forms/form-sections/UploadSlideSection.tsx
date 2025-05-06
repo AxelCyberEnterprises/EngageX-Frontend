@@ -5,7 +5,7 @@ import UploadMediaTrigger from "@/components/widgets/UploadMediaTrigger";
 import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { UnknownAction } from "@reduxjs/toolkit";
-import { Plus, UploadCloud } from "lucide-react";
+import { LoaderCircle, Plus, UploadCloud } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
 import { pdfjs } from "react-pdf";
 
@@ -108,9 +108,14 @@ const UploadSlideSection = ({
 
                     <UploadMediaTrigger
                         name="slides"
+                        disabled={isGeneratingPreview}
                         className="w-42.5 h-24 grid place-content-center bg-ghost-white rounded-lg cursor-pointer border border-bright-gray"
                     >
-                        <Plus className="size-5" />
+                        {isGeneratingPreview ? (
+                            <LoaderCircle className="size-5 animate-spin" />
+                        ) : (
+                            <Plus className="size-5" />
+                        )}
                     </UploadMediaTrigger>
                 </div>
                 {slidePreviews.map((preview, index) => (
