@@ -38,7 +38,7 @@ const personalInfoSchema = z.object({
   industry: z.string().transform(val => val === "" ? undefined : val).optional(),
   country: z.string().transform(val => val === "" ? undefined : val).optional(),
   timezone: z.string().transform(val => val === "" ? undefined : val).optional(),
-  role: z.string().transform(val => val === "" ? undefined : val).optional(),
+  user_intent: z.string().transform(val => val === "" ? undefined : val).optional(),
 });
 
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
@@ -86,7 +86,7 @@ const PersonalInfoForm: React.FC = () => {
       industry: "",
       country: "",
       timezone: "",
-      role: "",
+      user_intent: "",
     }
   });
 
@@ -170,6 +170,7 @@ const PersonalInfoForm: React.FC = () => {
         email: profile.email || "",
         company: profile.company || "",
         industry: profile.industry || "",
+        user_intent: profile.user_intent || "",
         country: profile.country || "",
         timezone: profile.timezone || "",
       });
@@ -189,6 +190,7 @@ const PersonalInfoForm: React.FC = () => {
       email: profile?.email || "",
       company: profile?.company || "",
       industry: profile?.industry || "",
+      user_intent: profile?.user_intent || "",
       country: profile?.country || "",
       timezone: profile?.timezone || "",
     });
@@ -426,8 +428,8 @@ const PersonalInfoForm: React.FC = () => {
               <div className="space-y-1">
                 <SearchableSelect
                   label="Role"
-                  defaultValue={profile?.role || ""}
-                  onValueChange={(value) => form.setValue('role', value)}
+                  defaultValue={profile?.user_intent || ""}
+                  onValueChange={(value) => form.setValue('user_intent', value)}
                   isEditable={isEditMode}
                   placeholder="Select role"
                   inputPlaceholder="Search roles..."
