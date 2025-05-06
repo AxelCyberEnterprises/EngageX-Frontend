@@ -1,7 +1,7 @@
 export type ITooltipKeys =
     | "conviction"
     | "clarity"
-    | "impact"
+    | "emotional-impact"
     | "brevity"
     | "transformative-potential"
     | "trigger-response"
@@ -14,7 +14,10 @@ export type ITooltipKeys =
     | "pitch-variability"
     | "pace"
     | "pitch"
-    | "pauses";
+    | "pauses"
+    | "slide-count-efficiency"
+    | "slide-wordiness"
+    | "aesthetic-balance";
 type ITooltipContent = {
     title?: string;
     description: string;
@@ -32,10 +35,10 @@ export const tooltipItems: TooltipProps = {
         description:
             "Measures how easy it is for the audience to understand the message. Strong clarity comes from steady pacing, appropriate volume, and well-placed pauses.",
     },
-    impact: {
-        title: "Impact",
+    "emotional-impact": {
+        title: "Emotional Impact",
         description:
-            "Captures the overall power and memorability of the presentation. It is calculated based on the speaker's conviction, transformative communication, and ability to inspire audience response.",
+            "Measures how much the talk sparks emotional or instinctive reactions in the audience—such as surprise, empathy, or deep thought.",
     },
     brevity: {
         title: "Brevity",
@@ -101,5 +104,20 @@ export const tooltipItems: TooltipProps = {
         title: "Pause",
         description:
             "Assesses how well the speaker uses silence to emphasize key points. Well-timed pauses improve understanding and emotional impact.",
+    },
+    "slide-count-efficiency": {
+        title: "Slide Count Efficiency",
+        description:
+            "Assesses whether the number of slides is appropriate for the content. Fewer, more focused slides are preferred over unnecessary repetition.",
+    },
+    "slide-wordiness": {
+        title: "Slide Wordiness",
+        description:
+            "Measures how concise the text is on each slide. Clear, minimal wording enhances readability and keeps the audience engaged.",
+    },
+    "aesthetic-balance": {
+        title: "Aesthetic Balance",
+        description:
+            "Evaluates the visual appeal of slides by checking the use of images, diagrams, and design elements. A strong aesthetic balance supports message clarity and viewer attention.",
     },
 };

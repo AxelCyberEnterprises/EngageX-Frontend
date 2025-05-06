@@ -21,7 +21,7 @@ const usePerformanceChart = ({ performanceAnalytics }: IPerformanceChart) => {
 
     const chartColors = {
         Impact: "#252A39",
-        Trigger: "#40B869",
+        "Trigger Response": "#40B869",
         Conviction: "#F5B546",
     };
 

@@ -19,7 +19,7 @@ export const DynamicTooltip = ({ children, className, tooltipKey, ...props }: ID
                     className={cn("bg-white text-black max-w-64 space-y-1 p-3 border border-bright-gray", className)}
                     {...props}
                 >
-                    {title && <h6 className="text-lg">{title}</h6>}
+                    {title && <h6 className="text-base font-semibold">{title}</h6>}
                     <p className="font-normal text-base">{description}</p>
                 </TooltipContent>
             </Tooltip>
