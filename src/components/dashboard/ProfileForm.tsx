@@ -38,7 +38,7 @@ const personalInfoSchema = z.object({
   industry: z.string().transform(val => val === "" ? undefined : val).optional(),
   country: z.string().transform(val => val === "" ? undefined : val).optional(),
   timezone: z.string().transform(val => val === "" ? undefined : val).optional(),
-  role: z.string().transform(val => val === "" ? undefined : val).optional(),
+  user_intent: z.string().transform(val => val === "" ? undefined : val).optional(),
 });
 
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
@@ -86,7 +86,7 @@ const PersonalInfoForm: React.FC = () => {
       industry: "",
       country: "",
       timezone: "",
-      role: "",
+      user_intent: "",
     }
   });
 
@@ -170,6 +170,7 @@ const PersonalInfoForm: React.FC = () => {
         email: profile.email || "",
         company: profile.company || "",
         industry: profile.industry || "",
+        user_intent: profile.user_intent || "",
         country: profile.country || "",
         timezone: profile.timezone || "",
       });
@@ -189,6 +190,7 @@ const PersonalInfoForm: React.FC = () => {
       email: profile?.email || "",
       company: profile?.company || "",
       industry: profile?.industry || "",
+      user_intent: profile?.user_intent || "",
       country: profile?.country || "",
       timezone: profile?.timezone || "",
     });
@@ -423,6 +425,18 @@ const PersonalInfoForm: React.FC = () => {
                 Icon={Globe}
               />
 
+              <div className="space-y-1">
+                <SearchableSelect
+                  label="Role"
+                  defaultValue={profile?.user_intent || ""}
+                  onValueChange={(value) => form.setValue('user_intent', value)}
+                  isEditable={isEditMode}
+                  placeholder="Select role"
+                  inputPlaceholder="Search roles..."
+                  options={roles}
+                />
+              </div>
+
               <SearchableSelect
                 label="Country"
                 defaultValue={profile?.country || ""}
@@ -446,17 +460,6 @@ const PersonalInfoForm: React.FC = () => {
                 />
               </div>
 
-              <div className="space-y-1">
-                <SearchableSelect
-                  label="Role"
-                  defaultValue={profile?.role || ""}
-                  onValueChange={(value) => form.setValue('role', value)}
-                  isEditable={isEditMode}
-                  placeholder="Select role"
-                  inputPlaceholder="Search roles..."
-                  options={roles}
-                />
-              </div>
               <div className="pt-4 border-t">
                 <div className="flex flex-col space-y-1">
                   <p className="font-medium">Credits Remaining: <span className="text-green-500 ml-[2px]">{profile?.available_credits ? parseInt(profile?.available_credits) : 'No credits available'}</span></p>
