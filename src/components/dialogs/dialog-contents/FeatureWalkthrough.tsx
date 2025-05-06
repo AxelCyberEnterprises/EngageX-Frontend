@@ -8,27 +8,27 @@ const FeatureWalkthrough = () => {
         {
             id: 1,
             title: "Homepage Navigation",
-            videoUrl: "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/How-to/Script+1.mp4",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/Script+1.mp4",
         },
         {
             id: 2,
             title: "Features page navigation",
-            videoUrl: "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/How-to/Script+2.mp4",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/Script+2.mp4",
         },
         {
             id: 3,
             title: "Pricing page navigation",
-            videoUrl: "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/How-to/Script+3.mp4",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/Script+3.mp4",
         },
         {
             id: 4,
             title: "Getting started",
-            videoUrl: "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/How-to/Script+4.mp4",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/Script+4.mp4",
         },
         {
             id: 5,
             title: "Homepage",
-            videoUrl: "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/How-to/Script+5.mp4",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/Script+5.mp4",
         },
     ];
 
@@ -39,7 +39,7 @@ const FeatureWalkthrough = () => {
     const getVideoUrl = (id: number) => {
         const video = videos.find((video) => video.id === id);
         return video ? video.videoUrl : "";
-    }
+    };
 
     return (
         <div className="flex flex-col gap-2">
@@ -60,9 +60,7 @@ const FeatureWalkthrough = () => {
                             <div className="rounded-full bg-gray w-5 h-5 flex items-center justify-center ms-1">
                                 <Play
                                     fill="#FFF"
-                                    className={`h-3 w-3 ${
-                                        activeVideo === video.id ? "text-green-sheen" : "text-gray"
-                                    }`}
+                                    className={`h-3 w-3 ${activeVideo === video.id ? "text-green-sheen" : "text-gray"}`}
                                 />
                             </div>
                         </div>
