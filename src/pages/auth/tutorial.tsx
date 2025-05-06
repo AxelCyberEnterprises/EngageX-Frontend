@@ -4,14 +4,14 @@ import { welcomeMessage } from "@/components/layouts/userAuth";
 import { useDispatch } from "react-redux";
 import { setAuthPageImage } from "@/store/slices/authSlice";
 import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg";
-import VideoPlayer from "@/components/authPageComponents/VideoPlayer"; 
+import VideoPlayer from "@/components/authPageComponents/VideoPlayer";
 
 const Tutorial: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const videoUrl = "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Onboarding.mp4";
+    const videoUrl = "https://d37wg920pbp90y.cloudfront.net/static-videos/Onboarding.mp4";
 
     useEffect(() => {
         dispatch(setAuthPageImage(authPageImage2));
@@ -26,11 +26,7 @@ const Tutorial: React.FC = () => {
                 </p>
 
                 <div className="mb-4 lg:w-4/5 w-full">
-                    <VideoPlayer
-                        src={videoUrl}
-                        width="w-full" 
-                        className="rounded-lg overflow-hidden shadow-md" 
-                    />
+                    <VideoPlayer src={videoUrl} width="w-full" className="rounded-lg overflow-hidden shadow-md" />
                 </div>
 
                 <button

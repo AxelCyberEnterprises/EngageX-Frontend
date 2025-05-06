@@ -38,7 +38,7 @@ const PublicSpeaking: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/thinking/1.mp4",
+        "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -62,9 +62,7 @@ const PublicSpeaking: React.FC = () => {
                 setAllowSwitch(false);
                 setDialogOneOpen(false);
                 setIsMuted(false);
-                setVideoUrl(
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
-                );
+                setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/PublicSpeakingRoomClap.mp4");
             }, 15000);
             setTimeout(() => {
                 setDialogTwoOpen(true);
@@ -73,9 +71,7 @@ const PublicSpeaking: React.FC = () => {
             setAllowSwitch(false);
             setDialogOneOpen(false);
             setIsMuted(false);
-            setVideoUrl(
-                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
-            );
+            setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/PublicSpeakingRoomClap.mp4");
             setTimeout(() => {
                 setDialogTwoOpen(true);
             }, 7000);
@@ -132,8 +128,8 @@ const PublicSpeaking: React.FC = () => {
                     setQuestion(parsed.question);
                     const randomImg =
                         Math.random() > 0.5
-                            ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
-                            : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png";
+                            ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
+                            : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png";
                     setQuestionImg(randomImg);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
@@ -205,7 +201,7 @@ const PublicSpeaking: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
