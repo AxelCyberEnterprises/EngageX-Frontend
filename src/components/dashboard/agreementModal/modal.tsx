@@ -158,9 +158,9 @@ export default function MultiStepAgreement({
         console.error("Profile update error:", error);
         toast.error(
           "Failed to create profile: " +
-            ((error as any).response?.data?.message ||
-              (error as any).message ||
-              "Unknown error")
+          ((error as any).response?.data?.message ||
+            (error as any).message ||
+            "Unknown error")
         );
       } finally {
         setIsUpdating(false);
@@ -189,11 +189,10 @@ export default function MultiStepAgreement({
       <DialogTitle></DialogTitle>
       <DialogContent
         aria-describedby={undefined}
-        className={`${
-          step === 4 || step === 5 || step === 1
+        className={`${step === 4 || step === 5 || step === 1
             ? "w-[min(100%,25rem)]"
             : "w-[85vw] md:max-w-[50vw]"
-        } 
+          } 
                     my-auto mx-auto max-md:mt-5 max-md:max-h-[90vh] [&>button]:hidden`}
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
@@ -249,13 +248,11 @@ export default function MultiStepAgreement({
         <DialogFooter className="flex flex-col sm:flex-row gap-2 font-[Inter] justify-between">
           {step !== 1 && <Button
             variant="default"
-            className={`${
-              step === 1
+            className={`${step === 1
                 ? "bg-[rgba(255,0,0,0.1)] text-[#f00]"
                 : "bg-white border text-[#344054]"
-            } ${
-              step > 3 && !isUpdating ? "hidden" : ""
-            } w-full py-4 h-fit border-[#1018280D] hover:bg-accent rounded-lg`}
+              } ${step > 3 && !isUpdating ? "hidden" : ""
+              } w-full py-4 h-fit border-[#1018280D] hover:bg-accent rounded-lg`}
             onClick={prevStep}
             disabled={isUpdating}
           >
@@ -276,8 +273,8 @@ export default function MultiStepAgreement({
               {step === 1
                 ? "Read Agreement"
                 : step === 3 && !agreementState.filePreview
-                ? "Next Step"
-                : "Proceed"}
+                  ? "Next Step"
+                  : "Proceed"}
             </Button>
           ) : (
             <Button
@@ -318,6 +315,8 @@ function StepOne() {
 function StepTwo({
   agree,
   setAgree,
+  initials, 
+  setInitials,
 }: {
   initials: string;
   setInitials: (value: string) => void;
@@ -444,18 +443,18 @@ function StepTwo({
             <li>✔ You take full responsibility for downloaded recordings.</li>
           </ul>
         </div>
-        {/* <div>
-                    <label htmlFor="initials" className="font-[Inter]">
-                        Enter initials here
-                    </label>
-                    <Input
-                        placeholder="Enter your initials"
-                        className="text-black text-base font-normal mt-1 font-[Inter]"
-                        value={initials}
-                        id="initials"
-                        onChange={(e) => setInitials(e.target.value)}
-                    />
-                </div> */}
+        <div>
+          <label htmlFor="initials" className="font-[Inter]">
+            Enter initials here
+          </label>
+          <Input
+            placeholder="Enter your initials"
+            className="text-black text-base font-normal mt-1 font-[Inter]"
+            value={initials}
+            id="initials"
+            onChange={(e) => setInitials(e.target.value)}
+          />
+        </div>
         <div className="flex items-center gap-2">
           <Checkbox
             className="border-2 p-2 border-gray-300 rounded-md checked:bg-transparent bg-transparent data-[state=checked]:bg-transparent data-[state=checked]:text-black"
@@ -518,9 +517,8 @@ function StepThree({
         Upload your picture for easy identification.
       </p>
       <div
-        className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${
-          isDragging ? "bg-gray-100" : ""
-        }`}
+        className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${isDragging ? "bg-gray-100" : ""
+          }`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
