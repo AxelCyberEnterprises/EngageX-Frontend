@@ -1,3 +1,4 @@
+import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
 import VirtualEnvironmentSection from "@/components/forms/form-sections/VirtualEnvironmentSection";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
@@ -15,22 +16,30 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
     const sessionType = form.watch("session_type") as "pitch" | "presentation";
 
     return (
-        <section className={cn("md:flex hidden flex-col gap-y-4", className)}>
+        <section className={cn("flex flex-col gap-y-4", className)}>
             <>
                 <VirtualEnvironmentSection
                     {...{ form }}
-                    instruction={sessionType === "presentation" ? "Select a suitable environment for your speaking needs" : ""}
+                    instruction={
+                        sessionType === "presentation" ? "Select a suitable environment for your speaking needs" : ""
+                    }
                     options={sessionType === "pitch" ? pitchPracticeVEOptions : presentationPracticeVEOptions}
-                    className="md:block hidden p-0 border-0 [&_[data-slot='form-label']>div]:h-38 [&_h6]:text-lg"
+                    className="p-0 border-0 [&_[data-slot='form-label']>div]:h-38 [&_h6]:text-lg"
                 />
                 <Separator className="md:block hidden bg-bright-gray" />
-                <div className="flex items-start justify-between">
-                    <p className="md:text-sm leading-tight">Enable AI Audience Generated Session Questions</p>
-                    <Switch
-                        onCheckedChange={(checked) => form.setValue("allow_ai_questions", checked)}
-                        className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
-                    />
-                </div>
+                <ControlledFieldWrapper
+                    control={form.control}
+                    name="allow_ai_questions"
+                    label="Enable AI Audience Generated Session Questions"
+                    className="flex items-start justify-between gap-x-8 [&_[data-slot='form-label']]:md:text-sm [&_[data-slot='form-label']]:font-normal [&_[data-slot='form-label']]:leading-tight"
+                    render={({ field }) => (
+                        <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
+                        />
+                    )}
+                />
             </>
         </section>
     );
