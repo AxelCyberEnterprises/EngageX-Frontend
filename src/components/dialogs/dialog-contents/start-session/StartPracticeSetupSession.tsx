@@ -122,8 +122,8 @@ const StartPracticeSetupSession = ({
             setValue("virtual_environment", "board_room_1");
         }
 
-        handleSubmit(handleSessionSetupSubmit)();
-    }, [data, handleSessionSetupSubmit, handleSubmit, initiationType, sessionType, setValue]);
+        handleSubmit(handleSessionSetupSubmit, () => dispatch(closeDialog()))();
+    }, [data, dispatch, handleSessionSetupSubmit, handleSubmit, initiationType, sessionType, setValue]);
 
     return (
         <StartSession>
