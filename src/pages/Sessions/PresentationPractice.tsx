@@ -32,7 +32,7 @@ const PresentationPractice: React.FC = () => {
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
-    const [selectedRoom, setSelectedRoom] = useState<string | undefined>("conference_room");
+    const selectedRoom = useRef<string | undefined>(undefined);
     const [sessionData, setSessionData] = useState<any | undefined>(undefined);
     const [isMuted, setIsMuted] = useState(true);
     const [duration, setDuration] = useState<string | undefined>();
@@ -81,7 +81,7 @@ const PresentationPractice: React.FC = () => {
         setDialogOneOpen(false);
         setIsMuted(false);
         setVideoUrl(
-            selectedRoom === "board_room_1"
+            selectedRoom.current === "board_room_1"
                 ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
                 : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
         );
@@ -106,8 +106,10 @@ const PresentationPractice: React.FC = () => {
         const url = seshData?.slides_file;
         const localSeshData = localStorage.getItem("sessionData");
         const parsedData = localSeshData ? JSON.parse(localSeshData) : null;
+        console.log(parsedData.virtual_environment);
+        
         setSessionData(parsedData);
-        setSelectedRoom(parsedData?.virtual_environment);
+        selectedRoom.current = parsedData?.virtual_environment;
         if (!url) return;
 
         pdfToImages(url)
@@ -147,7 +149,7 @@ const PresentationPractice: React.FC = () => {
         if (!sessionId) return;
 
         const ws = new WebSocket(
-            `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=${selectedRoom}`,
+            `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=${selectedRoom.current}`,
         );
         socket.current = ws;
 
@@ -239,7 +241,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom.current}/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
