@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import VideoPlayer from "@/components/session/VideoPlayer";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
-import CountdownTimer from "@/components/session/CountdownTimer";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import VideoStreamer from "@/components/session/RecordView";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
@@ -46,8 +45,8 @@ const PresentationPractice: React.FC = () => {
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
         sessionData?.virtual_environment === "board_room_1"
-            ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/thinking/1.mp4"
-            : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_2/thinking/1.mp4",
+            ? "https://d37wg920pbp90y.cloudfront.net/static-videos/board_room_1/thinking/1.mp4"
+            : "https://d37wg920pbp90y.cloudfront.net/static-videos/board_room_2/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -56,6 +55,7 @@ const PresentationPractice: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [question, setQuestion] = useState<string | undefined>(undefined);
+    const [questionImg, setQuestionImg] = useState<string | undefined>(undefined);
 
     const stopTimer = (dur?: string, durationArr?: string[]) => {
         if (dur !== undefined) {
@@ -81,9 +81,9 @@ const PresentationPractice: React.FC = () => {
         setDialogOneOpen(false);
         setIsMuted(false);
         setVideoUrl(
-            sessionData.virtualEnvironment === "board_room_1"
-                ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom1Clap.mp4"
-                : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4",
+            selectedRoom === "board_room_1"
+                ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
+                : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
         );
         setTimeout(() => {
             setDialogTwoOpen(true);
@@ -163,6 +163,11 @@ const PresentationPractice: React.FC = () => {
 
                 if (parsed.type === "audience_question") {
                     setQuestion(parsed.question);
+                    const randomImg =
+                        Math.random() < 0.5
+                            ? `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/bw_handraise.png`
+                            : `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/wm_handraise.png`;
+                    setQuestionImg(randomImg);
                     setQuestionDialogOpen(true);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
@@ -234,7 +239,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
@@ -333,11 +338,7 @@ const PresentationPractice: React.FC = () => {
                     {/* <TimerComponent minutes={time} start={startTimer} /> */}
 
                     <img
-                        src={
-                            Math.random() < 0.5
-                                ? `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`
-                                : `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/wm_handraise.png`
-                        }
+                        src={questionImg}
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />
@@ -460,46 +461,42 @@ const PresentationPractice: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="mt-3 px-4 md:px-0">
-                        <div className="flex items-center justify-between md:justify-start">
-                            <CountdownTimer minutes={time} />
-                        </div>
-                    </div>
-
                     <div className="px-4 md:px-0 flex gap-3">
                         <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">
                             <h6 className="py-2">Speaker Notes</h6>
                             <p className="text-grey">{sessionData?.notes ? sessionData?.notes : "No note added"}</p>
                         </div>
 
-                        <div className="w-2/3 rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5 hidden md:inline-block">
-                            <div className="flex items-center justify-between">
-                                <div className="w-2/3 h-40">
-                                    {sliderRef.current?.nextSlideImage ? (
-                                        <img
-                                            src={sliderRef.current.nextSlideImage}
-                                            alt="Next"
-                                            className="w-full h-full object-cover rounded-lg"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full bg-bright-gray rounded-lg flex justify-center items-center">
-                                            <p>No next slide</p>
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="flex flex-col gap-3 h-full justify-center">
-                                    <div className="rounded-md border-1 border-bright-gray py-2 px-4">
-                                        {sliderRef.current?.currentSlideTime || "00:00"}
+                        {slides.length > 1 && (
+                            <div className="w-2/3 rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5 hidden md:inline-block">
+                                <div className="flex items-center justify-between">
+                                    <div className="w-2/3 h-40">
+                                        {sliderRef.current?.nextSlideImage ? (
+                                            <img
+                                                src={sliderRef.current.nextSlideImage}
+                                                alt="Next"
+                                                className="w-full h-full object-cover rounded-lg"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-bright-gray rounded-lg flex justify-center items-center">
+                                                <p>No next slide</p>
+                                            </div>
+                                        )}
                                     </div>
-                                    <small
-                                        className="flex text-grey items-center text-xs ms-2 cursor-pointer"
-                                        onClick={triggerNextSlide}
-                                    >
-                                        Next Slide <ChevronRight className="h-4 w-4" />
-                                    </small>
+                                    <div className="flex flex-col gap-3 h-full justify-center">
+                                        <div className="rounded-md border-1 border-bright-gray py-2 px-4">
+                                            {sliderRef.current?.currentSlideTime || "00:00"}
+                                        </div>
+                                        <small
+                                            className="flex text-grey items-center text-xs ms-2 cursor-pointer"
+                                            onClick={triggerNextSlide}
+                                        >
+                                            Next Slide <ChevronRight className="h-4 w-4" />
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
 
                     <div className="w-full flex justify-end mt-16 px-4 md:px-0">
@@ -560,8 +557,7 @@ const PresentationPractice: React.FC = () => {
                     <div className="py-5 px-3 border-1 border-bright-gray rounded-xl mt-3">
                         <h6 className="mb-4">Quick Tips</h6>
                         <ul className="text-grey list-disc">
-                            <li className="mb-2">Great eye contact with audience</li>
-                            <li>Consider slowing down your speech rate</li>
+                            <li className="mb-2">Slide presentations should 10 mins minimum - max 15 to maintain good audience engagement.</li>
                         </ul>
                     </div>
                 </div>

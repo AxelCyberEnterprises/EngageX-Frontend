@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import VideoPlayer from "@/components/session/VideoPlayer";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
-import CountdownTimer from "@/components/session/CountdownTimer";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import VideoStreamer from "@/components/session/RecordView";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
@@ -44,7 +43,7 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/thinking/1.mp4",
+        "https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -53,6 +52,7 @@ const PresentationPractice: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [question, setQuestion] = useState<string | undefined>(undefined);
+    const [questionImg, setQuestionImg] = useState<string | undefined>(undefined);
 
     const stopTimer = (dur?: string, durationArr?: string[]) => {
         if (dur !== undefined) {
@@ -77,9 +77,7 @@ const PresentationPractice: React.FC = () => {
         setAllowSwitch(false);
         setDialogOneOpen(false);
         setIsMuted(false);
-        setVideoUrl(
-            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/Pitchroom+clap.mp4",
-        );
+        setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/Pitchroom+clap.mp4");
         setTimeout(() => {
             setDialogTwoOpen(true);
         }, 7000);
@@ -158,6 +156,11 @@ const PresentationPractice: React.FC = () => {
 
                 if (parsed.type === "audience_question") {
                     setQuestion(parsed.question);
+                    const randomImg =
+                        Math.random() > 0.5
+                            ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
+                            : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png";
+                    setQuestionImg(randomImg);
                     setQuestionDialogOpen(true);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
@@ -229,7 +232,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
@@ -328,11 +331,7 @@ const PresentationPractice: React.FC = () => {
                     {/* <TimerComponent minutes={time} start={startTimer} /> */}
 
                     <img
-                        src={
-                            Math.random() < 0.5
-                                ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
-                                : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png"
-                        }
+                        src={questionImg}
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />
@@ -455,17 +454,18 @@ const PresentationPractice: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="mt-3 px-4 md:px-0">
-                        <div className="flex items-center justify-between md:justify-start">
-                            <Button
-                                className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
-                                onClick={triggerNextSlide}
-                            >
-                                Next Slide <ChevronRight className="h-4 w-4" />
-                            </Button>
-                            <CountdownTimer minutes={time} />
+                    {slides.length > 1 && (
+                        <div className="mt-3 px-4 md:px-0">
+                            <div className="flex items-center justify-between md:justify-start">
+                                <Button
+                                    className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
+                                    onClick={triggerNextSlide}
+                                >
+                                    Next Slide <ChevronRight className="h-4 w-4" />
+                                </Button>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="px-4 md:px-0 flex gap-3">
                         <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">

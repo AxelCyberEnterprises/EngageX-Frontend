@@ -38,7 +38,7 @@ const PublicSpeaking: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/thinking/1.mp4",
+        "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -46,6 +46,7 @@ const PublicSpeaking: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [question, setQuestion] = useState<string | undefined>(undefined);
+    const [questionImg, setQuestionImg] = useState<string | undefined>(undefined);
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -54,15 +55,27 @@ const PublicSpeaking: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
-        setAllowSwitch(false);
-        setDialogOneOpen(false);
-        setIsMuted(false);
-        setVideoUrl(
-            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
-        );
-        setTimeout(() => {
-            setDialogTwoOpen(true);
-        }, 7000);
+        if (question) {
+            setQuestionDialogOpen(true);
+            setTimeout(() => {
+                setQuestionDialogOpen(false);
+                setAllowSwitch(false);
+                setDialogOneOpen(false);
+                setIsMuted(false);
+                setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/PublicSpeakingRoomClap.mp4");
+            }, 15000);
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 22000);
+        } else {
+            setAllowSwitch(false);
+            setDialogOneOpen(false);
+            setIsMuted(false);
+            setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/PublicSpeakingRoomClap.mp4");
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 7000);
+        }
     };
 
     useEffect(() => {
@@ -113,7 +126,11 @@ const PublicSpeaking: React.FC = () => {
                 const parsed = JSON.parse(event.data);
                 if (parsed.type === "audience_question") {
                     setQuestion(parsed.question);
-                    setQuestionDialogOpen(true);
+                    const randomImg =
+                        Math.random() > 0.5
+                            ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
+                            : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png";
+                    setQuestionImg(randomImg);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
@@ -184,7 +201,7 @@ const PublicSpeaking: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
@@ -310,11 +327,7 @@ const PublicSpeaking: React.FC = () => {
                     {/* <TimerComponent minutes={time} start={startTimer} /> */}
 
                     <img
-                        src={
-                            Math.random() < 0.5
-                                ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
-                                : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png"
-                        }
+                        src={questionImg}
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />

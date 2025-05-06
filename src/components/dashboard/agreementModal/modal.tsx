@@ -247,7 +247,7 @@ export default function MultiStepAgreement({
         </div>
 
         <DialogFooter className="flex flex-col sm:flex-row gap-2 font-[Inter] justify-between">
-          <Button
+          {step !== 1 && <Button
             variant="default"
             className={`${
               step === 1
@@ -259,8 +259,8 @@ export default function MultiStepAgreement({
             onClick={prevStep}
             disabled={isUpdating}
           >
-            {step === 1 ? "Cancel" : "Back"}
-          </Button>
+            {"Back"}
+          </Button>}
           {step < 5 ? (
             <Button
               className="w-full py-4 h-fit rounded-lg"
