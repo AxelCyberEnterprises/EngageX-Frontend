@@ -284,7 +284,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onClick={handleVideoClick}
                 controls={false}
                 playsInline
-                preload={preload ? "auto" : "metadata"}
+                preload= "auto"
                 loop={loop && (!requireFullPlay || !nextSrc)}
                 muted={isMuted}
             />

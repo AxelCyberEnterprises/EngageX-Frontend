@@ -14,9 +14,7 @@ export const DynamicTooltip = ({ children, className, tooltipKey, ...props }: ID
     return (
         <TooltipProvider delayDuration={0}>
             <Tooltip>
-                <TooltipTrigger className="cursor-pointer" asChild>
-                    {children}
-                </TooltipTrigger>
+                <TooltipTrigger asChild>{children}</TooltipTrigger>
                 <TooltipContent
                     className={cn("bg-white text-black max-w-64 space-y-1 p-3 border border-bright-gray", className)}
                     {...props}
