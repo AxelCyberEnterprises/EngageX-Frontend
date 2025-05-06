@@ -211,15 +211,15 @@ export default function MultiStepAgreement({ open, onClose }: { open: boolean; o
                 </div>
 
                 <DialogFooter className="flex flex-col sm:flex-row gap-2 font-[Inter] justify-between">
-                    <Button
+                   {step !== 1 && <Button
                         variant="default"
                         className={`${step === 1 ? "bg-[rgba(255,0,0,0.1)] text-[#f00]" : "bg-white border text-[#344054]"
                             } ${step > 3 && !isUpdating ? "hidden" : ""} w-full py-4 h-fit border-[#1018280D] hover:bg-accent rounded-lg`}
                         onClick={prevStep}
                         disabled={isUpdating}
                     >
-                        {step === 1 ? "Cancel" : "Back"}
-                    </Button>
+                        {"Back"}
+                    </Button>}
                     {step < 5 ? (
                         <Button
                             className="w-full py-4 h-fit rounded-lg"
@@ -376,7 +376,7 @@ function StepTwo({
                         <li>✔ You take full responsibility for downloaded recordings.</li>
                     </ul>
                 </div>
-                {/* <div>
+                <div>
                     <label htmlFor="initials" className="font-[Inter]">
                         Enter initials here
                     </label>
@@ -387,7 +387,7 @@ function StepTwo({
                         id="initials"
                         onChange={(e) => setInitials(e.target.value)}
                     />
-                </div> */}
+                </div>
                 <div className="flex items-center gap-2">
                     <Checkbox
                         className="border-2 p-2 border-gray-300 rounded-md checked:bg-transparent bg-transparent data-[state=checked]:bg-transparent data-[state=checked]:text-black"
