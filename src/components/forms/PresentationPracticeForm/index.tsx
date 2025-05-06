@@ -29,7 +29,7 @@ const PresentationPracticeForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PresentationPracticeSchema),
-        defaultValues: useMemo(() => ({ session_type: "presentation" }), []),
+        defaultValues: useMemo(() => ({ session_type: "presentation", allow_ai_questions: true }), []),
     });
 
     const slides = useWatch({ control: form.control, name: "slides" });

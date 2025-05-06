@@ -15,7 +15,8 @@ import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, LoaderCircle, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import Markdown from "react-markdown";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 
 const PitchSessionReport: React.FC = () => {
@@ -216,15 +217,15 @@ const PitchSessionReport: React.FC = () => {
                                     className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
                                     onClick={handlePDFDownload}
                                 >
-                                    <Download />
-                                    <span className="hidden lg:block">Download</span>
+                                    <Download className="stroke-2" />
+                                    <span className="hidden lg:block font-normal">Download</span>
                                 </Button>
                                 <Button
                                     onClick={() => setDialogOneOpen(true)}
                                     className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
                                 >
-                                    <UserRound />
-                                    <span className="hidden lg:block">Speak With a Coach</span>
+                                    <UserRound className="stroke-2" />
+                                    <span className="hidden lg:block font-normal">Speak With a Coach</span>
                                 </Button>
 
                                 <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
@@ -240,12 +241,15 @@ const PitchSessionReport: React.FC = () => {
                                                 Click the button below to schedule a session with any of our coaches
                                             </DialogDescription>
                                         </DialogHeader>
-                                        <Button
-                                            className="bg-primary-blue hover:bg-primary-blue/90"
+                                        <Link
+                                            to="https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="bg-primary-blue hover:bg-primary-blue/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
                                             onClick={() => setDialogOneOpen(false)}
                                         >
                                             Speak with a Coach
-                                        </Button>
+                                        </Link>
                                     </DialogContent>
                                 </Dialog>
                             </div>
@@ -291,8 +295,9 @@ const PitchSessionReport: React.FC = () => {
                         </div>
 
                         <p className="text-independence mb-3">
-                            This comprehensive report summarizes the session you just completed. It covers the goals you
-                            set for yourself, the industry standards defined by EngageX™ and your personal objectives.
+                            This comprehensive report summarizes the session you just completed. The report covers the
+                            goals you set for yourself and the industry standards defined by EngageX™. Please take the
+                            opportunity to book a live review session with a certified coach.
                         </p>
                     </section>
 
@@ -495,11 +500,14 @@ const PitchSessionReport: React.FC = () => {
                     <section className="px-4 lg:px-8 py-4">
                         <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
                             <div className="flex flex-col gap-6 md:flex-row">
-                                <div className="w-3/5">
-                                    <h5 className="mb-5">Personal Goal Summary</h5>
-                                    <p className="text-independence">Session feedback summary</p>
+                                <div className="w-3/5 space-y-4">
+                                    <h5>Session Summary Feedback</h5>
+                                    <p className="text-independence">
+                                        This area represents a comprehensive session feedback on the session you just
+                                        completed, In it you will find feedback on the goals you set for yourself.
+                                    </p>
                                     <div className="p-4 rounded-md border-bright-gray border-1 w-full">
-                                        <p className="whitespace-pre-line">{data.general_feedback_summary}</p>
+                                        <Markdown>{data.general_feedback_summary}</Markdown>
                                     </div>
                                 </div>
 
