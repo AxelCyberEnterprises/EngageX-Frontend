@@ -22,7 +22,7 @@ const PracticeSetupLayout = ({
     setActiveSlideIndex,
 }: IPracticeSetupLayoutProps) => {
     return (
-        <div className="flex items-start lg:h-auto h-screen">
+        <div className="flex items-start">
             <UploadSlideSection
                 {...{
                     activeSlideIndex,
