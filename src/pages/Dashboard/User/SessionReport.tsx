@@ -126,19 +126,22 @@ const PitchSessionReport: React.FC = () => {
         {
             bg: "bg-alice-blue",
             title: "Slide Count Efficiency",
+            key: "slide-count-efficiency",
             percent: data?.slide_efficiency,
         },
         {
             bg: "bg-green-sheen/15",
             title: "Slide Wordiness",
+            key: "slide-wordiness",
             percent: data?.text_economy,
         },
         {
             bg: "bg-seashell",
             title: "Aesthetic Balance",
+            key: "aesthetic-balance",
             percent: data?.visual_communication,
         },
-    ];
+    ] as const;
 
     const deliveryMetrics = [
         {
@@ -153,7 +156,7 @@ const PitchSessionReport: React.FC = () => {
         },
         {
             title: "Emotional Impact",
-            key: "impact",
+            key: "emotional-impact",
             rating: data?.emotional_impact,
         },
     ] as const;
@@ -215,10 +218,10 @@ const PitchSessionReport: React.FC = () => {
             ) : (
                 <div ref={pdfRef} className="py-4 text-primary-blue">
                     <section className="px-4 lg:px-8 border-b-1 border-bright-gray">
-                        <div data-html2canvas-ignore className="py-3 flex flex-wrap justify-between items-center">
+                        <div data-html2canvas-ignore className="py-3 flex flex-wrap justify-end items-center">
                             <button
                                 onClick={() => navigate(-1)}
-                                className="flex items-center text-black bg-transparent hover:bg-transparent p-0 gap-2"
+                                className="hidden items-center text-black bg-transparent hover:bg-transparent p-0 gap-2"
                             >
                                 <ArrowLeft className="w-5 aspect-square" />
                                 <p>Back</p>
@@ -239,7 +242,7 @@ const PitchSessionReport: React.FC = () => {
                                     className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
                                 >
                                     <UserRound className="stroke-2" />
-                                    <span className="hidden lg:block font-normal">Speak With a Coach</span>
+                                    <span className="hidden lg:block font-normal">Speak With A Coach</span>
                                 </Button>
 
                                 <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
@@ -262,7 +265,7 @@ const PitchSessionReport: React.FC = () => {
                                             className="bg-primary-blue hover:bg-primary-blue/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
                                             onClick={() => setDialogOneOpen(false)}
                                         >
-                                            Speak with a Coach
+                                            Speak with A Coach
                                         </Link>
                                     </DialogContent>
                                 </Dialog>
@@ -303,15 +306,16 @@ const PitchSessionReport: React.FC = () => {
                                 </div>
                                 <div className="flex flex-col justify-between">
                                     <h6>Company</h6>
-                                    <p className="text-independence">Tangerine Plc</p>
+                                    <p className="text-independence">{data.company}</p>
                                 </div>
                             </div>
                         </div>
 
                         <p className="text-independence mb-3">
                             This comprehensive report summarizes the session you just completed. The report covers the
-                            goals you set for yourself and the industry standards defined by EngageX™. Please take the
-                            opportunity to book a live review session with a certified coach.
+                            goals you set for yourself and the industry standards defined by EngageX™. Please click on
+                            the speak with a coach button at the top to book a live review session with a certified
+                            coach.
                         </p>
                     </section>
 
@@ -347,7 +351,7 @@ const PitchSessionReport: React.FC = () => {
                                             data={chartData.filter(Boolean).map((item) => ({
                                                 month: item.chunk_offset,
                                                 Impact: item.impact,
-                                                Trigger: item.trigger,
+                                                "Trigger Response": item.trigger,
                                                 Conviction: item.conviction,
                                             }))}
                                             colors={chartColors}
@@ -361,7 +365,7 @@ const PitchSessionReport: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="border-1 border-bright-gray rounded-xl p-4 w-full md:w-5/12 lg:me-0">
+                            <div className="flex flex-col justify-between border-1 border-bright-gray rounded-xl p-4 w-full md:w-5/12 lg:me-0">
                                 <h6 className="mb-3">Overall Captured Impact</h6>
                                 <div className="relative w-full h-70 flex flex-col items-center pt-10">
                                     <SemiCircleProgress
@@ -392,6 +396,12 @@ const PitchSessionReport: React.FC = () => {
                                         })()}
                                     </div>
                                 </div>
+                                <p>
+                                    <span className="text-medium-sea-green">Overall Captured Impact</span> captures the
+                                    overall power and memorability of the presentation. It is calculated based on the
+                                    speaker's conviction, transformative communication, and ability to inspire audience
+                                    response.
+                                </p>
                             </div>
                         </div>
                     </section>
@@ -533,7 +543,16 @@ const PitchSessionReport: React.FC = () => {
                                         <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-2/7">
                                             <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
                                                 <div className="flex flex-col justify-between py-3">
-                                                    <p>{item.title}</p>
+                                                    <div className="flex items-center gap-2">
+                                                        <p>{item.title}</p>
+                                                        <DynamicTooltip
+                                                            tooltipKey={item.key}
+                                                            sideOffset={5}
+                                                            className="[&_svg]:hidden [&>p]:text-black/80"
+                                                        >
+                                                            <Info className="size-4 shrink-0" />
+                                                        </DynamicTooltip>
+                                                    </div>
                                                     <h5>{item.percent}%</h5>
                                                 </div>
                                                 <div>
@@ -550,18 +569,18 @@ const PitchSessionReport: React.FC = () => {
                     <section className="px-4 lg:px-8 py-4">
                         <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
                             <div className="flex flex-col gap-6 md:flex-row">
-                                <div className="w-3/5 space-y-4">
+                                <div className="md:w-3/5 space-y-4">
                                     <h5>Session Summary Feedback</h5>
                                     <p className="text-independence">
                                         This area represents a comprehensive session feedback on the session you just
-                                        completed, In it you will find feedback on the goals you set for yourself.
+                                        completed, in it you will find feedback on the goals you set for yourself.
                                     </p>
                                     <div className="p-4 rounded-md border-bright-gray border-1 w-full">
                                         <Markdown>{data.general_feedback_summary}</Markdown>
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col w-2/5 mt-5 lg:mt-0">
+                                <div className="flex flex-col md:w-2/5 mt-5 lg:mt-0">
                                     <div className="flex justify-between mb-4">
                                         <h6 className="mb-4">Strengths & Areas for Improvement</h6>
                                     </div>
@@ -603,7 +622,7 @@ const PitchSessionReport: React.FC = () => {
                             </div>
                         </div>
 
-                        <div data-html2canvas-ignore className="w-full flex flex-wrap gap-3 justify-end mt-8">
+                        <div data-html2canvas-ignore className="w-full flex flex-wrap items-center gap-3 mt-8">
                             <Button
                                 className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray"
                                 onClick={() => navigate(-1)}
@@ -612,7 +631,11 @@ const PitchSessionReport: React.FC = () => {
                             </Button>
                             <Button
                                 className="flex gap-1 py-5 bg-primary-blue hover:bg-primary-blue/90"
-                                onClick={() => navigate("../public-speaking")}
+                                onClick={() =>
+                                    navigate(
+                                        `../${data.session_type}-${data.session_type === "public" ? "speaking" : "practice"}`,
+                                    )
+                                }
                             >
                                 Start new session
                             </Button>
