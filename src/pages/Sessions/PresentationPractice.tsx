@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import VideoPlayer from "@/components/session/VideoPlayer";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
-import CountdownTimer from "@/components/session/CountdownTimer";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import VideoStreamer from "@/components/session/RecordView";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
@@ -56,6 +55,7 @@ const PresentationPractice: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [question, setQuestion] = useState<string | undefined>(undefined);
+    const [questionImg, setQuestionImg] = useState<string | undefined>(undefined);
 
     const stopTimer = (dur?: string, durationArr?: string[]) => {
         if (dur !== undefined) {
@@ -81,7 +81,7 @@ const PresentationPractice: React.FC = () => {
         setDialogOneOpen(false);
         setIsMuted(false);
         setVideoUrl(
-            sessionData.virtualEnvironment === "board_room_1"
+            selectedRoom === "board_room_1"
                 ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom1Clap.mp4"
                 : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4",
         );
@@ -163,6 +163,11 @@ const PresentationPractice: React.FC = () => {
 
                 if (parsed.type === "audience_question") {
                     setQuestion(parsed.question);
+                    const randomImg =
+                        Math.random() < 0.5
+                            ? `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`
+                            : `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/wm_handraise.png`;
+                    setQuestionImg(randomImg);
                     setQuestionDialogOpen(true);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
@@ -333,11 +338,7 @@ const PresentationPractice: React.FC = () => {
                     {/* <TimerComponent minutes={time} start={startTimer} /> */}
 
                     <img
-                        src={
-                            Math.random() < 0.5
-                                ? `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`
-                                : `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/wm_handraise.png`
-                        }
+                        src={questionImg}
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />
@@ -457,12 +458,6 @@ const PresentationPractice: React.FC = () => {
                                     }}
                                 />
                             )}
-                        </div>
-                    </div>
-
-                    <div className="mt-3 px-4 md:px-0">
-                        <div className="flex items-center justify-between md:justify-start">
-                            <CountdownTimer minutes={time} />
                         </div>
                     </div>
 
