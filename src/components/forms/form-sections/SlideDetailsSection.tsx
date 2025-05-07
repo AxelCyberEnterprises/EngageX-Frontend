@@ -53,7 +53,7 @@ const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews 
                     <h6 className="text-lg">Slide {activeSlideIndex + 1}</h6>
                     <div className="w-auto h-90 rounded-lg overflow-hidden">
                         {slidePreviews.length > 0 ? (
-                            <img src={slidePreviews[activeSlideIndex]} alt="" className="size-full object-cover" />
+                            <img src={slidePreviews[activeSlideIndex]} alt="" className="size-full" />
                         ) : (
                             <div className="size-full grid place-content-center bg-ghost-white text-primary-base rounded-lg border border-bright-gray">
                                 <span>Upload slide to get started</span>
