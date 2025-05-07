@@ -26,7 +26,7 @@ const PresentationPractice: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
-    const time = 15; // in minutes
+    const time = 7; // in minutes
     const [slides, setSlides] = useState<any[]>([]);
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
