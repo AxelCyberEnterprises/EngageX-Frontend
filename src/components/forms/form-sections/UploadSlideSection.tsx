@@ -102,7 +102,7 @@ const UploadSlideSection = ({
                 </div>
             </section>
 
-            <section className="lg:hidden fixed bottom-0 inset-x-0 p-4 flex items-start gap-x-3 border-t border-bright-gray bg-white overflow-auto hide-scrollbar z-10 [&>.react-pdf\_\_Document]:flex [&>.react-pdf\_\_Document]:gap-3">
+            <section className="lg:hidden md:absolute fixed bottom-0 inset-x-0 p-4 flex items-start gap-x-3 border-t border-bright-gray bg-white overflow-auto hide-scrollbar z-10 [&>.react-pdf\_\_Document]:flex [&>.react-pdf\_\_Document]:gap-3">
                 <div className="flex flex-col items-center gap-y-2 whitespace-nowrap">
                     <span className="text-sm">Upload New slide</span>
 
