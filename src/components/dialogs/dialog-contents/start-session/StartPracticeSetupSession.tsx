@@ -34,11 +34,11 @@ const StartPracticeSetupSession = ({
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const { session_type: sessionType, slides } = getValues();
+    const { session_type: sessionType } = getValues();
 
     const { data, isPending: isGetSessionsPending } = useSessionHistory();
 
-    const { mutate: generateSummary, isPending: isSummaryGenerationPending } = useMutation({
+    const { isPending: isSummaryGenerationPending } = useMutation({
         mutationKey: ["generateSummary"],
         mutationFn: async (sessionId: number) => {
             await apiPut(`/sessions/practice-sessions/${sessionId}/upload-slides/`);
@@ -75,15 +75,22 @@ const StartPracticeSetupSession = ({
             return await apiPost<ISession>(`/sessions/sessions/`, data);
         },
         onSuccess: async (data) => {
-            if (slides && slides?.length > 0) generateSummary(data.id);
-            else {
-                dispatch(closeDialog());
+            // if (slides && slides?.length > 0) generateSummary(data.id);
+            // else {
+            //     dispatch(closeDialog());
 
-                if (sessionType === "presentation") dispatch(setPresentationSlidePreviews([]));
-                else dispatch(setPitchSlidePreviews([]));
+            //     if (sessionType === "presentation") dispatch(setPresentationSlidePreviews([]));
+            //     else dispatch(setPitchSlidePreviews([]));
 
-                navigate(`/sessions/${sessionType}-practice-session/${data.id}`);
-            }
+            //     navigate(`/sessions/${sessionType}-practice-session/${data.id}`);
+            // }
+
+            dispatch(closeDialog());
+
+            if (sessionType === "presentation") dispatch(setPresentationSlidePreviews([]));
+            else dispatch(setPitchSlidePreviews([]));
+
+            navigate(`/sessions/${sessionType}-practice-session/${data.id}`);
         },
         onError: (error) => {
             console.error("Error creating pitch practice session: ", error);
