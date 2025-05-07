@@ -26,7 +26,7 @@ const PresentationPractice: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
-    const time = 15; // in minutes
+    const time = 7; // in minutes
     const [slides, setSlides] = useState<any[]>([]);
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
@@ -73,14 +73,29 @@ const PresentationPractice: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
-        setSlides([]);
-        setAllowSwitch(false);
-        setDialogOneOpen(false);
-        setIsMuted(false);
-        setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/Pitchroom+clap.mp4");
-        setTimeout(() => {
-            setDialogTwoOpen(true);
-        }, 7000);
+        if (question) {
+            setQuestionDialogOpen(true);
+            setTimeout(() => {
+                setQuestionDialogOpen(false);
+                setSlides([]);
+                setAllowSwitch(false);
+                setDialogOneOpen(false);
+                setIsMuted(false);
+                setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/Pitchroom+clap.mp4");
+            }, 15000);
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 22000);
+        } else {
+            setSlides([]);
+            setAllowSwitch(false);
+            setDialogOneOpen(false);
+            setIsMuted(false);
+            setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/Pitchroom+clap.mp4");
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 7000);
+        }
     };
 
     const triggerNextSlide = () => {
@@ -161,7 +176,6 @@ const PresentationPractice: React.FC = () => {
                             ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
                             : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png";
                     setQuestionImg(randomImg);
-                    setQuestionDialogOpen(true);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
@@ -402,7 +416,10 @@ const PresentationPractice: React.FC = () => {
                             <SquareArrowUpRight className="me-1" /> End Session
                         </Button>
                     )}
-                    <h4 className="mb-4">{sessionData?.session_name}</h4>
+                    <div className="flex justify-between items-center">
+                        <h4 className="mb-4">{sessionData?.session_name}</h4>
+                        <p className="hidden md:block">Record a minimum of 5 minutes for the best feedback.</p>
+                    </div>
                     <div className="mb-3">
                         <TimerProgressBar
                             minutes={time}

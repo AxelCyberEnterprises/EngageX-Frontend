@@ -76,18 +76,37 @@ const PresentationPractice: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
-        setSlides([]);
-        setAllowSwitch(false);
-        setDialogOneOpen(false);
-        setIsMuted(false);
-        setVideoUrl(
-            selectedRoom.current === "board_room_1"
-                ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
-                : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
-        );
-        setTimeout(() => {
-            setDialogTwoOpen(true);
-        }, 7000);
+        if (question) {
+            setQuestionDialogOpen(true);
+            setTimeout(() => {
+                setQuestionDialogOpen(false);
+                setSlides([]);
+                setAllowSwitch(false);
+                setDialogOneOpen(false);
+                setIsMuted(false);
+                setVideoUrl(
+                    selectedRoom.current === "board_room_1"
+                        ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
+                        : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
+                );
+            }, 15000);
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 22000);
+        } else {
+            setSlides([]);
+            setAllowSwitch(false);
+            setDialogOneOpen(false);
+            setIsMuted(false);
+            setVideoUrl(
+                selectedRoom.current === "board_room_1"
+                    ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
+                    : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
+            );
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 7000);
+        }
     };
 
     const triggerNextSlide = () => {
@@ -107,7 +126,7 @@ const PresentationPractice: React.FC = () => {
         const localSeshData = localStorage.getItem("sessionData");
         const parsedData = localSeshData ? JSON.parse(localSeshData) : null;
         console.log(parsedData.virtual_environment);
-        
+
         setSessionData(parsedData);
         selectedRoom.current = parsedData?.virtual_environment;
         if (!url) return;
@@ -170,7 +189,6 @@ const PresentationPractice: React.FC = () => {
                             ? `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/bw_handraise.png`
                             : `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/wm_handraise.png`;
                     setQuestionImg(randomImg);
-                    setQuestionDialogOpen(true);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
@@ -411,7 +429,10 @@ const PresentationPractice: React.FC = () => {
                             <SquareArrowUpRight className="me-1" /> End Session
                         </Button>
                     )}
-                    <h4 className="mb-4">{sessionData?.session_name}</h4>
+                    <div className="flex justify-between items-center">
+                        <h4 className="mb-4">{sessionData?.session_name}</h4>
+                        <p className="hidden md:block">Record a minimum of 10 minutes for the best feedback.</p>
+                    </div>
                     <div className="mb-3">
                         <TimerProgressBar
                             minutes={time}
@@ -559,7 +580,10 @@ const PresentationPractice: React.FC = () => {
                     <div className="py-5 px-3 border-1 border-bright-gray rounded-xl mt-3">
                         <h6 className="mb-4">Quick Tips</h6>
                         <ul className="text-grey list-disc">
-                            <li className="mb-2">Slide presentations should 10 mins minimum - max 15 to maintain good audience engagement.</li>
+                            <li className="mb-2">
+                                Slide presentations should 10 mins minimum - max 15 to maintain good audience
+                                engagement.
+                            </li>
                         </ul>
                     </div>
                 </div>

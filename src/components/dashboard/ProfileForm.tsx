@@ -149,7 +149,7 @@ const PersonalInfoForm: React.FC = () => {
     { value: "Healthcare", label: "Healthcare" },
     { value: "Finance", label: "Finance" },
     { value: "Major League Sports", label: "Major League Sports" },
-    { value: "Other", label: "Other" }
+    { value: "Others", label: "Others" }
   ];
 
   const roles = [

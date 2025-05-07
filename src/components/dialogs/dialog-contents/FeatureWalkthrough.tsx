@@ -27,8 +27,28 @@ const FeatureWalkthrough = () => {
         },
         {
             id: 5,
-            title: "Homepage",
+            title: "Understanding your dashboard",
             videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/Script+5.mp4",
+        },
+        {
+            id: 6,
+            title: "Session Improvement",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/(Script+6)Session+Improvement.mp4",
+        },
+        {
+            id: 7,
+            title: "Session Report",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/(Script+7)Session+Report.mp4",
+        },
+        {
+            id: 8,
+            title: "Accessing a live coach",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/(Script+8)Accessing+a+Live+Coach.mp4",
+        },
+        {
+            id: 9,
+            title: "Sessions Setup",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/(Script+9)Sessions+Setup.mp4",
         },
     ];
 

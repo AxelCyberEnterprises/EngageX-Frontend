@@ -53,10 +53,12 @@ const UserDashboardHome: React.FC = () => {
   >;
   const user = useSelector((state: RootState) => state.auth.user);
   useEffect(() => {
-    if (user?.first_login || user?.first_time_verification) {
+    const agreementModalShown = localStorage.getItem('agreementModalShown');
+    if ((user?.first_login || user?.first_time_verification) && !agreementModalShown) {
       setShowAgreementModal(true);
+      localStorage.setItem('agreementModalShown', 'true');
     }
-  }, []);
+  }, [user?.first_login, user?.first_time_verification]);
 
   const [goalsData, setGoalsData] = useState({
     audience_engagement: 0,
@@ -425,20 +427,20 @@ const UserDashboardHome: React.FC = () => {
             )}
           </div>
 
-                    {/* improve past session  */}
-                    <div
-                        className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
-                        style={{ backgroundImage: `url(${improveBg})` }}
-                    >
-                        <h6 className="pb-3">Improve past session</h6>
-                        <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
-                            Select any of your previous sessions to continue practicing with the same setup, allowing
-                            you to focus directly on enhancing your skills in specific areas.
-                        </p>
-                        <Link to="performance-improvement">
-                            <Button className="bg-[#173459] hover:bg-[#173459]/90 py-3">Improve Session</Button>
-                        </Link>
-                    </div>
+          {/* improve past session  */}
+          <div
+            className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
+            style={{ backgroundImage: `url(${improveBg})` }}
+          >
+            <h6 className="pb-3">Improve past session</h6>
+            <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
+              Select any of your previous sessions to continue practicing with the same setup, allowing
+              you to focus directly on enhancing your skills in specific areas.
+            </p>
+            <Link to="performance-improvement">
+              <Button className="bg-[#173459] hover:bg-[#173459]/90 py-3">Improve Session</Button>
+            </Link>
+          </div>
 
           {/* performance analytics */}
           <div className="analytics px-5 py-7 mt-6 mb-4 rounded-[8px]">
@@ -460,7 +462,10 @@ const UserDashboardHome: React.FC = () => {
             {(user?.first_login || user?.first_time_verification) && (
               <MultiStepAgreement
                 open={showAgreementModal}
-                onClose={() => setShowAgreementModal(false)}
+                onClose={() => {
+                  setShowAgreementModal(false);
+                  localStorage.setItem('agreementModalShown', 'true');
+                }}
               />
             )}
             <div className="chart__div">
@@ -543,8 +548,8 @@ const UserDashboardHome: React.FC = () => {
                           goal.percent >= 80
                             ? "#64BA9E"
                             : goal.percent >= 10
-                            ? "#ECB25E"
-                            : "#C29C81"
+                              ? "#ECB25E"
+                              : "#C29C81"
                         }
                         divisions={10}
                       />
