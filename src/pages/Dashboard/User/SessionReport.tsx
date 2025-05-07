@@ -16,7 +16,6 @@ import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
-import Markdown from "react-markdown";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 
@@ -576,7 +575,7 @@ const PitchSessionReport: React.FC = () => {
                                         completed, in it you will find feedback on the goals you set for yourself.
                                     </p>
                                     <div className="p-4 rounded-md border-bright-gray border-1 w-full">
-                                        <Markdown>{data.general_feedback_summary}</Markdown>
+                                        <p className="whitespace-pre-line">{data.general_feedback_summary}</p>
                                     </div>
                                 </div>
 
