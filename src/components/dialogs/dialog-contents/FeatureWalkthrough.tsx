@@ -65,7 +65,7 @@ const FeatureWalkthrough = () => {
         <div className="flex flex-col gap-2">
             <p className="text-green-sheen text-center">Feature Walkthrough Video</p>
             <VideoPlayer src={getVideoUrl(activeVideo)} showPauseOverlay={true} hideControls={false} />
-            <div className="flex flex-col gap-3 text-auro-metal-saurus mt-3">
+            <div className="flex flex-col gap-3 text-auro-metal-saurus mt-3 max-h-56 overflow-y-auto">
                 {videos.map((video) => (
                     <div
                         key={video.id}
