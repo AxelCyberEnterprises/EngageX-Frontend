@@ -282,6 +282,10 @@ const PublicSpeaking: React.FC = () => {
                     <div className="inline-block py-2 px-4 md:hidden bg-ghost-white border border-bright-gray rounded-3xl w-auto relative top-7">
                         <p>{sessionData?.session_name}</p>
                     </div>
+                    <div className="hidden md:flex justify-between items-center">
+                        <h4 className="mb-4"></h4>
+                        <p>Record a minimum of 2 minutes for the best feedback.</p>
+                    </div>
                     <div className="mb-3">
                         <PublicSpeakingTimer
                             minutes={time}

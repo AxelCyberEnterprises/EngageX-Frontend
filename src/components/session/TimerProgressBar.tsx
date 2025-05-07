@@ -77,11 +77,13 @@ const TimerProgressBar: React.FC<TimerProgressBarProps> = ({ minutes, start, sto
         <div className="flex flex-col gap-2">
             <SegmentedProgressBar percent={percentage} color={progressBarColor} divisions={1} />
             <div className="flex justify-between items-center">
-                {start && (
-                    <p className="flex items-center gap-0.5">
-                        <Dot className="text-crimson-red w-10 h-10 blink" /> Recording has begun
-                    </p>
-                )}
+                <div>
+                    {start && (
+                        <p className="flex items-center gap-0.5">
+                            <Dot className="text-crimson-red w-10 h-10 blink" /> Recording has begun
+                        </p>
+                    )}
+                </div>
                 <div className="flex">
                     <p className="flex items-center">
                         <Clock2 className="w-5 h-5 me-1" />
