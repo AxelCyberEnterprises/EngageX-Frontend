@@ -13,7 +13,7 @@ const QuickTips = ({ className, tips }: IQuickTipsProps) => {
     return (
         <div className={cn("p-4 border-1 border-bright-gray rounded-xl space-y-2", className)}>
             <h6 className="text-lg">Quick Tips</h6>
-            <ul className="list-disc list-outside pl-4 space-y-2">
+            <ul className="space-y-2">
                 {tips.map(({ heading, description }, index) => (
                     <li key={heading + index}>
                         <span className="font-normal">{heading}:</span>{" "}
