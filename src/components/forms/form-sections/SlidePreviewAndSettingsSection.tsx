@@ -1,8 +1,10 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
+import QuickTips from "@/components/dashboard/QuickTips";
 import VirtualEnvironmentSection from "@/components/forms/form-sections/VirtualEnvironmentSection";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { pitchPracticeVEOptions, presentationPracticeVEOptions } from "@/config/form-field-options";
+import { pitchPracticeQuickTips, presentationPracticeQuickTips } from "@/config/quick-tips";
 import { cn } from "@/lib/utils";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -39,6 +41,10 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
                             className="p-0 justify-start h-6 w-10 [&_[data-slot='switch-thumb']]:size-5"
                         />
                     )}
+                />
+                <QuickTips
+                    tips={sessionType === "presentation" ? presentationPracticeQuickTips : pitchPracticeQuickTips}
+                    className="p-3 [&_ul]:pl-4"
                 />
             </>
         </section>
