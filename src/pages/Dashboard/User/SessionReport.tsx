@@ -621,7 +621,7 @@ const PitchSessionReport: React.FC = () => {
                             </div>
                         </div>
 
-                        <div data-html2canvas-ignore className="w-full flex flex-wrap items-center gap-3 mt-8">
+                        <div data-html2canvas-ignore className="w-full flex flex-wrap items-center md:justify-end gap-3 mt-8 md:pr-25">
                             <Button
                                 className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray"
                                 onClick={() => navigate(-1)}
