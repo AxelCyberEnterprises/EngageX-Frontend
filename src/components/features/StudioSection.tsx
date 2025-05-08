@@ -15,7 +15,7 @@ function StudioSection() {
       "SAR Feedback",
       "AI Interviewers",
       "Feedback Report",
-      "Session Analysis",
+      "Post-session Coaching",
     ],
     carousel: [
       {
@@ -44,9 +44,9 @@ function StudioSection() {
           "Detailed insights that highlight strengths, areas for growth, and actionable improvement tips.",
       },
       {
-        title: "Comparative Session Analysis",
+        title: "Post-session Coaching",
         content:
-          "Track your performance over multiple sessions to measure progress and refine technique.",
+          "Post session coaching with multiple certified ICF Career Coaches or HR Talent Managers.",
       },
     ],
   };
@@ -126,11 +126,15 @@ function StudioSection() {
                 </button>
               </Link>
             </div>
-            <img
-              src={"/assets/studioimg" + (activeIdx + 1) + ".png"}
-              alt=""
-              className="w-full lg:w-1/2"
-            />
+            <div className="w-[600px] h-[500px] overflow-hidden">
+              <img
+                src={`/assets/studioimg${activeIdx + 1}.${activeIdx === 5 ? 'jpeg' : 'png'}`}
+                alt=""
+                className={`w-full h-full rounded-[20px] object-cover ${activeIdx === 5 ? 'object-[center_30%]' : ''}`}
+              />
+            </div>
+
+
             <div className="flex items-start lg:hidden w-full">
               <Link to={"/contact"}>
                 <button className="px-5 py-4 flex gap-4 rounded-md">
