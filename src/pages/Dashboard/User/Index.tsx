@@ -473,7 +473,7 @@ const UserDashboardHome: React.FC = () => {
                 data={chartData.filter(Boolean).map((item) => ({
                   month: item.chunk_offset,
                   Impact: item.impact,
-                  Trigger: item.trigger,
+                  "Trigger Response": item.trigger,
                   Conviction: item.conviction,
                 }))}
                 colors={chartColors}
