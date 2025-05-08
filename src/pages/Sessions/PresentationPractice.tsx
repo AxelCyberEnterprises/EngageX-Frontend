@@ -235,12 +235,12 @@ const PresentationPractice: React.FC = () => {
                 const parsed = JSON.parse(event.data);
 
                 if (parsed.type === "audience_question") {
-                    if (questions.length < 4) {
-                        setQuestions((prevQuestions: any) => [...prevQuestions, parsed]);
-                    } else {
-                        questions.shift();
-                        setQuestions((prevQuestions: any) => [...prevQuestions, parsed]);
-                    }
+                    setQuestions((prevQuestions: any) => {
+                        if (prevQuestions.length >= 4) {
+                            prevQuestions.shift();
+                        }
+                        return [...prevQuestions, parsed];
+                    });
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
