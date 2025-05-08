@@ -126,7 +126,7 @@ function StudioSection() {
                 </button>
               </Link>
             </div>
-            <div className="w-[600px] h-[500px] overflow-hidden">
+            <div className={`w-[650px] rounded-[20px] overflow-hidden ${(activeIdx === 1  || activeIdx === 2 || activeIdx === 3) ? 'h-[580px]' : 'h-[500px]'}`}>
               <img
                 src={`/assets/studioimg${activeIdx + 1}.${activeIdx === 5 ? 'jpeg' : 'png'}`}
                 alt=""

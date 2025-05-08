@@ -61,7 +61,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
                     </Label>
                     <Input
                         id="goal"
-                        placeholder="Shift doctors from habit-based prescribing to evidence based choices."
+                        placeholder="Ex. Shift doctors from habit-based prescribing to evidence based choices."
                         value={goal}
                         className="h-11 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-auro-metal-saurus"
                         onChange={(e) => setGoal(e.target.value)}
