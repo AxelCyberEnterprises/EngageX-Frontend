@@ -44,7 +44,7 @@ function StudioSection() {
           "Detailed insights that highlight strengths, areas for growth, and actionable improvement tips.",
       },
       {
-        title: "Post-session Coaching",
+        title: "Post-Session Coaching",
         content:
           "Post session coaching with multiple certified ICF Career Coaches or HR Talent Managers.",
       },
