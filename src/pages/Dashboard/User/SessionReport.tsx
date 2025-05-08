@@ -357,9 +357,7 @@ const PitchSessionReport: React.FC = () => {
                                         />
                                     </div>
                                     <p className="mt-2">
-                                        <span className="text-medium-sea-green">Trigger Response</span> is the
-                                        audience's engagement, where a trigger evokes the audience to respond in some
-                                        shape or form as a reaction to the information they've heard.
+                                        <span className="text-medium-sea-green">Trigger Response</span> measures audience engagement by tracking how specific words or phrases evoke a response or reaction.
                                     </p>
                                 </div>
                             </div>
@@ -396,10 +394,7 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 </div>
                                 <p>
-                                    <span className="text-medium-sea-green">Overall Captured Impact</span> captures the
-                                    overall power and memorability of the presentation. It is calculated based on the
-                                    speaker's conviction, transformative communication, and ability to inspire audience
-                                    response.
+                                    <span className="text-medium-sea-green">Overall Captured Impact</span> is calculated by your ability to deliver transformative communication that inspires your audience, leaves a lasting impression, and positions you as a memorable, purpose-driven speaker.
                                 </p>
                             </div>
                         </div>
