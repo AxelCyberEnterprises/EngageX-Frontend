@@ -576,16 +576,6 @@ const PresentationPractice: React.FC = () => {
                         percent2={feedback ? feedback.analysis.Feedback.Clarity : 0}
                         percent3={feedback ? feedback.analysis.Scores["Pace Score"] : 0}
                     />
-
-                    <div className="py-5 px-3 border-1 border-bright-gray rounded-xl mt-3">
-                        <h6 className="mb-4">Quick Tips</h6>
-                        <ul className="text-grey list-disc">
-                            <li className="mb-2">
-                                Slide presentations should 10 mins minimum - max 15 to maintain good audience
-                                engagement.
-                            </li>
-                        </ul>
-                    </div>
                 </div>
 
                 {/* right side mobile */}
