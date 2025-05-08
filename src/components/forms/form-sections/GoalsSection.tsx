@@ -33,7 +33,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
         <section className={cn("space-y-5", className)}>
             <div className="space-y-2">
                 <h6>Goals</h6>
-                <p className="text-auro-metal-saurus">What are your goals for this session?</p>
+                <p className="text-auro-metal-saurus">Write a clear, specific goal in one concise sentence.</p>
             </div>
             {fields.length > 0 && (
                 <div className="space-y-2 p-4 rounded-lg border border-bright-gray bg-[#F8F9FC]">
@@ -61,7 +61,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
                     </Label>
                     <Input
                         id="goal"
-                        placeholder="Enter text here"
+                        placeholder="Shift doctors from habit-based prescribing to evidence based choices."
                         value={goal}
                         className="h-11 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-auro-metal-saurus"
                         onChange={(e) => setGoal(e.target.value)}
