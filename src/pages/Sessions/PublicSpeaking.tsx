@@ -44,7 +44,6 @@ const PublicSpeaking: React.FC = () => {
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [questions, setQuestions] = useState<any | []>([]);
     const [questionImg, setQuestionImg] = useState<string>(
         "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png",
     );
@@ -55,7 +54,7 @@ const PublicSpeaking: React.FC = () => {
         setDuration(duration);
         setStopTime(true);
 
-        if (questions.length > 0) {
+        if (activeQuestion < questionsRef.current.length - 1) {
             setDialogOneOpen(false);
             setQuestionDialogOpen(true);
         } else {
@@ -64,7 +63,7 @@ const PublicSpeaking: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
-        if (questions.length > 0) {
+        if (activeQuestion < questionsRef.current.length - 1) {
             setDialogOneOpen(false);
             setQuestionDialogOpen(true);
         } else {
@@ -79,13 +78,13 @@ const PublicSpeaking: React.FC = () => {
         }
     };
 
+    const questionsRef = useRef<any>([]);
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
-    const numberOfQuestions = questions.length;
-    const question = questions[activeQuestion]?.question;
+    const question = questionsRef.current[activeQuestion]?.question;
 
     const answerQuestion = () => {
         setStartQuestionTimer(true);
@@ -97,7 +96,10 @@ const PublicSpeaking: React.FC = () => {
     const nextQuestion = () => {
         // Use a functional update to get the new value
         setActiveQuestion((prev: number) => {
-            if (prev < numberOfQuestions - 1) {
+            const nQuestions = questionsRef.current.length;
+            setStartQuestionTimer(false);
+
+            if (prev < nQuestions - 1) {
                 // NOT last question, prepare the next one
                 setQuestionDialogOpen(false);
                 setQuestionImg(
@@ -106,8 +108,6 @@ const PublicSpeaking: React.FC = () => {
                         : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png",
                 );
                 setQuestionDialogOpen(true);
-                setStartQuestionTimer(false);
-                questionTimerRef.current = 0.5; // Reset the timer to 0.5 seconds
                 return prev + 1;
             } else {
                 // Last question, finish up
@@ -124,10 +124,6 @@ const PublicSpeaking: React.FC = () => {
             }
         });
     };
-
-    useEffect(() => {
-        questionTimerRef.current = 0.5; // Reset the timer to 0.5 seconds
-    }, [isQuestionDialogOpen]);
 
     useEffect(() => {
         const seshData = localStorage.getItem("sessionData");
@@ -177,13 +173,11 @@ const PublicSpeaking: React.FC = () => {
             try {
                 const parsed = JSON.parse(event.data);
                 if (parsed.type === "audience_question") {
-                    setQuestions((prevQuestions: any) => {
-                        if (prevQuestions.length < 4) {
-                            return [...prevQuestions, parsed];
-                        }
-                        return prevQuestions;
-                    });
-                    console.log("number of questions", questions.length);
+                    if (questionsRef.current.length < 4) {
+                        questionsRef.current.push(parsed);
+                    }
+                    console.log("number of questions", questionsRef.current.length);
+                    console.log("questions", questionsRef.current);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
@@ -208,7 +202,7 @@ const PublicSpeaking: React.FC = () => {
             console.log("Closing WebSocket because stop is true");
             ws.close();
         }
-    }, [sessionId, allowSwitch, stopStreamer]);
+    }, [sessionId, stopStreamer]);
 
     useEffect(() => {
         let isMounted = true;
@@ -346,7 +340,10 @@ const PublicSpeaking: React.FC = () => {
             </section>
 
             {/* question dialog  */}
-            <Dialog open={isQuestionDialogOpen}>
+            <Dialog
+                open={isQuestionDialogOpen}
+                onOpenChange={activeQuestion > questionsRef.current.length - 1 ? setQuestionDialogOpen : () => {}}
+            >
                 <DialogContent className="flex flex-col gap-4">
                     <div className="flex gap-4">
                         <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">

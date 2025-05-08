@@ -50,7 +50,6 @@ const PresentationPractice: React.FC = () => {
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [questions, setQuestions] = useState<any | []>([]);
     const [questionImg, setQuestionImg] = useState<string>(
         "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png",
     );
@@ -58,7 +57,7 @@ const PresentationPractice: React.FC = () => {
     const end = () => {
         setStopTime(true);
 
-        if (questions.length > 0) {
+        if (activeQuestion < questionsRef.current.length - 1) {
             setDialogOneOpen(false);
             setQuestionDialogOpen(true);
         } else {
@@ -84,7 +83,7 @@ const PresentationPractice: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
-        if (questions.length > 0) {
+        if (activeQuestion < questionsRef.current.length - 1) {
             setDialogOneOpen(false);
             setQuestionDialogOpen(true);
         } else {
@@ -100,13 +99,13 @@ const PresentationPractice: React.FC = () => {
         }
     };
 
+    const questionsRef = useRef<any>([]);
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
-    const numberOfQuestions = questions.length;
-    const question = questions[activeQuestion]?.question;
+    const question = questionsRef.current[activeQuestion]?.question;
 
     const answerQuestion = () => {
         setStartQuestionTimer(true);
@@ -120,7 +119,10 @@ const PresentationPractice: React.FC = () => {
     const nextQuestion = () => {
         // Use a functional update to get the new value
         setActiveQuestion((prev: number) => {
-            if (prev < numberOfQuestions - 1) {
+            const nQuestions = questionsRef.current.length;
+            setStartQuestionTimer(false);
+
+            if (prev < nQuestions - 1) {
                 // NOT last question, prepare the next one
                 setQuestionDialogOpen(false);
                 const randomImg =
@@ -130,7 +132,6 @@ const PresentationPractice: React.FC = () => {
                 setQuestionImg(randomImg);
                 setQuestionDialogOpen(true);
                 setStartQuestionTimer(false);
-                questionTimerRef.current = 0.5; // Reset the timer to 0.5 seconds
                 return prev + 1;
             } else {
                 // Last question, finish up
@@ -147,10 +148,6 @@ const PresentationPractice: React.FC = () => {
             }
         });
     };
-
-    useEffect(() => {
-        questionTimerRef.current = 0.5; // Reset the timer to 0.5 seconds
-    }, [isQuestionDialogOpen]);
 
     const triggerNextSlide = () => {
         sliderRef.current?.nextSlide();
@@ -224,12 +221,11 @@ const PresentationPractice: React.FC = () => {
                 const parsed = JSON.parse(event.data);
 
                 if (parsed.type === "audience_question") {
-                    setQuestions((prevQuestions: any) => {
-                        if (prevQuestions.length < 4) {
-                            return [...prevQuestions, parsed];
-                        }
-                        return prevQuestions;
-                    });
+                    if (questionsRef.current.length < 4) {
+                        questionsRef.current.push(parsed);
+                    }
+                    console.log("number of questions", questionsRef.current.length);
+                    console.log("questions", questionsRef.current);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
@@ -258,7 +254,7 @@ const PresentationPractice: React.FC = () => {
         return () => {
             ws.close();
         };
-    }, [sessionId, allowSwitch, stopStreamer]);
+    }, [sessionId, stopStreamer]);
 
     useEffect(() => {
         let isMounted = true;
@@ -366,7 +362,10 @@ const PresentationPractice: React.FC = () => {
     return (
         <div className="text-primary-blue">
             {/* question dialog  */}
-            <Dialog open={isQuestionDialogOpen}>
+            <Dialog
+                open={isQuestionDialogOpen}
+                onOpenChange={activeQuestion > questionsRef.current.length - 1 ? setQuestionDialogOpen : () => {}}
+            >
                 <DialogContent className="flex flex-col gap-4">
                     <div className="flex gap-4">
                         <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
