@@ -1,9 +1,11 @@
 import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper";
+import QuickTips from "@/components/dashboard/QuickTips";
 import StartPublicSpeakingSession from "@/components/dialogs/dialog-contents/start-session/StartPublicSpeakingSession";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { publicSpeakingVEOptions } from "@/config/form-field-options";
+import { publicSpeakingQuickTips } from "@/config/quick-tips";
 import { PublicSpeakingSchema } from "@/schemas/dashboard/user";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,6 +60,7 @@ const PublicSpeakingForm = () => {
                             />
                         )}
                     />
+                    <QuickTips tips={publicSpeakingQuickTips} />
                 </section>
                 <div className="md:absolute bottom-0 inset-x-0 md:p-4 md:mt-0 mt-6 flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center justify-end md:border-t border-bright-gray bg-white">
                     <Button

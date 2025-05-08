@@ -571,8 +571,8 @@ const PitchSessionReport: React.FC = () => {
                                 <div className="md:w-3/5 space-y-4">
                                     <h5>Session Summary Feedback</h5>
                                     <p className="text-independence">
-                                        This area represents a comprehensive session feedback on the session you just
-                                        completed, in it you will find feedback on the goals you set for yourself.
+                                        This area provides comprehensive feedback on the session you just completed,
+                                        including insights related to the goals you set for yourself.
                                     </p>
                                     <div className="p-4 rounded-md border-bright-gray border-1 w-full">
                                         <p className="whitespace-pre-line">{data.general_feedback_summary}</p>
@@ -621,7 +621,10 @@ const PitchSessionReport: React.FC = () => {
                             </div>
                         </div>
 
-                        <div data-html2canvas-ignore className="w-full flex flex-wrap items-center md:justify-end gap-3 mt-8 md:pr-25">
+                        <div
+                            data-html2canvas-ignore
+                            className="w-full flex flex-wrap items-center md:justify-end gap-3 mt-8 md:pr-25"
+                        >
                             <Button
                                 className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray"
                                 onClick={() => navigate(-1)}
