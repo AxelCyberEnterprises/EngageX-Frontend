@@ -238,31 +238,30 @@ const AdminDashboardHome: React.FC = () => {
     //     },
     // ];
 
-    const lineChartData = [
-        { month: 1, Pitch: 186, Presentation: 80, Keynote: 90 },
-        { month: 2, Pitch: 305, Presentation: 200, Keynote: 100 },
-        { month: 3, Pitch: 237, Presentation: 120, Keynote: 100 },
-        { month: 4, Pitch: 73, Presentation: 190, Keynote: 100 },
-        { month: 5, Pitch: 209, Presentation: 130, Keynote: 100 },
-        { month: 6, Pitch: 214, Presentation: 140, Keynote: 100 },
-    ];
+    // const lineChartData = [
+    //     { month: 1, Pitch: 186, Presentation: 80, Keynote: 90 },
+    //     { month: 2, Pitch: 305, Presentation: 200, Keynote: 100 },
+    //     { month: 3, Pitch: 237, Presentation: 120, Keynote: 100 },
+    //     { month: 4, Pitch: 73, Presentation: 190, Keynote: 100 },
+    //     { month: 5, Pitch: 209, Presentation: 130, Keynote: 100 },
+    //     { month: 6, Pitch: 214, Presentation: 140, Keynote: 100 },
+    // ];
 
     
 
-//     const lineChartData = useMemo(() => {
-//     return (
-//         data?.sessions_over_time.flatMap((item) => ({
-//             month: new Date(item.day).getDay() + 1, // Extract month from day
-//             [item.session_type]: item.count ?? 0, // Map session type to its count (e.g., "Presentation": 4)
-//         })) || []
-//     );
-// }, [data]);
-
+    const lineChartData = useMemo(() => {
+    return (
+        data?.sessions_over_time.flatMap((item) => ({
+            month: new Date(item.day).getDay() + 1,
+            [item.session_type]: item.count ?? 0,
+        })) || []
+    );
+}, [data]);
 
     console.log("lineChartData", lineChartData);
 
     const lineChartColors = {
-        Pitch: "#252A39",
+        'Pitch Practice': "#252A39",
         Presentation: "#40B869",
         "Public Speaking": "#F5B546",
     };
