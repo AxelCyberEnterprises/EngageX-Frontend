@@ -7,7 +7,7 @@ function FloatingChatbot() {
     const dispatch = useDispatch();
     const showVideo = useSelector((state: RootState) => state.floating_chatbot.showVideo);
     return (
-        <div className="size-16 shadow-xl rounded-full z-50 bg-purple-500 fixed bottom-10 right-10 flex items-center justify-center">
+        <div className="size-16 shadow-xl rounded-full z-50 bg-primary-blue fixed bottom-10 right-10 flex items-center justify-center">
             <button
                 className="bg-transparent h-full w-full"
                 onClick={(e) => {
