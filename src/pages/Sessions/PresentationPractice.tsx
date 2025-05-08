@@ -114,7 +114,7 @@ const PresentationPractice: React.FC = () => {
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
-    const questionTimerRef = useRef<number>(0.1);
+    const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question = questionsRef.current[activeQuestion]?.question;
 
