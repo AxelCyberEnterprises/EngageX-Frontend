@@ -59,7 +59,7 @@ const PublicSpeakingForm = () => {
                         )}
                     />
                 </section>
-                <div className="md:absolute bottom-0 inset-x-0 md:p-4 md:mt-0 mt-6 flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center justify-between md:border-t border-bright-gray bg-white">
+                <div className="md:absolute bottom-0 inset-x-0 md:p-4 md:mt-0 mt-6 flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center justify-start md:border-t border-bright-gray bg-white">
                     <Button
                         type="button"
                         variant="outline"
@@ -67,7 +67,7 @@ const PublicSpeakingForm = () => {
                     >
                         Save as Draft
                     </Button>
-                    <div className="md:ml-auto md:w-fit w-full flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center md:gap-x-4">
+                    <div className="md:w-fit w-full flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center md:gap-x-4">
                         <Button
                             type="button"
                             className="bg-green-sheen hover:bg-green-sheen/80 font-normal md:w-fit w-full md:h-9 h-11 transition"
