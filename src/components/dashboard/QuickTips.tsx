@@ -16,7 +16,7 @@ const QuickTips = ({ className, tips }: IQuickTipsProps) => {
             <ul className="space-y-2">
                 {tips.map(({ heading, description }, index) => (
                     <li key={heading + index}>
-                        <span className="font-normal">{heading}:</span>{" "}
+                        <span className="font-normal text-foreground/70">{heading}:</span>{" "}
                         <span className="text-foreground/70">{description}</span>
                     </li>
                 ))}
