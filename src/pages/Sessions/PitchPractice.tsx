@@ -225,10 +225,10 @@ const PresentationPractice: React.FC = () => {
 
                 if (parsed.type === "audience_question") {
                     setQuestions((prevQuestions: any) => {
-                        if (prevQuestions.length >= 4) {
-                            prevQuestions.shift();
+                        if (prevQuestions.length < 4) {
+                            return [...prevQuestions, parsed];
                         }
-                        return [...prevQuestions, parsed];
+                        return prevQuestions;
                     });
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
