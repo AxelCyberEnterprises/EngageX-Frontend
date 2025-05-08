@@ -178,10 +178,10 @@ const PublicSpeaking: React.FC = () => {
                 const parsed = JSON.parse(event.data);
                 if (parsed.type === "audience_question") {
                     setQuestions((prevQuestions: any) => {
-                        if (prevQuestions.length >= 4) {
-                            prevQuestions.shift();
+                        if (prevQuestions.length < 4) {
+                            return [...prevQuestions, parsed];
                         }
-                        return [...prevQuestions, parsed];
+                        return prevQuestions;
                     });
                     console.log("number of questions", questions.length);
                 } else if (parsed.type === "full_analysis_update") {
