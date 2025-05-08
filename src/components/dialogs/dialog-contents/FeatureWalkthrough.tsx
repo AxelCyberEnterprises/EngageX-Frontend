@@ -33,8 +33,8 @@ const FeatureWalkthrough = () => {
         },
         {
             id: 6,
-            title: "Session Improvement",
-            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/(Script+6)Session+Improvement.mp4",
+            title: "Sessions Setup",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/(Script+9)Sessions+Setup.mp4",
         },
         {
             id: 7,
@@ -48,8 +48,8 @@ const FeatureWalkthrough = () => {
         },
         {
             id: 9,
-            title: "Sessions Setup",
-            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/(Script+9)Sessions+Setup.mp4",
+            title: "Session Improvement",
+            videoUrl: "https://d37wg920pbp90y.cloudfront.net/static-videos/How-to/(Script+6)Session+Improvement.mp4",
         },
     ];
 
