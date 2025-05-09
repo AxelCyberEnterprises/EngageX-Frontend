@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import SegmentedProgressBar from "../dashboard/SegmentedProgressBar";
-import { Clock2 } from "lucide-react";
+import { Clock2, Dot } from "lucide-react";
 
 interface SessionPageTimerProps {
     minutes: number;
@@ -63,7 +63,7 @@ const SessionPageTimer: React.FC<SessionPageTimerProps> = ({ minutes, start, sto
 
     const percentage = ((totalTime - timeLeft) / totalTime) * 100;
 
-    let progressBarColor = "#252A39";
+    let progressBarColor = "#40B869";
     if (percentage >= 80) progressBarColor = "#DD524D";
     else if (percentage >= 50) progressBarColor = "#F5B546";
 
@@ -74,7 +74,13 @@ const SessionPageTimer: React.FC<SessionPageTimerProps> = ({ minutes, start, sto
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+            {start && (
+                <p className="flex items-center gap-0.5">
+                    <Dot className="text-crimson-red w-10 h-10 blink" /> Recording has begun
+                </p>
+            )}
+            <SegmentedProgressBar percent={percentage} color={progressBarColor} divisions={1} />
             <div className="flex w-full justify-end">
                 <p className="flex items-center">
                     <Clock2 className="w-5 h-5 me-1" />
@@ -84,7 +90,6 @@ const SessionPageTimer: React.FC<SessionPageTimerProps> = ({ minutes, start, sto
                     </span>
                 </p>
             </div>
-            <SegmentedProgressBar percent={percentage} color={progressBarColor} divisions={1} />
         </div>
     );
 };

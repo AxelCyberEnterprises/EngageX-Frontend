@@ -5,7 +5,7 @@ import UploadMediaTrigger from "@/components/widgets/UploadMediaTrigger";
 import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { UnknownAction } from "@reduxjs/toolkit";
-import { Plus, UploadCloud } from "lucide-react";
+import { LoaderCircle, Plus, UploadCloud } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
 import { pdfjs } from "react-pdf";
 
@@ -102,15 +102,20 @@ const UploadSlideSection = ({
                 </div>
             </section>
 
-            <section className="lg:hidden absolute bottom-0 inset-x-0 p-4 flex items-start gap-x-3 border-t border-bright-gray bg-white overflow-auto hide-scrollbar z-10 [&>.react-pdf\_\_Document]:flex [&>.react-pdf\_\_Document]:gap-3">
-                <div className="flex flex-col gap-y-2 whitespace-nowrap">
-                    <span className="text-sm text-center">Upload New slide</span>
+            <section className="lg:hidden md:absolute fixed bottom-0 inset-x-0 p-4 flex items-start gap-x-3 border-t border-bright-gray bg-white overflow-auto hide-scrollbar z-10 [&>.react-pdf\_\_Document]:flex [&>.react-pdf\_\_Document]:gap-3">
+                <div className="flex flex-col items-center gap-y-2 whitespace-nowrap">
+                    <span className="text-sm">Upload New slide</span>
 
                     <UploadMediaTrigger
                         name="slides"
+                        disabled={isGeneratingPreview}
                         className="w-42.5 h-24 grid place-content-center bg-ghost-white rounded-lg cursor-pointer border border-bright-gray"
                     >
-                        <Plus className="size-5" />
+                        {isGeneratingPreview ? (
+                            <LoaderCircle className="size-5 animate-spin" />
+                        ) : (
+                            <Plus className="size-5" />
+                        )}
                     </UploadMediaTrigger>
                 </div>
                 {slidePreviews.map((preview, index) => (

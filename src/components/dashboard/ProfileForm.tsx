@@ -38,6 +38,7 @@ const personalInfoSchema = z.object({
   industry: z.string().transform(val => val === "" ? undefined : val).optional(),
   country: z.string().transform(val => val === "" ? undefined : val).optional(),
   timezone: z.string().transform(val => val === "" ? undefined : val).optional(),
+  user_intent: z.string().transform(val => val === "" ? undefined : val).optional(),
 });
 
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
@@ -62,11 +63,11 @@ const PersonalInfoForm: React.FC = () => {
         String.fromCodePoint(char.charCodeAt(0) + 127397)
       );
   }
-  
+
   const countryOptions = Object.entries(
     countries.getNames("en", { select: "official" })
   ).map(([code, name]) => ({
-    value: code,
+    value: name,
     label: name,
     icon: getFlagEmoji(code), // e.g., 🇺🇸
   }));
@@ -85,6 +86,7 @@ const PersonalInfoForm: React.FC = () => {
       industry: "",
       country: "",
       timezone: "",
+      user_intent: "",
     }
   });
 
@@ -141,38 +143,24 @@ const PersonalInfoForm: React.FC = () => {
     }
   };
 
-  // const countries = [
-  //   { value: "Canada", label: "Canada", icon: "🇨🇦" },
-  //   { value: "Nigeria", label: "Nigeria", icon: "🇳🇬" },
-  //   { value: "United Kingdom", label: "United Kingdom", icon: "🇬🇧" },
-  //   { value: "United States", label: "United States", icon: "🇺🇸" },
-  // ];
-
-  // const timezoneOptions = [
-  //   {
-  //     value: "Pacific Standard Time (PST)",
-  //     label: "Pacific Standard Time (PST)",
-  //     icon: <span className="text-[#667085] ml-1">UTC-08:00</span>,
-  //   },
-  //   {
-  //     value: "Eastern Standard Time (EST)",
-  //     label: "Eastern Standard Time (EST)",
-  //     icon: <span className="text-[#667085] ml-1">UTC-05:00</span>,
-  //   },
-  //   {
-  //     value: "Central European Time (CET)",
-  //     label: "Central European Time (CET)",
-  //     icon: <span className="text-[#667085] ml-1">UTC+01:00</span>,
-  //   },
-  // ];
-
   const industryOptions = [
     { value: "Media & Presentation", label: "Media & Presentation" },
     { value: "Technology", label: "Technology" },
     { value: "Healthcare", label: "Healthcare" },
     { value: "Finance", label: "Finance" },
     { value: "Major League Sports", label: "Major League Sports" },
+    { value: "Others", label: "Others" }
   ];
+
+  const roles = [
+    { label: "Early Career Professional", value: "early" },
+    { label: "Mid-level Professionals", value: "mid" },
+    { label: "Sales Professionals", value: "sales" },
+    { label: "C-suites", value: "c_suite" },
+    { label: "Entrepreneurs", value: "entrepreneur" },
+    { label: "Major League Sports Athlete", value: "athlete" },
+    { label: "Major League Sports Executive", value: "executive" },
+  ]
 
   useEffect(() => {
     if (profile) {
@@ -182,6 +170,7 @@ const PersonalInfoForm: React.FC = () => {
         email: profile.email || "",
         company: profile.company || "",
         industry: profile.industry || "",
+        user_intent: profile.user_intent || "",
         country: profile.country || "",
         timezone: profile.timezone || "",
       });
@@ -201,6 +190,7 @@ const PersonalInfoForm: React.FC = () => {
       email: profile?.email || "",
       company: profile?.company || "",
       industry: profile?.industry || "",
+      user_intent: profile?.user_intent || "",
       country: profile?.country || "",
       timezone: profile?.timezone || "",
     });
@@ -435,6 +425,18 @@ const PersonalInfoForm: React.FC = () => {
                 Icon={Globe}
               />
 
+              <div className="space-y-1">
+                <SearchableSelect
+                  label="Role"
+                  defaultValue={profile?.user_intent || ""}
+                  onValueChange={(value) => form.setValue('user_intent', value)}
+                  isEditable={isEditMode}
+                  placeholder="Select role"
+                  inputPlaceholder="Search roles..."
+                  options={roles}
+                />
+              </div>
+
               <SearchableSelect
                 label="Country"
                 defaultValue={profile?.country || ""}
@@ -457,6 +459,7 @@ const PersonalInfoForm: React.FC = () => {
                   Icon={Clock}
                 />
               </div>
+
               <div className="pt-4 border-t">
                 <div className="flex flex-col space-y-1">
                   <p className="font-medium">Credits Remaining: <span className="text-green-500 ml-[2px]">{profile?.available_credits ? parseInt(profile?.available_credits) : 'No credits available'}</span></p>
@@ -464,26 +467,26 @@ const PersonalInfoForm: React.FC = () => {
                 </div>
               </div>
 
+              <CardFooter className="flex sm:justify-end sm:flex-row flex-col w-full mt-4 sm:gap-2 gap-6 px-0">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleCancel}
+                  className="w-full sm:w-auto text-[#6F7C8E] sm:hidden"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isUpdating}
+                  className="w-full sm:w-auto"
+                >
+                  {isUpdating ? "Saving..." : "Save"}
+                </Button>
+              </CardFooter>
+
             </CardContent>
           }
-
-          <CardFooter className="flex sm:justify-end sm:flex-row flex-col w-full mt-4 sm:gap-2 gap-6 px-0">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleCancel}
-              className="w-full sm:w-auto text-[#6F7C8E] sm:hidden"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isUpdating}
-              className="w-full sm:w-auto"
-            >
-              {isUpdating ? "Saving..." : "Save"}
-            </Button>
-          </CardFooter>
         </form>
       </Form>
     </Card>

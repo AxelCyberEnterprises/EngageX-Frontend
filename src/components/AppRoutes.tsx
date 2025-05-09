@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { tokenManager } from "@/lib/utils";
+import CancellationPolicy from "@/pages/CancellationPolicy";
 import Contact from "@/pages/Contact";
+import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
 import HelpPage from "@/pages/Dashboard/User/help";
 import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
 import Help from "@/pages/Dashboard/User/help/help";
 import SafetyPrivacy from "@/pages/Dashboard/User/help/SafetyPrivacy";
+import PerformanceImprovement from "@/pages/Dashboard/User/PerformanceImprovement";
 import PitchPractice from "@/pages/Dashboard/User/PitchPractice";
 import PresentationPractice from "@/pages/Dashboard/User/PresentationPractice";
+import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
-import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
+import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
+import Press from "@/pages/Press/Press";
 import PresentationPracticeSession from "@/pages/Sessions/PresentationPractice";
+import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, Route, BrowserRouter as Router, Routes, useLocation } from "react-router";
@@ -20,32 +26,27 @@ import ForgotPassword from "../pages/auth/forgotPassword";
 import LoginPage from "../pages/auth/login";
 import ResetPassword from "../pages/auth/resetPassword";
 import Tutorial from "../pages/auth/tutorial";
+import CookiePolicy from "../pages/CookiePolicy";
 import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
 import AdminDashboardHome from "../pages/Dashboard/Admin/Index";
+import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
 import UserAnalytics from "../pages/Dashboard/User/Analytics";
 import UserDashboardHome from "../pages/Dashboard/User/Index";
 import UserSessionReport from "../pages/Dashboard/User/SessionReport";
-import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
-import UserSettings from "../pages/Dashboard/User/UserSettings";
 import UserSessionHistory from "../pages/Dashboard/User/UserSessionHistory";
+import UserSettings from "../pages/Dashboard/User/UserSettings";
 import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
 import Pricing from "../pages/Pricing";
-import PitchPracticeSession from "../pages/Sessions/PitchPractice";
-import UserPlan from "./layouts/userAuth";
-import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
-import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
-import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
-import CookiePolicy from "../pages/CookiePolicy";
+import PitchPracticeSession from "../pages/Sessions/PitchPractice";
 import TermsOfService from "../pages/TermsOfService";
-import PerformanceImprovement from "@/pages/Dashboard/User/PerformanceImprovement";
-import Press from "@/pages/Press/Press";
-import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
-import CancellationPolicy from "@/pages/CancellationPolicy";
+import UserPlan from "./layouts/userAuth";
 import WebsiteLayout from "./layouts/WebsiteLayout";
 import ScrollToTop from "./ScrollToTop";
+import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
+import DynamicDialog from "./dialogs/DynamicDialog";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -171,6 +172,7 @@ function MainRoutes() {
 export default function AppRoutes() {
     return (
         <Router>
+            <DynamicDialog />
             <ScrollToTop />
             <Routes>
                 <Route

@@ -34,8 +34,7 @@ const StartPracticeSetupSession = ({
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const slidesFormData = new FormData();
-    const { session_type: sessionType } = getValues();
+    const { session_type: sessionType, slides } = getValues();
 
     const { data, isPending: isGetSessionsPending } = useSessionHistory();
 
@@ -59,8 +58,8 @@ const StartPracticeSetupSession = ({
             toast(
                 <ErrorToast
                     {...{
-                        heading: "Error uploading slides",
-                        description: "An error occurred while uploading slides, please try again.",
+                        heading: "Error generating summary",
+                        description: "An error occurred while generating slide summary, please try again.",
                     }}
                 />,
             );
@@ -76,7 +75,7 @@ const StartPracticeSetupSession = ({
             return await apiPost<ISession>(`/sessions/sessions/`, data);
         },
         onSuccess: async (data) => {
-            if (slidesFormData.get("slides_file")) generateSummary(data.id);
+            if (slides && slides?.length > 0) generateSummary(data.id);
             else {
                 dispatch(closeDialog());
 
@@ -122,8 +121,8 @@ const StartPracticeSetupSession = ({
             setValue("virtual_environment", "board_room_1");
         }
 
-        handleSubmit(handleSessionSetupSubmit)();
-    }, [data, handleSessionSetupSubmit, handleSubmit, initiationType, sessionType, setValue]);
+        handleSubmit(handleSessionSetupSubmit, () => dispatch(closeDialog()))();
+    }, [data, dispatch, handleSessionSetupSubmit, handleSubmit, initiationType, sessionType, setValue]);
 
     return (
         <StartSession>

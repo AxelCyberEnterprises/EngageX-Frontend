@@ -4,7 +4,6 @@ import React, { useRef, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
-import questionImage from "../../assets/images/pngs/question-image.png";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import VoiceAnalytics from "@/components/session/VoiceAnalytics";
 import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
@@ -13,7 +12,7 @@ import EngagementMetrics from "@/components/session/EngagementMetrics";
 import { useParams } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import alert from "../../assets/images/svgs/alert.svg";
-// import TimerComponent from "@/components/session/TimerComponent";
+import TimerComponent from "@/components/session/TimerComponent";
 import { useMediaQuery } from "react-responsive";
 import MobileEngagementMetrics from "@/components/session/MobileEngagementMetrics";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
@@ -22,7 +21,6 @@ import { useEndSession } from "@/hooks/sessions";
 import VideoPlayer from "@/components/session/VideoPlayer";
 
 const PublicSpeaking: React.FC = () => {
-    const [stop, setStop] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
@@ -39,31 +37,92 @@ const PublicSpeaking: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/thinking/1.mp4",
+        "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [question, setQuestion] = useState<string | undefined>(undefined);
+    const [questionImg, setQuestionImg] = useState<string>(
+        "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png",
+    );
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
+
         setDuration(duration);
-        setStop(true);
+        setStopTime(true);
+
+        if (activeQuestion < questionsRef.current.length - 1) {
+            setDialogOneOpen(false);
+            setQuestionDialogOpen(true);
+        } else {
+            setStopStreamer(true);
+        }
     };
 
     const closeAndShowClapVideo = () => {
-        setAllowSwitch(false);
-        setDialogOneOpen(false);
-        setIsMuted(false);
-        setVideoUrl(
-            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
-        );
-        setTimeout(() => {
-            setDialogTwoOpen(true);
-        }, 7000);
+        if (activeQuestion < questionsRef.current.length - 1) {
+            setDialogOneOpen(false);
+            setQuestionDialogOpen(true);
+        } else {
+            setStopStreamer(true);
+            setAllowSwitch(false);
+            setDialogOneOpen(false);
+            setIsMuted(false);
+            setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/PublicSpeakingRoomClap.mp4");
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 7000);
+        }
+    };
+
+    const questionsRef = useRef<any>([]);
+    const [stopTime, setStopTime] = useState(false);
+    const [stopStreamer, setStopStreamer] = useState(false);
+    const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
+    const questionTimerRef = useRef<number>(0.5);
+    const [startQuestionTimer, setStartQuestionTimer] = useState(false);
+    const question = questionsRef.current[activeQuestion]?.question;
+
+    const answerQuestion = () => {
+        setStartQuestionTimer(true);
+        if (socket.current) {
+            socket.current.send(JSON.stringify(question));
+        }
+    };
+
+    const nextQuestion = () => {
+        // Use a functional update to get the new value
+        setActiveQuestion((prev: number) => {
+            const nQuestions = questionsRef.current.length;
+            setStartQuestionTimer(false);
+
+            if (prev < nQuestions - 1) {
+                // NOT last question, prepare the next one
+                setQuestionDialogOpen(false);
+                setQuestionImg(
+                    Math.random() > 0.5
+                        ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
+                        : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png",
+                );
+                setQuestionDialogOpen(true);
+                return prev + 1;
+            } else {
+                // Last question, finish up
+                setQuestionDialogOpen(false);
+                setStopStreamer(true);
+                setAllowSwitch(false);
+                setDialogOneOpen(false);
+                setIsMuted(false);
+                setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/PublicSpeakingRoomClap.mp4");
+                setTimeout(() => {
+                    setDialogTwoOpen(true);
+                }, 7000);
+                return prev; // no increment, or return to 0 if you want
+            }
+        });
     };
 
     useEffect(() => {
@@ -98,6 +157,7 @@ const PublicSpeaking: React.FC = () => {
 
     useEffect(() => {
         if (!sessionId) return;
+        console.log("StopStreamer", stopStreamer);
 
         const ws = new WebSocket(
             `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
@@ -113,8 +173,11 @@ const PublicSpeaking: React.FC = () => {
             try {
                 const parsed = JSON.parse(event.data);
                 if (parsed.type === "audience_question") {
-                    setQuestion(parsed.question);
-                    setQuestionDialogOpen(true);
+                    if (questionsRef.current.length < 4) {
+                        questionsRef.current.push(parsed);
+                    }
+                    console.log("number of questions", questionsRef.current.length);
+                    console.log("questions", questionsRef.current);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
@@ -135,15 +198,11 @@ const PublicSpeaking: React.FC = () => {
             setIsSocketConnected(false);
         };
 
-        if (stop) {
+        if (stopStreamer) {
             console.log("Closing WebSocket because stop is true");
             ws.close();
         }
-
-        return () => {
-            ws.close();
-        };
-    }, [sessionId, allowSwitch, stop]);
+    }, [sessionId, stopStreamer]);
 
     useEffect(() => {
         let isMounted = true;
@@ -185,8 +244,7 @@ const PublicSpeaking: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
-                                console.log("videoUrl", newUrl);
+                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/${parsed.text}/${random}.mp4`;
                                 setVideoUrl(newUrl);
                             }
                         }
@@ -223,7 +281,7 @@ const PublicSpeaking: React.FC = () => {
             }
         };
 
-        if (!stop) {
+        if (!stopStreamer && !stopTime) {
             connectToRealtime();
         }
 
@@ -246,13 +304,13 @@ const PublicSpeaking: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl, allowSwitch, stop]);
+    }, [setVideoUrl, allowSwitch, stopStreamer, stopTime]);
 
     return (
         <div className="text-primary-blue">
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
                 <div className="w-full">
-                    {startTimer && !stop && (
+                    {startTimer && !stopTime && (
                         <Button
                             className="bg-jelly-bean hover:bg-jelly-bean/90 md:hidden mt-2 flex"
                             onClick={() => setDialogOneOpen(true)}
@@ -266,11 +324,15 @@ const PublicSpeaking: React.FC = () => {
                     <div className="inline-block py-2 px-4 md:hidden bg-ghost-white border border-bright-gray rounded-3xl w-auto relative top-7">
                         <p>{sessionData?.session_name}</p>
                     </div>
+                    <div className="hidden md:flex justify-between items-center">
+                        <h4 className="mb-4"></h4>
+                        <p>Record a minimum of 2 minutes for the best feedback.</p>
+                    </div>
                     <div className="mb-3">
                         <PublicSpeakingTimer
                             minutes={time}
                             start={startTimer}
-                            stop={stop}
+                            stop={stopTime}
                             onStop={(duration) => stopTimer(duration)}
                         />
                     </div>
@@ -278,7 +340,10 @@ const PublicSpeaking: React.FC = () => {
             </section>
 
             {/* question dialog  */}
-            <Dialog open={isQuestionDialogOpen} onOpenChange={setQuestionDialogOpen}>
+            <Dialog
+                open={isQuestionDialogOpen}
+                onOpenChange={activeQuestion > questionsRef.current.length - 1 ? setQuestionDialogOpen : () => {}}
+            >
                 <DialogContent className="flex flex-col gap-4">
                     <div className="flex gap-4">
                         <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
@@ -286,21 +351,24 @@ const PublicSpeaking: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
-                                Question from Elizabeth Wang
-                            </DialogTitle>
+                            <DialogTitle className="text-primary-blue/70 font-normal text-2xl">Question</DialogTitle>
                             <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
 
                             <div className="flex justify-end gap-3">
                                 <Button
                                     className="bg-transparent hover:bg-bright-gray text-independence py-6"
-                                    onClick={() => setQuestionDialogOpen(false)}
+                                    onClick={() => nextQuestion()}
                                 >
-                                    Skip
+                                    {activeQuestion >= questionsRef.current.length - 1
+                                        ? "Finish"
+                                        : startQuestionTimer
+                                          ? "Next Question"
+                                          : "Skip"}
                                 </Button>
                                 <Button
                                     className="bg-primary-blue hover:bg-primary-blue/80 py-6"
-                                    onClick={() => setQuestionDialogOpen(false)}
+                                    onClick={() => answerQuestion()}
+                                    disabled={startQuestionTimer}
                                 >
                                     Answer Now
                                 </Button>
@@ -308,10 +376,14 @@ const PublicSpeaking: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* <TimerComponent minutes={time} start={startTimer} /> */}
+                    <TimerComponent
+                        minutes={questionTimerRef.current}
+                        start={startQuestionTimer}
+                        onStop={() => nextQuestion()}
+                    />
 
                     <img
-                        src={questionImage}
+                        src={questionImg}
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />
@@ -418,7 +490,7 @@ const PublicSpeaking: React.FC = () => {
                                     >
                                         <VideoStreamer
                                             duration={time}
-                                            stop={stop}
+                                            stop={stopStreamer}
                                             onStop={() => closeAndShowClapVideo()}
                                             onStart={() => setStartTimer(true)}
                                             ws={socket.current}
@@ -432,7 +504,7 @@ const PublicSpeaking: React.FC = () => {
                         </div>
 
                         <div className="w-full flex justify-end mt-16 px-4 md:px-0">
-                            {startTimer && !stop && (
+                            {startTimer && !stopTime && (
                                 <Button
                                     className="bg-jelly-bean hover:bg-jelly-bean/90 hidden md:flex"
                                     onClick={() => setDialogOneOpen(true)}
@@ -470,7 +542,7 @@ const PublicSpeaking: React.FC = () => {
                             >
                                 <VideoStreamer
                                     duration={time}
-                                    stop={stop}
+                                    stop={stopStreamer}
                                     onStop={() => closeAndShowClapVideo()}
                                     onStart={() => setStartTimer(true)}
                                     ws={socket.current}

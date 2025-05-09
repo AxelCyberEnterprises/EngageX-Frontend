@@ -14,6 +14,7 @@ export interface ISession {
     id: number;
     user_email: string;
     full_name: string;
+    company: string;
     session_type_display: string;
     latest_score: number;
     sequence: number | null;

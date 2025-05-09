@@ -123,7 +123,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                 </div>
             </div>
             {children}
-            <div className="hidden absolute bottom-0 inset-x-0 p-4 lg:flex items-center justify-between border-t border-bright-gray bg-white">
+            <div className="hidden absolute bottom-0 inset-x-0 p-4 lg:flex items-center justify-end border-t border-bright-gray bg-white">
                 <Button
                     type="button"
                     variant="outline"
@@ -131,7 +131,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                 >
                     Cancel
                 </Button>
-                <div className="flex items-center gap-x-4 ml-auto">
+                <div className="flex items-center gap-x-4 mr-25">
                     <Button
                         type="button"
                         variant="outline"

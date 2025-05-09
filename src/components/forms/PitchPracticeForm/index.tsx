@@ -28,7 +28,10 @@ const PitchPracticeForm = () => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(PitchPracticeSchema),
-        defaultValues: useMemo(() => ({ session_type: "pitch", virtual_environment: "pitch_studio" }), []),
+        defaultValues: useMemo(
+            () => ({ session_type: "pitch", virtual_environment: "pitch_studio", allow_ai_questions: true }),
+            [],
+        ),
     });
 
     const slides = useWatch({ control: form.control, name: "slides" });

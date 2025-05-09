@@ -30,6 +30,7 @@ export interface AuthUser {
     last_name: string | null;
     user_id: number;
     first_login?: boolean;
+    first_time_verification?: boolean;
 }
 
 interface AuthState {
@@ -164,7 +165,7 @@ const authSlice = createSlice({
                 let user;
                 if (action.payload.data) {
                     if (Array.isArray(action.payload.data)) {
-                        user = action.payload.data[0];
+                        user = action.payload.data;
                     } else {
                         user = action.payload.data;
                     }

@@ -14,7 +14,7 @@ export const dialogDataItems: IDialogTemplateProps[] = [
     {
         key: "start-session",
         classMap: {
-            modal: "w-100 max-w-100 h-72 max-h-72",
+            modal: "w-100 max-w-100",
         },
     },
     {

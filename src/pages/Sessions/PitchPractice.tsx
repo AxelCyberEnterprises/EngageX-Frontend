@@ -2,11 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import VideoPlayer from "@/components/session/VideoPlayer";
 import AudienceEngaged from "@/components/session/AudienceEngaged";
-import CountdownTimer from "@/components/session/CountdownTimer";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import VideoStreamer from "@/components/session/RecordView";
 import ImageSlider, { SlidesPreviewerHandle } from "@/components/session/SlidesPreviewer";
-// import TimerComponent from "@/components/session/TimerComponent";
+import TimerComponent from "@/components/session/TimerComponent";
 import TimerProgressBar from "@/components/session/TimerProgressBar";
 import EngagementMetrics from "@/components/session/VoiceAnalytics";
 import { Button } from "@/components/ui/button";
@@ -18,17 +17,15 @@ import { ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-reac
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import pitchRoom from "../../assets/images/pngs/pitch-room.png";
-import questionImage from "../../assets/images/pngs/question-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import axios from "axios";
 
 const PresentationPractice: React.FC = () => {
-    const [stop, setStop] = useState(false);
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
-    const time = 15; // in minutes
+    const time = 7; // in minutes
     const [slides, setSlides] = useState<any[]>([]);
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
@@ -45,7 +42,7 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/thinking/1.mp4",
+        "https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -53,7 +50,20 @@ const PresentationPractice: React.FC = () => {
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [question, setQuestion] = useState<string | undefined>(undefined);
+    const [questionImg, setQuestionImg] = useState<string>(
+        "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png",
+    );
+
+    const end = () => {
+        setStopTime(true);
+
+        if (activeQuestion < questionsRef.current.length - 1) {
+            setDialogOneOpen(false);
+            setQuestionDialogOpen(true);
+        } else {
+            setStopStreamer(true);
+        }
+    }
 
     const stopTimer = (dur?: string, durationArr?: string[]) => {
         if (dur !== undefined) {
@@ -69,19 +79,74 @@ const PresentationPractice: React.FC = () => {
         if (durationRef.current && slideDurationsRef.current) {
             console.log("Duration of session:", durationRef.current);
             console.log("Duration array of session:", slideDurationsRef.current);
-            // endSession()
         }
     };
 
     const closeAndShowClapVideo = () => {
-        setSlides([]);
-        setAllowSwitch(false);
-        setDialogOneOpen(false);
-        setIsMuted(false);
-        setVideoUrl("https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4");
-        setTimeout(() => {
-            setDialogTwoOpen(true);
-        }, 7000);
+        if (activeQuestion < questionsRef.current.length - 1) {
+            setDialogOneOpen(false);
+            setQuestionDialogOpen(true);
+        } else {
+            setSlides([]);
+            setStopStreamer(true);
+            setAllowSwitch(false);
+            setDialogOneOpen(false);
+            setIsMuted(false);
+            setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/Pitchroom+clap.mp4");
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 7000);
+        }
+    };
+
+    const questionsRef = useRef<any>([]);
+    const [stopTime, setStopTime] = useState(false);
+    const [stopStreamer, setStopStreamer] = useState(false);
+    const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
+    const questionTimerRef = useRef<number>(0.5);
+    const [startQuestionTimer, setStartQuestionTimer] = useState(false);
+    const question = questionsRef.current[activeQuestion]?.question;
+
+    const answerQuestion = () => {
+        setStartQuestionTimer(true);
+        if (socket.current) {
+            socket.current.send(
+                JSON.stringify(question),
+            );
+        }
+    }
+
+    const nextQuestion = () => {
+        // Use a functional update to get the new value
+        setActiveQuestion((prev: number) => {
+            const nQuestions = questionsRef.current.length;
+            setStartQuestionTimer(false);
+
+            if (prev < nQuestions - 1) {
+                // NOT last question, prepare the next one
+                setQuestionDialogOpen(false);
+                const randomImg =
+                    Math.random() > 0.5
+                        ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
+                        : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png";
+                setQuestionImg(randomImg);
+                setQuestionDialogOpen(true);
+                setStartQuestionTimer(false);
+                return prev + 1;
+            } else {
+                // Last question, finish up
+                setQuestionDialogOpen(false);
+                setStopStreamer(true);
+                setAllowSwitch(false);
+                setDialogOneOpen(false);
+                setIsMuted(false);
+                setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/Pitchroom+clap.mp4");
+                setTimeout(() => {
+                    setDialogTwoOpen(true);
+                }, 7000);
+                return prev; // no increment, or return to 0 if you want
+            }
+        });
     };
 
     const triggerNextSlide = () => {
@@ -156,8 +221,11 @@ const PresentationPractice: React.FC = () => {
                 const parsed = JSON.parse(event.data);
 
                 if (parsed.type === "audience_question") {
-                    setQuestion(parsed.question);
-                    setQuestionDialogOpen(true);
+                    if (questionsRef.current.length < 4) {
+                        questionsRef.current.push(parsed);
+                    }
+                    console.log("number of questions", questionsRef.current.length);
+                    console.log("questions", questionsRef.current);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
@@ -178,7 +246,7 @@ const PresentationPractice: React.FC = () => {
             setIsSocketConnected(false);
         };
 
-        if (stop) {
+        if (stopStreamer) {
             console.log("Closing WebSocket because stop is true");
             ws.close();
         }
@@ -186,7 +254,7 @@ const PresentationPractice: React.FC = () => {
         return () => {
             ws.close();
         };
-    }, [sessionId, allowSwitch, stop]);
+    }, [sessionId, stopStreamer]);
 
     useEffect(() => {
         let isMounted = true;
@@ -228,7 +296,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
@@ -266,7 +334,7 @@ const PresentationPractice: React.FC = () => {
             }
         };
 
-        if (!stop) {
+        if (!stopStreamer && !stopTime) {
             connectToRealtime();
         }
 
@@ -289,12 +357,15 @@ const PresentationPractice: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl, allowSwitch, stop]);
+    }, [setVideoUrl, allowSwitch, stopStreamer, stopTime]);
 
     return (
         <div className="text-primary-blue">
             {/* question dialog  */}
-            <Dialog open={isQuestionDialogOpen} onOpenChange={setQuestionDialogOpen}>
+            <Dialog
+                open={isQuestionDialogOpen}
+                onOpenChange={activeQuestion > questionsRef.current.length - 1 ? setQuestionDialogOpen : () => {}}
+            >
                 <DialogContent className="flex flex-col gap-4">
                     <div className="flex gap-4">
                         <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
@@ -302,21 +373,24 @@ const PresentationPractice: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
-                                Question from Elizabeth Wang
-                            </DialogTitle>
+                            <DialogTitle className="text-primary-blue/70 font-normal text-2xl">Question</DialogTitle>
                             <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
 
                             <div className="flex justify-end gap-3">
                                 <Button
                                     className="bg-transparent hover:bg-bright-gray text-independence py-6"
-                                    onClick={() => setQuestionDialogOpen(false)}
+                                    onClick={() => nextQuestion()}
                                 >
-                                    Skip
+                                    {activeQuestion >= questionsRef.current.length - 1
+                                        ? "Finish"
+                                        : startQuestionTimer
+                                        ? "Next Question"
+                                        : "Skip"}
                                 </Button>
                                 <Button
                                     className="bg-primary-blue hover:bg-primary-blue/80 py-6"
-                                    onClick={() => setQuestionDialogOpen(false)}
+                                    onClick={() => answerQuestion()}
+                                    disabled={startQuestionTimer}
                                 >
                                     Answer Now
                                 </Button>
@@ -324,10 +398,14 @@ const PresentationPractice: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* <TimerComponent minutes={time} start={startTimer} /> */}
+                    <TimerComponent
+                        minutes={questionTimerRef.current}
+                        start={startQuestionTimer}
+                        onStop={() => nextQuestion()}
+                    />
 
                     <img
-                        src={questionImage}
+                        src={questionImg}
                         alt="woman in blue giving a presentation"
                         className="rounded-lg w-full object-cover h-60"
                     />
@@ -381,7 +459,7 @@ const PresentationPractice: React.FC = () => {
                         >
                             Cancel
                         </Button>
-                        <Button className="bg-jelly-bean hover:bg-jelly-bean/90 w-full" onClick={() => setStop(true)}>
+                        <Button className="bg-jelly-bean hover:bg-jelly-bean/90 w-full" onClick={() => end()}>
                             End
                         </Button>
                     </div>
@@ -390,7 +468,7 @@ const PresentationPractice: React.FC = () => {
 
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
                 <div className="w-full">
-                    {startTimer && !stop && (
+                    {startTimer && !stopTime && (
                         <Button
                             className="bg-jelly-bean hover:bg-jelly-bean/90 flex lg:hidden mb-4"
                             onClick={() => setDialogOneOpen(true)}
@@ -398,12 +476,15 @@ const PresentationPractice: React.FC = () => {
                             <SquareArrowUpRight className="me-1" /> End Session
                         </Button>
                     )}
-                    <h4 className="mb-4">{sessionData?.session_name}</h4>
+                    <div className="flex justify-between items-center">
+                        <h4 className="mb-4">{sessionData?.session_name}</h4>
+                        <p className="hidden md:block">Record a minimum of 5 minutes for the best feedback.</p>
+                    </div>
                     <div className="mb-3">
                         <TimerProgressBar
                             minutes={time}
                             start={startTimer}
-                            stop={stop}
+                            stop={stopTime}
                             onStop={(dur) => {
                                 stopTimer(dur, undefined);
                             }}
@@ -441,7 +522,7 @@ const PresentationPractice: React.FC = () => {
                                     ref={sliderRef}
                                     images={slides}
                                     start={startTimer}
-                                    stop={stop}
+                                    stop={stopTime}
                                     onStop={(durationArr) => {
                                         stopTimer(undefined, durationArr);
                                     }}
@@ -450,17 +531,18 @@ const PresentationPractice: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="mt-3 px-4 md:px-0">
-                        <div className="flex items-center justify-between md:justify-start">
-                            <Button
-                                className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
-                                onClick={triggerNextSlide}
-                            >
-                                Next Slide <ChevronRight className="h-4 w-4" />
-                            </Button>
-                            <CountdownTimer minutes={time} />
+                    {slides.length > 1 && (
+                        <div className="mt-3 px-4 md:px-0">
+                            <div className="flex items-center justify-between md:justify-start">
+                                <Button
+                                    className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
+                                    onClick={triggerNextSlide}
+                                >
+                                    Next Slide <ChevronRight className="h-4 w-4" />
+                                </Button>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="px-4 md:px-0 flex gap-3">
                         <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">
@@ -470,7 +552,7 @@ const PresentationPractice: React.FC = () => {
                     </div>
 
                     <div className="w-full flex justify-end mt-16 px-4 md:px-0">
-                        {startTimer && !stop && (
+                        {startTimer && !stopTime && (
                             <Button
                                 className="bg-jelly-bean hover:bg-jelly-bean/90 hidden lg:flex"
                                 onClick={() => setDialogOneOpen(true)}
@@ -502,7 +584,7 @@ const PresentationPractice: React.FC = () => {
                             >
                                 <VideoStreamer
                                     duration={time}
-                                    stop={stop}
+                                    stop={stopStreamer}
                                     onStop={() => closeAndShowClapVideo()}
                                     onStart={() => setStartTimer(true)}
                                     ws={socket.current}
@@ -521,14 +603,6 @@ const PresentationPractice: React.FC = () => {
                         percent2={feedback ? feedback.analysis.Feedback.Clarity : 0}
                         percent3={feedback ? feedback.analysis.Scores["Pace Score"] : 0}
                     />
-
-                    <div className="py-5 px-3 border-1 border-bright-gray rounded-xl mt-3">
-                        <h6 className="mb-4">Quick Tips</h6>
-                        <ul className="text-grey list-disc">
-                            <li className="mb-2">Great eye contact with audience</li>
-                            <li>Consider slowing down your speech rate</li>
-                        </ul>
-                    </div>
                 </div>
 
                 {/* right side mobile */}
