@@ -36,8 +36,8 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
             setValue("virtual_environment", "conference_room");
         }
 
-        handleSubmit(handleSessionSetupSubmit)();
-    }, [data, handleSessionSetupSubmit, handleSubmit, initiationType, setValue]);
+        handleSubmit(handleSessionSetupSubmit, () => dispatch(closeDialog()))();
+    }, [data, dispatch, handleSessionSetupSubmit, handleSubmit, initiationType, setValue]);
 
     return (
         <StartSession>
