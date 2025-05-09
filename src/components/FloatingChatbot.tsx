@@ -24,7 +24,7 @@ function FloatingChatbot() {
                         controls
                     >
                         <source
-                            src="https://d37wg920pbp90y.cloudfront.net/static-videos/Chatbot+greeting.mp4"
+                            src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
                             type="video/mp4"
                         />
                     </video>
