@@ -138,7 +138,6 @@ const PresentationPractice: React.FC = () => {
                         : `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/wm_handraise.png`;
                 setQuestionImg(randomImg);
                 setQuestionDialogOpen(true);
-                setStartQuestionTimer(false);
                 return prev + 1;
             } else {
                 // Last question, finish up
@@ -389,9 +388,12 @@ const PresentationPractice: React.FC = () => {
                                 <Button
                                     className="bg-transparent hover:bg-bright-gray text-independence py-6"
                                     onClick={() => nextQuestion()}
-                                    disabled={startQuestionTimer}
                                 >
-                                    Skip
+                                    {activeQuestion >= questionsRef.current.length - 1
+                                        ? "Finish"
+                                        : startQuestionTimer
+                                          ? "Next Question"
+                                          : "Skip"}
                                 </Button>
                                 <Button
                                     className="bg-primary-blue hover:bg-primary-blue/80 py-6"

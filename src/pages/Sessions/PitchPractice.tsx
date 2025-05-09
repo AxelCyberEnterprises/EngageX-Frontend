@@ -380,9 +380,12 @@ const PresentationPractice: React.FC = () => {
                                 <Button
                                     className="bg-transparent hover:bg-bright-gray text-independence py-6"
                                     onClick={() => nextQuestion()}
-                                    disabled={startQuestionTimer}
                                 >
-                                    Skip
+                                    {activeQuestion >= questionsRef.current.length - 1
+                                        ? "Finish"
+                                        : startQuestionTimer
+                                        ? "Next Question"
+                                        : "Skip"}
                                 </Button>
                                 <Button
                                     className="bg-primary-blue hover:bg-primary-blue/80 py-6"
