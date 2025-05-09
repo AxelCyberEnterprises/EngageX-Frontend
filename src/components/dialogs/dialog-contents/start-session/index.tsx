@@ -12,7 +12,7 @@ const StartSession = ({ children }: { children: ReactNode }) => {
                     <h6>Start your Session</h6>
                     <p className="text-independence">Confirm you're ready to use your session credit.</p>
                     <p className="text-[#BC0010]">
-                        Reminder: remember to record for at least 2 minutes and take pauses to allow the audience react.
+                        Reminder: Remember to record for at least 2 minutes and take pauses to allow the audience react.
                     </p>
                 </div>
             </div>

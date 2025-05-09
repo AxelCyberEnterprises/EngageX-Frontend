@@ -68,24 +68,28 @@ const PitchSessionReport: React.FC = () => {
         }
     }, [id, refetch]);
 
-    const parseStrengthsAndImprovements = useCallback((input: string) => {
-        // Remove the outer quotes if the input is a stringified string
-        if (input.startsWith('"') && input.endsWith('"')) {
-            input = input.slice(1, -1);
+    const parseStrengthsAndImprovements = useCallback((input: string): string[] => {
+        try {
+            // Remove outer quotes if it's a quoted string
+            if (input.startsWith('"') && input.endsWith('"')) {
+                input = input.slice(1, -1);
+            }
+
+            // Replace fancy escaped quotes if necessary
+            input = input.replace(/\\"/g, '"');
+
+            // Remove outer brackets
+            const trimmed = input.trim().slice(1, -1);
+
+            // Match substrings wrapped in either single or double quotes
+            const matches = [...trimmed.matchAll(/(['"])(.*?)\1/g)];
+
+            // Return the inner contents of each matched quote group
+            return matches.map(([, , content]) => content.trim());
+        } catch (e) {
+            console.error("Failed to parse input:", e);
+            return [];
         }
-
-        // Remove the outer [ ]
-        const trimmed = input.trim().slice(1, -1);
-
-        // Split by comma, then trim and remove only leading and trailing single quotes
-        const elements = trimmed.split(/,(?=(?:[^']*'[^']*')*[^']*$)/).map((el) => {
-            const trimmedEl = el.trim();
-            const unquoted = trimmedEl.replace(/^'(.*)'$/, "$1");
-            return unquoted;
-        });
-
-        // Strip surrounding quotes from each string
-        return elements.map((str) => str.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1"));
     }, []);
 
     const variety = [
@@ -357,7 +361,9 @@ const PitchSessionReport: React.FC = () => {
                                         />
                                     </div>
                                     <p className="mt-2">
-                                        <span className="text-medium-sea-green">Trigger Response</span> measures audience engagement by tracking how specific words or phrases evoke a response or reaction.
+                                        <span className="text-medium-sea-green">Trigger Response</span> measures
+                                        audience engagement by tracking how specific words or phrases evoke a response
+                                        or reaction.
                                     </p>
                                 </div>
                             </div>
@@ -394,7 +400,10 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 </div>
                                 <p>
-                                    <span className="text-medium-sea-green">Overall Captured Impact</span> is calculated by your ability to deliver transformative communication that inspires your audience, leaves a lasting impression, and positions you as a memorable, purpose-driven speaker.
+                                    <span className="text-medium-sea-green">Overall Captured Impact</span> is calculated
+                                    by your ability to deliver transformative communication that inspires your audience,
+                                    leaves a lasting impression, and positions you as a memorable, purpose-driven
+                                    speaker.
                                 </p>
                             </div>
                         </div>
@@ -587,7 +596,7 @@ const PitchSessionReport: React.FC = () => {
                                                     (strength, index) => (
                                                         <li
                                                             key={strength + index}
-                                                            className="flex items-center gap-2 text-independence"
+                                                            className="flex items-start gap-2 text-independence"
                                                         >
                                                             <span className="text-medium-sea-green">✔</span> {strength}
                                                         </li>
@@ -603,7 +612,7 @@ const PitchSessionReport: React.FC = () => {
                                                     (improvement, index) => (
                                                         <li
                                                             key={improvement + index}
-                                                            className="flex items-center gap-2 text-independence"
+                                                            className="flex items-start gap-2 text-independence"
                                                         >
                                                             <span className="text-jelly-bean">✔</span> {improvement}
                                                         </li>
