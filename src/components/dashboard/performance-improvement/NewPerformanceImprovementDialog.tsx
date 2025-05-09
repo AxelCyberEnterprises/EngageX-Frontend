@@ -61,6 +61,8 @@ function NewPerformanceImprovementDialog() {
     toast.error("Can't load data at this time.");
   }
 
+  console.log("sessions: ", sessions);
+
   const userSessionHistoryData: Sessions[] = useMemo(
     () =>
       data?.results?.map((item) => ({
