@@ -78,7 +78,7 @@ export const tooltipItems: TooltipProps = {
     "hand-gestures": {
         title: "Hand Gestures",
         description:
-            "Assesses how effectively hand movements reinforce spoken words. The best gestures are intentional and expressive, not erratic or overused.",
+            "Assesses how well hand movements reinforce speech, ideally intentional and expressive rather than erratic or overused. Any score of 15% or more is considered satisfactory to excellent; anything less needs some improvement.",
     },
     volume: {
         title: "Volume",
