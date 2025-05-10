@@ -16,20 +16,36 @@ const SessionComparisonResults: React.FC<SessionComparisonResultsProps> = ({ ses
     return 'bg-red-100';
   };
 
-  const parseArrayData = (data: any) => {
-    if (!data) return [];
-    if (Array.isArray(data)) return data;
-    
-    try {
-      const parsed = JSON.parse(data);
-      return Array.isArray(parsed) ? parsed : [data];
-    } catch (e) {
-      if (typeof data === 'string' && data.startsWith('[') && data.endsWith(']')) {
-        return data.slice(1, -1).split(',').map(item => item.trim());
-      }
-      return [data];
+ const parseArrayData = (data: any): string[] => {
+  if (!data) return [];
+
+  // If already an array, return as is
+  if (Array.isArray(data)) return data;
+
+  // If valid JSON array
+  try {
+    const parsed = JSON.parse(data);
+    if (Array.isArray(parsed)) {
+      return parsed.map(String); // Ensure strings
     }
-  };
+  } catch (e) {
+    // Continue to fallback
+  }
+
+  // If stringified array with mixed quotes
+  if (typeof data === 'string' && data.startsWith('[') && data.endsWith(']')) {
+    const trimmed = data.slice(1, -1);
+
+    // Match values inside quotes (either '...' or "...")
+    const matches = [...trimmed.matchAll(/(['"])(.*?)\1/g)];
+    return matches.length > 0
+      ? matches.map(([, , value]) => value.trim())
+      : trimmed.split(',').map(item => item.trim().replace(/^['"]|['"]$/g, ''));
+  }
+
+  // Fallback to wrapping in array
+  return [String(data).trim()];
+};
 
   const renderInsightsList = (insights: any) => {
     const insightsArray = parseArrayData(insights);
