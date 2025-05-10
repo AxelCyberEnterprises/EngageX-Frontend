@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEndSession, useGetSessionData } from "@/hooks/sessions";
 import { pdfToImages } from "@/lib/utils";
-import { ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import pitchRoom from "../../assets/images/pngs/pitch-room.png";
@@ -63,7 +63,7 @@ const PresentationPractice: React.FC = () => {
         } else {
             setStopStreamer(true);
         }
-    }
+    };
 
     const stopTimer = (dur?: string, durationArr?: string[]) => {
         if (dur !== undefined) {
@@ -110,11 +110,9 @@ const PresentationPractice: React.FC = () => {
     const answerQuestion = () => {
         setStartQuestionTimer(true);
         if (socket.current) {
-            socket.current.send(
-                JSON.stringify(question),
-            );
+            socket.current.send(JSON.stringify(question));
         }
-    }
+    };
 
     const nextQuestion = () => {
         // Use a functional update to get the new value
@@ -151,6 +149,10 @@ const PresentationPractice: React.FC = () => {
 
     const triggerNextSlide = () => {
         sliderRef.current?.nextSlide();
+    };
+
+    const triggerPrevSlide = () => {
+        sliderRef.current?.previousSlide();
     };
 
     const { data }: { data?: any } = useGetSessionData(sessionId);
@@ -384,8 +386,8 @@ const PresentationPractice: React.FC = () => {
                                     {activeQuestion >= questionsRef.current.length - 1
                                         ? "Finish"
                                         : startQuestionTimer
-                                        ? "Next Question"
-                                        : "Skip"}
+                                          ? "Next Question"
+                                          : "Skip"}
                                 </Button>
                                 <Button
                                     className="bg-primary-blue hover:bg-primary-blue/80 py-6"
@@ -533,7 +535,13 @@ const PresentationPractice: React.FC = () => {
 
                     {slides.length > 1 && (
                         <div className="mt-3 px-4 md:px-0">
-                            <div className="flex items-center justify-between md:justify-start">
+                            <div className="flex gap-4 items-center justify-between md:justify-start">
+                                <Button
+                                    className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
+                                    onClick={triggerPrevSlide}
+                                >
+                                    <ChevronLeft className="h-4 w-4" /> Previous Slide
+                                </Button>
                                 <Button
                                     className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
                                     onClick={triggerNextSlide}
