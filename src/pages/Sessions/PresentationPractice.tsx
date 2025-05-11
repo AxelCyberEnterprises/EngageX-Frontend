@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEndSession, useGetSessionData } from "@/hooks/sessions";
 import { pdfToImages } from "@/lib/utils";
-import { ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import boardRoom2 from "../../assets/images/pngs/boardroom-2.png";
@@ -108,6 +108,10 @@ const PresentationPractice: React.FC = () => {
 
     const triggerNextSlide = () => {
         sliderRef.current?.nextSlide();
+    };
+
+    const triggerPrevSlide = () => {
+        sliderRef.current?.previousSlide();
     };
 
     const questionsRef = useRef<any>([]);
@@ -565,6 +569,12 @@ const PresentationPractice: React.FC = () => {
                                         <div className="rounded-md border-1 border-bright-gray py-2 px-4">
                                             {sliderRef.current?.currentSlideTime || "00:00"}
                                         </div>
+                                        <small
+                                            className="flex text-grey items-center text-xs ms-2 cursor-pointer"
+                                            onClick={triggerPrevSlide}
+                                        >
+                                            <ChevronLeft className="h-4 w-4" /> Previous Slide
+                                        </small>
                                         <small
                                             className="flex text-grey items-center text-xs ms-2 cursor-pointer"
                                             onClick={triggerNextSlide}
