@@ -24,6 +24,21 @@ export interface UserProfile {
   session_analysis?: string;
 }
 
+
+// Define TypeScript interfaces for the data structure
+interface TierConfig {
+  credits: number;
+  priceId: string;
+}
+
+interface StripeTiersConfig {
+  [key: string]: TierConfig;
+}
+
+interface PaymentInfo {
+  tiers: StripeTiersConfig;
+}
+
 export function useUserProfile(id: any) {
   const token = tokenManager.getToken()
   return useQuery<UserProfile>({
@@ -87,5 +102,17 @@ export function useUpdatePassword() {
       console.error("Password update failed:", error);
       throw error;
     },
+  });
+}
+
+export function usePaymentInfo() {
+  const token = tokenManager.getToken()
+  return useQuery<any>({
+    queryKey: ["payn]ment", token],
+    queryFn: async () => {
+      const response = await apiGet<any>(`/payments/stripe/status/`);
+      return response;
+    },
+    enabled: !!token
   });
 }

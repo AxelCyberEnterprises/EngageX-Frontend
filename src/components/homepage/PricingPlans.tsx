@@ -1,12 +1,30 @@
 import CheckIcon from "@/assets/images/svgs/check";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { usePaymentInfo } from "@/hooks/settings"; // Import your hook
+import { Skeleton } from "@/components/ui/skeleton"; // Import shadcn Skeleton component
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/rootReducer";
 
-interface PricingCardProps {
-  planPayment: () => void;
+interface Plan {
+  type: string;
+  price: number;
+  sessions: number;
+  contents: string[];
+  buttonText: string;
+  highlight: boolean;
+  sessionColor: string;
+  tier: string;
+  priceId: string;
 }
 
-const PricingCards: React.FC<PricingCardProps> = () => {
-  const plans = [
+const PricingCards = () => {
+  // Use the payment info hook
+  const user = useSelector((state: RootState) => state.auth.user);
+  const { data: paymentInfo, isLoading: loadingPaymentInfo } = usePaymentInfo();
+  const [processingId, setProcessingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [plans, setPlans] = useState<Plan[]>([
     {
       type: "STARTER PLAN",
       price: 180,
@@ -15,7 +33,8 @@ const PricingCards: React.FC<PricingCardProps> = () => {
       buttonText: "Select Starter Plan",
       highlight: false,
       sessionColor: "text-[#64BA9F]",
-      paymentLink: 'https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-d77fb68013f54350b75d514d54189fd1191971d0274b4d16bb762c22406bdf7156e09114df9548b88a6b0c9d519b1239?locale=EN_US'
+      tier: "starter",
+      priceId: ""
     },
     {
       type: "GROWTH PLAN",
@@ -25,7 +44,8 @@ const PricingCards: React.FC<PricingCardProps> = () => {
       buttonText: "Choose Growth Plan",
       highlight: true,
       sessionColor: "text-amber-500",
-      paymentLink: 'https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-46dbc56154fd4e2fa0150a8246276351757f6a348eca4c02b3b4ebaf67ef244f7b923ec4fce641d0b42984bfc07c8491?locale=EN_US '
+      tier: "growth",
+      priceId: ""
     },
     {
       type: "PRO PLAN",
@@ -35,7 +55,8 @@ const PricingCards: React.FC<PricingCardProps> = () => {
       buttonText: "Go Pro",
       highlight: false,
       sessionColor: "text-[#64BA9F]",
-      paymentLink: 'https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-83fccafc8b004617b1f57152c42c9bd6b711beae594e4ba3b19fcca2ba0c10800257b01db53b4fd4bd54ca1d47bece0e?locale=EN_US '
+      tier: "pro",
+      priceId: ""
     },
     {
       type: "ULTIMATE PLAN",
@@ -49,12 +70,132 @@ const PricingCards: React.FC<PricingCardProps> = () => {
       buttonText: "Get the Ultimate Plan",
       highlight: false,
       sessionColor: "text-[#64BA9F]",
-      paymentLink: 'https://connect.intuit.com/pay/CareerDoctorLlc/scs-v1-b4372ea1177e40689bfc3080f896e78ec455af91c9a543eea0b08df2de1ab9b090507c99ea5048beaf1f2b31984ddf0a?locale=EN_US '
+      tier: "ultimate",
+      priceId: ""
     },
-  ];
+  ]);
+  
+  useEffect(() => {
+    if (!loadingPaymentInfo && paymentInfo?.tiers) {
+      if (!paymentInfo.is_configured || !paymentInfo.tiers) {
+        setError('Payment system is not currently configured. Please try again later.');
+        return;
+      }
+      
+      setPlans(prevPlans => 
+        prevPlans.map(plan => {
+          const tierData = paymentInfo.tiers[plan.tier];
+          if (tierData) {
+            return {
+              ...plan,
+              priceId: tierData.priceId,
+              sessions: tierData.credits
+            };
+          }
+          return plan;
+        })
+      );
+    }
+  }, [paymentInfo, loadingPaymentInfo]);
+
+  const handleCheckout = async (plan: Plan) => {
+    if (processingId || !plan.priceId) return;
+    
+    // Check if Stripe is configured
+    if (!paymentInfo?.is_configured) {
+      setError('Payment system is not currently configured. Please try again later.');
+      return;
+    }
+    
+    setProcessingId(plan.tier);
+    setError(null);
+    
+    try {
+      const email = user?.email || '';
+      
+      const response = await axios.post('https://api.engagexai.io/payments/checkout/', {
+        priceId: plan.priceId,
+        email: email,
+        tier: plan.tier,
+        success_url: paymentInfo?.success_url,
+        cancel_url: paymentInfo?.cancel_url
+      });
+      
+      if (response.data && response.data.url) {
+        window.location.href = response.data.url;
+      } else {
+        throw new Error('Invalid response from checkout API');
+      }
+    } catch (err: any) {
+      console.error('Checkout error:', err);
+      const errorMessage = err.response?.data?.error || 'An error occurred during checkout. Please try again.';
+      setError(errorMessage);
+      setProcessingId(null);
+    }
+  };
+
+  // Render loading state with skeletons
+  if (loadingPaymentInfo) {
+    return (
+      <div className="font-montreal grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-x-6 gap-y-10 w-full max-w-6xl mx-auto font-normal rounded-[20px]">
+        {[...Array(4)].map((_, index) => (
+          <div key={index} className="relative flex-1 rounded-3xl p-6 flex flex-col justify-between border border-[#BDBDBD]">
+            <div className="space-y-8">
+              <div className="space-y-4 border-b border-[#1A1A1A] pb-6">
+                <div className="flex justify-between">
+                  <Skeleton className="h-8 w-24 rounded-lg" />
+                  <Skeleton className="h-6 w-28 rounded-md" />
+                </div>
+                <div className="flex flex-col gap-2 items-start mt-4">
+                  <Skeleton className="h-10 w-36 rounded-md" />
+                  <Skeleton className="h-4 w-32 rounded-md" />
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex items-center">
+                  <Skeleton className="h-5 w-5 rounded-full mr-3" />
+                  <Skeleton className="h-4 w-48 rounded-md" />
+                </div>
+                <div className="flex items-center">
+                  <Skeleton className="h-5 w-5 rounded-full mr-3" />
+                  <Skeleton className="h-4 w-36 rounded-md" />
+                </div>
+                {index === 3 && (
+                  <div className="flex items-center">
+                    <Skeleton className="h-5 w-5 rounded-full mr-3" />
+                    <Skeleton className="h-4 w-42 rounded-md" />
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <Skeleton className="h-10 w-full rounded-lg mt-10" />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="font-montreal grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-x-6 gap-y-10 w-full max-w-6xl mx-auto font-normal rounded-[20px]">
+      {error && (
+        <div className="lg:col-span-4 sm:col-span-2 col-span-1">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+            {error}
+          </div>
+        </div>
+      )}
+
+      {/* Display a message if payment system is not configured */}
+      {!loadingPaymentInfo && (!paymentInfo?.is_configured || !paymentInfo?.tiers) && !error && (
+        <div className="lg:col-span-4 sm:col-span-2 col-span-1">
+          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative">
+            Payment system is currently unavailable. Please try again later or contact support.
+          </div>
+        </div>
+      )}
+
       {plans.map((plan, index) => (
         <div
           key={index}
@@ -68,6 +209,14 @@ const PricingCards: React.FC<PricingCardProps> = () => {
             <div className="absolute -top-4 lg:right-0 sm:right-auto right-0 lg:ml-0 sm:ml-5 ml-0 lg:mr-0 sm:mr-0 mr-5 lg:left-0 flex justify-center">
               <div className="px-4 md:py-[5px] py-1 bg-[#EFF6FC] text-[#262B3A] rounded-full flex items-center text-sm">
                 <span className="mr-1">🔥</span> Recommended
+              </div>
+            </div>
+          )}
+          
+          {plan.tier === "tester" && (
+            <div className="absolute -top-4 lg:right-0 sm:right-auto right-0 lg:ml-0 sm:ml-5 ml-0 lg:mr-0 sm:mr-0 mr-5 lg:left-0 flex justify-center">
+              <div className="px-4 md:py-[5px] py-1 bg-blue-100 text-blue-800 rounded-full flex items-center text-sm">
+                <span className="mr-1">🚀</span> Quick Start
               </div>
             </div>
           )}
@@ -120,18 +269,17 @@ const PricingCards: React.FC<PricingCardProps> = () => {
             </div>
           </div>
 
-          <a
-            href={plan.paymentLink}
-            target="_blank"
-            // onClick={planPayment}
+          <button
+            onClick={() => handleCheckout(plan)}
+            disabled={!!processingId || !plan.priceId || !paymentInfo?.is_configured}
             className={`text-center text-sm mt-10 w-full py-3 rounded-lg group-hover:bg-alice-blue group-hover:text-black
             ${plan.highlight
                 ? "bg-white text-slate-800"
                 : "bg-slate-400 text-white group-hover:bg-alice-blue group-hover:text-black"
-              }`}
+              } ${(processingId === plan.tier || !plan.priceId || !paymentInfo?.is_configured) ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            {plan.buttonText}
-          </a>
+            {processingId === plan.tier ? "Processing..." : plan.buttonText}
+          </button>
         </div>
       ))}
     </div>
