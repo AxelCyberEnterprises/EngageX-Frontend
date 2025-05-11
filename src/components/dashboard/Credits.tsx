@@ -24,7 +24,7 @@ const Credits: React.FC<CreditProps> = ({
           <p className="text-sm text-[#6F7C8E] mb-6">Maintain your account through buying credits, simple pricing. No hidden fees.</p>
         </div>
         <PricingCards
-          planPayment={planPayment}
+          // planPayment={planPayment}
         />
 
         <div className="py-16 px-8 flex flex-col justify-center items-center">
