@@ -28,7 +28,7 @@ export const pitchPracticeQuickTips = [
     },
     {
         heading: "Make it human",
-        description: "Share who benefits and why it matters—connect emotionally, not just logically.",
+        description: "Share who benefits and why it matters. Connect emotionally, not just logically.",
     },
     {
         heading: "End with a clear ask",

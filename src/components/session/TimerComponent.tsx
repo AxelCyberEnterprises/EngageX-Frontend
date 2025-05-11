@@ -4,45 +4,58 @@ import SegmentedProgressBar from "../dashboard/SegmentedProgressBar";
 interface TimerComponentProps {
     minutes: number;
     start: boolean;
-    onStop?: () => void; // Optional callback when timer ends
+    onStop?: () => void;
 }
 
 const TimerComponent: React.FC<TimerComponentProps> = ({ minutes, start, onStop }) => {
     const totalTime = minutes * 60;
     const [timeLeft, setTimeLeft] = useState(totalTime);
-    const hasStoppedRef = useRef(false); // Ensure `onStop` runs only once per countdown
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const hasStoppedRef = useRef(false);
 
+    // Reset timer when `start` becomes false
     useEffect(() => {
-        if (!start || timeLeft <= 0) return;
+        if (!start) {
+            // Cleanup interval and reset timer
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+            setTimeLeft(totalTime); // Reset timer
+            hasStoppedRef.current = false; // Reset stop flag
+            return;
+        }
 
-        const interval = setInterval(() => {
-            setTimeLeft((prev) => prev - 1);
+        // Start timer
+        intervalRef.current = setInterval(() => {
+            setTimeLeft((prev) => {
+                if (prev <= 1) {
+                    clearInterval(intervalRef.current!);
+                    intervalRef.current = null;
+                    return 0;
+                }
+                return prev - 1;
+            });
         }, 1000);
 
-        return () => clearInterval(interval);
-    }, [start, timeLeft]);
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+        };
+    }, [start, totalTime]);
 
-    // Reset timer and flag when `start` goes true
+    // Notify parent when timer finishes
     useEffect(() => {
-        if (start) {
-            setTimeLeft(totalTime);
-            hasStoppedRef.current = false;
-        }
-    }, [start, totalTime, minutes]);
-
-    // Handle timer completion
-    useEffect(() => {
-        if (timeLeft <= 0 && start && !hasStoppedRef.current) {
+        if (start && timeLeft === 0 && !hasStoppedRef.current) {
             hasStoppedRef.current = true;
-            if (onStop) onStop();
+            onStop?.();
         }
     }, [timeLeft, start, onStop]);
 
     const percentage = ((totalTime - timeLeft) / totalTime) * 100;
-
-    let progressBarColor = "#40B869";
-    if (percentage >= 80) progressBarColor = "#DD524D";
-    else if (percentage >= 50) progressBarColor = "#F5B546";
+    const progressBarColor = percentage >= 80 ? "#DD524D" : percentage >= 50 ? "#F5B546" : "#40B869";
 
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60);
@@ -58,7 +71,7 @@ const TimerComponent: React.FC<TimerComponentProps> = ({ minutes, start, onStop 
                     {formatTime(timeLeft)}
                 </span>
             </p>
-            <SegmentedProgressBar percent={percentage} color={progressBarColor} divisions={1} />
+            <SegmentedProgressBar percent={start ? percentage : 0} color={progressBarColor} divisions={1} />
         </div>
     );
 };

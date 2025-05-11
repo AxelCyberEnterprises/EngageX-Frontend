@@ -44,17 +44,17 @@ const PublicSpeaking: React.FC = () => {
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [questions, setQuestions] = useState<any | []>([]);
     const [questionImg, setQuestionImg] = useState<string>(
         "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png",
     );
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
+
         setDuration(duration);
         setStopTime(true);
 
-        if (questions.length > 0) {
+        if (activeQuestion < questionsRef.current.length - 1) {
             setDialogOneOpen(false);
             setQuestionDialogOpen(true);
         } else {
@@ -63,7 +63,7 @@ const PublicSpeaking: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
-        if (questions.length > 0) {
+        if (activeQuestion < questionsRef.current.length - 1) {
             setDialogOneOpen(false);
             setQuestionDialogOpen(true);
         } else {
@@ -78,52 +78,52 @@ const PublicSpeaking: React.FC = () => {
         }
     };
 
+    const questionsRef = useRef<any>([]);
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
-    const numberOfQuestions = questions.length;
-    const question = questions[activeQuestion]?.question;
+    const question = questionsRef.current[activeQuestion]?.question;
 
     const answerQuestion = () => {
         setStartQuestionTimer(true);
         if (socket.current) {
-            socket.current.send(
-                JSON.stringify(question),
-            );
-        }
-    }
-
-    const nextQuestion = () => {
-        if (activeQuestion < numberOfQuestions - 1) {
-            setQuestionDialogOpen(false);
-            setActiveQuestion((prev: number) => prev + 1);
-            const randomImg =
-                Math.random() > 0.5
-                    ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
-                    : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png";
-            setQuestionImg(randomImg);
-            setQuestionDialogOpen(true);
-            setStartQuestionTimer(false);
-            questionTimerRef.current = 0.5; // Reset the timer to 0.5 seconds
-
-        } else {
-            setQuestionDialogOpen(false);
-            setStopStreamer(true);
-            setAllowSwitch(false);
-            setDialogOneOpen(false);
-            setIsMuted(false);
-            setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/PublicSpeakingRoomClap.mp4");
-            setTimeout(() => {
-                setDialogTwoOpen(true);
-            }, 7000);
+            socket.current.send(JSON.stringify(question));
         }
     };
 
-    useEffect(() => {
-        questionTimerRef.current = 0.5; // Reset the timer to 0.5 seconds
-    }, [isQuestionDialogOpen]);
+    const nextQuestion = () => {
+        // Use a functional update to get the new value
+        setActiveQuestion((prev: number) => {
+            const nQuestions = questionsRef.current.length;
+            setStartQuestionTimer(false);
+
+            if (prev < nQuestions - 1) {
+                // NOT last question, prepare the next one
+                setQuestionDialogOpen(false);
+                setQuestionImg(
+                    Math.random() > 0.5
+                        ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
+                        : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png",
+                );
+                setQuestionDialogOpen(true);
+                return prev + 1;
+            } else {
+                // Last question, finish up
+                setQuestionDialogOpen(false);
+                setStopStreamer(true);
+                setAllowSwitch(false);
+                setDialogOneOpen(false);
+                setIsMuted(false);
+                setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/PublicSpeakingRoomClap.mp4");
+                setTimeout(() => {
+                    setDialogTwoOpen(true);
+                }, 7000);
+                return prev; // no increment, or return to 0 if you want
+            }
+        });
+    };
 
     useEffect(() => {
         const seshData = localStorage.getItem("sessionData");
@@ -158,7 +158,7 @@ const PublicSpeaking: React.FC = () => {
     useEffect(() => {
         if (!sessionId) return;
         console.log("StopStreamer", stopStreamer);
-        
+
         const ws = new WebSocket(
             `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
         );
@@ -173,12 +173,11 @@ const PublicSpeaking: React.FC = () => {
             try {
                 const parsed = JSON.parse(event.data);
                 if (parsed.type === "audience_question") {
-                    if (questions.length < 4) {
-                        setQuestions((prevQuestions: any) => [...prevQuestions, parsed]);
-                    } else {
-                        questions.shift();
-                        setQuestions((prevQuestions: any) => [...prevQuestions, parsed]);
+                    if (questionsRef.current.length < 4) {
+                        questionsRef.current.push(parsed);
                     }
+                    console.log("number of questions", questionsRef.current.length);
+                    console.log("questions", questionsRef.current);
                 } else if (parsed.type === "full_analysis_update") {
                     console.log(parsed);
                     setFeedback(parsed);
@@ -203,11 +202,7 @@ const PublicSpeaking: React.FC = () => {
             console.log("Closing WebSocket because stop is true");
             ws.close();
         }
-
-        return () => {
-            ws.close();
-        };
-    }, [sessionId, allowSwitch, stopStreamer]);
+    }, [sessionId, stopStreamer]);
 
     useEffect(() => {
         let isMounted = true;
@@ -250,7 +245,6 @@ const PublicSpeaking: React.FC = () => {
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
                                 const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/${parsed.text}/${random}.mp4`;
-                                console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
                         }
@@ -346,7 +340,10 @@ const PublicSpeaking: React.FC = () => {
             </section>
 
             {/* question dialog  */}
-            <Dialog open={isQuestionDialogOpen}>
+            <Dialog
+                open={isQuestionDialogOpen}
+                onOpenChange={activeQuestion > questionsRef.current.length - 1 ? setQuestionDialogOpen : () => {}}
+            >
                 <DialogContent className="flex flex-col gap-4">
                     <div className="flex gap-4">
                         <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
@@ -354,18 +351,19 @@ const PublicSpeaking: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            <DialogTitle className="text-primary-blue/70 font-normal text-2xl">
-                                Question
-                            </DialogTitle>
+                            <DialogTitle className="text-primary-blue/70 font-normal text-2xl">Question</DialogTitle>
                             <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
 
                             <div className="flex justify-end gap-3">
                                 <Button
                                     className="bg-transparent hover:bg-bright-gray text-independence py-6"
                                     onClick={() => nextQuestion()}
-                                    disabled={startQuestionTimer}
                                 >
-                                    Skip
+                                    {activeQuestion >= questionsRef.current.length - 1
+                                        ? "Finish"
+                                        : startQuestionTimer
+                                          ? "Next Question"
+                                          : "Skip"}
                                 </Button>
                                 <Button
                                     className="bg-primary-blue hover:bg-primary-blue/80 py-6"
@@ -378,7 +376,11 @@ const PublicSpeaking: React.FC = () => {
                         </div>
                     </div>
 
-                    <TimerComponent minutes={questionTimerRef.current} start={startQuestionTimer} onStop={() => nextQuestion()} />
+                    <TimerComponent
+                        minutes={questionTimerRef.current}
+                        start={startQuestionTimer}
+                        onStop={() => nextQuestion()}
+                    />
 
                     <img
                         src={questionImg}

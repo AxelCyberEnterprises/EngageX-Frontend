@@ -44,7 +44,7 @@ const SlidePreviewAndSettingsSection = ({ className, form }: ISlidePreviewAndSet
                 />
                 <QuickTips
                     tips={sessionType === "presentation" ? presentationPracticeQuickTips : pitchPracticeQuickTips}
-                    className="p-3"
+                    className="p-3 [&_ul]:pl-4"
                 />
             </>
         </section>

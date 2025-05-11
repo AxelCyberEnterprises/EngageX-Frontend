@@ -68,24 +68,28 @@ const PitchSessionReport: React.FC = () => {
         }
     }, [id, refetch]);
 
-    const parseStrengthsAndImprovements = useCallback((input: string) => {
-        // Remove the outer quotes if the input is a stringified string
-        if (input.startsWith('"') && input.endsWith('"')) {
-            input = input.slice(1, -1);
+    const parseStrengthsAndImprovements = useCallback((input: string): string[] => {
+        try {
+            // Remove outer quotes if it's a quoted string
+            if (input.startsWith('"') && input.endsWith('"')) {
+                input = input.slice(1, -1);
+            }
+
+            // Replace fancy escaped quotes if necessary
+            input = input.replace(/\\"/g, '"');
+
+            // Remove outer brackets
+            const trimmed = input.trim().slice(1, -1);
+
+            // Match substrings wrapped in either single or double quotes
+            const matches = [...trimmed.matchAll(/(['"])(.*?)\1/g)];
+
+            // Return the inner contents of each matched quote group
+            return matches.map(([, , content]) => content.trim());
+        } catch (e) {
+            console.error("Failed to parse input:", e);
+            return [];
         }
-
-        // Remove the outer [ ]
-        const trimmed = input.trim().slice(1, -1);
-
-        // Split by comma, then trim and remove only leading and trailing single quotes
-        const elements = trimmed.split(/,(?=(?:[^']*'[^']*')*[^']*$)/).map((el) => {
-            const trimmedEl = el.trim();
-            const unquoted = trimmedEl.replace(/^'(.*)'$/, "$1");
-            return unquoted;
-        });
-
-        // Strip surrounding quotes from each string
-        return elements.map((str) => str.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1"));
     }, []);
 
     const variety = [
@@ -341,9 +345,9 @@ const PitchSessionReport: React.FC = () => {
                             </small>
                         </div>
 
-                        <div className="flex flex-col md:flex-row w-full items-stretch gap-3">
+                        <div className="flex flex-col md:flex-row w-full gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
-                                <div className="border-1 border-bright-gray rounded-xl p-4">
+                                <div className="flex flex-col justify-between h-full border-1 border-bright-gray rounded-xl p-4">
                                     <h6 className="mb-3">Audience Engagement</h6>
                                     <div className="chart__div">
                                         <ShadLineChart
@@ -357,12 +361,14 @@ const PitchSessionReport: React.FC = () => {
                                         />
                                     </div>
                                     <p className="mt-2">
-                                        <span className="text-medium-sea-green">Trigger Response</span> measures audience engagement by tracking how specific words or phrases evoke a response or reaction.
+                                        <span className="text-medium-sea-green">Trigger Response</span> measures
+                                        audience engagement by tracking how specific words or phrases evoke a response
+                                        or reaction.
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="flex flex-col justify-between border-1 border-bright-gray rounded-xl p-4 w-full md:w-5/12 lg:me-0">
+                            <div className="flex flex-col border-1 border-bright-gray rounded-xl p-4 w-full md:w-5/12 lg:me-0">
                                 <h6 className="mb-3">Overall Captured Impact</h6>
                                 <div className="relative w-full h-70 flex flex-col items-center pt-10">
                                     <SemiCircleProgress
@@ -373,15 +379,19 @@ const PitchSessionReport: React.FC = () => {
                                     <div className="absolute bottom-16 text-center">
                                         <h4 className="mb-4">{data.overall_captured_impact}%</h4>
                                         {(() => {
-                                            let color = "#252A39";
-                                            let text = "SATISFACTORY";
+                                            let color = "#BC0010";
+                                            let text = "NEEDS IMPROVEMENT";
                                             if (data.overall_captured_impact >= 80) {
                                                 color = "#40B869";
                                                 text = "EXCELLENT";
+                                            } else if (data.overall_captured_impact >= 70) {
+                                                color = "#EEBC89";
+                                                text = "GOOD";
                                             } else if (data.overall_captured_impact >= 50) {
                                                 color = "#F5B546";
-                                                text = "GOOD";
+                                                text = "SATISFACTORY";
                                             }
+
                                             return (
                                                 <div
                                                     className="rounded-lg px-4 py-2"
@@ -393,8 +403,25 @@ const PitchSessionReport: React.FC = () => {
                                         })()}
                                     </div>
                                 </div>
+                                <div className="mb-4">
+                                    <p className="font-semibold text-sm">
+                                        49% and below = <span className="text-[#BC0010]">Needs Improvement</span>
+                                    </p>
+                                    <p className="font-semibold text-sm">
+                                        50% to 69% = <span className="text-[#F5B546]">Satisfactory</span>
+                                    </p>
+                                    <p className="font-semibold text-sm">
+                                        70% to 79% = <span className="text-[#EEBC89]">Good</span>
+                                    </p>
+                                    <p className="font-semibold text-sm">
+                                        80% and above = <span className="text-[#40B869]">Excellent</span>
+                                    </p>
+                                </div>
                                 <p>
-                                    <span className="text-medium-sea-green">Overall Captured Impact</span> is calculated by your ability to deliver transformative communication that inspires your audience, leaves a lasting impression, and positions you as a memorable, purpose-driven speaker.
+                                    <span className="text-medium-sea-green">Overall Captured Impact</span> is calculated
+                                    by your ability to deliver transformative communication that inspires your audience,
+                                    leaves a lasting impression, and positions you as a memorable, purpose-driven
+                                    speaker.
                                 </p>
                             </div>
                         </div>
@@ -587,7 +614,7 @@ const PitchSessionReport: React.FC = () => {
                                                     (strength, index) => (
                                                         <li
                                                             key={strength + index}
-                                                            className="flex items-center gap-2 text-independence"
+                                                            className="flex items-start gap-2 text-independence"
                                                         >
                                                             <span className="text-medium-sea-green">✔</span> {strength}
                                                         </li>
@@ -603,7 +630,7 @@ const PitchSessionReport: React.FC = () => {
                                                     (improvement, index) => (
                                                         <li
                                                             key={improvement + index}
-                                                            className="flex items-center gap-2 text-independence"
+                                                            className="flex items-start gap-2 text-independence"
                                                         >
                                                             <span className="text-jelly-bean">✔</span> {improvement}
                                                         </li>
