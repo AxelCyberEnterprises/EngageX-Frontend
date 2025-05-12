@@ -24,21 +24,6 @@ export interface UserProfile {
   session_analysis?: string;
 }
 
-
-// Define TypeScript interfaces for the data structure
-interface TierConfig {
-  credits: number;
-  priceId: string;
-}
-
-interface StripeTiersConfig {
-  [key: string]: TierConfig;
-}
-
-interface PaymentInfo {
-  tiers: StripeTiersConfig;
-}
-
 export function useUserProfile(id: any) {
   const token = tokenManager.getToken()
   return useQuery<UserProfile>({

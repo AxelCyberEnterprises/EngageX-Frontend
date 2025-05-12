@@ -1,5 +1,5 @@
 import CheckIcon from "@/assets/images/svgs/check";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { usePaymentInfo } from "@/hooks/settings"; // Import your hook
 import { Skeleton } from "@/components/ui/skeleton"; // Import shadcn Skeleton component
