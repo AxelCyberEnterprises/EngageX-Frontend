@@ -19,7 +19,6 @@ interface Plan {
 }
 
 const PricingCards = () => {
-  // Use the payment info hook
   const user = useSelector((state: RootState) => state.auth.user);
   const { data: paymentInfo, isLoading: loadingPaymentInfo } = usePaymentInfo();
   const [processingId, setProcessingId] = useState<string | null>(null);
@@ -81,15 +80,19 @@ const PricingCards = () => {
         setError('Payment system is not currently configured. Please try again later.');
         return;
       }
-      
-      setPlans(prevPlans => 
+  
+      setPlans(prevPlans =>
         prevPlans.map(plan => {
-          const tierData = paymentInfo.tiers[plan.tier];
+          let tierKey = plan.tier;
+          if (plan.tier === "starter" && paymentInfo.tiers.tester) {
+            tierKey = "tester";
+          }
+          const tierData = paymentInfo.tiers[tierKey];
           if (tierData) {
             return {
               ...plan,
               priceId: tierData.priceId,
-              sessions: tierData.credits
+              sessions: tierData.credits,
             };
           }
           return plan;
@@ -97,6 +100,7 @@ const PricingCards = () => {
       );
     }
   }, [paymentInfo, loadingPaymentInfo]);
+  
 
   const handleCheckout = async (plan: Plan) => {
     if (processingId || !plan.priceId) return;
@@ -110,12 +114,10 @@ const PricingCards = () => {
     setProcessingId(plan.tier);
     setError(null);
     
-    try {
-      const email = user?.email || '';
-      
+    try {      
       const response = await axios.post('https://api.engagexai.io/payments/checkout/', {
         priceId: plan.priceId,
-        email: email,
+        email: user?.email,
         tier: plan.tier,
         success_url: paymentInfo?.success_url,
         cancel_url: paymentInfo?.cancel_url
