@@ -21,7 +21,7 @@ const faqs: FaqItem[] = [
   {
     question: "Can I practice with my own slides?",
     answer:
-      "Yes! You can upload and practice with your own presentation slides",
+      "Yes! You can upload and practice with your own presentation slides. Your slide content is protected by auto-deletion from the platform upon finishing a session.",
   },
   {
     question: "Can I change my plan later?",
