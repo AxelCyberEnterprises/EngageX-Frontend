@@ -345,9 +345,9 @@ const PitchSessionReport: React.FC = () => {
                             </small>
                         </div>
 
-                        <div className="flex flex-col md:flex-row w-full items-stretch gap-3">
+                        <div className="flex flex-col md:flex-row w-full gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
-                                <div className="border-1 border-bright-gray rounded-xl p-4">
+                                <div className="flex flex-col justify-between h-full border-1 border-bright-gray rounded-xl p-4">
                                     <h6 className="mb-3">Audience Engagement</h6>
                                     <div className="chart__div">
                                         <ShadLineChart
@@ -368,7 +368,7 @@ const PitchSessionReport: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col justify-between border-1 border-bright-gray rounded-xl p-4 w-full md:w-5/12 lg:me-0">
+                            <div className="flex flex-col border-1 border-bright-gray rounded-xl p-4 w-full md:w-5/12 lg:me-0">
                                 <h6 className="mb-3">Overall Captured Impact</h6>
                                 <div className="relative w-full h-70 flex flex-col items-center pt-10">
                                     <SemiCircleProgress
@@ -379,15 +379,19 @@ const PitchSessionReport: React.FC = () => {
                                     <div className="absolute bottom-16 text-center">
                                         <h4 className="mb-4">{data.overall_captured_impact}%</h4>
                                         {(() => {
-                                            let color = "#252A39";
-                                            let text = "SATISFACTORY";
+                                            let color = "#BC0010";
+                                            let text = "NEEDS IMPROVEMENT";
                                             if (data.overall_captured_impact >= 80) {
                                                 color = "#40B869";
                                                 text = "EXCELLENT";
+                                            } else if (data.overall_captured_impact >= 70) {
+                                                color = "#EEBC89";
+                                                text = "GOOD";
                                             } else if (data.overall_captured_impact >= 50) {
                                                 color = "#F5B546";
-                                                text = "GOOD";
+                                                text = "SATISFACTORY";
                                             }
+
                                             return (
                                                 <div
                                                     className="rounded-lg px-4 py-2"
@@ -398,6 +402,20 @@ const PitchSessionReport: React.FC = () => {
                                             );
                                         })()}
                                     </div>
+                                </div>
+                                <div className="mb-4">
+                                    <p className="font-semibold text-sm">
+                                        49% and below = <span className="text-[#BC0010]">Needs Improvement</span>
+                                    </p>
+                                    <p className="font-semibold text-sm">
+                                        50% to 69% = <span className="text-[#F5B546]">Satisfactory</span>
+                                    </p>
+                                    <p className="font-semibold text-sm">
+                                        70% to 79% = <span className="text-[#EEBC89]">Good</span>
+                                    </p>
+                                    <p className="font-semibold text-sm">
+                                        80% and above = <span className="text-[#40B869]">Excellent</span>
+                                    </p>
                                 </div>
                                 <p>
                                     <span className="text-medium-sea-green">Overall Captured Impact</span> is calculated
