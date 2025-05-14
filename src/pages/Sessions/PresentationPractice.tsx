@@ -526,19 +526,39 @@ const PresentationPractice: React.FC = () => {
                             />
                         </div>
 
-                        <div className="w-45 h-25 md:w-75 md:h-45 absolute left-0 bottom-0 z-5">
-                            {!slides.length && seshData?.slides_file ? (
-                                <Skeleton className="w-full h-full bg-gray" />
-                            ) : (
-                                <ImageSlider
-                                    ref={sliderRef}
-                                    images={slides}
-                                    start={startTimer}
-                                    stop={stopTime}
-                                    onStop={(durationArr) => {
-                                        stopTimer(undefined, durationArr);
-                                    }}
-                                />
+                        <div className="absolute left-0 bottom-0 z-5">
+                            <div className="w-45 h-25 md:w-60 md:h-35">
+                                {!slides.length && seshData?.slides_file ? (
+                                    <Skeleton className="w-full h-full bg-gray" />
+                                ) : (
+                                    <ImageSlider
+                                        ref={sliderRef}
+                                        images={slides}
+                                        start={startTimer}
+                                        stop={stopTime}
+                                        onStop={(durationArr) => {
+                                            stopTimer(undefined, durationArr);
+                                        }}
+                                    />
+                                )}
+                            </div>
+                            {slides.length > 1 && (
+                                <div className="mt-3 px-4 md:px-0">
+                                    <div className="flex gap-4 items-center justify-between md:justify-start">
+                                        <Button
+                                            className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
+                                            onClick={triggerPrevSlide}
+                                        >
+                                            <ChevronLeft className="h-4 w-4" /> Previous Slide
+                                        </Button>
+                                        <Button
+                                            className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
+                                            onClick={triggerNextSlide}
+                                        >
+                                            Next Slide <ChevronRight className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -549,7 +569,7 @@ const PresentationPractice: React.FC = () => {
                             <p className="text-grey">{sessionData?.notes ? sessionData?.notes : "No note added"}</p>
                         </div>
 
-                        {slides.length > 1 && (
+                        {/* {slides.length > 1 && (
                             <div className="w-2/3 rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5 hidden md:inline-block">
                                 <div className="flex items-center justify-between">
                                     <div className="w-2/3 h-40">
@@ -584,7 +604,7 @@ const PresentationPractice: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        )} */}
                     </div>
 
                     <div className="w-full flex justify-end mt-16 px-4 md:px-0">
