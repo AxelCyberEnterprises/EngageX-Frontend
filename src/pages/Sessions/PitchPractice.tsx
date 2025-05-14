@@ -516,41 +516,42 @@ const PresentationPractice: React.FC = () => {
                             />
                         </div>
 
-                        <div className="w-45 h-25 md:w-60 md:h-35 absolute left-0 bottom-0 z-5">
-                            {!slides.length && seshData?.slides_file ? (
-                                <Skeleton className="w-full h-full bg-gray" />
-                            ) : (
-                                <ImageSlider
-                                    ref={sliderRef}
-                                    images={slides}
-                                    start={startTimer}
-                                    stop={stopTime}
-                                    onStop={(durationArr) => {
-                                        stopTimer(undefined, durationArr);
-                                    }}
-                                />
+                        <div className="absolute left-0 bottom-0 z-5">
+                            <div className="w-45 h-25 md:w-60 md:h-35">
+                                {!slides.length && seshData?.slides_file ? (
+                                    <Skeleton className="w-full h-full bg-gray" />
+                                ) : (
+                                    <ImageSlider
+                                        ref={sliderRef}
+                                        images={slides}
+                                        start={startTimer}
+                                        stop={stopTime}
+                                        onStop={(durationArr) => {
+                                            stopTimer(undefined, durationArr);
+                                        }}
+                                    />
+                                )}
+                            </div>
+                            {slides.length > 1 && (
+                                <div className="mt-3 px-4 md:px-0">
+                                    <div className="flex gap-4 items-center justify-between md:justify-start">
+                                        <Button
+                                            className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
+                                            onClick={triggerPrevSlide}
+                                        >
+                                            <ChevronLeft className="h-4 w-4" /> Previous Slide
+                                        </Button>
+                                        <Button
+                                            className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
+                                            onClick={triggerNextSlide}
+                                        >
+                                            Next Slide <ChevronRight className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
-
-                    {slides.length > 1 && (
-                        <div className="mt-3 px-4 md:px-0">
-                            <div className="flex gap-4 items-center justify-between md:justify-start">
-                                <Button
-                                    className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
-                                    onClick={triggerPrevSlide}
-                                >
-                                    <ChevronLeft className="h-4 w-4" /> Previous Slide
-                                </Button>
-                                <Button
-                                    className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
-                                    onClick={triggerNextSlide}
-                                >
-                                    Next Slide <ChevronRight className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        </div>
-                    )}
 
                     <div className="px-4 md:px-0 flex gap-3">
                         <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">

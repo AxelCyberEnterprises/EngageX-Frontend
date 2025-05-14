@@ -117,7 +117,7 @@ const SlidesPreviewer = forwardRef<SlidesPreviewerHandle, SlidesPreviewerProps>(
                         key={index}
                         src={img}
                         alt={`Slide ${index + 1}`}
-                        className={`absolute w-full h-full object-cover transition-opacity duration-1000 ${
+                        className={`absolute w-full h-full object-cover transition-opacity border border-primary-blue duration-1000 ${
                             index === currentSlide ? "opacity-100" : "opacity-0"
                         }`}
                     />
