@@ -44,8 +44,8 @@ const PresentationPractice: React.FC = () => {
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
         sessionData?.virtual_environment === "board_room_1"
-            ? "https://d37wg920pbp90y.cloudfront.net/static-videos/board_room_1/thinking/1.mp4"
-            : "https://d37wg920pbp90y.cloudfront.net/static-videos/board_room_2/thinking/1.mp4",
+            ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/thinking/1.mp4"
+            : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_2/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -54,7 +54,7 @@ const PresentationPractice: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [questionImg, setQuestionImg] = useState<string>(
-        `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/bw_handraise.png`,
+        `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`,
     );
 
     const end = () => {
@@ -97,8 +97,8 @@ const PresentationPractice: React.FC = () => {
             setIsMuted(false);
             setVideoUrl(
                 selectedRoom.current === "board_room_1"
-                    ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
-                    : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
+                    ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom1Clap.mp4"
+                    : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4",
             );
             setTimeout(() => {
                 setDialogTwoOpen(true);
@@ -138,8 +138,8 @@ const PresentationPractice: React.FC = () => {
             if (prev < nQuestions - 1) {
                 const randomImg =
                     Math.random() < 0.5
-                        ? `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/bw_handraise.png`
-                        : `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/wm_handraise.png`;
+                        ? `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`
+                        : `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/wm_handraise.png`;
                 setQuestionImg(randomImg);
                 setQuestionDialogOpen(true);
                 return prev + 1;
@@ -152,8 +152,8 @@ const PresentationPractice: React.FC = () => {
                 setIsMuted(false);
                 setVideoUrl(
                     selectedRoom.current === "board_room_1"
-                        ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
-                        : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
+                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom1Clap.mp4"
+                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4",
                 );
                 setTimeout(() => {
                     setDialogTwoOpen(true);
@@ -308,7 +308,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom.current}/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom.current}/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
