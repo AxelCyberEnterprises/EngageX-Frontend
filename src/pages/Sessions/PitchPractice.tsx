@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEndSession, useGetSessionData } from "@/hooks/sessions";
 import { pdfToImages } from "@/lib/utils";
-import { ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import pitchRoom from "../../assets/images/pngs/pitch-room.png";
@@ -42,7 +42,7 @@ const PresentationPractice: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
-        "https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/thinking/1.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -51,7 +51,7 @@ const PresentationPractice: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [questionImg, setQuestionImg] = useState<string>(
-        "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png",
     );
 
     const end = () => {
@@ -63,7 +63,7 @@ const PresentationPractice: React.FC = () => {
         } else {
             setStopStreamer(true);
         }
-    }
+    };
 
     const stopTimer = (dur?: string, durationArr?: string[]) => {
         if (dur !== undefined) {
@@ -92,7 +92,9 @@ const PresentationPractice: React.FC = () => {
             setAllowSwitch(false);
             setDialogOneOpen(false);
             setIsMuted(false);
-            setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/Pitchroom+clap.mp4");
+            setVideoUrl(
+                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/Pitchroom+clap.mp4",
+            );
             setTimeout(() => {
                 setDialogTwoOpen(true);
             }, 7000);
@@ -110,11 +112,9 @@ const PresentationPractice: React.FC = () => {
     const answerQuestion = () => {
         setStartQuestionTimer(true);
         if (socket.current) {
-            socket.current.send(
-                JSON.stringify(question),
-            );
+            socket.current.send(JSON.stringify(question));
         }
-    }
+    };
 
     const nextQuestion = () => {
         // Use a functional update to get the new value
@@ -127,8 +127,8 @@ const PresentationPractice: React.FC = () => {
                 setQuestionDialogOpen(false);
                 const randomImg =
                     Math.random() > 0.5
-                        ? "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/bw_handraise.png"
-                        : "https://d37wg920pbp90y.cloudfront.net/static-videos/conference_room/wm_handraise.png";
+                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
+                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png";
                 setQuestionImg(randomImg);
                 setQuestionDialogOpen(true);
                 setStartQuestionTimer(false);
@@ -140,7 +140,9 @@ const PresentationPractice: React.FC = () => {
                 setAllowSwitch(false);
                 setDialogOneOpen(false);
                 setIsMuted(false);
-                setVideoUrl("https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/Pitchroom+clap.mp4");
+                setVideoUrl(
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/Pitchroom+clap.mp4",
+                );
                 setTimeout(() => {
                     setDialogTwoOpen(true);
                 }, 7000);
@@ -151,6 +153,10 @@ const PresentationPractice: React.FC = () => {
 
     const triggerNextSlide = () => {
         sliderRef.current?.nextSlide();
+    };
+
+    const triggerPrevSlide = () => {
+        sliderRef.current?.previousSlide();
     };
 
     const { data }: { data?: any } = useGetSessionData(sessionId);
@@ -296,7 +302,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/pitch_studio/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
@@ -384,8 +390,8 @@ const PresentationPractice: React.FC = () => {
                                     {activeQuestion >= questionsRef.current.length - 1
                                         ? "Finish"
                                         : startQuestionTimer
-                                        ? "Next Question"
-                                        : "Skip"}
+                                          ? "Next Question"
+                                          : "Skip"}
                                 </Button>
                                 <Button
                                     className="bg-primary-blue hover:bg-primary-blue/80 py-6"
@@ -514,35 +520,42 @@ const PresentationPractice: React.FC = () => {
                             />
                         </div>
 
-                        <div className="w-45 h-25 md:w-60 md:h-35 absolute left-0 bottom-0 z-5">
-                            {!slides.length && seshData?.slides_file ? (
-                                <Skeleton className="w-full h-full bg-gray" />
-                            ) : (
-                                <ImageSlider
-                                    ref={sliderRef}
-                                    images={slides}
-                                    start={startTimer}
-                                    stop={stopTime}
-                                    onStop={(durationArr) => {
-                                        stopTimer(undefined, durationArr);
-                                    }}
-                                />
+                        <div className="absolute left-0 bottom-0 z-5">
+                            <div className="w-45 h-25 md:w-60 md:h-35">
+                                {!slides.length && seshData?.slides_file ? (
+                                    <Skeleton className="w-full h-full bg-gray" />
+                                ) : (
+                                    <ImageSlider
+                                        ref={sliderRef}
+                                        images={slides}
+                                        start={startTimer}
+                                        stop={stopTime}
+                                        onStop={(durationArr) => {
+                                            stopTimer(undefined, durationArr);
+                                        }}
+                                    />
+                                )}
+                            </div>
+                            {slides.length > 1 && (
+                                <div className="mt-3 px-4 md:px-0">
+                                    <div className="flex gap-4 items-center justify-between md:justify-start">
+                                        <Button
+                                            className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
+                                            onClick={triggerPrevSlide}
+                                        >
+                                            <ChevronLeft className="h-4 w-4" /> Previous Slide
+                                        </Button>
+                                        <Button
+                                            className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
+                                            onClick={triggerNextSlide}
+                                        >
+                                            Next Slide <ChevronRight className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
-
-                    {slides.length > 1 && (
-                        <div className="mt-3 px-4 md:px-0">
-                            <div className="flex items-center justify-between md:justify-start">
-                                <Button
-                                    className="flex text-grey items-center text-xs ms-2 cursor-pointer bg-transparent hover:bg-bright-gray"
-                                    onClick={triggerNextSlide}
-                                >
-                                    Next Slide <ChevronRight className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        </div>
-                    )}
 
                     <div className="px-4 md:px-0 flex gap-3">
                         <div className="w-full rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5">

@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEndSession, useGetSessionData } from "@/hooks/sessions";
 import { pdfToImages } from "@/lib/utils";
-import { ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageCircleMore, SquareArrowUpRight } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import boardRoom2 from "../../assets/images/pngs/boardroom-2.png";
@@ -44,8 +44,8 @@ const PresentationPractice: React.FC = () => {
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration, slideDurations);
     const [videoUrl, setVideoUrl] = useState(
         sessionData?.virtual_environment === "board_room_1"
-            ? "https://d37wg920pbp90y.cloudfront.net/static-videos/board_room_1/thinking/1.mp4"
-            : "https://d37wg920pbp90y.cloudfront.net/static-videos/board_room_2/thinking/1.mp4",
+            ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_1/thinking/1.mp4"
+            : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/board_room_2/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -54,7 +54,7 @@ const PresentationPractice: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [questionImg, setQuestionImg] = useState<string>(
-        `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/bw_handraise.png`,
+        `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`,
     );
 
     const end = () => {
@@ -97,8 +97,8 @@ const PresentationPractice: React.FC = () => {
             setIsMuted(false);
             setVideoUrl(
                 selectedRoom.current === "board_room_1"
-                    ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
-                    : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
+                    ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom1Clap.mp4"
+                    : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4",
             );
             setTimeout(() => {
                 setDialogTwoOpen(true);
@@ -108,6 +108,10 @@ const PresentationPractice: React.FC = () => {
 
     const triggerNextSlide = () => {
         sliderRef.current?.nextSlide();
+    };
+
+    const triggerPrevSlide = () => {
+        sliderRef.current?.previousSlide();
     };
 
     const questionsRef = useRef<any>([]);
@@ -134,8 +138,8 @@ const PresentationPractice: React.FC = () => {
             if (prev < nQuestions - 1) {
                 const randomImg =
                     Math.random() < 0.5
-                        ? `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/bw_handraise.png`
-                        : `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom}/wm_handraise.png`;
+                        ? `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`
+                        : `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/wm_handraise.png`;
                 setQuestionImg(randomImg);
                 setQuestionDialogOpen(true);
                 return prev + 1;
@@ -148,8 +152,8 @@ const PresentationPractice: React.FC = () => {
                 setIsMuted(false);
                 setVideoUrl(
                     selectedRoom.current === "board_room_1"
-                        ? "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom1Clap.mp4"
-                        : "https://d37wg920pbp90y.cloudfront.net/static-videos/Boardroom2Clap.mp4",
+                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom1Clap.mp4"
+                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Boardroom2Clap.mp4",
                 );
                 setTimeout(() => {
                     setDialogTwoOpen(true);
@@ -304,7 +308,7 @@ const PresentationPractice: React.FC = () => {
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
                                 const random = Math.floor(Math.random() * 5) + 1;
-                                const newUrl = `https://d37wg920pbp90y.cloudfront.net/static-videos/${selectedRoom.current}/${parsed.text}/${random}.mp4`;
+                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom.current}/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
                             }
@@ -522,19 +526,39 @@ const PresentationPractice: React.FC = () => {
                             />
                         </div>
 
-                        <div className="w-45 h-25 md:w-75 md:h-45 absolute left-0 bottom-0 z-5">
-                            {!slides.length && seshData?.slides_file ? (
-                                <Skeleton className="w-full h-full bg-gray" />
-                            ) : (
-                                <ImageSlider
-                                    ref={sliderRef}
-                                    images={slides}
-                                    start={startTimer}
-                                    stop={stopTime}
-                                    onStop={(durationArr) => {
-                                        stopTimer(undefined, durationArr);
-                                    }}
-                                />
+                        <div className="absolute left-0 bottom-0 z-5">
+                            <div className="w-45 h-25 md:w-60 md:h-35">
+                                {!slides.length && seshData?.slides_file ? (
+                                    <Skeleton className="w-full h-full bg-gray" />
+                                ) : (
+                                    <ImageSlider
+                                        ref={sliderRef}
+                                        images={slides}
+                                        start={startTimer}
+                                        stop={stopTime}
+                                        onStop={(durationArr) => {
+                                            stopTimer(undefined, durationArr);
+                                        }}
+                                    />
+                                )}
+                            </div>
+                            {slides.length > 1 && (
+                                <div className="mt-3 px-4 md:px-0">
+                                    <div className="flex gap-4 items-center justify-between md:justify-start">
+                                        <Button
+                                            className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
+                                            onClick={triggerPrevSlide}
+                                        >
+                                            <ChevronLeft className="h-4 w-4" /> Previous Slide
+                                        </Button>
+                                        <Button
+                                            className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
+                                            onClick={triggerNextSlide}
+                                        >
+                                            Next Slide <ChevronRight className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -545,7 +569,7 @@ const PresentationPractice: React.FC = () => {
                             <p className="text-grey">{sessionData?.notes ? sessionData?.notes : "No note added"}</p>
                         </div>
 
-                        {slides.length > 1 && (
+                        {/* {slides.length > 1 && (
                             <div className="w-2/3 rounded-xl border-1 border-bright-gray px-3.5 py-3 mt-5 hidden md:inline-block">
                                 <div className="flex items-center justify-between">
                                     <div className="w-2/3 h-40">
@@ -567,6 +591,12 @@ const PresentationPractice: React.FC = () => {
                                         </div>
                                         <small
                                             className="flex text-grey items-center text-xs ms-2 cursor-pointer"
+                                            onClick={triggerPrevSlide}
+                                        >
+                                            <ChevronLeft className="h-4 w-4" /> Previous Slide
+                                        </small>
+                                        <small
+                                            className="flex text-grey items-center text-xs ms-2 cursor-pointer"
                                             onClick={triggerNextSlide}
                                         >
                                             Next Slide <ChevronRight className="h-4 w-4" />
@@ -574,7 +604,7 @@ const PresentationPractice: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        )} */}
                     </div>
 
                     <div className="w-full flex justify-end mt-16 px-4 md:px-0">

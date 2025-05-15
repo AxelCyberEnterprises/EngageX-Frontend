@@ -12,9 +12,6 @@ import { useSearchParams } from "react-router-dom";
 const AdminSettings: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  // const [showFailureModal, setShowFailureModal] = useState(false);
-  const [planSuccessModal, setPlanSuccessModal] = useState(false);
-  const [planFailureModal, setPlanFailureModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const sectionFromUrl = searchParams.get("section");
   const notificationCount = 4;
@@ -64,24 +61,6 @@ const AdminSettings: React.FC = () => {
         head="Settings successfully saved"
         message="Your new settings has been saved successfully."
         cta="Finish"
-        ctaClassName="border border-[#D5D7DA] text-[#FFFFFF]"
-      />
-      <ActionModal
-        show={planSuccessModal}
-        onClose={() => setPlanSuccessModal(false)}
-        icon={circleCheck}
-        head="Payment Successful"
-        message="Your credit has been successfully processed! Thank you for your transaction."
-        cta="Go to Home"
-        ctaClassName="border border-[#D5D7DA] text-[#FFFFFF]"
-      />
-      <ActionModal
-        show={planFailureModal}
-        onClose={() => setPlanSuccessModal(false)}
-        icon={circleCheck}
-        head="Payment Successful"
-        message="Your credit has been successfully processed! Thank you for your transaction."
-        cta="Go to Home"
         ctaClassName="border border-[#D5D7DA] text-[#FFFFFF]"
       />
       <div className="h-screen flex flex-col sm:pt-8 pt-6 sm:px-10 px-4">
@@ -141,10 +120,7 @@ const AdminSettings: React.FC = () => {
             <AccountSecurity/>
           )}
           {activeIndex === 3 && (
-            <Credits
-              setShowSuccessModal={() => setPlanSuccessModal(true)}
-              setShowFailureModal={() => setPlanFailureModal(true)}
-            />
+            <Credits/>
           )}
         </section>
       </div>

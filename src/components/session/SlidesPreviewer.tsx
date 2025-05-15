@@ -10,6 +10,7 @@ type SlidesPreviewerProps = {
 
 export type SlidesPreviewerHandle = {
     nextSlide: () => void;
+    previousSlide: () => void;
     currentSlideTime: string;
     nextSlideImage: string | null;
     slideProgress: { current: number; total: number };
@@ -19,95 +20,79 @@ const SlidesPreviewer = forwardRef<SlidesPreviewerHandle, SlidesPreviewerProps>(
     ({ images, start, stop, onStop }, ref) => {
         const [currentSlide, setCurrentSlide] = useState(0);
         const [startTime, setStartTime] = useState<number | null>(null);
-        const [durations, setDurations] = useState<string[]>([]);
+        const [durations, setDurations] = useState<number[]>(new Array(images.length).fill(0));
         const [currentDuration, setCurrentDuration] = useState("00:00");
 
         const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-        // Start timer when 'start' is true and 'stop' is false
+        // Start timer when `start` is true
         useEffect(() => {
-            if (start && !stop && !startTime) {
-                const slideStart = Date.now();
-                setStartTime(slideStart);
-
-                timerRef.current = setInterval(() => {
-                    const elapsed = Date.now() - slideStart;
-                    const minutes = Math.floor(elapsed / 60000)
-                        .toString()
-                        .padStart(2, "0");
-                    const seconds = Math.floor((elapsed % 60000) / 1000)
-                        .toString()
-                        .padStart(2, "0");
-                    setCurrentDuration(`${minutes}:${seconds}`);
-                }, 1000);
+            if (start && !stop && startTime === null) {
+                const now = Date.now();
+                setStartTime(now);
+                startTimer(now, durations[currentSlide]);
             }
 
             return () => clearInterval(timerRef.current as NodeJS.Timeout);
         }, [start, stop]);
 
-        // Stop timer and report durations
+        // On stop, finalize duration
         useEffect(() => {
-            if (stop && startTime) {
-                const timeSpent = Date.now() - startTime;
-                const minutes = Math.floor(timeSpent / 60000)
-                    .toString()
-                    .padStart(2, "0");
-                const seconds = Math.floor((timeSpent % 60000) / 1000)
-                    .toString()
-                    .padStart(2, "0");
-                const formatted = `${minutes}:${seconds}`;
-                const updatedDurations = [...durations, formatted];
-                setDurations(updatedDurations);
-                clearInterval(timerRef.current as NodeJS.Timeout);
-                setStartTime(null);
-                setCurrentDuration("00:00");
-                onStop(updatedDurations);
+            if (stop && startTime !== null) {
+                finalizeSlideTime();
+                const formattedDurations = durations.map((ms) => formatTime(ms));
+                onStop(formattedDurations);
             }
         }, [stop]);
 
-        // Move to next slide and reset timer
-        const nextSlide = () => {
-            if (images.length === 0) return;
-
-            // Don't go to next slide if already on the last slide
-            if (currentSlide === images.length - 1) return;
-
-            if (startTime) {
-                const timeSpent = Date.now() - startTime;
-                const minutes = Math.floor(timeSpent / 60000)
-                    .toString()
-                    .padStart(2, "0");
-                const seconds = Math.floor((timeSpent % 60000) / 1000)
-                    .toString()
-                    .padStart(2, "0");
-                const formatted = `${minutes}:${seconds}`;
-                const updated = [...durations, formatted];
-                setDurations(updated);
-
-                // Reset timer
-                clearInterval(timerRef.current as NodeJS.Timeout);
-                const newStart = Date.now();
-                setStartTime(newStart);
-                setCurrentDuration("00:00");
-
-                timerRef.current = setInterval(() => {
-                    const elapsed = Date.now() - newStart;
-                    const minutes = Math.floor(elapsed / 60000)
-                        .toString()
-                        .padStart(2, "0");
-                    const seconds = Math.floor((elapsed % 60000) / 1000)
-                        .toString()
-                        .padStart(2, "0");
-                    setCurrentDuration(`${minutes}:${seconds}`);
-                }, 1000);
-            }
-
-            setCurrentSlide((prev) => (prev + 1) % images.length);
+        const startTimer = (startAt: number, initialMs: number) => {
+            timerRef.current = setInterval(() => {
+                const elapsed = Date.now() - startAt;
+                const total = initialMs + elapsed;
+                setCurrentDuration(formatTime(total));
+            }, 1000);
         };
 
-        // Expose values to parent
+        const finalizeSlideTime = () => {
+            if (startTime === null) return;
+            const now = Date.now();
+            const elapsed = now - startTime;
+            setDurations((prev) => {
+                const updated = [...prev];
+                updated[currentSlide] += elapsed;
+                return updated;
+            });
+            clearInterval(timerRef.current as NodeJS.Timeout);
+            setStartTime(null);
+        };
+
+        const handleSlideChange = (newSlideIndex: number) => {
+            finalizeSlideTime();
+
+            const now = Date.now();
+            const prevDuration = durations[newSlideIndex];
+            setStartTime(now);
+            setCurrentDuration(formatTime(prevDuration));
+            startTimer(now, prevDuration);
+
+            setCurrentSlide(newSlideIndex);
+        };
+
+        const nextSlide = () => {
+            if (currentSlide < images.length - 1) {
+                handleSlideChange(currentSlide + 1);
+            }
+        };
+
+        const previousSlide = () => {
+            if (currentSlide > 0) {
+                handleSlideChange(currentSlide - 1);
+            }
+        };
+
         useImperativeHandle(ref, () => ({
             nextSlide,
+            previousSlide,
             currentSlideTime: currentDuration,
             nextSlideImage: currentSlide < images.length - 1 ? images[currentSlide + 1] : null,
             slideProgress: {
@@ -116,15 +101,23 @@ const SlidesPreviewer = forwardRef<SlidesPreviewerHandle, SlidesPreviewerProps>(
             },
         }));
 
+        const formatTime = (ms: number) => {
+            const totalSeconds = Math.floor(ms / 1000);
+            const minutes = Math.floor(totalSeconds / 60)
+                .toString()
+                .padStart(2, "0");
+            const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+            return `${minutes}:${seconds}`;
+        };
+
         return (
             <div className="w-full h-full relative overflow-hidden rounded-lg">
-                {/* Current Slide */}
                 {images.map((img, index) => (
                     <img
                         key={index}
                         src={img}
                         alt={`Slide ${index + 1}`}
-                        className={`absolute w-full h-full object-cover transition-opacity duration-1000 ${
+                        className={`absolute w-full h-full object-cover transition-opacity border border-primary-blue duration-1000 ${
                             index === currentSlide ? "opacity-100" : "opacity-0"
                         }`}
                     />
@@ -133,5 +126,6 @@ const SlidesPreviewer = forwardRef<SlidesPreviewerHandle, SlidesPreviewerProps>(
         );
     },
 );
+
 
 export default SlidesPreviewer;

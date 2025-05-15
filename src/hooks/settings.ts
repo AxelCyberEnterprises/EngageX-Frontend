@@ -89,3 +89,15 @@ export function useUpdatePassword() {
     },
   });
 }
+
+export function usePaymentInfo() {
+  const token = tokenManager.getToken()
+  return useQuery<any>({
+    queryKey: ["payn]ment", token],
+    queryFn: async () => {
+      const response = await apiGet<any>(`/payments/stripe/status/`);
+      return response;
+    },
+    enabled: !!token
+  });
+}
