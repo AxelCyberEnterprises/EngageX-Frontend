@@ -89,7 +89,10 @@ function HowItWorks() {
                 </div>
 
                 <video className="lg:h-[29rem] mt-20 lg:mt-0 rounded-xl" controls>
-                    <source src="https://d37wg920pbp90y.cloudfront.net/static-videos/introvid.mp4" type="video/mp4" />
+                    <source
+                        src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/introvid.mp4"
+                        type="video/mp4"
+                    />
                 </video>
             </div>
         </section>

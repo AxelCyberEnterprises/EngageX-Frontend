@@ -1,31 +1,38 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import PricingCards from '../homepage/PricingPlans'
 import GetInTouch from '../help/GetInTouch';
+import ActionModal from "@/components/modals/modalVariants/ActionModal";
+import circleCheck from "../../assets/images/svgs/circle-check.svg";
 
-interface CreditProps {
-  setShowSuccessModal: (data: boolean) => void;
-  setShowFailureModal: (data: boolean) => void;
-}
-
-const Credits: React.FC<CreditProps> = ({
-  setShowSuccessModal
-}) => {
-  const planPayment = () => {
-    setShowSuccessModal(true);
-    // setShowFailureModal(false);
-  }
+const Credits = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <>
       <GetInTouch isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ActionModal
+        show={false}
+        onClose={() => {}}
+        icon={circleCheck}
+        head="Payment Successful"
+        message="Your credit has been successfully processed! Thank you for your transaction."
+        cta="Go to Home"
+        ctaClassName="border border-[#D5D7DA] text-[#FFFFFF]"
+      />
+      <ActionModal
+        show={false}
+        onClose={() => {}}
+        icon={circleCheck}
+        head="Payment Successful"
+        message="Your credit has been successfully processed! Thank you for your transaction."
+        cta="Go to Home"
+        ctaClassName="border border-[#D5D7DA] text-[#FFFFFF]"
+      />
       <div>
         <div className='py-8'>
           <h2 className="text-xl font-medium">Session Credits</h2>
           <p className="text-sm text-[#6F7C8E] mb-6">Maintain your account through buying credits, simple pricing. No hidden fees.</p>
         </div>
-        <PricingCards
-          planPayment={planPayment}
-        />
+        <PricingCards/>
 
         <div className="py-16 px-8 flex flex-col justify-center items-center">
           <h3 className='lg:text-xl text-lg'>Enterprise & Team Plans</h3>
