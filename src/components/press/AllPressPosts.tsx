@@ -3,46 +3,54 @@ import PressCard from "./PressCard";
 function AllPressPosts() {
   const posts = [
     {
+      img: "./assets/pressimg1.png",
+      date: "25 Mar 2025",
+      title: "New platform launch",
+      download: true,
+      summary:
+        "Join the creator of EngageX™ and its design engineers on Friday, May 16th, from 8:00–8:30 AM CST to learn more about this revolutionary new platform.",
+    },
+    {
       img: "./assets/pressimg2.png",
       date: "25 Mar 2025",
-      title: "Bill Walsh leadership lessons",
+      title: "Command the room",
       summary:
-        "Like to know the secrets of transforming a 2-14 team into a 3x Super Bowl winning Dynasty?",
+        "Welcome to Command the Room, powered by EngageX. I’m The Career Doctor and in each short, sharp episode, we dive into the minds of bold communicators, leaders, creators, athletes, and entrepreneurs who know how to move audiences, close deals, and own the moment. From storytelling to pitching, interviewing to presenting you’ll learn the real strategies behind speaking with power and leading with presence. Let’s go.",
     },
     {
       img: "./assets/pressimg3.png",
       date: "25 Mar 2025",
-      title: "PM mental models",
+      title: "Chief In Brief",
       summary:
-        "Mental models are simple expressions of complex processes or relationships.",
+        "We believe the diversity of our community makes us exponentially more impactful and our vision is a future where one's race, gender identity/expression, sexual orientation, disability, or nationality is not a barrier to leadership.",
     },
     {
       img: "./assets/pressimg4.png",
       date: "25 Mar 2025",
-      title: "PM mental models",
+      title: "AFROTECH",
       summary:
-        "Mental models are simple expressions of complex processes or relationships.",
+        "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
     },
     {
       img: "./assets/pressimg5.png",
       date: "25 Mar 2025",
-      title: "What is Wireframing?",
+      title: "Fireside Chat",
       summary:
-        "Introduction to Wireframing and its Principles. Learn from the best in the industry.",
+        "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
     },
     {
       img: "./assets/pressimg6.png",
       date: "25 Mar 2025",
-      title: "What is Wireframing?",
+      title: "AFROTECH",
       summary:
-        "Introduction to Wireframing and its Principles. Learn from the best in the industry.",
+        "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
     },
     {
       img: "./assets/pressimg7.png",
       date: "25 Mar 2025",
-      title: "Bill Walsh leadership lessons",
+      title: "AFROTECH",
       summary:
-        "Like to know the secrets of transforming a 2-14 team into a 3x Super Bowl winning Dynasty?",
+        "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
     },
   ];
   return (
