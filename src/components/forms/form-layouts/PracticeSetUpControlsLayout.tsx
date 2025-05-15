@@ -131,7 +131,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                 >
                     Cancel
                 </Button>
-                <div className="flex items-center gap-x-4 mr-25">
+                <div className="flex items-center gap-x-3 mr-25">
                     <Button
                         type="button"
                         variant="outline"
