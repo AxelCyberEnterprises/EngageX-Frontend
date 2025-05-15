@@ -647,12 +647,12 @@ const PitchSessionReport: React.FC = () => {
                             data-html2canvas-ignore
                             className="w-full flex flex-wrap items-center md:justify-end gap-3 mt-8 md:pr-25"
                         >
-                            <Button
-                                className="flex gap-1 py-5 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray"
-                                onClick={() => navigate(-1)}
+                            <Link
+                                to="../session-history"
+                                className="flex gap-1 py-5 px-4 items-center justify-center whitespace-nowrap rounded-md text-sm font-normal h-9 bg-transparent hover:bg-gray/20 text-primary-blue border-1 border-bright-gray"
                             >
                                 View session history
-                            </Button>
+                            </Link>
                             <Button
                                 className="flex gap-1 py-5 bg-primary-blue hover:bg-primary-blue/90"
                                 onClick={() =>
