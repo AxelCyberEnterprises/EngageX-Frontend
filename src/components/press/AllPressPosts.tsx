@@ -3,7 +3,7 @@ import PressCard from "./PressCard";
 function AllPressPosts() {
   const posts = [
     {
-      img: "./assets/pressimg1.png",
+      img: "./assets/pressimg1.jpeg",
       date: "25 Mar 2025",
       title: "New platform launch",
       download: true,
@@ -15,7 +15,7 @@ function AllPressPosts() {
       date: "25 Mar 2025",
       title: "Command the room",
       summary:
-        "Welcome to Command the Room, powered by EngageX. I’m The Career Doctor and in each short, sharp episode, we dive into the minds of bold communicators, leaders, creators, athletes, and entrepreneurs who know how to move audiences, close deals, and own the moment. From storytelling to pitching, interviewing to presenting you’ll learn the real strategies behind speaking with power and leading with presence. Let’s go.",
+        "Welcome to Command the Room, powered by EngageX™. I’m The Career Doctor and in each short, sharp episode, we dive into the minds of bold communicators, leaders, creators, athletes, and entrepreneurs who know how to move audiences, close deals, and own the moment. From storytelling to pitching, interviewing to presenting you’ll learn the real strategies behind speaking with power and leading with presence. Let’s go.",
     },
     {
       img: "./assets/pressimg3.png",
