@@ -4,31 +4,6 @@ import select from "../../../../assets/images/svgs/select.svg";
 
 export const columns: ColumnDef<Session, any>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <div className="px-1">
-        <input
-          type="checkbox"
-          className="h-4 w-4 rounded border-gray-300"
-          checked={table.getIsAllPageRowsSelected()}
-          onChange={(e) => table.toggleAllPageRowsSelected(!!e.target.checked)}
-        />
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="px-1">
-        <input
-          type="checkbox"
-          className="h-4 w-4 rounded border-gray-300"
-          checked={row.getIsSelected()}
-          onChange={(e) => row.toggleSelected(!!e.target.checked)}
-        />
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "name",
     header: "Session Name",
     cell: ({ row }) => <div>{row.getValue("name")}</div>,

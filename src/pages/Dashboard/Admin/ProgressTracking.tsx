@@ -23,11 +23,10 @@ import { Card } from "@/components/ui/card";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import ShadSelect from "@/components/dashboard/Select";
 import StatsCardSection from "@/components/dashboard/StatusCard";
-import ShadLineChart from "@/components/dashboard/ShadLineChart";
 import PresentationMetricsTable from "@/components/tables/performance-metric-table/user";
 import { RecentSessionsTable } from "@/components/tables/recent-sessions-table/user";
 import { Session } from "@/components/tables/recent-sessions-table/user/data";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { columns } from "@/components/tables/performance-metric-table/user/columns";
 import SequenceSelector, {
   Sequence,
@@ -38,6 +37,8 @@ import { useCompareSequences, useGetSequence, useProgressTracking } from "@/hook
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { formatThreeSessionMetrics } from "@/components/tables/performance-metric-table/user/data";
+import ShadBarChart from "@/components/dashboard/ShadBarChart";
+import { useGetSequences } from "@/hooks/sessions";
 
 interface Achievement {
   id: number;
@@ -55,6 +56,15 @@ export interface Metric {
   session2: number;
   session3: number;
   trend: 'Progressing' | 'Declining' | 'Stable';
+};
+
+type SequenceApiResponse = {
+  sequence_id?: string;
+  sequence_name: string;
+  start_date: string | null;
+  updated_at: string | null;
+  total_sessions: number;
+  sessions: any[];
 };
 
 const ProgressTracking: React.FC = () => {
@@ -80,6 +90,10 @@ const ProgressTracking: React.FC = () => {
     showRecentAchievementsModal,
     setShowRecentAchievementsModal,
   ] = useState(false);
+  const { data: sequences = [], isLoading: sequencesLoading } = useGetSequences() as {
+    data: SequenceApiResponse[];
+    isLoading: boolean;
+  };
   const [searchParams, setSearchParams] = useSearchParams();
   const sectionFromUrl = searchParams.get("section");
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
@@ -97,7 +111,6 @@ const ProgressTracking: React.FC = () => {
   } = useProgressTracking();
   const {
     data: sequencesResponse,
-    isLoading: sequencesLoading,
     error: sequencesEerror,
   } = useGetSequence();
 
@@ -109,21 +122,36 @@ const ProgressTracking: React.FC = () => {
   } = useCompareSequences(selectedSequence.id);
 
   useEffect(() => {
-    if (sequencesResponse?.sequences && !sequencesLoading) {
-      const transformedSequences: Sequence[] = sequencesResponse?.sequences?.map((seq: any, index: any) => {
-        return {
-          id: seq?.sequence_id,
-          title: seq?.sequence_name,
-          startDate: "February 15, 2025",
-          lastUpdated: "February 22, 2025",
-          totalCompleted: 3,
-          ...(index % 2 === 1 ? { inProgress: 1 } : {}),
-        };
-      });
+    if (sequences && !sequencesLoading) {
+      const transformedSequences: Sequence[] = sequences.map((seq) => ({
+        id: seq.sequence_id ?? crypto.randomUUID(),
+        title: seq.sequence_name,
+        startDate: seq.start_date
+          ? new Date(seq.start_date).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })
+          : "N/A",
+        lastUpdated: seq.updated_at
+          ? new Date(seq.updated_at).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })
+          : "N/A",
+        totalCompleted: seq.total_sessions ?? 0,
+        ...(seq.total_sessions > 0 && seq.total_sessions < 5 ? { inProgress: 1 } : {}),
+      }));
 
       setSequencesData(transformedSequences);
     }
-  }, [sequencesResponse, sequencesLoading]);
+  }, [sequences, sequencesLoading]);
+
+
+
+  console.log("sequencesData: ", sequencesData);
+
 
   useEffect(() => {
     if (fetchGoalsAndAchievement) {
@@ -173,9 +201,6 @@ const ProgressTracking: React.FC = () => {
       return formatThreeSessionMetrics(compareSequencesResponse);
     }
   }, [compareSequencesLoading, compareSequencesResponse]);
-  
-
-  console.log('format data: ', formattedData);
 
   const getLevel = (score: number) => {
     if (score >= 1 && score <= 3) return 1;
@@ -294,7 +319,6 @@ const ProgressTracking: React.FC = () => {
     },
   ];
 
-
   const streakStats = [
     {
       icon: diamond,
@@ -371,18 +395,16 @@ const ProgressTracking: React.FC = () => {
     {
       icon: speakerIcon,
       iconAlt: "Content icon",
-      title: "Vocal Range",
-      value: `${Math.round(
-        progressTracking?.overview_card.vocal_variety || 0
-      )}%`,
-      subtext: "Voice modulation score",
+      title: "Impact",
+      value: `${(goalsAndAchievement?.overall_captured_impact * 10) || 0}%`,
+      subtext: "The impact of the overall speech",
     },
     {
       icon: messageIcon,
       iconAlt: "Focus icon",
-      title: "Clarity",
-      value: `${Math.round(progressTracking?.overview_card.impact || 0)}%`,
-      subtext: "Speech clarity score",
+      title: "Structure and Clarity",
+      value: `${(goalsAndAchievement?.structure_and_clarity * 10 || 0)}%`,
+      subtext: "Structure and clarity score",
     },
   ];
 
@@ -406,19 +428,37 @@ const ProgressTracking: React.FC = () => {
       };
     }) || [];
 
-  const chartData =
-    progressTracking?.graph_data.map((item: any) => {
+  type GraphDataItem = {
+    month: string;
+    impact: number;
+    audience_engagement: number;
+    clarity: number;
+  };
+
+  const chartData = useMemo(() => {
+    if (!progressTracking?.graph_data) return [];
+    const maxValue = Math.max(
+      ...progressTracking.graph_data.flatMap((item: GraphDataItem) => [
+        item.impact,
+        item.audience_engagement,
+        item.clarity,
+      ])
+    );
+    return progressTracking.graph_data.map((item: GraphDataItem, index: number) => {
       const date = new Date(item.month);
       const monthName = date.toLocaleString("default", { month: "long" });
-
       return {
-        month: monthName,
-        Impact: item.impact,
-        AudienceEngagement: item.audience_engagement,
-        Clarity: item.clarity,
-        Confidence: 90
+        month: index * 10,
+        monthLabel: monthName,
+        Impact: (item.impact / maxValue) * 100,
+        AudienceEngagement: (item.audience_engagement / maxValue) * 100,
+        Clarity: (item.clarity / maxValue) * 100,
       };
-    }) || [];
+    });
+  }, [progressTracking]);
+
+
+  console.log(chartData)
 
   const chartColors = {
     Impact: "#252A39",
@@ -448,15 +488,15 @@ const ProgressTracking: React.FC = () => {
   const filterOptions: { value: string; label: string }[] = [
     { value: "all", label: "All Sessions" },
     { value: "pitch", label: "Pitch Practice" },
-    { value: "keynote", label: "Keynote Practice" },
+    { value: "public", label: "Public Speaking" },
     { value: "presentation", label: "Presentation Practice" },
   ];
 
   const sortOptions: { value: string; label: string }[] = [
     { value: "date-desc", label: "Date (Newest First)" },
     { value: "date-asc", label: "Date (Oldest First)" },
-    { value: "improvement-desc", label: "Improvement (Highest)" },
-    { value: "improvement-asc", label: "Improvement (Lowest)" },
+    { value: "impact-desc", label: "Impact (Highest)" },
+    { value: "impact-asc", label: "Impact (Lowest)" },
     { value: "duration-desc", label: "Duration (Longest)" },
     { value: "duration-asc", label: "Duration (Shortest)" },
   ];
@@ -775,11 +815,8 @@ const ProgressTracking: React.FC = () => {
                   )}
                   <div className="border border-[#E0E0E0] rounded-[12px] p-5 h-fit">
                     <h4 className="text-[#252A39] lg:text-lg text-base">
-                      Daily Progress Tracker
+                      Total Sessions
                     </h4>
-                    {/* <p className="text-[#6F7C8E] text-sm">
-                      Display daily progress tracker
-                    </p> */}
                     <div className="grid grid-cols-1 md:gap-x-6">
                       {streakStats.map((item) => (
                         <div className="border border-[#E0E0E0] p-3 flex gap-3 rounded-[12px] mt-4 mb-2">
@@ -789,9 +826,9 @@ const ProgressTracking: React.FC = () => {
                             className="h-fit"
                           />
                           <div>
-                            <p className="text-[#252A39]">{item.number}</p>
+                            <p className="text-[#252A39]">{progressTracking?.overview_card.total_session?.toString() || "0"}</p>
                             <p className="text-[#6F7C8E] sm:text-base text-sm">
-                              {item.text}
+                              Completed sessions
                             </p>
                           </div>
                         </div>
@@ -841,10 +878,16 @@ const ProgressTracking: React.FC = () => {
                 </div>
 
                 <div className="chart__div">
-                  <ShadLineChart
+                  {/* <ShadLineChart
                     data={chartData}
                     colors={chartColors}
                     isLoading={progressTrackingLoading}
+                  /> */}
+                  <ShadBarChart
+                    data={chartData}
+                    colors={chartColors}
+                    height={350}
+                    barSize={40}
                   />
                 </div>
               </div>
@@ -881,9 +924,9 @@ const ProgressTracking: React.FC = () => {
                       />
                     </div>
 
-                    <p className="text-sm underline cursor-pointer whitespace-nowrap">
+                    <Link to="../session-history" className="text-sm underline cursor-pointer whitespace-nowrap">
                       View All
-                    </p>
+                    </Link>
                   </div>
                 </div>
                 <RecentSessionsTable
