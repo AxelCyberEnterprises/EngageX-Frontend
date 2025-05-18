@@ -104,7 +104,7 @@ const StartPracticeSetupSession = ({
         (values: FormType) => {
             const payload = {
                 ...values,
-                goals: values.goals.map(({ goal }) => goal),
+                goals: values.goals.map(({ goal }) => goal).filter(Boolean),
             };
             delete payload.slides;
 
@@ -118,7 +118,7 @@ const StartPracticeSetupSession = ({
             const { count } = data!;
 
             setValue("session_name", `${capitalize(sessionType)} Practice Session ${count + 1}`);
-            setValue("virtual_environment", "board_room_1");
+            if (sessionType === "presentation") setValue("virtual_environment", "board_room_1");
         }
 
         handleSubmit(handleSessionSetupSubmit, () => dispatch(closeDialog()))();

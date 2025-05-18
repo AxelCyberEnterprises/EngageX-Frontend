@@ -27,7 +27,12 @@ const PublicSpeakingForm = () => {
     const form = useForm<FormType>({
         resolver: zodResolver(PublicSpeakingSchema),
         defaultValues: useMemo(
-            () => ({ session_type: "public", virtual_environment: "conference_room", allow_ai_questions: true }),
+            () => ({
+                session_type: "public",
+                virtual_environment: "conference_room",
+                allow_ai_questions: true,
+                goals: [{ id: 1, goal: "" }],
+            }),
             [],
         ),
     });

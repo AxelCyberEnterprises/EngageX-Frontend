@@ -21,7 +21,7 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
 
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {
-            const payload = { ...values, goals: values.goals.map(({ goal }) => goal) };
+            const payload = { ...values, goals: values.goals.map(({ goal }) => goal).filter(Boolean) };
 
             createPublicSpeakingSession(payload);
         },
