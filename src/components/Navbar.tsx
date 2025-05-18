@@ -27,6 +27,7 @@ function Navbar() {
               { path: "/features", label: "Features" },
               { path: "/pricing", label: "Pricing" },
               { path: "/contact", label: "Contact" },
+              { path: "/press", label: "Press" },
               // { path: "/press", label: "Contact" },
             ].map(({ path, label }) => (
               <Link key={path} to={path} onClick={() => setShowMenu(false)}>

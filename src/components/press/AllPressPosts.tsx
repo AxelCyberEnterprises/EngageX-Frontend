@@ -18,11 +18,10 @@ function AllPressPosts() {
         "Welcome to Command the Room, powered by EngageX™. I’m The Career Doctor and in each short, sharp episode, we dive into the minds of bold communicators, leaders, creators, athletes, and entrepreneurs who know how to move audiences, close deals, and own the moment. From storytelling to pitching, interviewing to presenting you’ll learn the real strategies behind speaking with power and leading with presence. Let’s go.",
     },
     {
-      img: "./assets/pressimg3.png",
+      img: "./assets/pressimg3.jpeg",
       date: "25 Mar 2025",
       title: "Chief In Brief",
-      summary:
-        "We believe the diversity of our community makes us exponentially more impactful and our vision is a future where one's race, gender identity/expression, sexual orientation, disability, or nationality is not a barrier to leadership.",
+      summary: "",
     },
     {
       img: "./assets/pressimg4.png",
@@ -31,26 +30,25 @@ function AllPressPosts() {
       summary:
         "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
     },
-    {
-      img: "./assets/pressimg5.png",
-      date: "25 Mar 2025",
-      title: "Fireside Chat",
-      summary:
-        "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
-    },
+    // {
+    //   img: "./assets/pressimg5.png",
+    //   date: "25 Mar 2025",
+    //   title: "Fireside Chat",
+    //   summary:
+    //     "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
+    // },
     {
       img: "./assets/pressimg6.png",
       date: "25 Mar 2025",
-      title: "AFROTECH",
-      summary:
-        "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
+      title: "Coming soon",
+      summary: "",
     },
     {
       img: "./assets/pressimg7.png",
       date: "25 Mar 2025",
-      title: "AFROTECH",
+      title: "Tech talk",
       summary:
-        "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
+        "Coming this June and August 2025, Tech Talk Conversations will stream live on EngageX™️, bringing together leading voices in technology to unpack the trends shaping tomorrow. From breakthroughs in AI and cybersecurity to the evolving relationship between humans and machines, each session will offer sharp insights, interactive discussions, and forward-thinking perspectives. Whether you’re in tech, business, or simply future curious, join us live and be part of the conversations driving innovation.",
     },
   ];
   return (
