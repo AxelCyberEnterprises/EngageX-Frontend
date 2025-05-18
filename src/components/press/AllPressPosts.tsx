@@ -11,9 +11,10 @@ function AllPressPosts() {
         "Join the creator of EngageX™ and its design engineers on Friday, May 16th, from 8:00–8:30 AM CST to learn more about this revolutionary new platform.",
     },
     {
-      img: "./assets/pressimg2.png",
+      img: "./assets/pressvid1.mp4",
       date: "25 Mar 2025",
       title: "Command the room",
+      video: true,
       summary:
         "Welcome to Command the Room, powered by EngageX™. I’m The Career Doctor and in each short, sharp episode, we dive into the minds of bold communicators, leaders, creators, athletes, and entrepreneurs who know how to move audiences, close deals, and own the moment. From storytelling to pitching, interviewing to presenting you’ll learn the real strategies behind speaking with power and leading with presence. Let’s go.",
     },

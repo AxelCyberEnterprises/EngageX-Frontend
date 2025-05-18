@@ -5,6 +5,7 @@ interface Params {
     download?: boolean;
     title: string;
     summary: string;
+    video?: boolean;
   };
 }
 
@@ -12,11 +13,17 @@ function PressCard({ post }: Params) {
   return (
     <div className="w-full lg:w-[25rem] space-y-6">
       <div className="h-[25rem] w-full lg:w-[25rem] relative overflow-clip object-cover">
-        <img
-          src={post.img}
-          className="absolute h-full w-full object-cover"
-          alt={post.title}
-        />
+        {post.video ? (
+          <video className="absolute h-full w-full object-cover" controls>
+            <source src={post.img} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            src={post.img}
+            className="absolute h-full w-full object-cover"
+            alt={post.title}
+          />
+        )}
       </div>
       <div className="space-y-3">
         <div>
