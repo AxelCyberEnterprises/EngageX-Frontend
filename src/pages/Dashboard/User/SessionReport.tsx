@@ -331,7 +331,7 @@ const PitchSessionReport: React.FC = () => {
                                         width="w-full"
                                         src={data.compiled_video_url}
                                         border="rounded-3xl"
-                                        canDownload
+                                        showMenu
                                         preload={true}
                                     />
                                 </div>

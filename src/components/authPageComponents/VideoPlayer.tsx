@@ -24,7 +24,7 @@ interface VideoPlayerProps {
     muted?: boolean;
     requireFullPlay?: boolean;
     allowSwitch?: boolean;
-    canDownload?: boolean;
+    showMenu?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -43,7 +43,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     muted = false,
     requireFullPlay = false,
     allowSwitch = true,
-    canDownload = false,
+    showMenu = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -389,7 +389,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                                 {isFullscreen ? <FaCompress size={16} /> : <FaExpand size={16} />}
                             </button>
 
-                            {canDownload && (
+                            {showMenu && (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button className="size-10 rounded-full bg-transparent hover:bg-primary transition-colors focus-visible:ring-0">
