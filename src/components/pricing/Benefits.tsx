@@ -133,13 +133,13 @@ function Benefits() {
                   <BenefitCancelSVG />
                 </div>
                 <div className="h-[6rem] flex items-center">
+                  <BenefitCancelSVG />
+                </div>
+                <div className="h-[6rem] flex items-center">
+                  <BenefitCancelSVG />
+                </div>
+                <div className="h-[6rem] flex items-center">
                   <BenefitCheckedSVG />
-                </div>
-                <div className="h-[6rem] flex items-center">
-                  <BenefitCancelSVG />
-                </div>
-                <div className="h-[6rem] flex items-center">
-                  <BenefitCancelSVG />
                 </div>
                 {/* <div className="h-[6rem] flex items-center">
                   <BenefitCancelSVG />
@@ -263,7 +263,7 @@ function Benefits() {
             Measure and compare session performance over time
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
-            <BenefitCheckedSVG />
+            <BenefitCancelSVG />
           </div>
           <div className="pl-2 h-[10rem] flex flex-1 justify-center items-center">
             <BenefitCheckedSVG />
@@ -285,7 +285,7 @@ function Benefits() {
             Download on-demand recordings and tailored performance insights
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
-            <BenefitCancelSVG />
+            <BenefitCheckedSVG />
           </div>
           <div className="pl-2 h-[10rem] flex flex-1 justify-center items-center">
             <BenefitCheckedSVG />

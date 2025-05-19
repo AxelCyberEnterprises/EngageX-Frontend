@@ -63,7 +63,7 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a
+            {/* <a
               href="https://www.youtube.com/@TheCareerDoctorLLC"
               target="_blank"
             >
@@ -92,11 +92,8 @@ function Footer() {
                   </clipPath>
                 </defs>
               </svg>
-            </a>
-            <a
-              href="https://www.instagram.com/thecareerdoctorllc/"
-              target="_blank"
-            >
+            </a> */}
+            <a href="https://www.instagram.com/cd_engagex/" target="_blank">
               <svg
                 width="20"
                 height="20"

@@ -6,7 +6,7 @@ function CookiePolicy() {
         <div className="space-y-16 text-[#475467]">
           <div className="space-y-5">
             <p className="big">EngageX™ Cookie Policy</p>
-            <p className="big">Effective Date: 03/27/2025</p>
+            <p className="big">Effective Date: 05/20/2025</p>
             <p className="big">
               EngageX™ ("we," "us," or "our") is committed to protecting your
               privacy and ensuring transparency regarding how we use cookies and
