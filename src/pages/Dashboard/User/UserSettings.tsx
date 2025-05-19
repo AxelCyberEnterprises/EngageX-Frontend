@@ -8,6 +8,7 @@ import NotificationSettings from "@/components/dashboard/Notification";
 import AccountSecurity from "@/components/dashboard/AccountSecurity";
 import Credits from "@/components/dashboard/Credits";
 import { useSearchParams } from "react-router-dom";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const UserSettings: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
@@ -68,21 +69,25 @@ const UserSettings: React.FC = () => {
           <h1 className="xl:text-4xl lg:text-3xl sm:text-2xl text-xl">
             Settings
           </h1>
-          <div className="flex sm:hidden gap-2">
-            <button
-              onClick={() => scroll("left")}
-              className="p-2 rounded-[10px] border border-[#E4E7EC] bg-transparent transition"
-            >
-              <img src={Arrow} alt="arrow" className="w-4 h-4 rotate-180" />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="p-2 rounded-[10px] border border-[#E4E7EC] bg-transparent transition"
-            >
-              <img src={Arrow} alt="arrow" className="w-4 h-4" />
-            </button>
+          <div className="flex gap-5">
+            <div className="flex sm:hidden gap-2">
+              <button
+                onClick={() => scroll("left")}
+                className="p-2 rounded-[10px] border border-[#E4E7EC] bg-transparent transition"
+              >
+                <img src={Arrow} alt="arrow" className="w-4 h-4 rotate-180" />
+              </button>
+              <button
+                onClick={() => scroll("right")}
+                className="p-2 rounded-[10px] border border-[#E4E7EC] bg-transparent transition"
+              >
+                <img src={Arrow} alt="arrow" className="w-4 h-4" />
+              </button>
+            </div>
+            <SidebarTrigger className="-ml-1 p-5" />
           </div>
         </div>
+
         <section
           ref={scrollRef}
           className="flex w-full overflow-x-auto whitespace-nowrap scrollbar-hide max-w[464px]"
