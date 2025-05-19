@@ -20,6 +20,7 @@ import boardRoom2 from "../../assets/images/pngs/boardroom-2.png";
 import boardRoom1 from "../../assets/images/pngs/presentation-practice-room.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import axios from "axios";
+import { useMediaQuery } from "react-responsive";
 
 const PresentationPractice: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
@@ -27,6 +28,7 @@ const PresentationPractice: React.FC = () => {
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
     const time = 15; // in minutes
+    const isMediumScreen = useMediaQuery({ minWidth: 768 }); // Tailwind's md breakpoint
     const [slides, setSlides] = useState<any[]>([]);
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
@@ -561,6 +563,38 @@ const PresentationPractice: React.FC = () => {
                                 </div>
                             )}
                         </div>
+
+                        {!isMediumScreen && (
+                            <div
+                                className="rounded-xl w-45 h-25 absolute bottom-0 right-0 z-10"
+                                style={{
+                                    backgroundImage: `url(${sessionData?.virtual_environment === "board_room_1" ? boardRoom1 : boardRoom2})`,
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
+                            >
+                                <div
+                                    className={`absolute transition-all duration-500 ${
+                                        isExpanded
+                                            ? "top-0 left-0 w-full h-full"
+                                            : sessionData?.virtual_environment === "board_room_1"
+                                              ? "w-15 h-8 absolute top-5 right-12.5"
+                                              : "w-15 h-8 absolute top-7 right-15"
+                                    }`}
+                                >
+                                    <VideoStreamer
+                                        duration={time}
+                                        stop={stopStreamer}
+                                        onStop={() => closeAndShowClapVideo()}
+                                        onStart={() => setStartTimer(true)}
+                                        ws={socket.current}
+                                        isWsReady={isSocketConnected}
+                                        border={isExpanded ? "rounded-2xl" : ""}
+                                        sessionId={sessionId}
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="px-4 md:px-0 flex gap-3">
@@ -623,35 +657,37 @@ const PresentationPractice: React.FC = () => {
                 <div className="right__side hidden md:block w-full md:w-3/12 lg:w-3/12 px-8 lg:ps-4 py-4">
                     <div className="py-5 px-3 border-1 border-bright-gray rounded-xl">
                         <h6 className="mb-3">Live Audience</h6>
-                        <div
-                            className="rounded-xl w-full h-40 relative"
-                            style={{
-                                backgroundImage: `url(${sessionData?.virtual_environment === "board_room_1" ? boardRoom1 : boardRoom2})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                            }}
-                        >
+                        {isMediumScreen && (
                             <div
-                                className={`absolute transition-all duration-500 ${
-                                    isExpanded
-                                        ? "top-0 left-0 w-full h-full"
-                                        : sessionData?.virtual_environment === "board_room_1"
-                                          ? "w-40 h-23.5 md:w-20 md:h-12 lg:w-20 lg:h-12 absolute top-14.5 right-53 md:top-8 md:right-19.5 lg:top-8 lg:right-21.5"
-                                          : "w-40 h-23.5 md:w-20 md:h-12 lg:w-22 lg:h-12 absolute top-14.5 right-53 md:top-11 md:right-23 lg:top-11 lg:right-24"
-                                }`}
+                                className="rounded-xl w-full h-40 relative"
+                                style={{
+                                    backgroundImage: `url(${sessionData?.virtual_environment === "board_room_1" ? boardRoom1 : boardRoom2})`,
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
                             >
-                                <VideoStreamer
-                                    duration={time}
-                                    stop={stopStreamer}
-                                    onStop={() => closeAndShowClapVideo()}
-                                    onStart={() => setStartTimer(true)}
-                                    ws={socket.current}
-                                    isWsReady={isSocketConnected}
-                                    border={isExpanded ? "rounded-2xl" : ""}
-                                    sessionId={sessionId}
-                                />
+                                <div
+                                    className={`absolute transition-all duration-500 ${
+                                        isExpanded
+                                            ? "top-0 left-0 w-full h-full"
+                                            : sessionData?.virtual_environment === "board_room_1"
+                                              ? "w-40 h-23.5 md:w-20 md:h-12 lg:w-20 lg:h-12 absolute top-14.5 right-53 md:top-8 md:right-19.5 lg:top-8 lg:right-21.5"
+                                              : "w-40 h-23.5 md:w-20 md:h-12 lg:w-22 lg:h-12 absolute top-14.5 right-53 md:top-11 md:right-23 lg:top-11 lg:right-24"
+                                    }`}
+                                >
+                                    <VideoStreamer
+                                        duration={time}
+                                        stop={stopStreamer}
+                                        onStop={() => closeAndShowClapVideo()}
+                                        onStart={() => setStartTimer(true)}
+                                        ws={socket.current}
+                                        isWsReady={isSocketConnected}
+                                        border={isExpanded ? "rounded-2xl" : ""}
+                                        sessionId={sessionId}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
 
                     <AudienceEngaged percent={feedback ? feedback.analysis.Feedback.Clarity : 0} />

@@ -325,7 +325,7 @@ const PublicSpeaking: React.FC = () => {
                     {/* <div className="flex justify-between items-center mb-4">
                         <h4 className="mb-0 md:mb-4">Public Speaking Session</h4>
                     </div> */}
-                    <div className="inline-block py-2 px-4 md:hidden bg-ghost-white border border-bright-gray rounded-3xl w-auto relative top-7">
+                    <div className="inline-block py-2 px-4 md:hidden bg-ghost-white border border-bright-gray rounded-3xl w-auto mt-2">
                         <p>{sessionData?.session_name}</p>
                     </div>
                     <div className="hidden md:flex justify-between items-center">
@@ -478,7 +478,7 @@ const PublicSpeaking: React.FC = () => {
                             />
                             {!isLargeScreen && (
                                 <div
-                                    className="py-5 lg:hidden block rounded-xl w-50 h-30 md:w-80 md:h-50 absolute bottom-0 right-3 md:right-10"
+                                    className="py-5 lg:hidden block rounded-xl w-50 h-30 md:w-80 md:h-50 absolute bottom-0 right-3 md:right-10 z-10"
                                     style={{
                                         backgroundImage: `url(${xpImg})`,
                                         backgroundSize: "cover",
