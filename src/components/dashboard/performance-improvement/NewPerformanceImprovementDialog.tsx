@@ -35,6 +35,9 @@ interface Sessions {
   duration: string;
   new_sequence_name: string;
   is_active: boolean;
+  session_type: string;
+  virtual_enviroment: string;
+  id: number;
 }
 
 function NewPerformanceImprovementDialog() {
@@ -71,6 +74,9 @@ function NewPerformanceImprovementDialog() {
         date: formatDate(item.date),
         duration: formatTime(item.duration?.toString()),
         new_sequence_name: "",
+        session_type: item.session_type,
+        virtual_enviroment: item.virtual_environment,
+        id: item.id,
         is_active: false,
       })) ?? [],
     [data?.results]
@@ -272,6 +278,9 @@ function NewPerformanceImprovementDialog() {
                       date: activeSession.date,
                       duration: activeSession.duration,
                       new_sequence_name: newSequenceName.trim(),
+                      session_type: activeSession.session_type,
+                      virtual_enviroment: activeSession.virtual_enviroment,
+                      session_id: activeSession.id,
                     })
                   );
                 }}
