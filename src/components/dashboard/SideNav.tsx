@@ -168,7 +168,7 @@ const SideNav: React.FC = () => {
             path: "/dashboard/user/session-history",
         },
         {
-            name: "Progress & Performance",
+            name: "Progress Tracking",
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
