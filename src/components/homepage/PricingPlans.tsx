@@ -80,19 +80,14 @@ const PricingCards = () => {
         setError('Payment system is not currently configured. Please try again later.');
         return;
       }
-  
-      setPlans(prevPlans =>
+      setPlans(prevPlans => 
         prevPlans.map(plan => {
-          let tierKey = plan.tier;
-          if (plan.tier === "starter" && paymentInfo.tiers.tester) {
-            tierKey = "tester";
-          }
-          const tierData = paymentInfo.tiers[tierKey];
+          const tierData = paymentInfo.tiers[plan.tier];
           if (tierData) {
             return {
               ...plan,
               priceId: tierData.priceId,
-              sessions: tierData.credits,
+              sessions: tierData.credits
             };
           }
           return plan;
