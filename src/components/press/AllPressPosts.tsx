@@ -42,14 +42,15 @@ function AllPressPosts() {
       img: "./assets/pressimg6.png",
       date: "25 Mar 2025",
       title: "Coming soon",
-      summary: "",
+      summary:
+        "Join the EngageX™ community and hear what the global media has to say about this amazing new platform.",
     },
     {
       img: "./assets/pressimg7.png",
       date: "25 Mar 2025",
       title: "Tech talk",
       summary:
-        "Coming this June and August 2025, Tech Talk Conversations will stream live on EngageX™️, bringing together leading voices in technology to unpack the trends shaping tomorrow. From breakthroughs in AI and cybersecurity to the evolving relationship between humans and machines, each session will offer sharp insights, interactive discussions, and forward-thinking perspectives. Whether you’re in tech, business, or simply future curious, join us live and be part of the conversations driving innovation.",
+        "Coming this June and August 2025, Tech Talk Conversations will stream live on EngageX™, bringing together leading voices in technology to unpack the trends shaping tomorrow. From breakthroughs in AI and cybersecurity to the evolving relationship between humans and machines, each session will offer sharp insights, interactive discussions, and forward-thinking perspectives. Whether you’re in tech, business, or simply future curious, join us live and be part of the conversations driving innovation.",
     },
   ];
   return (
