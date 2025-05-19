@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ErrorToast from "@/components/ui/custom-toasts/error-toast";
-import { apiGet, apiPost } from "@/lib/api";
+import { apiDelete, apiGet, apiPost } from "@/lib/api";
 import { useAppDispatch } from "@/store";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { IPOSTSessionPayload, IPreviewSlideUploadResponse, ISession } from "@/types/sessions";
@@ -83,6 +83,32 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
     });
 }
 
+export function useDeleteSessionVideo() {
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationKey: ["deleteSessionVideo"],
+        mutationFn: async (sessionId: string) => {
+            return await apiDelete(`/sessions/sessions/${sessionId}/delete-session-media/`);
+        },
+        onSuccess: () => {
+            toast("Session video deleted successfully.");
+            navigate(0);
+        },
+        onError: (error) => {
+            console.error("Error deleting session video: ", error);
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Error deleting session video",
+                        description: "An error occurred while deleting session video, please try again.",
+                    }}
+                />,
+            );
+        },
+    });
+}
+
 export function useEndSession(sessionId: string | undefined, duration: any, slidesDuration?: any[]) {
     const navigate = useNavigate();
     const convertDurationToSeconds = (duration: string): number => {
@@ -90,7 +116,7 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
         return minutes * 60 + seconds;
     };
 
-    const durationInSeconds = convertDurationToSeconds(duration ? duration : slidesDuration?.[0] ?? "0:00");
+    const durationInSeconds = convertDurationToSeconds(duration ? duration : (slidesDuration?.[0] ?? "0:00"));
 
     return useMutation({
         mutationKey: ["endSession"],
