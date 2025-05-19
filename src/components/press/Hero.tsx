@@ -54,10 +54,10 @@ function Hero() {
         </div>
         <div className="space-y-6 py-6">
           <h4 className="text-center">
-            At EngageX, AI Innovation Meets Environmental Responsibility
+            At EngageX™, AI Innovation Meets Environmental Responsibility
           </h4>
           <p className="text-[#667085] font-montserrat">
-            At EngageX, we believe the future of AI shouldn’t come at the
+            At EngageX™, we believe the future of AI shouldn’t come at the
             planet’s expense. That’s why we’ve reimagined how to deliver cutting
             edge capabilities without repeating the energy-intensive cycle of
             training massive models from scratch. Rather than burning through
@@ -72,7 +72,7 @@ function Hero() {
             class. • We deploy lightweight, cloud optimized systems, minimizing
             energy use without sacrificing speed or accuracy. • We reduce
             environmental waste by skipping redundant training cycles and using
-            infrastructure powered by cleaner energy. At EngageX, we’re proving
+            infrastructure powered by cleaner energy. At EngageX™, we’re proving
             that AI can be bold, brilliant, and better for the planet.
             Innovation and sustainability aren’t competing goals, they’re our
             blueprint for progress.
