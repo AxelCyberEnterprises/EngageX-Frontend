@@ -259,6 +259,7 @@ const ProgressTracking: React.FC = () => {
                   colors={chartColors}
                   height={350}
                   barSize={40}
+                  timeFrame={timeFrame}
                 />
               </div>
             </div>
