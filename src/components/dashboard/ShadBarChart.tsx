@@ -16,6 +16,7 @@ type Props = {
     barSize?: number;
     barGap?: number;
     height?: number;
+    timeFrame?: 'weekly' | 'monthly' | 'yearly';
 };
 
 export default function ShadBarChart({ 
@@ -24,7 +25,8 @@ export default function ShadBarChart({
     isLoading = false, 
     barSize = 20, 
     barGap = 2,
-    height = 300
+    height = 300,
+    timeFrame = 'monthly'
 }: Props) {
     const chartConfig = Object.keys(colors).reduce((acc, key) => {
         acc[key] = {
@@ -35,6 +37,32 @@ export default function ShadBarChart({
     }, {} as ChartConfig);
 
     const metricKeys = Object.keys(colors);
+    
+    // Get current date information
+    const currentDate = new Date();
+    const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+    const currentYear = currentDate.getFullYear();
+    
+    // Create appropriate time period label based on timeFrame
+    const getCurrentTimePeriod = () => {
+        if (timeFrame === 'weekly') {
+            // Get the start of the week (past 7 days)
+            const startDate = new Date();
+            startDate.setDate(currentDate.getDate() - 7);
+            const startMonth = startDate.toLocaleString('default', { month: 'short' });
+            const startDay = startDate.getDate();
+            
+            return `${startMonth} ${startDay} - ${currentMonth.substring(0, 3)} ${currentDate.getDate()}, ${currentYear}`;
+        } else if (timeFrame === 'yearly') {
+            return `${currentYear}`;
+        } else {
+            // Monthly is default
+            return `${currentMonth} ${currentYear}`;
+        }
+    };
+
+    // Time period display text
+    const timePeriodDisplay = getCurrentTimePeriod();
 
     if (isLoading) {
         return (
@@ -108,6 +136,11 @@ export default function ShadBarChart({
                         ))}
                     </BarChart>
                 </ChartContainer>
+                
+                {/* Current time period display */}
+                <div className="text-center my-2 text-sm font-medium text-gray-600">
+                    {timePeriodDisplay}
+                </div>
             </CardContent>
         </Card>
     );
