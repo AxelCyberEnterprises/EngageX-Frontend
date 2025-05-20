@@ -84,7 +84,7 @@ const ProgressTracking: React.FC = () => {
       iconAlt: "Focus icon",
       title: "Transformative Communication",
       value: progressTracking?.overview_card.transformative_communication !== undefined
-        ? `${progressTracking.overview_card.transformative_communication * 10}%`
+        ? `${progressTracking.overview_card.transformative_communication}%`
         : "0",
       subtext: "Delivery's transformative effect",
     },
