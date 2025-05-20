@@ -197,7 +197,7 @@ function Benefits() {
             Competitors
           </p>
           <div className="w-full pl-2 flex-1 flex h-max relative justify-center items-center">
-            <img src="./assets/logoalt.png" className="h-4" alt="" />
+            <img src="/assets/logoalt.png" className="h-4" alt="" />
           </div>
         </div>
         <div className="flex justify-between items-center">

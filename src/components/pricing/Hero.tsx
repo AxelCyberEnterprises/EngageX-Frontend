@@ -58,17 +58,17 @@ function Hero() {
           <div className="flex gap-4 bg-[#8FA7DF1A] w-max pl-2 pr-6 py-3 rounded-full items-center mx-auto lg:mx-0">
             <div className="flex">
               <img
-                src="./assets/profile1.png"
+                src="/assets/profile1.png"
                 alt="profile"
                 className="size-[28.82px] lg:size-8 rounded-full"
               />
               <img
-                src="./assets/profile2.png"
+                src="/assets/profile2.png"
                 alt="profile"
                 className="size-[28.82px] lg:size-8 rounded-full -ml-3"
               />
               <img
-                src="./assets/profile3.png"
+                src="/assets/profile3.png"
                 alt="profile"
                 className="size-[28.82px] lg:size-8 rounded-full -ml-3"
               />
