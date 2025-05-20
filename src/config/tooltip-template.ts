@@ -124,7 +124,7 @@ export const tooltipItems: TooltipProps = {
     },
     "goals-and-achievements": {
         description:
-            "If a user scores above 80%, one point is added to their achievement score. Once they reach 8 out of 10 qualifying scores, the achievement is considered complete indicating mastery. Please refer to your report for greater details.",
+            "📊 Understanding Your Progress & Performance Track your growth in 8 key communication skills. Earn Mastery Points by scoring 80%+ in any skill—up to 10 points per category. Progress through Mastery Levels (0-3) as you improve. The more points you earn, the higher your level—and the stronger your mastery!",
     },
     goals: {
         title: undefined,
