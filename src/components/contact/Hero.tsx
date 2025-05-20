@@ -50,7 +50,7 @@ function Hero() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 pb-20 gap-20 lg:gap-8">
           <div className="space-y-4">
             <svg
               width="24"
