@@ -17,6 +17,8 @@ import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress";
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
+// import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
+// import { Info } from "lucide-react";
 
 interface DashboardData {
     latest_session_dict: {
@@ -416,9 +418,16 @@ const UserDashboardHome: React.FC = () => {
                 <div className="w-full lg:w-3/9 lg:ps-2 mb-3 lg:mb-10">
                     <div className="goals p-5 rounded-[12px]">
                         <p className="chinese__black big mb-3">Your goals & achievements</p>
-                        <Link to="progress-tracking">
-                            <small className="underline gunmetal cursor-pointer">View All</small>
-                        </Link>
+                        <div className="flex items-center gap-2">
+                            <p>Goals and Achievements</p>
+                            {/* <DynamicTooltip
+                                tooltipKey={"goals_and_achievements"}
+                                sideOffset={5}
+                                className="[&_svg]:hidden [&>p]:text-black/80"
+                            >
+                                <Info className="size-4 shrink-0" />
+                            </DynamicTooltip> */}
+                        </div>
 
                         <div className="progress__div relative flex flex-col items-center w-full mt-7 mb-6">
                             <SemiCircleProgress
@@ -426,7 +435,9 @@ const UserDashboardHome: React.FC = () => {
                                 color="#7387FF"
                             />
                             <h2 className="pt-20 mb-2">🎊</h2>
-                            <p className="mb-3">{numerator} goals completed</p>
+                            <p className="mb-3">
+                                {numerator} Achievement{numerator === 1 ? "" : "s"} Completed
+                            </p>
                             <h2 className="mb-3">{goalFraction}</h2>
 
                             {numerator / denominator >= 5 / 8 && numerator / denominator < 8 / 8 && (
@@ -437,11 +448,6 @@ const UserDashboardHome: React.FC = () => {
                                     Well done! You have completed 100% of your goals.
                                 </p>
                             )}
-                            {/* {numerator / denominator < 5 / 8 && numerator/denominator >= 1/8 && (
-                <p className="gunmetal text-center">
-                  You have completed {goalFraction} of your goals.
-                </p>
-              )} */}
                         </div>
 
                         <div className="progress__bars__div">
@@ -453,7 +459,13 @@ const UserDashboardHome: React.FC = () => {
                                     <div className="w-5/6 flex flex-col justify-between h-full">
                                         <div className="flex justify-between mb-2 mt-1.5 dark__charcoal">
                                             <small>{goal.title}</small>
-                                            <small>{goal.percent}%</small>
+                                            <small>
+                                                {goal.percent > 70
+                                                    ? "Level 3"
+                                                    : goal.percent > 30
+                                                      ? "Level 2"
+                                                      : "Level 1"}
+                                            </small>
                                         </div>
                                         <div className="mt-1">
                                             <SegmentedProgressBar
@@ -473,11 +485,11 @@ const UserDashboardHome: React.FC = () => {
                             ))}
                         </div>
 
-                        <Link to="progress-tracking">
+                        {/* <Link to="progress-tracking">
                             <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3 w-full mt-6">
                                 View Goals
                             </Button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             </div>

@@ -17,7 +17,8 @@ export type ITooltipKeys =
     | "pauses"
     | "slide-count-efficiency"
     | "slide-wordiness"
-    | "aesthetic-balance";
+    | "aesthetic-balance"
+    | "goals";
 type ITooltipContent = {
     title?: string;
     description: string;
