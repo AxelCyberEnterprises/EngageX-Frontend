@@ -88,7 +88,7 @@ function CookiePolicy() {
             <h4 className="text-black font-montreal">6. Contact Us</h4>
             <p className="big">
               For any privacy-related concerns, please contact
-              <span className="font-medium ml-2">info@engagexai.io</span>
+              <span className="font-medium ml-2">Info@engageXai.io</span>
             </p>
           </div>
         </div>

@@ -7,13 +7,20 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { handleDialog } from "@/store/slices/performance_improvement_slice";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useNewImprovmentSequence } from "@/hooks/auth";
 
 function SessionConfirmationDialog() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const dialog = useSelector(
     (state: RootState) => state.performance_improvement.dialog
   );
+  const pis_data = useSelector(
+    (state: RootState) => state.performance_improvement.new_pis
+  );
+  const { mutate: addNewImprovmentSequence } = useNewImprovmentSequence();
   return (
     <AlertDialog
       open={dialog.session_confirmation}
@@ -57,13 +64,13 @@ function SessionConfirmationDialog() {
               <div className="flex gap-x-4 items-center">
                 <div className="space-y-4 pb-2">
                   <small>Session Type</small>
-                  <p className="text-black">Pitch Presentation</p>
+                  <p className="text-black">{pis_data.session_type}</p>
                 </div>
               </div>
               <div className="flex gap-x-4 items-center">
                 <div className="space-y-4 pb-2">
                   <small>Virtual Environment</small>
-                  <p className="text-black">Conference Hall</p>
+                  <p className="text-black">{pis_data.virtual_enviroment}</p>
                 </div>
               </div>
               <div className="flex gap-x-4 items-center">
@@ -105,11 +112,27 @@ function SessionConfirmationDialog() {
               >
                 Back
               </button>
-              <Link to="/dashboard/user/pitch-practice">
-                <button className="rounded-2xl px-10 py-2 h-12">
-                  Begin Session
-                </button>
-              </Link>
+              <button
+                onClick={async () => {
+                  addNewImprovmentSequence({
+                    sequence_name: pis_data.new_sequence_name,
+                    description: "",
+                    session_id: String(pis_data.session_id),
+                  });
+                  navigate(
+                    `/dashboard/user/${
+                      pis_data.session_type == "public"
+                        ? "public-speaking"
+                        : pis_data.session_type == "pitch"
+                        ? "pitch-practice"
+                        : "presentation-practice"
+                    }`
+                  );
+                }}
+                className="rounded-2xl px-10 py-2 h-12"
+              >
+                Begin Session
+              </button>
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>

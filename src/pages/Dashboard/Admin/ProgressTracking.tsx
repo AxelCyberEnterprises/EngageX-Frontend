@@ -14,20 +14,9 @@ import StatsCardSection from "@/components/dashboard/StatusCard";
 import { RecentSessionsTable } from "@/components/tables/recent-sessions-table/user";
 import { Session } from "@/components/tables/recent-sessions-table/user/data";
 import { Link } from "react-router-dom";
-import RecentAchievementsModal from "@/components/modals/modalVariants/RecentAchievementsModal";
-import { useGoalsAndAchievement } from "@/hooks/goalsAndAchievement";
-import { useProgressTracking } from "@/hooks/progressTracking";
+import { useProgressTracking, TimeFrame, SortOption } from "@/hooks/progressTracking";
 import { toast } from "sonner";
 import ShadBarChart from "@/components/dashboard/ShadBarChart";
-
-interface Achievement {
-  id: number;
-  title: string;
-  level: number;
-  score: number;
-  total: number;
-  note: string;
-}
 
 export interface Metric {
   metric: string;
@@ -36,116 +25,35 @@ export interface Metric {
   session2: number;
   session3: number;
   trend: 'Progressing' | 'Declining' | 'Stable';
-};
-
+}
 
 const ProgressTracking: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailureModal, setShowFailureModal] = useState(false);
-  const [
-    showRecentAchievementsModal,
-    setShowRecentAchievementsModal,
-  ] = useState(false);
-  const {
-    data: goalsAndAchievement,
-    error: fetchGoalsAndAchievement,
-  } = useGoalsAndAchievement();
+  const [timeFrame, setTimeFrame] = useState<TimeFrame>('weekly');
+  const [sortOption, setSortOption] = useState<SortOption>('max-date');
   const {
     data: progressTracking,
     isLoading: progressTrackingLoading,
-    error: progressTrackingEerror,
-  } = useProgressTracking();
+    error: progressTrackingError,
+    refetch,
+  } = useProgressTracking({
+    timeFrame: timeFrame,
+    sort: sortOption,
+  })
+  useEffect(() => {
+    refetch();
+  }, [timeFrame, sortOption]);
 
   useEffect(() => {
-    if (fetchGoalsAndAchievement) {
+    if (progressTrackingError) {
       toast.error(
         "Failed to fetch goals and achievement: " +
-        (fetchGoalsAndAchievement.message || "Unknown error")
+        ((progressTrackingError as Error).message || "Unknown error")
       );
     }
-  }, []);
+  }, [progressTrackingError]);
 
-  useEffect(() => {
-    if (progressTrackingEerror) {
-      toast.error(
-        "Failed to fetch goals and achievement: " +
-        (progressTrackingEerror.message || "Unknown error")
-      );
-    }
-  }, []);
-
-  const getLevel = (score: number) => {
-    if (score >= 1 && score <= 3) return 1;
-    if (score >= 4 && score <= 7) return 2;
-    if (score >= 8 && score <= 10) return 3;
-    return 1;
-  };
-  const achievementData: Achievement[] = [
-    {
-      id: 1,
-      title: "Vocal Variety Mastery",
-      score: goalsAndAchievement?.vocal_variety ?? 0,
-      level: getLevel(Math.round(goalsAndAchievement?.vocal_variety ?? 0)),
-      total: 10,
-      note: "Pitch, tone, pace, and pauses.",
-    },
-    {
-      id: 2,
-      title: "Overall Captured Impact Mastery",
-      score: goalsAndAchievement?.overall_captured_impact ?? 0,
-      level: getLevel(Math.round(goalsAndAchievement?.overall_captured_impact ?? 0)),
-      total: 10,
-      note: "The impact of the overall speech.",
-    },
-    {
-      id: 3,
-      title: "Emotional Impact Mastery",
-      score: goalsAndAchievement?.emotional_impact ?? 0,
-      level: getLevel(Math.round(goalsAndAchievement?.emotional_impact ?? 0)),
-      total: 10,
-      note: "Compels to the audience's emotions.",
-    },
-    {
-      id: 4,
-      title: "Body Language Mastery",
-      score: goalsAndAchievement?.body_language ?? 0,
-      level: getLevel(Math.round(goalsAndAchievement?.body_language ?? 0)),
-      total: 10,
-      note: "Body posture, motion and hand gestures.",
-    },
-    {
-      id: 5,
-      title: "Transformative Communication Mastery",
-      score: goalsAndAchievement?.transformative_communication ?? 0,
-      level: getLevel(Math.round(goalsAndAchievement?.transformative_communication ?? 0)),
-      total: 10,
-      note: "Inspires change or shifts thinking.",
-    },
-    {
-      id: 6,
-      title: "Audience Engagement Mastery",
-      score: goalsAndAchievement?.audience_engagement ?? 0,
-      level: getLevel(Math.round(goalsAndAchievement?.audience_engagement ?? 0)),
-      total: 10,
-      note: "Triggers the audience to respond.",
-    },
-    {
-      id: 7,
-      title: "Structure & Clarity Mastery",
-      score: goalsAndAchievement?.structure_and_clarity ?? 0,
-      level: getLevel(Math.round(goalsAndAchievement?.structure_and_clarity ?? 0)),
-      total: 10,
-      note: "How clearly ideas are organized and expressed.",
-    },
-    {
-      id: 8,
-      title: "Language & Word Choice Mastery",
-      score: goalsAndAchievement?.language_and_word_choice ?? 0,
-      level: getLevel(Math.round(goalsAndAchievement?.language_and_word_choice ?? 0)),
-      total: 10,
-      note: "Avoid filler words and use good grammar.",
-    },
-  ];
   const performanceCardsData = [
     {
       icon: micIcon,
@@ -164,23 +72,26 @@ const ProgressTracking: React.FC = () => {
     },
     {
       icon: speakerIcon,
-      iconAlt: "Content icon",
+      iconAlt: "Impact icon",
       title: "Impact",
-      value: `${(goalsAndAchievement?.overall_captured_impact * 10) || 0}%`,
+      value: progressTracking?.overview_card.impact !== undefined
+        ? `${progressTracking.overview_card.impact}%`
+        : "0",
       subtext: "The impact of the overall speech",
     },
     {
       icon: graphUP,
       iconAlt: "Focus icon",
       title: "Transformative Communication",
-      value: `${(goalsAndAchievement?.structure_and_clarity * 10 || 0)}%`,
+      value: progressTracking?.overview_card.transformative_communication !== undefined
+        ? `${progressTracking.overview_card.transformative_communication * 10}%`
+        : "0",
       subtext: "Delivery's transformative effect",
     },
   ];
 
   const sessions: Session[] =
     progressTracking?.recent_session.map((session: any) => {
-      // Format the date for display
       const date = new Date(session.date);
       const formattedDate = date.toLocaleDateString("en-US", {
         month: "short",
@@ -193,7 +104,7 @@ const ProgressTracking: React.FC = () => {
         name: session.session_name,
         date: formattedDate,
         type: session.session_type_display,
-        duration: session.formatted_duration,
+        duration: session.formatted_duration || 'N/A',
         improvement: session.impact,
       };
     }) || [];
@@ -207,22 +118,15 @@ const ProgressTracking: React.FC = () => {
 
   const chartData = useMemo(() => {
     if (!progressTracking?.graph_data) return [];
-    const maxValue = Math.max(
-      ...progressTracking.graph_data.flatMap((item: GraphDataItem) => [
-        item.impact,
-        item.trigger_response,
-        item.conviction,
-      ])
-    );
     return progressTracking.graph_data.map((item: GraphDataItem, index: number) => {
       const date = new Date(item.month);
       const monthName = date.toLocaleString("default", { month: "long" });
       return {
         month: index * 10,
         monthLabel: monthName,
-        Impact: (item.impact / maxValue) * 100,
-        TriggerResponse: (item.trigger_response / maxValue) * 100,
-        Conviction: (item.conviction / maxValue) * 100,
+        Impact: item.impact,
+        TriggerResponse: item.trigger_response,
+        Conviction: item.conviction,
       };
     });
   }, [progressTracking]);
@@ -249,7 +153,7 @@ const ProgressTracking: React.FC = () => {
   ];
 
   const handleTimeFrameChange = (value: string) => {
-    console.log("Selected time:", value);
+    setTimeFrame(value as TimeFrame);
   };
 
   const filterOptions: { value: string; label: string }[] = [
@@ -257,19 +161,17 @@ const ProgressTracking: React.FC = () => {
     { value: "pitch", label: "Pitch Practice" },
     { value: "public", label: "Public Speaking" },
     { value: "presentation", label: "Presentation Practice" },
-  ];
-
-  const sortOptions: { value: string; label: string }[] = [
-    { value: "date-desc", label: "Date (Newest First)" },
-    { value: "date-asc", label: "Date (Oldest First)" },
-    { value: "impact-desc", label: "Impact (Highest)" },
-    { value: "impact-asc", label: "Impact (Lowest)" },
-    { value: "duration-desc", label: "Duration (Longest)" },
-    { value: "duration-asc", label: "Duration (Shortest)" },
+  ]
+  const sortOptions: { value: SortOption; label: string }[] = [
+    { value: "max-date", label: "Date (Newest First)" },
+    { value: "min-date", label: "Date (Oldest First)" },
+    { value: "max-impact", label: "Impact (Highest)" },
+    { value: "min-impact", label: "Impact (Lowest)" },
+    { value: "max-duration", label: "Duration (Longest)" },
+    { value: "min-duration", label: "Duration (Shortest)" },
   ];
 
   const [activeFilter, setActiveFilter] = useState("all");
-  const [activeSort, setActiveSort] = useState("date-desc");
 
   const filteredSessions =
     activeFilter === "all"
@@ -283,8 +185,7 @@ const ProgressTracking: React.FC = () => {
   };
 
   const handleSortChange = (value: string) => {
-    setActiveSort(value);
-    console.log(activeSort);
+    setSortOption(value as SortOption);
   };
 
   return (
@@ -307,18 +208,12 @@ const ProgressTracking: React.FC = () => {
         cta="Cancel"
         ctaClassName="bg-[#262B3A] text-[#414651]"
       />
-      <RecentAchievementsModal
-        show={showRecentAchievementsModal}
-        onClose={() => setShowRecentAchievementsModal(false)}
-        achievementData={achievementData}
-      />
       <div className="scrollbar-hide md:px-8 px-4">
         <section className="py-5 flex md:flex-row flex-col md:gap-2 gap-3 items-start justify-between">
           <div>
             <h3 className="xl:text-2xl text-xl text-[#262B3A]">
               Progress Tracking
             </h3>
-
           </div>
         </section>
 
@@ -329,7 +224,7 @@ const ProgressTracking: React.FC = () => {
                 Performance Overview
               </h3>
               <p className="text-sm text-[#6F7C8E] mt-1">
-                Here’s a quick overview of your performance
+                Here's a quick overview of your performance
               </p>
             </div>
           </section>
@@ -348,6 +243,7 @@ const ProgressTracking: React.FC = () => {
                     options={timeOptions}
                     onChange={handleTimeFrameChange}
                     placeholder="Weekly"
+                    defaultValue={timeFrame}
                     className="w-fit sm:rounded-[7px] rounded-[5px] shadow-none sm:py-3 py-1 sm:px-4 px-2 sm:h-9 h-7 text-[#333333] focus-visible:ring-0 active:shadow-none"
                     showIcon={false}
                   />
@@ -363,6 +259,7 @@ const ProgressTracking: React.FC = () => {
                   colors={chartColors}
                   height={350}
                   barSize={40}
+                  timeFrame={timeFrame}
                 />
               </div>
             </div>
@@ -378,6 +275,7 @@ const ProgressTracking: React.FC = () => {
                       options={filterOptions}
                       onChange={handleFilterChange}
                       placeholder="Filter"
+                      defaultValue={activeFilter}
                       className="rounded-lg border px-4 py-2 text-sm font-medium"
                       showIcon={true}
                       placeholderClassname="sm:flex hidden"
@@ -391,6 +289,7 @@ const ProgressTracking: React.FC = () => {
                       options={sortOptions}
                       onChange={handleSortChange}
                       placeholder="Sort"
+                      defaultValue={sortOption}
                       className="rounded-lg border px-4 py-2 text-sm font-medium"
                       showIcon={true}
                       placeholderClassname="sm:flex hidden"
@@ -412,7 +311,6 @@ const ProgressTracking: React.FC = () => {
             </div>
           </section>
         </div>
-
       </div>
     </>
   );
