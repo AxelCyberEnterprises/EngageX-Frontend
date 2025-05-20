@@ -1,60 +1,33 @@
 function Hero() {
   return (
     <section className="px-10">
-      <div className="text-center py-24 space-y-3">
-        <h1>EngageX™ in the news</h1>
-        {/* <h6 className="text-[#475467]">
-          For press enquiries, please contact{" "}
-          <span className="">info@engagexai.io</span>
-        </h6> */}
-      </div>
-      {/* <div className="flex flex-col lg:flex-row gap-10">
-        <div className="h-[20rem] w-full lg:min-w-[33rem] relative object-contain">
+      <div className="text-center pt-24 pb-20 w-max mx-auto items-center space-y-3">
+        <div className="flex gap-2 items-center">
           <img
-            src="./assets/pressimg1.png"
-            className="h-full w-full absolute object-contain"
+            src="./assets/logodark.png"
+            alt="brand logo"
+            className="h-10 lg:h-13 lg:mt-2"
           />
+          <h1>in the news</h1>
         </div>
-        <div className="space-y-4">
-          <p className="text-green-sheen">25 Mar 2025</p>
-          <div className="flex justify-between items-center">
-            <h4>Speak confidently with EngageX™</h4>
-            <svg
-              width="24"
-              height="28"
-              viewBox="0 0 24 28"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7 21L17 11M17 11H7M17 11V21"
-                stroke="#1A1A1A"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-          <p className="big text-[#667085]">
-            Prepare, perfect, and present with confidence in a realistic,
-            AI-powered environment tailored for leaders, presenters, and
-            entrepreneurs to refine their communication, captivate audiences,
-            and elevate their influence—plus, get the bonus of real-time
-            guidance from an expert coach.
-          </p>
-        </div>
-      </div> */}
+      </div>
 
-      <div>
-        <div className="w-full overflow-clip h-[40vh] relative">
+      <div className="space-y-8">
+        <div className="hidden lg:block w-full overflow-clip h-[30rem] relative">
           <img
             src="./assets/presshero.png"
-            className="h-full w-full absolute object-cover"
+            className=" h-full w-full absolute object-cover top-0"
+          />
+        </div>
+        <div className=" lg:hidden w-full overflow-clip h-[10rem] relative">
+          <img
+            src="./assets/pressimgmobile.png"
+            className=" h-full w-full absolute object-cover top-0"
           />
         </div>
         <div className="space-y-6 py-6">
           <h4 className="text-center">
-            At EngageX™, AI Innovation Meets Environmental Responsibility
+            At EngageX™ AI Innovation Meets Environmental Responsibility
           </h4>
           <p className="text-[#667085] font-montserrat">
             At EngageX™, we believe the future of AI shouldn’t come at the
