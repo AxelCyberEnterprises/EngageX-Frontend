@@ -4,7 +4,7 @@ function Hero() {
       <div className="text-center pt-24 pb-20 w-max mx-auto items-center space-y-3">
         <div className="flex gap-2 items-center">
           <img
-            src="./assets/logodark.png"
+            src="/assets/logodark.png"
             alt="brand logo"
             className="h-10 lg:h-13 lg:mt-2"
           />
@@ -15,13 +15,13 @@ function Hero() {
       <div className="space-y-8">
         <div className="hidden lg:block w-full overflow-clip h-[30rem] relative">
           <img
-            src="./assets/presshero.png"
+            src="/assets/presshero.png"
             className=" h-full w-full absolute object-cover top-0"
           />
         </div>
         <div className=" lg:hidden w-full overflow-clip h-[10rem] relative">
           <img
-            src="./assets/pressimgmobile.png"
+            src="/assets/pressimgmobile.png"
             className=" h-full w-full absolute object-cover top-0"
           />
         </div>

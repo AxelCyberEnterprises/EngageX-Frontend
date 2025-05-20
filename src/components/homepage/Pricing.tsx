@@ -147,12 +147,12 @@ function Pricing({
         </div>
         <img
           className="hidden lg:block h-[20rem] absolute right-0 bottom-0"
-          src="./assets/product.png"
+          src="/assets/product.png"
           alt="EngageX™ product image"
         />
         <img
           className="lg:hidden mt-12"
-          src="./assets/productmb.png"
+          src="/assets/productmb.png"
           alt="EngageX™ product image"
         />
       </div>
