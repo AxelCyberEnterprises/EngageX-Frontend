@@ -2,11 +2,11 @@ function Hero() {
   return (
     <section className="px-10">
       <div className="text-center pt-24 pb-20 w-max mx-auto items-center space-y-3">
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <img
             src="./assets/logodark.png"
             alt="brand logo"
-            className="h-13 mt-2"
+            className="h-10 lg:h-13 lg:mt-2"
           />
           <h1>in the news</h1>
         </div>
