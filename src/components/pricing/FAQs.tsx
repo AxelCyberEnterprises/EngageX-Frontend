@@ -10,7 +10,7 @@ function FAQs() {
     {
       question: "How does the virtual audience work?",
       answer:
-        "The virtual audience simulates real-time feedback to help you practice effectively",
+        "The 3D avatars simulates real-time reactionary feedback that is triggered by your words",
     },
     {
       question: "Can I practice with my own slides?",

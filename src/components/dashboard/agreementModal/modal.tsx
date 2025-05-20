@@ -158,9 +158,9 @@ export default function MultiStepAgreement({
         console.error("Profile update error:", error);
         toast.error(
           "Failed to create profile: " +
-          ((error as any).response?.data?.message ||
-            (error as any).message ||
-            "Unknown error")
+            ((error as any).response?.data?.message ||
+              (error as any).message ||
+              "Unknown error")
         );
       } finally {
         setIsUpdating(false);
@@ -189,10 +189,11 @@ export default function MultiStepAgreement({
       <DialogTitle></DialogTitle>
       <DialogContent
         aria-describedby={undefined}
-        className={`${step === 4 || step === 5 || step === 1
+        className={`${
+          step === 4 || step === 5 || step === 1
             ? "w-[min(100%,25rem)]"
             : "w-[85vw] md:max-w-[50vw]"
-          } 
+        } 
                     my-auto mx-auto max-md:mt-5 max-md:max-h-[90vh] [&>button]:hidden`}
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
@@ -246,18 +247,22 @@ export default function MultiStepAgreement({
         </div>
 
         <DialogFooter className="flex flex-col sm:flex-row gap-2 font-[Inter] justify-between">
-          {step !== 1 && <Button
-            variant="default"
-            className={`${step === 1
-                ? "bg-[rgba(255,0,0,0.1)] text-[#f00]"
-                : "bg-white border text-[#344054]"
-              } ${step > 3 && !isUpdating ? "hidden" : ""
+          {step !== 1 && (
+            <Button
+              variant="default"
+              className={`${
+                step === 1
+                  ? "bg-[rgba(255,0,0,0.1)] text-[#f00]"
+                  : "bg-white border text-[#344054]"
+              } ${
+                step > 3 && !isUpdating ? "hidden" : ""
               } w-full py-4 h-fit border-[#1018280D] hover:bg-accent rounded-lg`}
-            onClick={prevStep}
-            disabled={isUpdating}
-          >
-            {"Back"}
-          </Button>}
+              onClick={prevStep}
+              disabled={isUpdating}
+            >
+              {"Back"}
+            </Button>
+          )}
           {step < 5 ? (
             <Button
               className="w-full py-4 h-fit rounded-lg"
@@ -273,8 +278,8 @@ export default function MultiStepAgreement({
               {step === 1
                 ? "Read Agreement"
                 : step === 3 && !agreementState.filePreview
-                  ? "Next Step"
-                  : "Proceed"}
+                ? "Next Step"
+                : "Proceed"}
             </Button>
           ) : (
             <Button
@@ -315,7 +320,7 @@ function StepOne() {
 function StepTwo({
   agree,
   setAgree,
-  initials, 
+  initials,
   setInitials,
 }: {
   initials: string;
@@ -341,7 +346,7 @@ function StepTwo({
         <div>
           <div className="font-[montserrat]">
             <p>
-              <strong>Effective Date:</strong> 03/27/2025
+              <strong>Effective Date:</strong> 05/20/2025
             </p>
 
             <p className="my-4">1. Introduction</p>
@@ -517,8 +522,9 @@ function StepThree({
         Upload your picture for easy identification.
       </p>
       <div
-        className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${isDragging ? "bg-gray-100" : ""
-          }`}
+        className={`relative overflow-hidden p-4 border-gray-300 border-dashed min-h-[40vh] h-fit flex gap-1 flex-col items-center justify-center border-2 rounded-lg w-full ${
+          isDragging ? "bg-gray-100" : ""
+        }`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}

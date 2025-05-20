@@ -1,8 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // src/components/VideoPlayer.tsx
-import { Download } from "lucide-react";
+import { useDeleteSessionVideo } from "@/hooks/sessions";
+import { Download, EllipsisVertical, Trash } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { FaCompress, FaExpand } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import { Button } from "../ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 interface VideoPlayerProps {
     src: string;
@@ -20,7 +24,7 @@ interface VideoPlayerProps {
     muted?: boolean;
     requireFullPlay?: boolean;
     allowSwitch?: boolean;
-    canDownload?: boolean;
+    showMenu?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -39,7 +43,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     muted = false,
     requireFullPlay = false,
     allowSwitch = true,
-    canDownload = false,
+    showMenu = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -53,6 +57,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [currentSrc, setCurrentSrc] = useState<string>(src);
     const [nextSrc, setNextSrc] = useState<string | null>(null);
+
+    const params = useParams();
+    const { mutate: deleteVideo } = useDeleteSessionVideo();
 
     const togglePlay = (): void => {
         if (videoRef.current) {
@@ -284,7 +291,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onClick={handleVideoClick}
                 controls={false}
                 playsInline
-                preload= "auto"
+                preload="auto"
                 loop={loop && (!requireFullPlay || !nextSrc)}
                 muted={isMuted}
             />
@@ -373,18 +380,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                             </span>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                            {canDownload && (
-                                <a
-                                    title="Download"
-                                    href={currentSrc}
-                                    download="video.mp4"
-                                    className="text-white hover:text-gray-300 transition-colors"
-                                >
-                                    <Download size={16} />
-                                </a>
-                            )}
-
+                        <div className="flex items-center gap-3">
                             <button
                                 onClick={toggleFullscreen}
                                 aria-label="Toggle fullscreen"
@@ -392,6 +388,41 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                             >
                                 {isFullscreen ? <FaCompress size={16} /> : <FaExpand size={16} />}
                             </button>
+
+                            {showMenu && (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button className="size-10 rounded-full bg-transparent hover:bg-primary transition-colors focus-visible:ring-0">
+                                            <EllipsisVertical className="size-5" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent
+                                        side="top"
+                                        align="end"
+                                        alignOffset={-10}
+                                        className="border-none"
+                                    >
+                                        <DropdownMenuItem>
+                                            <a
+                                                title="Download"
+                                                href={currentSrc}
+                                                download="video.mp4"
+                                                className="flex items-center gap-3 w-full text-black transition-colors"
+                                            >
+                                                <Download className="size-4 stroke-[2.5] stroke-black" />
+                                                <span className="text-sm">Download</span>
+                                            </a>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            className="gap-3 cursor-pointer"
+                                            onClick={() => deleteVideo(params.id!)}
+                                        >
+                                            <Trash className="size-4 stroke-[2.5] stroke-black" />
+                                            <span className="font-normal">Delete</span>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            )}
                         </div>
                     </div>
                 </div>

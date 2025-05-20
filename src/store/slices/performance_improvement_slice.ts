@@ -12,6 +12,7 @@ export interface Session {
   title: string;
   date: string;
   duration: number;
+  session_type: string;
 }
 
 export interface Sequence {
@@ -122,6 +123,9 @@ interface PIData {
     date: string;
     duration: string;
     new_sequence_name: string;
+    session_type: string;
+    virtual_enviroment: string;
+    session_id: number | null;
   };
   dialog: DialogState;
   selected_screen: PIScreens;
@@ -136,6 +140,9 @@ const initialState: PIData = {
     date: "",
     duration: "",
     new_sequence_name: "",
+    session_type: "",
+    virtual_enviroment: "",
+    session_id: null,
   },
   dialog: {
     new_pis_isopen: false,
@@ -173,6 +180,9 @@ const PerformanceImprovementSlice = createSlice({
         date: string;
         duration: string;
         new_sequence_name: string;
+        session_type: string;
+        virtual_enviroment: string;
+        session_id: number;
       }>
     ) => {
       state.new_pis = {
@@ -180,7 +190,10 @@ const PerformanceImprovementSlice = createSlice({
         impact: action.payload.impact,
         date: action.payload.date,
         duration: action.payload.duration,
+        session_type: action.payload.session_type,
         new_sequence_name: action.payload.new_sequence_name,
+        virtual_enviroment: action.payload.virtual_enviroment,
+        session_id: action.payload.session_id,
       };
     },
     updateActiveExistingSession: (state, action: PayloadAction<number>) => {

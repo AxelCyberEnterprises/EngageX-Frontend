@@ -4,7 +4,7 @@ function PrivacyPolicy() {
       <div className="space-y-20 py-36 font-montserrat px-10 lg:px-20">
         <h1 className="text-center font-montreal">Privacy policy</h1>
         <div className="space-y-16 text-[#475467]">
-          <p className="big">Effective Date: 03/27/2025</p>
+          <p className="big">Effective Date: 05/20/2025</p>
           <div className="space-y-6">
             <h4 className="text-black font-montreal">Introduction</h4>
             <p className="big">
@@ -126,7 +126,7 @@ function PrivacyPolicy() {
             <h4 className="text-black font-montreal">Contact Us</h4>
             <p className="big">
               For any privacy-related concerns, please contact
-              <span className="font-medium ml-2">info@engagexai.io</span>
+              <span className="font-medium ml-2">Info@engageXai.io</span>
             </p>
           </div>
         </div>

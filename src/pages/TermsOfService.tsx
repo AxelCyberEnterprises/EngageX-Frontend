@@ -6,7 +6,7 @@ function TermsOfService() {
         <div className="space-y-16 text-[#475467]">
           <div className="space-y-5">
             <p className="big">EngageX™ Cookie Policy</p>
-            <p className="big">Effective Date: 03/27/2025</p>
+            <p className="big">Effective Date: 05/20/2025</p>
             <p className="big">
               Welcome to EngageX™! These Terms of Service ("Terms") govern your
               use of our AI-powered platform for public speaking, pitch, and
@@ -138,7 +138,7 @@ function TermsOfService() {
             <h4 className="text-black font-montreal">10.Contact Us</h4>
             <p className="big">
               For any privacy-related concerns, please contact
-              <span className="font-medium ml-2">info@engagexai.io</span>
+              <span className="font-medium ml-2">Info@engageXai.io</span>
             </p>
           </div>
         </div>

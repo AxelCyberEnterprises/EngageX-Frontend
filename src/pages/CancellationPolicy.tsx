@@ -8,7 +8,7 @@ function CancellationPolicy() {
         <div className="space-y-16 text-[#475467]">
           <div className="space-y-5">
             <p className="big">EngageX™ Cancellation & Refund Policy</p>
-            <p className="big">Effective Date: 03/27/2025</p>
+            <p className="big">Effective Date: 05/20/2025</p>
             <p className="big">
               Thank you for choosing EngageX™, a service provided by Career
               Doctor, LLC. Please review our cancellation and refund terms

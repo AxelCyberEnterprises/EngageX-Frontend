@@ -5,6 +5,7 @@ import {
 } from "@/store/slices/performance_improvement_slice";
 import clsx from "clsx";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function ExistingSequenceCard({
   sequence,
@@ -15,6 +16,8 @@ function ExistingSequenceCard({
   idx: number;
 }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
     <div
       onClick={() => dispatch(updateActiveExistingSession(idx))}
@@ -85,7 +88,23 @@ function ExistingSequenceCard({
           <p className="small">{sequence.sessions.length} sessions completed</p>
         </div>
       </div>
-      <button className="bg-transparent border-2 w-full lg:hidden !border-black rounded-xl py-3 px-3 text-black">
+      <button
+        disabled={sequence.sessions.length == 0}
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log("seq sessions: ", sequence.sessions);
+          navigate(
+            `/dashboard/user/${
+              sequence.sessions[0].session_type == "public"
+                ? "public-speaking"
+                : sequence.sessions[0].session_type == "pitch"
+                ? "pitch-practice"
+                : "presentation-practice"
+            }`
+          );
+        }}
+        className="bg-transparent border-2 w-full lg:hidden disabled:border-gray-200 disabled:text-gray-200 !border-black rounded-xl py-3 px-3 text-black"
+      >
         New Session
       </button>
     </div>

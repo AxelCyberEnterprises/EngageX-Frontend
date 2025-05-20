@@ -8,36 +8,46 @@ function Footer() {
 
   return (
     <section className="px-10 lg:px-20 bg-gunmetal text-white pt-16 space-y-20">
-      <div className="p-10 xl:p-20 text-center lg:text-left flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:justify-between text-black lg:items-center bg-alice-blue rounded-2xl">
-        <h4 className="font-montreal lg:w-[17rem] font-medium leading-relaxed">
-          Ready to speak with confidence?
-        </h4>
-        <Link to="/auth/login">
-          <button className="px-6 py-6 space-x-3 font-montserrat w-full lg:w-max mx-auto rounded-lg">
-            <p className="">Get started</p>
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 28 28"
-              className="h-6 w-7"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.738281"
-                y="0.833252"
-                width="26.6667"
-                height="26.6667"
-                rx="13.3333"
-                fill="#C1C2B4"
-              />
-              <path
-                d="M19.6915 14.5478C19.902 14.3372 19.902 13.9958 19.6915 13.7852L16.2599 10.3537C16.0493 10.1431 15.7079 10.1431 15.4973 10.3537C15.2868 10.5643 15.2868 10.9057 15.4973 11.1162L18.5476 14.1665L15.4973 17.2168C15.2868 17.4273 15.2868 17.7688 15.4973 17.9793C15.7079 18.1899 16.0493 18.1899 16.2599 17.9793L19.6915 14.5478ZM8.83398 14.7057H19.3102V13.6273H8.83398V14.7057Z"
-                fill="#262B3A"
-              />
-            </svg>
-          </button>
-        </Link>
+      <div className="space-y-8">
+        {location.pathname == "/press" && (
+          <p className="font-montserrat text-[#DCDCDC] big text-center">
+            For press enquiries, please contact{" "}
+            <span className="underline text-white">
+              engageX@thecareerdoctorllc.com
+            </span>{" "}
+          </p>
+        )}
+        <div className="p-10 xl:p-20 text-center lg:text-left flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:justify-between text-black lg:items-center bg-alice-blue rounded-2xl">
+          <h4 className="font-montreal lg:w-[17rem] font-medium leading-relaxed">
+            Ready to speak with confidence?
+          </h4>
+          <Link to="/auth/login">
+            <button className="px-6 py-6 space-x-3 font-montserrat w-full lg:w-max mx-auto rounded-lg">
+              <p className="">Get started</p>
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 28 28"
+                className="h-6 w-7"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.738281"
+                  y="0.833252"
+                  width="26.6667"
+                  height="26.6667"
+                  rx="13.3333"
+                  fill="#C1C2B4"
+                />
+                <path
+                  d="M19.6915 14.5478C19.902 14.3372 19.902 13.9958 19.6915 13.7852L16.2599 10.3537C16.0493 10.1431 15.7079 10.1431 15.4973 10.3537C15.2868 10.5643 15.2868 10.9057 15.4973 11.1162L18.5476 14.1665L15.4973 17.2168C15.2868 17.4273 15.2868 17.7688 15.4973 17.9793C15.7079 18.1899 16.0493 18.1899 16.2599 17.9793L19.6915 14.5478ZM8.83398 14.7057H19.3102V13.6273H8.83398V14.7057Z"
+                  fill="#262B3A"
+                />
+              </svg>
+            </button>
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-col lg:flex-row justify-between gap-[83.48px] lg:px-[50px] text-[#626362]">
@@ -63,7 +73,7 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a
+            {/* <a
               href="https://www.youtube.com/@TheCareerDoctorLLC"
               target="_blank"
             >
@@ -92,11 +102,8 @@ function Footer() {
                   </clipPath>
                 </defs>
               </svg>
-            </a>
-            <a
-              href="https://www.instagram.com/thecareerdoctorllc/"
-              target="_blank"
-            >
+            </a> */}
+            <a href="https://www.instagram.com/cd_engagex/" target="_blank">
               <svg
                 width="20"
                 height="20"
