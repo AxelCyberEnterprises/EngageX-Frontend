@@ -3,10 +3,10 @@ function Hero() {
     <section className="px-10">
       <div className="text-center py-24 space-y-3">
         <h1>EngageX™ in the news</h1>
-        <h6 className="text-[#475467]">
+        {/* <h6 className="text-[#475467]">
           For press enquiries, please contact{" "}
           <span className="">info@engagexai.io</span>
-        </h6>
+        </h6> */}
       </div>
       {/* <div className="flex flex-col lg:flex-row gap-10">
         <div className="h-[20rem] w-full lg:min-w-[33rem] relative object-contain">
