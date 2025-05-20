@@ -516,31 +516,7 @@ const PitchSessionReport: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-                            <h6 className="mt-8 mb-3">Body Language</h6>
-                            <div className="flex flex-wrap gap-4">
-                                {variety2.map((item, index) => (
-                                    <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
-                                        <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
-                                            <div className="flex flex-col justify-between py-3">
-                                                <div className="flex items-center gap-2">
-                                                    <p>{item.title}</p>
-                                                    <DynamicTooltip
-                                                        tooltipKey={item.key}
-                                                        sideOffset={5}
-                                                        className="[&_svg]:hidden [&>p]:text-black/80"
-                                                    >
-                                                        <Info className="size-4 shrink-0" />
-                                                    </DynamicTooltip>
-                                                </div>
-                                                <h5>{item.percent}%</h5>
-                                            </div>
-                                            <div>
-                                                <FullCircleProgress percent={item.percent!} color={"#64BA9F"} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+
                             <div className="mt-8">
                                 <h6 className="mb-3">Language and word choice</h6>
 
@@ -607,6 +583,36 @@ const PitchSessionReport: React.FC = () => {
                             </div>
                         </section>
                     )}
+
+                    <section className="px-4 lg:px-8 pt-4">
+                        <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
+                            <h6 className="mb-3">Body Language</h6>
+                            <div className="flex flex-wrap gap-4">
+                                {variety2.map((item, index) => (
+                                    <div key={index} className="w-full md:w-[calc(33.33%-10px)] lg:w-[calc(25%-12px)]">
+                                        <div className={`rounded-lg py-2 px-4 ${item.bg} flex justify-between`}>
+                                            <div className="flex flex-col justify-between py-3">
+                                                <div className="flex items-center gap-2">
+                                                    <p>{item.title}</p>
+                                                    <DynamicTooltip
+                                                        tooltipKey={item.key}
+                                                        sideOffset={5}
+                                                        className="[&_svg]:hidden [&>p]:text-black/80"
+                                                    >
+                                                        <Info className="size-4 shrink-0" />
+                                                    </DynamicTooltip>
+                                                </div>
+                                                <h5>{item.percent}%</h5>
+                                            </div>
+                                            <div>
+                                                <FullCircleProgress percent={item.percent!} color={"#64BA9F"} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
 
                     <section className="px-4 lg:px-8 py-4">
                         <div className="border-1 border-bright-gray rounded-xl py-5 px-4">

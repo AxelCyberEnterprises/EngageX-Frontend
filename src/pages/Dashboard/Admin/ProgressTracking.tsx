@@ -73,7 +73,7 @@ const ProgressTracking: React.FC = () => {
     {
       icon: speakerIcon,
       iconAlt: "Impact icon",
-      title: "Impact",
+      title: "Average Impact",
       value: progressTracking?.overview_card.impact !== undefined
         ? `${progressTracking.overview_card.impact}%`
         : "0",
@@ -82,7 +82,7 @@ const ProgressTracking: React.FC = () => {
     {
       icon: graphUP,
       iconAlt: "Focus icon",
-      title: "Transformative Communication",
+      title: "Average Transformative Communication",
       value: progressTracking?.overview_card.transformative_communication !== undefined
         ? `${progressTracking.overview_card.transformative_communication}%`
         : "0",
@@ -247,9 +247,6 @@ const ProgressTracking: React.FC = () => {
                     className="w-fit sm:rounded-[7px] rounded-[5px] shadow-none sm:py-3 py-1 sm:px-4 px-2 sm:h-9 h-7 text-[#333333] focus-visible:ring-0 active:shadow-none"
                     showIcon={false}
                   />
-                  <small className="underline cursor-pointer gunmetal ml-4">
-                    View Report
-                  </small>
                 </div>
               </div>
 
