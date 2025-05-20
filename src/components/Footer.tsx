@@ -12,9 +12,7 @@ function Footer() {
         {location.pathname == "/press" && (
           <p className="font-montserrat text-[#DCDCDC] big text-center">
             For press enquiries, please contact{" "}
-            <span className="underline text-white">
-              engageX@thecareerdoctorllc.com
-            </span>{" "}
+            <span className="underline text-white">Info@engageXai.io</span>{" "}
           </p>
         )}
         <div className="p-10 xl:p-20 text-center lg:text-left flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:justify-between text-black lg:items-center bg-alice-blue rounded-2xl">
