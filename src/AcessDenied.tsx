@@ -11,6 +11,8 @@ const AccessDeniedPage = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log("vite_env_pass: ", import.meta.env.VITE_ENGAGEX_PASS);
+
     if (password.trimEnd() !== import.meta.env.VITE_ENGAGEX_PASS) {
       setError("Incorrect password");
     } else {
