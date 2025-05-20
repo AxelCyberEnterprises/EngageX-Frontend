@@ -17,8 +17,6 @@ import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress";
 import ShadLineChart from "../../../components/dashboard/ShadLineChart";
-// import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
-// import { Info } from "lucide-react";
 
 interface DashboardData {
     latest_session_dict: {
@@ -418,16 +416,6 @@ const UserDashboardHome: React.FC = () => {
                 <div className="w-full lg:w-3/9 lg:ps-2 mb-3 lg:mb-10">
                     <div className="goals p-5 rounded-[12px]">
                         <p className="chinese__black big mb-3">Your goals & achievements</p>
-                        <div className="flex items-center gap-2">
-                            <p>Goals and Achievements</p>
-                            {/* <DynamicTooltip
-                                tooltipKey={"goals_and_achievements"}
-                                sideOffset={5}
-                                className="[&_svg]:hidden [&>p]:text-black/80"
-                            >
-                                <Info className="size-4 shrink-0" />
-                            </DynamicTooltip> */}
-                        </div>
 
                         <div className="progress__div relative flex flex-col items-center w-full mt-7 mb-6">
                             <SemiCircleProgress
