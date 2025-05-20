@@ -19,6 +19,7 @@ import { useParams } from "react-router-dom";
 import pitchRoom from "../../assets/images/pngs/pitch-room.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import axios from "axios";
+import { useMediaQuery } from "react-responsive";
 
 const PresentationPractice: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
@@ -26,6 +27,7 @@ const PresentationPractice: React.FC = () => {
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
     const [isQuestionDialogOpen, setQuestionDialogOpen] = useState(false);
     const time = 7; // in minutes
+    const isMediumScreen = useMediaQuery({ minWidth: 768 }); // Tailwind's md breakpoint
     const [slides, setSlides] = useState<any[]>([]);
     const { id } = useParams();
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
@@ -555,6 +557,36 @@ const PresentationPractice: React.FC = () => {
                                 </div>
                             )}
                         </div>
+
+                        {!isMediumScreen && (
+                            <div
+                                className="rounded-xl w-45 h-25 absolute bottom-0 right-0 z-10"
+                                style={{
+                                    backgroundImage: `url(${pitchRoom})`,
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
+                            >
+                                <div
+                                    className={`absolute transition-all duration-500 ${
+                                        isExpanded
+                                            ? "top-0 left-0 w-full h-full"
+                                            : "w-24 h-14 absolute top-0 right-9.5"
+                                    }`}
+                                >
+                                    <VideoStreamer
+                                        duration={time}
+                                        stop={stopStreamer}
+                                        onStop={() => closeAndShowClapVideo()}
+                                        onStart={() => setStartTimer(true)}
+                                        ws={socket.current}
+                                        isWsReady={isSocketConnected}
+                                        border={isExpanded ? "rounded-2xl" : ""}
+                                        sessionId={sessionId}
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="px-4 md:px-0 flex gap-3">
@@ -580,33 +612,35 @@ const PresentationPractice: React.FC = () => {
                 <div className="right__side hidden md:block w-full md:w-3/12 lg:w-3/12 px-8 lg:ps-4 py-4">
                     <div className="py-5 px-3 border-1 border-bright-gray rounded-xl">
                         <h6 className="mb-3">Live Audience</h6>
-                        <div
-                            className="rounded-xl w-full h-40 relative"
-                            style={{
-                                backgroundImage: `url(${pitchRoom})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                            }}
-                        >
+                        {isMediumScreen && (
                             <div
-                                className={`absolute transition-all duration-500 ${
-                                    isExpanded
-                                        ? "top-0 left-0 w-full h-full"
-                                        : "w-40 h-23.5 md:w-35 md:h-22 lg:w-35 lg:h-22 absolute top-14.5 right-53 md:top-0 md:right-14.5 lg:top-0 lg:right-15.5"
-                                }`}
+                                className="rounded-xl w-full h-40 relative"
+                                style={{
+                                    backgroundImage: `url(${pitchRoom})`,
+                                    backgroundSize: "cover",
+                                    backgroundPosition: "center",
+                                }}
                             >
-                                <VideoStreamer
-                                    duration={time}
-                                    stop={stopStreamer}
-                                    onStop={() => closeAndShowClapVideo()}
-                                    onStart={() => setStartTimer(true)}
-                                    ws={socket.current}
-                                    isWsReady={isSocketConnected}
-                                    border={isExpanded ? "rounded-2xl" : ""}
-                                    sessionId={sessionId}
-                                />
+                                <div
+                                    className={`absolute transition-all duration-500 ${
+                                        isExpanded
+                                            ? "top-0 left-0 w-full h-full"
+                                            : "w-40 h-23.5 md:w-35 md:h-22 lg:w-35 lg:h-22 absolute top-14.5 right-53 md:top-0 md:right-14.5 lg:top-0 lg:right-15.5"
+                                    }`}
+                                >
+                                    <VideoStreamer
+                                        duration={time}
+                                        stop={stopStreamer}
+                                        onStop={() => closeAndShowClapVideo()}
+                                        onStart={() => setStartTimer(true)}
+                                        ws={socket.current}
+                                        isWsReady={isSocketConnected}
+                                        border={isExpanded ? "rounded-2xl" : ""}
+                                        sessionId={sessionId}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
 
                     <AudienceEngaged percent={feedback ? feedback.analysis.Feedback.Clarity : 0} />

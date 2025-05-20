@@ -366,7 +366,7 @@ const UserDashboardHome: React.FC = () => {
                             you to focus directly on enhancing your skills in specific areas.
                         </p>
                         <Link to="performance-improvement">
-                            <Button className="bg-[#173459] hover:bg-[#173459]/90 py-3">Improve Session</Button>
+                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3">Improve Session</Button>
                         </Link>
                     </div>
 
