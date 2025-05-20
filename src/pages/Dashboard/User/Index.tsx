@@ -1,11 +1,13 @@
 import MultiStepAgreement from "@/components/dashboard/agreementModal/modal";
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
 import { Button } from "@/components/ui/button";
+import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import { RootState } from "@/store";
 import { ISession } from "@/types/sessions";
 import { UseQueryResult } from "@tanstack/react-query";
+import { Info } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -415,7 +417,18 @@ const UserDashboardHome: React.FC = () => {
                 {/* goals and achievements */}
                 <div className="w-full lg:w-3/9 lg:ps-2 mb-3 lg:mb-10">
                     <div className="goals p-5 rounded-[12px]">
-                        <p className="chinese__black big mb-3">Your goals & achievements</p>
+                        <div className="flex items-center justify-between gap-2">
+                            <p className="chinese__black big">Your goals & achievements</p>
+                            <DynamicTooltip
+                                tooltipKey={"goals-and-achievements"}
+                                sideOffset={5}
+                                align="end"
+                                alignOffset={-25}
+                                className="[&_svg]:hidden [&>p]:text-black/80"
+                            >
+                                <Info className="size-4.5 shrink-0" />
+                            </DynamicTooltip>
+                        </div>
 
                         <div className="progress__div relative flex flex-col items-center w-full mt-7 mb-6">
                             <SemiCircleProgress
