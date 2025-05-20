@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 
+const ACCESS_PASS = "ENGAGEinX/";
+
 const AccessDeniedPage = ({
   setIsAllowed,
 }: {
@@ -11,9 +13,7 @@ const AccessDeniedPage = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("vite_env_pass: ", import.meta.env.VITE_ENGAGEX_PASS);
-
-    if (password.trimEnd() !== import.meta.env.VITE_ENGAGEX_PASS) {
+    if (password.trimEnd() !== ACCESS_PASS) {
       setError("Incorrect password");
     } else {
       setIsAllowed(true);
