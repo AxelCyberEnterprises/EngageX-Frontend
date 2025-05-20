@@ -35,16 +35,17 @@ const PitchSessionReport: React.FC = () => {
     const handlePDFDownload = useCallback(async () => {
         const element = pdfRef.current;
 
-        if (!element) {
-            return;
-        }
+        if (!element) return;
 
         setIsGeneratingPDF(true);
 
         const canvas = await html2canvas(element, {
             scale: 2,
+            useCORS: true,
         });
-        const data = canvas.toDataURL("image/png");
+
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
 
         const pdf = new jsPDF({
             orientation: "portrait",
@@ -53,12 +54,32 @@ const PitchSessionReport: React.FC = () => {
         });
 
         const margin = 10;
-        const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
-        const pdfHeight = pdf.internal.pageSize.getHeight() - margin * 2;
+        const pdfPageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+        const pdfPageHeight = pdf.internal.pageSize.getHeight() - margin * 2;
 
-        pdf.addImage(data, "PNG", margin, margin, pdfWidth, pdfHeight);
+        const scaleFactor = pdfPageWidth / imgWidth;
+        const scaledCanvasHeight = imgHeight * scaleFactor;
+
+        const totalPages = Math.ceil(scaledCanvasHeight / pdfPageHeight);
+
+        for (let i = 0; i < totalPages; i++) {
+            if (i > 0) pdf.addPage();
+
+            const sourceY = (pdfPageHeight / scaleFactor) * i;
+
+            // Create a temporary canvas to hold the slice
+            const pageCanvas = document.createElement("canvas");
+            const pageContext = pageCanvas.getContext("2d")!;
+            pageCanvas.width = imgWidth;
+            pageCanvas.height = pdfPageHeight / scaleFactor;
+
+            pageContext.drawImage(canvas, 0, sourceY, imgWidth, pageCanvas.height, 0, 0, imgWidth, pageCanvas.height);
+
+            const imgData = pageCanvas.toDataURL("image/png");
+            pdf.addImage(imgData, "PNG", margin, margin, pdfPageWidth, pdfPageHeight);
+        }
+
         pdf.save(`Session-Report-${id}.pdf`);
-
         setIsGeneratingPDF(false);
     }, [id]);
 
@@ -171,18 +192,18 @@ const PitchSessionReport: React.FC = () => {
             key: "body-posture",
             percent: data?.posture,
         },
-        {
-            bg: "bg-green-sheen/15",
-            title: "Motion",
-            key: "body-motion",
-            percent: data?.motion,
-        },
-        {
-            bg: "bg-seashell",
-            title: "Hand Gestures",
-            key: "hand-gestures",
-            percent: data?.gestures_score_for_body_language,
-        },
+        // {
+        //     bg: "bg-green-sheen/15",
+        //     title: "Motion",
+        //     key: "body-motion",
+        //     percent: data?.motion,
+        // },
+        // {
+        //     bg: "bg-seashell",
+        //     title: "Hand Gestures",
+        //     key: "hand-gestures",
+        //     percent: data?.gestures_score_for_body_language,
+        // },
     ] as const;
 
     const deliveryMetrics2 = [
