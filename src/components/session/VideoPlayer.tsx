@@ -118,9 +118,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 
                         // Only now clear the previous video src to avoid flicker
                         const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
-                        if (previouslyActive && previouslyActive.src !== "") {
+                       // ✅ Only clear the old video if it's NOT the one currently being shown
+                        if (previouslyActive && previouslyActive !== refs[activeIdx].current && previouslyActive.src !== "") {
                           previouslyActive.src = "";
-                          console.log(`🧼 Cleared src of previously active video[${inactiveIdx === 0 ? 1 : 0}]`);
+                          console.log(`🧼 Cleared src of inactive video[${inactiveIdx === 0 ? 1 : 0}]`);
+                        } else {
+                          console.log(`❎ Skipped clearing src — it's still the active/visible player.`);
                         }
                       });
                     });
@@ -148,8 +151,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
                 // Clean up only the now inactive video
                 const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
-                if (previouslyActive) {
-                    previouslyActive.src = "";
+                if (previouslyActive && previouslyActive !== refs[activeIdx].current) {
+                  previouslyActive.src = "";
                 }
             };
         }
