@@ -5,7 +5,7 @@ export function useGoalsAndAchievement() {
   return useQuery<any>({
     queryKey: ["goals-achievement"],
     queryFn: async () => {
-      const response = await apiGet<any>(`/sessions/goals-and-achievement`);
+      const response = await apiGet<any>(`/sessions/goals-and-achievement`, "secondary");
       return response;
     },
   });

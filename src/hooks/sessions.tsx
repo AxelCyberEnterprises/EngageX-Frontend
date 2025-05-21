@@ -18,7 +18,7 @@ export function useCreatePublicSpeakingSession() {
             localStorage.removeItem("sessionData");
             localStorage.setItem("sessionData", JSON.stringify(data));
 
-            return await apiPost<ISession>("/sessions/sessions/", data);
+            return await apiPost<ISession>("/sessions/sessions/", data, "secondary");
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
@@ -44,7 +44,7 @@ export function usePreviewUploadSlides() {
     return useMutation({
         mutationKey: ["previewUploadSlides"],
         mutationFn: async (slidesFormData: FormData) => {
-            return await apiPost<IPreviewSlideUploadResponse>("/sessions/slide_preview_upload/", slidesFormData, {
+            return await apiPost<IPreviewSlideUploadResponse>("/sessions/slide_preview_upload/", slidesFormData, "secondary", {
                 headers: { "Content-Type": "multipart/form-data" },
             });
         },
@@ -61,7 +61,7 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
             localStorage.removeItem("sessionData");
             localStorage.setItem("sessionData", JSON.stringify(data));
 
-            return await apiPost<ISession>(`/sessions/sessions/`, data);
+            return await apiPost<ISession>(`/sessions/sessions/`, data, "secondary");
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
@@ -121,10 +121,14 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
     return useMutation({
         mutationKey: ["endSession"],
         mutationFn: async () => {
-            await apiPost(`/sessions/sessions-report/${sessionId}/`, {
-                duration: durationInSeconds,
-                // ...(slidesDuration && slidesDuration.length > 1 && { slide_specific_timing: slidesDuration }),
-            });
+            await apiPost(
+                `/sessions/sessions-report/${sessionId}/`,
+                {
+                    duration: durationInSeconds,
+                    // ...(slidesDuration && slidesDuration.length > 1 && { slide_specific_timing: slidesDuration }),
+                },
+                "secondary",
+            );
         },
         onSuccess: () => {
             console.log("Session ended and posted successfully.");
@@ -148,7 +152,7 @@ export function useGetSessionReport(sessionId: string | undefined) {
     return useQuery({
         queryKey: ["getSessionReport"],
         queryFn: async () => {
-            return await apiGet<ISession>(`/sessions/sessions-report/${sessionId}/`);
+            return await apiGet<ISession>(`/sessions/sessions-report/${sessionId}/`, "secondary");
         },
     });
 }
@@ -157,7 +161,7 @@ export function useGetSessionData(sessionId: string | undefined) {
     return useQuery({
         queryKey: ["getSessionData"],
         queryFn: async () => {
-            return await apiGet(`/sessions/sessions/${sessionId}/`);
+            return await apiGet(`/sessions/sessions/${sessionId}/`, "secondary");
         },
         enabled: !!sessionId,
     });
@@ -167,7 +171,7 @@ export function useGetSequences() {
     return useQuery({
         queryKey: ["getSequenceData"],
         queryFn: async () => {
-            return await apiGet(`/sessions/improve-existing-sequence`);
+            return await apiGet(`/sessions/improve-existing-sequence`, "secondary");
         },
     });
 }

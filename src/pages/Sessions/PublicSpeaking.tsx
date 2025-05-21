@@ -164,7 +164,7 @@ const PublicSpeaking: React.FC = () => {
         console.log("StopStreamer", stopStreamer);
 
         const ws = new WebSocket(
-            `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
+            `wss://api-stream.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
         );
         socket.current = ws;
 
@@ -330,7 +330,7 @@ const PublicSpeaking: React.FC = () => {
                     </div>
                     <div className="hidden md:flex justify-between items-center">
                         <h4 className="mb-4"></h4>
-                        <p>Record a minimum of 2 minutes for the best feedback.</p>
+                        <p>Record a minimum of 2 minutes for the best feedback and audience reaction.</p>
                     </div>
                     <div className="mb-3">
                         <PublicSpeakingTimer

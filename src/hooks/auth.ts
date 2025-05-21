@@ -84,7 +84,7 @@ export function useNewImprovmentSequence() {
       return await apiPost(`/sessions/improve-new-sequence/${session_id}/`, {
         sequence_name,
         description,
-      });
+      }, "secondary");
     },
     onSuccess: (data: any) => {
       toast.info("New improvement sequence created successfully:", data);
@@ -258,7 +258,7 @@ export function usePublicSpeaking() {
         note: string;
         sequence: string;
         allow_ai_questions: boolean;
-      }>("/sessions/sessions/", data);
+      }>("/sessions/sessions/", data, "secondary");
     },
     onSuccess: () => {
       console.log("Public speaking session created successfully.");
@@ -300,7 +300,7 @@ export function useDashboardData(filter = "today") {
     queryKey: ["dashboardData", filter], // 👈 Add filter to key to refetch properly
     queryFn: () =>
       apiGet(
-        `/sessions/dashboard/?start_date=${startDate}&end_date=${endDate}`
+        `/sessions/dashboard/?start_date=${startDate}&end_date=${endDate}`, "secondary"
       ),
   });
 }
@@ -309,7 +309,7 @@ export function useSessionHistory(page = 1) {
   return useQuery({
     queryKey: ["sessionHistory", page],
     queryFn: () =>
-      apiGet<IGETSessionsResponse>(`/sessions/sessions/?page=${page}`),
+      apiGet<IGETSessionsResponse>(`/sessions/sessions/?page=${page}`, "secondary"),
     placeholderData: keepPreviousData,
   });
 }
@@ -317,7 +317,7 @@ export function useSessionHistory(page = 1) {
 export function useSessionHistoryById(id: string) {
   return useQuery({
     queryKey: ["sessionHistoryById", id],
-    queryFn: () => apiGet(`/sessions/sessions/${id}/`),
+    queryFn: () => apiGet(`/sessions/sessions/${id}/`, "secondary"),
   });
 }
 
@@ -327,7 +327,7 @@ export function useSessionComparison(
 ) {
   return useQuery({
     queryKey: ["sessionComparison", id1, id2],
-    queryFn: () => apiGet<any>(`/sessions/compare-sessions/${id1}/${id2}`),
+    queryFn: () => apiGet<any>(`/sessions/compare-sessions/${id1}/${id2}`, "secondary"),
     enabled: Boolean(id1 && id2),
   });
 }
