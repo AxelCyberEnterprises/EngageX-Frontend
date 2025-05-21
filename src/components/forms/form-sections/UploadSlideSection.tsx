@@ -1,11 +1,12 @@
 import EmptyState from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
 import UploadMediaTrigger from "@/components/widgets/UploadMediaTrigger";
 import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { UnknownAction } from "@reduxjs/toolkit";
-import { LoaderCircle, Plus, UploadCloud } from "lucide-react";
+import { Info, LoaderCircle, Plus, UploadCloud } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
 import { pdfjs } from "react-pdf";
 
@@ -39,7 +40,16 @@ const UploadSlideSection = ({
     return (
         <>
             <section className={cn("lg:flex flex-col hidden gap-y-4", className)}>
-                <h6 className="text-lg">Upload slides</h6>
+                <div className="flex items-center gap-x-3">
+                    <h6 className="text-lg">Upload slides</h6>
+                    <DynamicTooltip
+                        tooltipKey="upload-slide"
+                        sideOffset={5}
+                        className="[&_svg]:hidden [&>p]:text-black/80 [&>p]:whitespace-pre-line"
+                    >
+                        <Info className="size-4 shrink-0" />
+                    </DynamicTooltip>
+                </div>
 
                 <div className="space-y-2">
                     <p className="text-sm">

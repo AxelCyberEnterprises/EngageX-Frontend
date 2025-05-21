@@ -1,7 +1,7 @@
-import PitchStudio from "@/assets/images/jpegs/practice-bg-dashboard.jpeg";
-import BoardRoom2 from "@/assets/images/jpegs/practice-bg.jpeg";
-import BoardRoom1 from "@/assets/images/pngs/boardroom-1.png";
-import ConferenceRoom from "@/assets/images/pngs/conference-room.png";
+import BoardRoom1 from "@/assets/images/webps/boardroom-1.webp";
+import BoardRoom2 from "@/assets/images/webps/boardroom-2.webp";
+import ConferenceRoom from "@/assets/images/webps/conference-room.webp";
+import PitchStudio from "@/assets/images/webps/pitch-studio.webp";
 
 export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
 
