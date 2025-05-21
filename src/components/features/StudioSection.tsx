@@ -127,10 +127,10 @@ function StudioSection() {
               </Link>
             </div>
             <div
-              className={`lg:w-[50px] rounded-[20px] overflow-hidden ${
+              className={`lg:w-[650px] rounded-[20px] overflow-hidden ${
                 activeIdx === 1 || activeIdx === 2 || activeIdx === 3
-                  ? "h-[580px]"
-                  : "h-[500px]"
+                  ? "lg:h-[580px]"
+                  : "lg:h-[500px]"
               }`}
             >
               <img
