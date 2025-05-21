@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // src/components/VideoPlayer.tsx
 import { useDeleteSessionVideo } from "@/hooks/sessions";
-import { Download, EllipsisVertical, Trash } from "lucide-react";
+import { Download, LoaderCircle } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { FaCompress, FaExpand } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { Button } from "../ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { toast } from "sonner";
+import ErrorToast from "../ui/custom-toasts/error-toast";
 
 interface VideoPlayerProps {
     src: string;
@@ -24,7 +24,7 @@ interface VideoPlayerProps {
     muted?: boolean;
     requireFullPlay?: boolean;
     allowSwitch?: boolean;
-    showMenu?: boolean;
+    canDownload?: boolean;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -43,7 +43,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     muted = false,
     requireFullPlay = false,
     allowSwitch = true,
-    showMenu = false,
+    canDownload = false,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -57,6 +57,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [currentSrc, setCurrentSrc] = useState<string>(src);
     const [nextSrc, setNextSrc] = useState<string | null>(null);
+    const [isDownloading, setIsDownloading] = useState(false);
 
     const params = useParams();
     const { mutate: deleteVideo } = useDeleteSessionVideo();
@@ -131,6 +132,38 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             container.requestFullscreen?.();
         } else {
             document.exitFullscreen?.();
+        }
+    };
+
+    const handleDownload = async () => {
+        try {
+            setIsDownloading(true);
+            toast("Downloading video...");
+
+            const res = await fetch(currentSrc);
+            const blob = await res.blob();
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "video.mp4";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+
+            toast("Video downloaded successfully, will now proceed to delete the video.");
+            deleteVideo(params.id!);
+        } catch (err) {
+            console.error("Download failed: ", err);
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Download failed",
+                        description: "An error occurred while downloading the video, please try again.",
+                    }}
+                />,
+            );
         }
     };
 
@@ -380,7 +413,22 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                             </span>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
+                            {canDownload && (
+                                <a
+                                    title="Download"
+                                    download
+                                    className="cursor-pointer text-white hover:text-gray-300 transition-colors"
+                                    onClick={handleDownload}
+                                >
+                                    {isDownloading ? (
+                                        <LoaderCircle className="size-4 animate-spin" />
+                                    ) : (
+                                        <Download size={16} />
+                                    )}
+                                </a>
+                            )}
+
                             <button
                                 onClick={toggleFullscreen}
                                 aria-label="Toggle fullscreen"
@@ -388,41 +436,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                             >
                                 {isFullscreen ? <FaCompress size={16} /> : <FaExpand size={16} />}
                             </button>
-
-                            {showMenu && (
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button className="size-10 rounded-full bg-transparent hover:bg-primary transition-colors focus-visible:ring-0">
-                                            <EllipsisVertical className="size-5" />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent
-                                        side="top"
-                                        align="end"
-                                        alignOffset={-10}
-                                        className="border-none"
-                                    >
-                                        <DropdownMenuItem>
-                                            <a
-                                                title="Download"
-                                                href={currentSrc}
-                                                download="video.mp4"
-                                                className="flex items-center gap-3 w-full text-black transition-colors"
-                                            >
-                                                <Download className="size-4 stroke-[2.5] stroke-black" />
-                                                <span className="text-sm">Download</span>
-                                            </a>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem
-                                            className="gap-3 cursor-pointer"
-                                            onClick={() => deleteVideo(params.id!)}
-                                        >
-                                            <Trash className="size-4 stroke-[2.5] stroke-black" />
-                                            <span className="font-normal">Delete</span>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            )}
                         </div>
                     </div>
                 </div>
