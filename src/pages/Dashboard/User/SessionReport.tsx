@@ -192,18 +192,18 @@ const PitchSessionReport: React.FC = () => {
             key: "body-posture",
             percent: data?.posture,
         },
-        // {
-        //     bg: "bg-green-sheen/15",
-        //     title: "Motion",
-        //     key: "body-motion",
-        //     percent: data?.motion,
-        // },
-        // {
-        //     bg: "bg-seashell",
-        //     title: "Hand Gestures",
-        //     key: "hand-gestures",
-        //     percent: data?.gestures_score_for_body_language,
-        // },
+        {
+            bg: "bg-green-sheen/15",
+            title: "Motion",
+            key: "body-motion",
+            percent: data?.motion,
+        },
+        {
+            bg: "bg-seashell",
+            title: "Hand Gestures",
+            key: "hand-gestures",
+            percent: data?.gestures_score_for_body_language,
+        },
     ] as const;
 
     const deliveryMetrics2 = [
@@ -352,7 +352,7 @@ const PitchSessionReport: React.FC = () => {
                                         width="w-full"
                                         src={data.compiled_video_url}
                                         border="rounded-3xl"
-                                        showMenu
+                                        canDownload
                                         preload={true}
                                     />
                                 </div>
@@ -584,7 +584,7 @@ const PitchSessionReport: React.FC = () => {
                         </section>
                     )}
 
-                    <section className="px-4 lg:px-8 pt-4">
+                    <section className="px-4 lg:px-8 pt-4 hidden">
                         <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
                             <h6 className="mb-3">Body Language</h6>
                             <div className="flex flex-wrap gap-4">
