@@ -7,17 +7,17 @@ function Hero() {
         <div className="flex gap-4 bg-[#8FA7DF1A] w-max pl-2 pr-6 py-3 rounded-full items-center mx-auto lg:mx-0">
           <div className="flex">
             <img
-              src="./assets/profile1.png"
+              src="/assets/profile1.png"
               alt="profile"
               className="size-[28.82px] lg:size-8 rounded-full"
             />
             <img
-              src="./assets/profile2.png"
+              src="/assets/profile2.png"
               alt="profile"
               className="size-[28.82px] lg:size-8 rounded-full -ml-3"
             />
             <img
-              src="./assets/profile3.png"
+              src="/assets/profile3.png"
               alt="profile"
               className="size-[28.82px] lg:size-8 rounded-full -ml-3"
             />
@@ -63,13 +63,13 @@ function Hero() {
         <div className="flex gap-2 w-full h-max lg:h-full lg:gap-6 mt-16">
           <div className="w-1/2 rounded-2xl overflow-clip relative h-[9.8rem] lg:h-[20rem]">
             <img
-              src="./assets/hero1.png"
+              src="/assets/hero1.png"
               className="w-full object-cover h-full absolute"
             />
           </div>
           <div className="w-1/2 rounded-2xl overflow-clip h-[12.5rem] lg:h-[24.5rem] relative">
             <img
-              src="./assets/hero2.png"
+              src="/assets/hero2.png"
               className="w-full object-cover h-full absolute"
             />
           </div>
@@ -77,7 +77,7 @@ function Hero() {
         <div className="w-full flex relative h-[17rem] lg:h-min justify-center">
           {/* <HeroSVG /> */}
           <img
-            src="./assets/homepathimg.png"
+            src="/assets/homepathimg.png"
             className="absolute w-[40rem] bottom-[9.7rem] lg:bottom-[9.5rem] mr-16"
             alt=""
           />

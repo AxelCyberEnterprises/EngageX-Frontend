@@ -5,42 +5,42 @@ function FeaturesSection() {
   let features = [
     {
       className: "",
-      img: "./assets/featuresimg1.png",
+      img: "/assets/featuresimg1.png",
       title: "Offers prompt and cue card system",
       content:
         "Stay prepared with a preview of your next speaking point for a confident delivery",
     },
     {
       className: "pt-6",
-      img: "./assets/featuresimg2.png",
+      img: "/assets/featuresimg2.png",
       title: "Speaker analytics and self-assessment tools",
       content:
         "Real-time analysis and feedback on your speech, powered by unparalleled AI technology",
     },
     {
       className: "",
-      img: "./assets/featuresimg3.png",
+      img: "/assets/featuresimg3.png",
       title: "Realistic speaking room simulations",
       content:
         "Immersive speaking rooms that give you a taste of the real thing even including reactions from your audience and listeners",
     },
     {
       className: "",
-      img: "./assets/featuresimg4.png",
+      img: "/assets/featuresimg4.png",
       title: "Progress tracking for improvement",
       content:
         "We enable you to be aware of your progress and stay goal oriented while you train",
     },
     {
       className: "",
-      img: "./assets/featuresimg5.png",
+      img: "/assets/featuresimg5.png",
       title: "Post session feedback reporting",
       content:
         "We provide in-depth analysis to ensure you give your best in every session by understanding where you need to improve",
     },
     {
       className: "pt-6",
-      img: "./assets/featuresimg6.png",
+      img: "/assets/featuresimg6.png",
       title: " Speech progress & phase indicator alerts",
       content:
         "Keep track of your speaking journey, maintain your flow, and monitor the timing of every session as you train",

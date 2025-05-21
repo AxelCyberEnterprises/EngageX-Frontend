@@ -20,7 +20,7 @@ function Testimonial() {
   let testimonials: Testimonial[] = [
     {
       svg: <TestimonialSVG />,
-      img: "./assets/testimonialImg1.jpeg",
+      img: "/assets/testimonialImg1.jpeg",
       text:
         "“Practicing my pitch here gave me the confidence to win over investors.  I highly recommend!”",
       subtext: "- Startup Founder",
@@ -29,7 +29,7 @@ function Testimonial() {
     },
     {
       svg: <TestimonialSVG2 />,
-      img: "./assets/testimonialImg2.jpeg",
+      img: "/assets/testimonialImg2.jpeg",
       text:
         "“EngageX™ helped me own my narrative. Now, every interview, every post, every connection reflects who I truly am both on and off the field.”",
       subtext: "- Pro Athlete & Brand Builder",
@@ -38,7 +38,7 @@ function Testimonial() {
     },
     {
       svg: <TestimonialSVG3 />,
-      img: "./assets/testimonialImg3.jpeg",
+      img: "/assets/testimonialImg3.jpeg",
       text:
         "“With EngageX™, I don't just pitch, I connect! It's transformed the way I communicate value, build trust, and close deals.”",
       subtext: "- Top Sales Strategist",

@@ -100,7 +100,7 @@ function StudioSection() {
             ))}
           </div>
 
-          <div className="px-4 lg:pl-16 lg:pr-8 flex flex-col lg:flex-row bg-white gap-8 lg:gap-10 items-center py-10 rounded-lg justify-between">
+          <div className="px-4 lg:pl-16 lg:pr-8 w-full flex flex-col lg:flex-row bg-white gap-8 lg:gap-10 items-center py-10 rounded-lg justify-between">
             <div className="w-full lg:w-1/3 space-y-3">
               <h3 className="leading-tight">
                 {data.carousel[activeIdx].title}
@@ -126,14 +126,23 @@ function StudioSection() {
                 </button>
               </Link>
             </div>
-            <div className={`w-[650px] rounded-[20px] overflow-hidden ${(activeIdx === 1  || activeIdx === 2 || activeIdx === 3) ? 'h-[580px]' : 'h-[500px]'}`}>
+            <div
+              className={`lg:w-[650px] rounded-[20px] overflow-hidden ${
+                activeIdx === 1 || activeIdx === 2 || activeIdx === 3
+                  ? "lg:h-[580px]"
+                  : "lg:h-[500px]"
+              }`}
+            >
               <img
-                src={`/assets/studioimg${activeIdx + 1}.${activeIdx === 5 ? 'jpeg' : 'png'}`}
+                src={`/assets/studioimg${activeIdx + 1}.${
+                  activeIdx === 5 ? "jpeg" : "png"
+                }`}
                 alt=""
-                className={`w-full h-full rounded-[20px] object-cover ${activeIdx === 5 ? 'object-[center_30%]' : ''}`}
+                className={`w-full h-full rounded-[20px] object-cover ${
+                  activeIdx === 5 ? "object-[center_30%]" : ""
+                }`}
               />
             </div>
-
 
             <div className="flex items-start lg:hidden w-full">
               <Link to={"/contact"}>

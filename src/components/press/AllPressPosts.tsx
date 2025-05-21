@@ -3,7 +3,7 @@ import PressCard from "./PressCard";
 function AllPressPosts() {
   const posts = [
     {
-      img: "./assets/pressimg1.jpeg",
+      img: "/assets/pressimg1.jpeg",
       date: "25 Mar 2025",
       title: "New platform launch",
       download: true,
@@ -11,7 +11,7 @@ function AllPressPosts() {
         "Join the creator of EngageX™ and its design engineers on Friday, May 16th, from 8:00–8:30 AM CST to learn more about this revolutionary new platform.",
     },
     {
-      img: "./assets/pressvid1.mp4",
+      img: "/assets/pressvid1.mp4",
       date: "25 Mar 2025",
       title: "Command the room",
       video: true,
@@ -19,34 +19,34 @@ function AllPressPosts() {
         "Welcome to Command the Room, powered by EngageX™. I’m The Career Doctor and in each short, sharp episode, we dive into the minds of bold communicators, leaders, creators, athletes, and entrepreneurs who know how to move audiences, close deals, and own the moment. From storytelling to pitching, interviewing to presenting you’ll learn the real strategies behind speaking with power and leading with presence. Let’s go.",
     },
     {
-      img: "./assets/pressimg3.jpeg",
+      img: "/assets/pressimg3.jpeg",
       date: "25 Mar 2025",
       title: "Chief In Brief",
       summary: "",
     },
     {
-      img: "./assets/pressimg4.png",
+      img: "/assets/pressimg4.png",
       date: "25 Mar 2025",
       title: "AFROTECH",
       summary:
         "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
     },
     // {
-    //   img: "./assets/pressimg5.png",
+    //   img: "/assets/pressimg5.png",
     //   date: "25 Mar 2025",
     //   title: "Fireside Chat",
     //   summary:
     //     "Join us for free snacks and giveaways during this year’s AfroTech Weekend offsite evening event. Check back here for location and time updates.",
     // },
     {
-      img: "./assets/pressimg6.png",
+      img: "/assets/pressimg6.png",
       date: "25 Mar 2025",
       title: "Coming soon",
       summary:
         "Join the EngageX™ community and hear what the global media has to say about this amazing new platform.",
     },
     {
-      img: "./assets/pressimg7.png",
+      img: "/assets/pressimg7.png",
       date: "25 Mar 2025",
       title: "Tech talk",
       summary:
