@@ -21,6 +21,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     const [activeIdx, setActiveIdx] = useState<0 | 1>(0);
     const [sources, setSources] = useState<[string, string | null]>([src, null]);
+    const latestSrcRef = useRef<string>(src);
+
 
     // Initial autoplay on mount
     useEffect(() => {
@@ -52,6 +54,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     // Handle `src` change and switch players
     useEffect(() => {
+        latestSrcRef.current = src;
         const currentSrc = sources[activeIdx];
         if (currentSrc === src) return;
 
@@ -73,10 +76,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             inactiveVideo.load();
 
             const handleReady = () => {
-                setActiveIdx(inactiveIdx);
-                inactiveVideo.play().catch((e) => {
-                    console.warn("Autoplay failed after switching:", e);
-                });
+                if (latestSrcRef.current === src) {
+                    setActiveIdx(inactiveIdx);
+                    inactiveVideo.play().catch((e) => {
+                        console.warn("Autoplay failed after switching:", e);
+                    });
+                } else {
+                    console.log("Skipped stale video load:", src);
+                }
             };
 
             const handleError = () => {
