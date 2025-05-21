@@ -41,7 +41,7 @@ const StartPracticeSetupSession = ({
     const { mutate: generateSummary, isPending: isSummaryGenerationPending } = useMutation({
         mutationKey: ["generateSummary"],
         mutationFn: async (sessionId: number) => {
-            await apiPut(`/sessions/practice-sessions/${sessionId}/upload-slides/`);
+            await apiPut(`/sessions/practice-sessions/${sessionId}/upload-slides/`, "secondary");
 
             return sessionId;
         },
@@ -72,7 +72,7 @@ const StartPracticeSetupSession = ({
             localStorage.removeItem("sessionData");
             localStorage.setItem("sessionData", JSON.stringify(data));
 
-            return await apiPost<ISession>(`/sessions/sessions/`, data);
+            return await apiPost<ISession>(`/sessions/sessions/`, data, "secondary");
         },
         onSuccess: async (data) => {
             if (slides && slides?.length > 0) generateSummary(data.id);

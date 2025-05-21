@@ -54,7 +54,7 @@ export function useProgressTracking(params: ProgressTrackingParams = {}) {
       queryParams.append('start_date', startDate);
       queryParams.append('end_date', endDate);
       const url = `/sessions/performance-analytics/?${queryParams.toString()}`;
-      const response = await apiGet<any>(url);
+      const response = await apiGet<any>(url, "secondary");
       return response;
     },
   });
@@ -64,7 +64,7 @@ export function useGetSequence() {
   return useQuery<any>({
     queryKey: ["get-sequence"],
     queryFn: async () => {
-      const response = await apiGet<any>(`/sessions/sequences/`);
+      const response = await apiGet<any>(`/sessions/sequences/`, "secondary");
       return response;
     },
   });
@@ -77,7 +77,7 @@ export function useCompareSequences(id?: string) {
     queryKey: ["get-sequence", id],
     queryFn: async () => {
       if (!isValidId) return null;
-      const response = await apiGet<any>(`/sessions/compare-sequences/${id}`);
+      const response = await apiGet<any>(`/sessions/compare-sequences/${id}`, "secondary");
       return response;
     },
     enabled: isValidId,
