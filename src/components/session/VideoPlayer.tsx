@@ -102,14 +102,21 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             
                 inactiveVideo.play()
                   .then(() => {
-                    console.log(`▶️ Playback started for video[${inactiveIdx}]. Cleaning up old video.`);
-                    
-                    // Only now clear the previous video src to avoid flicker
-                    const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
-                    if (previouslyActive && previouslyActive.src !== "") {
-                      previouslyActive.src = "";
-                      console.log(`🧼 Cleared src of previously active video[${inactiveIdx === 0 ? 1 : 0}]`);
-                    }
+                    console.log(`▶️ Playback started for video[${inactiveIdx}]. Waiting to confirm rendering...`);
+                
+                    // Wait 2 animation frames to confirm the new video is visibly rendered
+                    requestAnimationFrame(() => {
+                      requestAnimationFrame(() => {
+                        console.log(`🟢 Confirmed video[${inactiveIdx}] has rendered a frame.`);
+                
+                        // Only now clear the previous video src to avoid flicker
+                        const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
+                        if (previouslyActive && previouslyActive.src !== "") {
+                          previouslyActive.src = "";
+                          console.log(`🧼 Cleared src of previously active video[${inactiveIdx === 0 ? 1 : 0}]`);
+                        }
+                      });
+                    });
                   })
                   .catch((e) => {
                     console.warn("🚨 Autoplay failed after switching:", e);
