@@ -94,6 +94,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 console.warn("🚧 Video not fully ready despite canplaythrough");
                 return;
               }
+
+              const currentlyVisible = refs[activeIdx].current;
+              if (!currentlyVisible || currentlyVisible.readyState < 2) {
+                console.warn(`⚠️ Currently visible video[${activeIdx}] is not playable. Blocking switch to prevent black screen.`);
+                return;
+              }
+
             
               if (latestSrcRef.current === src) {
                 console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
