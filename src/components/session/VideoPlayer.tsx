@@ -74,6 +74,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         });
 
         if (inactiveVideo) {
+
+            if (inactiveVideo.src === src) {
+                console.log("🔁 Inactive video already has the right src. Skipping set.");
+                return;
+              }
             console.log(`🛠 Preparing video[${inactiveIdx}] to load: ${src}`);
             inactiveVideo.src = src;
             inactiveVideo.muted = isMuted;
@@ -83,8 +88,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
             const handleReady = () => {
               console.log(`✅ canplaythrough fired for video[${inactiveIdx}] with src: ${src}`);
-              
-              // Optional extra safety
+            
+              // Extra safety: ensure video is fully buffered and playable
               if (inactiveVideo.readyState < 4) {
                 console.warn("🚧 Video not fully ready despite canplaythrough");
                 return;
@@ -92,10 +97,24 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             
               if (latestSrcRef.current === src) {
                 console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
-                setActiveIdx(inactiveIdx);
-                inactiveVideo.play().catch((e) => {
-                  console.warn("Autoplay failed after switching:", e);
-                });
+                
+                setActiveIdx(inactiveIdx); // Start opacity swap
+            
+                inactiveVideo.play()
+                  .then(() => {
+                    console.log(`▶️ Playback started for video[${inactiveIdx}]. Cleaning up old video.`);
+                    
+                    // Only now clear the previous video src to avoid flicker
+                    const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
+                    if (previouslyActive && previouslyActive.src !== "") {
+                      previouslyActive.src = "";
+                      console.log(`🧼 Cleared src of previously active video[${inactiveIdx === 0 ? 1 : 0}]`);
+                    }
+                  })
+                  .catch((e) => {
+                    console.warn("🚨 Autoplay failed after switching:", e);
+                  });
+            
               } else {
                 console.log(`🛑 Skipped stale video load: attempted=${src}, expected=${latestSrcRef.current}`);
               }
