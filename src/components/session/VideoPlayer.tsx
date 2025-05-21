@@ -55,8 +55,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     // Handle `src` change and switch players
     useEffect(() => {
         latestSrcRef.current = src;
-        const currentSrc = sources[activeIdx];
-        if (currentSrc === src) return;
+        
+         console.log(`🎯 src changed to: ${src}`);
+            const currentSrc = sources[activeIdx];
+            if (currentSrc === src) {
+                console.log("⚠️ New src is already active. No switch needed.");
+                return;
+            }
 
         const inactiveIdx: 0 | 1 = activeIdx === 0 ? 1 : 0;
         const refs = [videoA, videoB];
@@ -69,6 +74,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         });
 
         if (inactiveVideo) {
+            console.log(`🛠 Preparing video[${inactiveIdx}] to load: ${src}`);
             inactiveVideo.src = src;
             inactiveVideo.muted = isMuted;
             inactiveVideo.loop = loop;
@@ -76,24 +82,34 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             inactiveVideo.load();
 
             const handleReady = () => {
-                if (latestSrcRef.current === src) {
-                    setActiveIdx(inactiveIdx);
-                    inactiveVideo.play().catch((e) => {
-                        console.warn("Autoplay failed after switching:", e);
-                    });
-                } else {
-                    console.log("Skipped stale video load:", src);
-                }
+              console.log(`✅ canplaythrough fired for video[${inactiveIdx}] with src: ${src}`);
+              
+              // Optional extra safety
+              if (inactiveVideo.readyState < 4) {
+                console.warn("🚧 Video not fully ready despite canplaythrough");
+                return;
+              }
+            
+              if (latestSrcRef.current === src) {
+                console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
+                setActiveIdx(inactiveIdx);
+                inactiveVideo.play().catch((e) => {
+                  console.warn("Autoplay failed after switching:", e);
+                });
+              } else {
+                console.log(`🛑 Skipped stale video load: attempted=${src}, expected=${latestSrcRef.current}`);
+              }
             };
 
             const handleError = () => {
-                console.error("Video failed to load:", src);
+                console.error(`❌ Video failed to load: ${src}`);
             };
 
             inactiveVideo.addEventListener("canplaythrough", handleReady, { once: true });
             inactiveVideo.addEventListener("error", handleError);
 
             return () => {
+                console.log(`♻️ Cleaning up listeners for video[${inactiveIdx}] with src: ${src}`);
                 inactiveVideo.removeEventListener("canplaythrough", handleReady);
                 inactiveVideo.removeEventListener("error", handleError);
 
