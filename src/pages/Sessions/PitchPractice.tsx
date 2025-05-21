@@ -214,7 +214,7 @@ const PresentationPractice: React.FC = () => {
         if (!sessionId) return;
 
         const ws = new WebSocket(
-            `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=${selectedRoom}`,
+            `wss://api-stream.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=${selectedRoom}`,
         );
         socket.current = ws;
 
@@ -486,7 +486,9 @@ const PresentationPractice: React.FC = () => {
                     )}
                     <div className="flex justify-between items-center">
                         <h4 className="mb-4">{sessionData?.session_name}</h4>
-                        <p className="hidden md:block">Record a minimum of 5 minutes for the best feedback.</p>
+                        <p className="hidden md:block">
+                            Record a minimum of 5 minutes for the best feedback and audience reaction.
+                        </p>
                     </div>
                     <div className="mb-3">
                         <TimerProgressBar
@@ -569,9 +571,7 @@ const PresentationPractice: React.FC = () => {
                             >
                                 <div
                                     className={`absolute transition-all duration-500 ${
-                                        isExpanded
-                                            ? "top-0 left-0 w-full h-full"
-                                            : "w-24 h-14 absolute top-0 right-9.5"
+                                        isExpanded ? "top-0 left-0 w-full h-full" : "w-24 h-14 absolute top-0 right-9.5"
                                     }`}
                                 >
                                     <VideoStreamer
