@@ -183,8 +183,12 @@ const PublicSpeaking: React.FC = () => {
                     console.log("number of questions", questionsRef.current.length);
                     console.log("questions", questionsRef.current);
                 } else if (parsed.type === "full_analysis_update") {
-                    console.log(parsed);
-                    setFeedback(parsed);
+                console.log(parsed);
+                 if (!parsed.analysis?.error) {
+                    setFeedback(parsed); // ✅ only update when there's no error
+                  } else {
+                    console.warn("WS: Skipping feedback update due to analysis error:", parsed.analysis.error);
+                  }
                 } else if (parsed.type === "window_emotion_update") {
                     console.log(parsed);
                 }
