@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 interface VideoStreamerProps {
     duration: number;
@@ -12,7 +13,16 @@ interface VideoStreamerProps {
     sessionId: string | undefined;
 }
 
-const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, onStop, ws, isWsReady, border, sessionId }) => {
+const VideoStreamer: React.FC<VideoStreamerProps> = ({
+    duration,
+    stop,
+    onStart,
+    onStop,
+    ws,
+    isWsReady,
+    border,
+    sessionId,
+}) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isRecording, setIsRecording] = useState(false);
     const streamRef = useRef<MediaStream | null>(null);
@@ -20,6 +30,7 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const isRecordingRef = useRef(false);
+    const location = useLocation();
 
     const arrayBufferToBase64 = (buffer: ArrayBuffer): Promise<string> => {
         return new Promise((resolve) => {
@@ -34,14 +45,23 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
     };
 
     useEffect(() => {
+        const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+
+        if (firstSegment !== "sessions") {
+            console.log("Navigated away from sessions page");
+            stopRecordingLoop();
+            return;
+        }
+
         if (isWsReady && !isRecording) {
             startRecordingLoop();
         }
 
         return () => {
+            console.log("Cleaning up from useEffect");
             stopRecordingLoop();
         };
-    }, [isWsReady]);
+    }, [location.pathname, isWsReady]);
 
     useEffect(() => {
         if (stop) {
@@ -50,6 +70,12 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
     }, [stop]);
 
     const startRecordingLoop = async () => {
+        const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+        if (firstSegment !== "sessions") {
+            console.log("not sessions page", firstSegment);
+            stopRecordingLoop();
+            return;
+        }
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: true,
@@ -91,7 +117,7 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
         });
 
         recorder.ondataavailable = async (event) => {
-            if (event.data.size > 0 && ws?.readyState === WebSocket.OPEN) {
+            if (event.data.size > 0 && ws?.readyState === WebSocket.OPEN && isRecordingRef.current) {
                 try {
                     const base64Data = await arrayBufferToBase64(await event.data.arrayBuffer());
                     ws.send(
@@ -101,13 +127,13 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
                             session_id: sessionId,
                         }),
                     );
-                    console.log(`Chunk sent (${Math.round(base64Data.length / 1024)} KB) with session ID: ${sessionId}`);
+                    console.log(`Chunk sent (${Math.round(base64Data.length / 1024)} KB)`);
                 } catch (err) {
                     console.error("Error converting chunk:", err);
                 }
             }
 
-            // Immediately start a new recorder after sending
+            // Only restart recorder if still recording
             if (isRecordingRef.current) {
                 startRecorder();
             }
@@ -118,28 +144,37 @@ const VideoStreamer: React.FC<VideoStreamerProps> = ({ duration, stop, onStart, 
     };
 
     const stopRecordingLoop = () => {
-        if (!isRecording) return;
+        if (!isRecording && !streamRef.current) return;
 
         console.log("Stopping recording...");
 
-        if (recorderRef.current?.state === "recording") {
-            recorderRef.current.stop();
+        try {
+            recorderRef.current?.stop();
+            streamRef.current?.getTracks().forEach((track) => track.stop());
+
+            if (videoRef.current) {
+                videoRef.current.srcObject = null;
+            }
+
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+            }
+
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+
+            recorderRef.current = null;
+            streamRef.current = null;
+            isRecordingRef.current = false;
+            setIsRecording(false);
+            onStop();
+        } catch (error) {
+            console.error("Error stopping recording:", error);
         }
-
-        streamRef.current?.getTracks().forEach((track) => track.stop());
-
-        if (videoRef.current) {
-            videoRef.current.srcObject = null;
-        }
-
-        if (timerRef.current) clearTimeout(timerRef.current);
-        if (intervalRef.current) clearInterval(intervalRef.current);
-
-        setIsRecording(false);
-        isRecordingRef.current = false;
-        onStop();
     };
-
 
     return <video ref={videoRef} className={`w-full h-full object-cover ${border}`} autoPlay playsInline muted />;
 };

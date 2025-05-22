@@ -20,6 +20,7 @@ import pitchRoom from "../../assets/images/pngs/pitch-room.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import axios from "axios";
 import { useMediaQuery } from "react-responsive";
+import { useLocation } from "react-router-dom";
 
 const PresentationPractice: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
@@ -53,6 +54,7 @@ const PresentationPractice: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [questionImg, setQuestionImg] = useState<string>("/assets/sessions/pitch_studio_bm_handraise.jpeg");
+    const location = useLocation();
 
     const end = () => {
         setStopTime(true);
@@ -211,6 +213,10 @@ const PresentationPractice: React.FC = () => {
 
     useEffect(() => {
         if (!sessionId) return;
+        const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+        if (firstSegment !== "sessions") {
+            return;
+        }
 
         const ws = new WebSocket(
             `wss://api-stream.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=${selectedRoom}`,
@@ -234,13 +240,13 @@ const PresentationPractice: React.FC = () => {
                     console.log("number of questions", questionsRef.current.length);
                     console.log("questions", questionsRef.current);
                 } else if (parsed.type === "full_analysis_update") {
-                console.log(parsed);
-                 if (!parsed.analysis?.error) {
-                    setFeedback(parsed); // ✅ only update when there's no error
-                  } else {
-                    console.warn("WS: Skipping feedback update due to analysis error:", parsed.analysis.error);
-                  }
-                }else if (parsed.type === "window_emotion_update") {
+                    console.log(parsed);
+                    if (!parsed.analysis?.error) {
+                        setFeedback(parsed); // ✅ only update when there's no error
+                    } else {
+                        console.warn("WS: Skipping feedback update due to analysis error:", parsed.analysis.error);
+                    }
+                } else if (parsed.type === "window_emotion_update") {
                     console.log(parsed);
                 }
             } catch (e) {
@@ -265,10 +271,14 @@ const PresentationPractice: React.FC = () => {
         return () => {
             ws.close();
         };
-    }, [sessionId, stopStreamer]);
+    }, [sessionId, stopStreamer, location.pathname]);
 
     useEffect(() => {
         let isMounted = true;
+        const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+        if (firstSegment !== "sessions") {
+            return;
+        }
 
         const connectToRealtime = async () => {
             try {
@@ -368,7 +378,7 @@ const PresentationPractice: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl, allowSwitch, stopStreamer, stopTime]);
+    }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
 
     return (
         <div className="text-primary-blue">

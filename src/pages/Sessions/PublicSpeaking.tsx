@@ -19,6 +19,7 @@ import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
 import { useEffect } from "react";
 import { useEndSession } from "@/hooks/sessions";
 import VideoPlayer from "@/components/session/VideoPlayer";
+import { useLocation } from "react-router-dom";
 
 const PublicSpeaking: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
@@ -47,6 +48,7 @@ const PublicSpeaking: React.FC = () => {
     const [questionImg, setQuestionImg] = useState<string>(
         "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png",
     );
+    const location = useLocation();
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -161,7 +163,11 @@ const PublicSpeaking: React.FC = () => {
 
     useEffect(() => {
         if (!sessionId) return;
-        console.log("StopStreamer", stopStreamer);
+        const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+        if (firstSegment !== "sessions") {
+            return;
+        }
+        console.log("First route segment:", firstSegment);
 
         const ws = new WebSocket(
             `wss://api-stream.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
@@ -210,10 +216,14 @@ const PublicSpeaking: React.FC = () => {
             console.log("Closing WebSocket because stop is true");
             ws.close();
         }
-    }, [sessionId, stopStreamer]);
+    }, [sessionId, stopStreamer, location.pathname]);
 
     useEffect(() => {
         let isMounted = true;
+        const firstSegment = location.pathname.split("/").filter(Boolean)[0];
+        if (firstSegment !== "sessions") {
+            return;
+        }
 
         const connectToRealtime = async () => {
             try {
@@ -312,7 +322,7 @@ const PublicSpeaking: React.FC = () => {
                 mediaStreamRef.current = null;
             }
         };
-    }, [setVideoUrl, allowSwitch, stopStreamer, stopTime]);
+    }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
 
     return (
         <div className="text-primary-blue">
