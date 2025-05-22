@@ -124,7 +124,7 @@ export const tooltipItems: TooltipProps = {
     },
     "goals-and-achievements": {
         description:
-            "If a user scores above 80%, one point is added to their achievement score. Once they reach 8 out of 10 qualifying scores, the achievement is considered complete indicating mastery. Please refer to your report for greater details.",
+            "Achievement Scoring\nScore above 80% to earn a point.\nReach 8 out of 10 to complete the achievement and demonstrate mastery.\nSee your report for more details.",
     },
     goals: {
         title: undefined,

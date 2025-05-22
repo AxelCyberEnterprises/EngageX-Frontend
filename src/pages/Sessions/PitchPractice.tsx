@@ -52,9 +52,7 @@ const PresentationPractice: React.FC = () => {
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [questionImg, setQuestionImg] = useState<string>(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png",
-    );
+    const [questionImg, setQuestionImg] = useState<string>("/assets/sessions/pitch_studio_bm_handraise.jpeg");
 
     const end = () => {
         setStopTime(true);
@@ -90,6 +88,7 @@ const PresentationPractice: React.FC = () => {
             setQuestionDialogOpen(true);
         } else {
             setSlides([]);
+            setSeshData(undefined);
             setStopStreamer(true);
             setAllowSwitch(false);
             setDialogOneOpen(false);
@@ -129,8 +128,8 @@ const PresentationPractice: React.FC = () => {
                 setQuestionDialogOpen(false);
                 const randomImg =
                     Math.random() > 0.5
-                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
-                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png";
+                        ? "/assets/sessions/pitch_studio_bm_handraise.jpeg"
+                        : "/assets/sessions/pitch_studio_bm_handraise.jpeg";
                 setQuestionImg(randomImg);
                 setQuestionDialogOpen(true);
                 setStartQuestionTimer(false);

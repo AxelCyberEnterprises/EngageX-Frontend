@@ -55,9 +55,7 @@ const PresentationPractice: React.FC = () => {
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [questionImg, setQuestionImg] = useState<string>(
-        `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`,
-    );
+    const [questionImg, setQuestionImg] = useState<string>(`/assets/sessions/${selectedRoom.current}/bm_handraise.jpeg`);
 
     const end = () => {
         setStopTime(true);
@@ -93,6 +91,7 @@ const PresentationPractice: React.FC = () => {
             setQuestionDialogOpen(true);
         } else {
             setSlides([]);
+            setSeshData(undefined);
             setStopStreamer(true);
             setAllowSwitch(false);
             setDialogOneOpen(false);
@@ -135,13 +134,15 @@ const PresentationPractice: React.FC = () => {
         // Use a functional update to get the new value
         setActiveQuestion((prev: number) => {
             const nQuestions = questionsRef.current.length;
+            const localSeshData = localStorage.getItem("sessionData");
+            const parsedData = localSeshData ? JSON.parse(localSeshData) : null;
             setStartQuestionTimer(false);
 
             if (prev < nQuestions - 1) {
                 const randomImg =
                     Math.random() < 0.5
-                        ? `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/bw_handraise.png`
-                        : `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/${selectedRoom}/wm_handraise.png`;
+                        ? `/assets/sessions/${parsedData.virtual_environment}_bm_handraise.jpeg`
+                        : `/assets/sessions/${parsedData.virtual_environment}_bw_handraise.jpeg`;
                 setQuestionImg(randomImg);
                 setQuestionDialogOpen(true);
                 return prev + 1;
@@ -178,6 +179,7 @@ const PresentationPractice: React.FC = () => {
         const localSeshData = localStorage.getItem("sessionData");
         const parsedData = localSeshData ? JSON.parse(localSeshData) : null;
         console.log(parsedData.virtual_environment);
+        setQuestionImg(`/assets/sessions/${parsedData.virtual_environment}_bm_handraise.jpeg`);
 
         setSessionData(parsedData);
         selectedRoom.current = parsedData?.virtual_environment;
