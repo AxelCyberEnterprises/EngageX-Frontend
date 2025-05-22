@@ -21,6 +21,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     const [activeIdx, setActiveIdx] = useState<0 | 1>(0);
     const [sources, setSources] = useState<[string, string | null]>([src, null]);
+    const latestSrcRef = useRef<string>(src);
+
 
     // Initial autoplay on mount
     useEffect(() => {
@@ -52,8 +54,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     // Handle `src` change and switch players
     useEffect(() => {
-        const currentSrc = sources[activeIdx];
-        if (currentSrc === src) return;
+        latestSrcRef.current = src;
+        
+         console.log(`🎯 src changed to: ${src}`);
+            const currentSrc = sources[activeIdx];
+            if (currentSrc === src) {
+                console.log("⚠️ New src is already active. No switch needed.");
+                return;
+            }
 
         const inactiveIdx: 0 | 1 = activeIdx === 0 ? 1 : 0;
         const refs = [videoA, videoB];
@@ -66,6 +74,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         });
 
         if (inactiveVideo) {
+
+            if (inactiveVideo.src === src) {
+                console.log("🔁 Inactive video already has the right src. Skipping set.");
+                return;
+              }
+            console.log(`🛠 Preparing video[${inactiveIdx}] to load: ${src}`);
             inactiveVideo.src = src;
             inactiveVideo.muted = isMuted;
             inactiveVideo.loop = loop;
@@ -73,27 +87,72 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             inactiveVideo.load();
 
             const handleReady = () => {
-                setActiveIdx(inactiveIdx);
-                inactiveVideo.play().catch((e) => {
-                    console.warn("Autoplay failed after switching:", e);
-                });
+              console.log(`✅ canplaythrough fired for video[${inactiveIdx}] with src: ${src}`);
+            
+              // Extra safety: ensure video is fully buffered and playable
+              if (inactiveVideo.readyState < 4) {
+                console.warn("🚧 Video not fully ready despite canplaythrough");
+                return;
+              }
+
+              const currentlyVisible = refs[activeIdx].current;
+              if (!currentlyVisible || currentlyVisible.readyState < 2) {
+                console.warn(`⚠️ Currently visible video[${activeIdx}] is not playable. Blocking switch to prevent black screen.`);
+                return;
+              }
+
+            
+              if (latestSrcRef.current === src) {
+                console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
+                
+                setActiveIdx(inactiveIdx); // Start opacity swap
+            
+                inactiveVideo.play()
+                  .then(() => {
+                    console.log(`▶️ Playback started for video[${inactiveIdx}]. Waiting to confirm rendering...`);
+                
+                    // Wait 2 animation frames to confirm the new video is visibly rendered
+                    requestAnimationFrame(() => {
+                      requestAnimationFrame(() => {
+                        console.log(`🟢 Confirmed video[${inactiveIdx}] has rendered a frame.`);
+                
+                        // Only now clear the previous video src to avoid flicker
+                        const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
+                       // ✅ Only clear the old video if it's NOT the one currently being shown
+                        if (previouslyActive && previouslyActive !== refs[activeIdx].current && previouslyActive.src !== "") {
+                          previouslyActive.src = "";
+                          console.log(`🧼 Cleared src of inactive video[${inactiveIdx === 0 ? 1 : 0}]`);
+                        } else {
+                          console.log(`❎ Skipped clearing src — it's still the active/visible player.`);
+                        }
+                      });
+                    });
+                  })
+                  .catch((e) => {
+                    console.warn("🚨 Autoplay failed after switching:", e);
+                  });
+            
+              } else {
+                console.log(`🛑 Skipped stale video load: attempted=${src}, expected=${latestSrcRef.current}`);
+              }
             };
 
             const handleError = () => {
-                console.error("Video failed to load:", src);
+                console.error(`❌ Video failed to load: ${src}`);
             };
 
             inactiveVideo.addEventListener("canplaythrough", handleReady, { once: true });
             inactiveVideo.addEventListener("error", handleError);
 
             return () => {
+                console.log(`♻️ Cleaning up listeners for video[${inactiveIdx}] with src: ${src}`);
                 inactiveVideo.removeEventListener("canplaythrough", handleReady);
                 inactiveVideo.removeEventListener("error", handleError);
 
                 // Clean up only the now inactive video
                 const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
-                if (previouslyActive) {
-                    previouslyActive.src = "";
+                if (previouslyActive && previouslyActive !== refs[activeIdx].current) {
+                  previouslyActive.src = "";
                 }
             };
         }

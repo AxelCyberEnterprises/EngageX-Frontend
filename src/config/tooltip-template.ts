@@ -19,7 +19,8 @@ export type ITooltipKeys =
     | "slide-wordiness"
     | "aesthetic-balance"
     | "goals-and-achievements"
-    | "goals";
+    | "goals"
+    | "upload-slide";
 type ITooltipContent = {
     title?: string;
     description: string;
@@ -129,5 +130,9 @@ export const tooltipItems: TooltipProps = {
     goals: {
         title: undefined,
         description: "",
+    },
+    "upload-slide": {
+        description:
+            "Uploaded the wrong slide deck?\nNo problem — just upload a new one to replace it.\n\nVideo on slides?\nNot supported yet — coming soon!",
     },
 };
