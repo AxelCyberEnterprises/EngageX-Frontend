@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaCompress, FaExpand } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
 import ErrorToast from "../ui/custom-toasts/error-toast";
 
 interface VideoPlayerProps {
@@ -413,12 +414,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                             </span>
                         </div>
 
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
                             {canDownload && (
-                                <a
+                                <Button
+                                    aria-label="Download video"
                                     title="Download"
-                                    download
-                                    className="cursor-pointer text-white hover:text-gray-300 transition-colors"
+                                    disabled={isDownloading}
+                                    className="bg-transparent hover:bg-transparent text-white hover:text-gray-300 transition-colors"
                                     onClick={handleDownload}
                                 >
                                     {isDownloading ? (
@@ -426,7 +428,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                                     ) : (
                                         <Download size={16} />
                                     )}
-                                </a>
+                                </Button>
                             )}
 
                             <button
