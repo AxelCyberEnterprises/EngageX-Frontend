@@ -5,7 +5,7 @@ function AccessProtector({ children }: { children: ReactNode }) {
   const [isAllowed, setIsAllowed] = useState(false);
   return (
     <>
-      {!isAllowed ? (
+      {isAllowed ? (
         <div>{children}</div>
       ) : (
         <AccessDeniedPage setIsAllowed={setIsAllowed} />
