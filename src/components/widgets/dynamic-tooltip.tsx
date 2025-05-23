@@ -10,7 +10,7 @@ interface IDynamicTooltipProps extends React.ComponentProps<typeof TooltipPrimit
 }
 
 export const DynamicTooltip = ({ children, className, tooltipKey, ...props }: IDynamicTooltipProps) => {
-    const { title, description } = tooltipItems[tooltipKey];
+    const { title, description, warning } = tooltipItems[tooltipKey];
     const [open, setOpen] = useState(false);
 
     const handleClick = (e: React.MouseEvent) => {
@@ -31,11 +31,16 @@ export const DynamicTooltip = ({ children, className, tooltipKey, ...props }: ID
                     {children}
                 </TooltipTrigger>
                 <TooltipContent
-                    className={cn("bg-white text-black max-w-64 space-y-1 p-3 border border-bright-gray", className)}
+                    className={cn("bg-white max-w-64 space-y-1 p-3 border border-bright-gray", className)}
                     {...props}
                 >
-                    {title && <h6 className="text-base font-semibold">{title}</h6>}
-                    <p className="font-normal text-base">{description}</p>
+                    {title && <h6 className="text-base text-black font-semibold">{title}</h6>}
+                    <p className="font-normal text-black text-base">{description}</p>
+                    {warning && (
+                        <span className="font-normal text-base !text-red-600" style={{ color: "#940803" }}>
+                            {warning}
+                        </span>
+                    )}
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>
