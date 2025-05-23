@@ -12,7 +12,7 @@ import {
     setSlidePreviews,
 } from "@/store/slices/dashboard/user/pitchPracticeSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -40,6 +40,11 @@ const PitchPracticeForm = () => {
     });
 
     const slides = useWatch({ control: form.control, name: "slides" });
+
+    const handleDeleteSlide = useCallback(() => {
+        form.resetField("slides");
+        dispatch(setSlidePreviews([]));
+    }, [dispatch, form]);
 
     useEffect(() => {
         if (!slides || slides.length === 0) return;
@@ -89,7 +94,14 @@ const PitchPracticeForm = () => {
             <form>
                 <PracticeSetUpControlsLayout {...{ form }}>
                     <PracticeSetupLayout
-                        {...{ form, activeSlideIndex, isGeneratingPreview, slidePreviews, setActiveSlideIndex }}
+                        {...{
+                            form,
+                            activeSlideIndex,
+                            isGeneratingPreview,
+                            slidePreviews,
+                            handleDeleteSlide,
+                            setActiveSlideIndex,
+                        }}
                     />
                 </PracticeSetUpControlsLayout>
             </form>

@@ -11,6 +11,7 @@ interface IPracticeSetupLayoutProps extends HTMLAttributes<HTMLDivElement> {
     activeSlideIndex: number;
     isGeneratingPreview: boolean;
     slidePreviews: string[];
+    handleDeleteSlide: () => void;
     setActiveSlideIndex: (numPages: number) => UnknownAction;
 }
 
@@ -19,6 +20,7 @@ const PracticeSetupLayout = ({
     activeSlideIndex,
     isGeneratingPreview,
     slidePreviews,
+    handleDeleteSlide,
     setActiveSlideIndex,
 }: IPracticeSetupLayoutProps) => {
     return (
@@ -29,6 +31,7 @@ const PracticeSetupLayout = ({
                     isGeneratingPreview,
                     slidePreviews,
                     sessionType: form.getValues("session_type"),
+                    handleDeleteSlide,
                     setActiveSlideIndex,
                 }}
                 className="flex-1 lg:h-[calc(100vh-56.53px)] lg:overflow-y-auto hide-scrollbar px-4 pt-4 lg:pb-[15vh] border-x border-bright-gray"
