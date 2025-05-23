@@ -43,6 +43,7 @@ const PitchPracticeForm = () => {
 
     const handleDeleteSlide = useCallback(() => {
         form.resetField("slides");
+        form.resetField("slide_preview_id");
         dispatch(setSlidePreviews([]));
     }, [dispatch, form]);
 
