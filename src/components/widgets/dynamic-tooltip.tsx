@@ -16,7 +16,7 @@ export const DynamicTooltip = ({ children, className, tooltipKey, ...props }: ID
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         setOpen(true);
-        // Optional: auto-close after 3 seconds
+        // Optional: auto-close after 10 seconds
         setTimeout(() => setOpen(false), 10000);
     };
 

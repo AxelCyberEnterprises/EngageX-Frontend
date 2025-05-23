@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ErrorToast from "@/components/ui/custom-toasts/error-toast";
+import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
 import { apiDelete, apiGet, apiPost } from "@/lib/api";
 import { useAppDispatch } from "@/store";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
@@ -89,7 +90,7 @@ export function useDeleteSessionVideo() {
     return useMutation({
         mutationKey: ["deleteSessionVideo"],
         mutationFn: async (sessionId: string) => {
-            return await apiDelete(`/sessions/sessions/${sessionId}/delete-session-media/`);
+            return await apiDelete(`/sessions/sessions/${sessionId}/delete-session-media/`, "secondary");
         },
         onSuccess: () => {
             toast("Session video deleted successfully.");
@@ -172,6 +173,41 @@ export function useGetSequences() {
         queryKey: ["getSequenceData"],
         queryFn: async () => {
             return await apiGet(`/sessions/improve-existing-sequence`, "secondary");
+        },
+    });
+}
+
+export function useRequestSessionVideo(sessionId: string | undefined) {
+    return useMutation({
+        mutationKey: ["requestSessionVideo"],
+        mutationFn: async () => {
+            await apiPost(
+                `/sessions/sessions/${sessionId}/queue-video-compilation/`,
+                undefined,
+                "secondary"
+            );
+        },
+        onSuccess: () => {
+            console.log("Video requested successfully.");
+            toast(
+                <SuccessToast
+                    {...{
+                        heading: "Video requested successfully",
+                        description: "Your video is being processed. You will be able to view it once it is ready.",
+                    }}
+                />,
+            );
+        },
+        onError: (error) => {
+            console.error("End session failed:", error);
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Error requesting session video",
+                        description: "An error occurred while requesting session video, please try again.",
+                    }}
+                />,
+            );
         },
     });
 }
