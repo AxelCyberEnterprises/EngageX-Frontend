@@ -24,6 +24,7 @@ export type ITooltipKeys =
 type ITooltipContent = {
     title?: string;
     description: string;
+    warning?: string;
 };
 type TooltipProps = Record<ITooltipKeys, ITooltipContent>;
 
@@ -132,7 +133,7 @@ export const tooltipItems: TooltipProps = {
         description: "",
     },
     "upload-slide": {
-        description:
-            "Uploaded the wrong slide deck?\nNo problem — just upload a new one to replace it.\n\nVideo on slides?\nNot supported yet — coming soon!",
+        description: "Uploaded the wrong slide deck?\nNo problem — just upload a new one to replace it.\n\n",
+        warning: "Video content isn’t supported on EngageX just yet, stay tuned!",
     },
 };
