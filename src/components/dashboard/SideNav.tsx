@@ -246,38 +246,38 @@ const SideNav: React.FC = () => {
             ),
             path: "/dashboard/admin",
         },
-        {
-            name: "User Management",
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="me-5"
-                    width="24"
-                    height="24"
-                    color="#bdbdbd"
-                    fill="none"
-                >
-                    <path
-                        d="M18.6161 20H19.1063C20.2561 20 21.1707 19.4761 21.9919 18.7436C24.078 16.8826 19.1741 15 17.5 15M15.5 5.06877C15.7271 5.02373 15.9629 5 16.2048 5C18.0247 5 19.5 6.34315 19.5 8C19.5 9.65685 18.0247 11 16.2048 11C15.9629 11 15.7271 10.9763 15.5 10.9312"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                    />
-                    <path
-                        d="M4.48131 16.1112C3.30234 16.743 0.211137 18.0331 2.09388 19.6474C3.01359 20.436 4.03791 21 5.32572 21H12.6743C13.9621 21 14.9864 20.436 15.9061 19.6474C17.7889 18.0331 14.6977 16.743 13.5187 16.1112C10.754 14.6296 7.24599 14.6296 4.48131 16.1112Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                    />
-                    <path
-                        d="M13 7.5C13 9.70914 11.2091 11.5 9 11.5C6.79086 11.5 5 9.70914 5 7.5C5 5.29086 6.79086 3.5 9 3.5C11.2091 3.5 13 5.29086 13 7.5Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                    />
-                </svg>
-            ),
-            path: "/dashboard/admin/user-management",
-        },
+        // {
+        //     name: "User Management",
+        //     icon: (
+        //         <svg
+        //             xmlns="http://www.w3.org/2000/svg"
+        //             viewBox="0 0 24 24"
+        //             className="me-5"
+        //             width="24"
+        //             height="24"
+        //             color="#bdbdbd"
+        //             fill="none"
+        //         >
+        //             <path
+        //                 d="M18.6161 20H19.1063C20.2561 20 21.1707 19.4761 21.9919 18.7436C24.078 16.8826 19.1741 15 17.5 15M15.5 5.06877C15.7271 5.02373 15.9629 5 16.2048 5C18.0247 5 19.5 6.34315 19.5 8C19.5 9.65685 18.0247 11 16.2048 11C15.9629 11 15.7271 10.9763 15.5 10.9312"
+        //                 stroke="currentColor"
+        //                 strokeWidth="1.5"
+        //                 strokeLinecap="round"
+        //             />
+        //             <path
+        //                 d="M4.48131 16.1112C3.30234 16.743 0.211137 18.0331 2.09388 19.6474C3.01359 20.436 4.03791 21 5.32572 21H12.6743C13.9621 21 14.9864 20.436 15.9061 19.6474C17.7889 18.0331 14.6977 16.743 13.5187 16.1112C10.754 14.6296 7.24599 14.6296 4.48131 16.1112Z"
+        //                 stroke="currentColor"
+        //                 strokeWidth="1.5"
+        //             />
+        //             <path
+        //                 d="M13 7.5C13 9.70914 11.2091 11.5 9 11.5C6.79086 11.5 5 9.70914 5 7.5C5 5.29086 6.79086 3.5 9 3.5C11.2091 3.5 13 5.29086 13 7.5Z"
+        //                 stroke="currentColor"
+        //                 strokeWidth="1.5"
+        //             />
+        //         </svg>
+        //     ),
+        //     path: "/dashboard/admin/user-management",
+        // },
         {
             name: "Session History",
             icon: (
@@ -307,36 +307,36 @@ const SideNav: React.FC = () => {
             ),
             path: "/dashboard/admin/session-history",
         },
-        {
-            name: "Analytics",
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="me-5"
-                    width="24"
-                    height="24"
-                    color="#bdbdbd"
-                    fill="none"
-                >
-                    <path
-                        d="M7 18V16M12 18V15M17 18V13M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                    <path
-                        d="M5.99219 11.4863C8.14729 11.5581 13.0341 11.2328 15.8137 6.82132M13.9923 6.28835L15.8678 5.98649C16.0964 5.95738 16.432 6.13785 16.5145 6.35298L17.0104 7.99142"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </svg>
-            ),
-            path: "/dashboard/admin/analytics",
-        },
+        // {
+        //     name: "Analytics",
+        //     icon: (
+        //         <svg
+        //             xmlns="http://www.w3.org/2000/svg"
+        //             viewBox="0 0 24 24"
+        //             className="me-5"
+        //             width="24"
+        //             height="24"
+        //             color="#bdbdbd"
+        //             fill="none"
+        //         >
+        //             <path
+        //                 d="M7 18V16M12 18V15M17 18V13M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
+        //                 stroke="currentColor"
+        //                 strokeWidth="1.5"
+        //                 strokeLinecap="round"
+        //                 strokeLinejoin="round"
+        //             />
+        //             <path
+        //                 d="M5.99219 11.4863C8.14729 11.5581 13.0341 11.2328 15.8137 6.82132M13.9923 6.28835L15.8678 5.98649C16.0964 5.95738 16.432 6.13785 16.5145 6.35298L17.0104 7.99142"
+        //                 stroke="currentColor"
+        //                 strokeWidth="1.5"
+        //                 strokeLinecap="round"
+        //                 strokeLinejoin="round"
+        //             />
+        //         </svg>
+        //     ),
+        //     path: "/dashboard/admin/analytics",
+        // },
     ];
 
     const userBottomLinks = [
@@ -437,36 +437,36 @@ const SideNav: React.FC = () => {
         },
     ];
     const adminBottomLinks = [
-        {
-            name: "Help & Support",
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="me-5"
-                    width="24"
-                    height="24"
-                    color="#BDBDBD"
-                    fill="none"
-                >
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
-                    <path
-                        d="M10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9C14 9.39815 13.8837 9.76913 13.6831 10.0808C13.0854 11.0097 12 11.8954 12 13V13.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                    />
-                    <path
-                        d="M11.992 17H12.001"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </svg>
-            ),
-            path: "/dashboard/user/help",
-        },
+        // {
+        //     name: "Help & Support",
+        //     icon: (
+        //         <svg
+        //             xmlns="http://www.w3.org/2000/svg"
+        //             viewBox="0 0 24 24"
+        //             className="me-5"
+        //             width="24"
+        //             height="24"
+        //             color="#BDBDBD"
+        //             fill="none"
+        //         >
+        //             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+        //             <path
+        //                 d="M10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9C14 9.39815 13.8837 9.76913 13.6831 10.0808C13.0854 11.0097 12 11.8954 12 13V13.5"
+        //                 stroke="currentColor"
+        //                 strokeWidth="1.5"
+        //                 strokeLinecap="round"
+        //             />
+        //             <path
+        //                 d="M11.992 17H12.001"
+        //                 stroke="currentColor"
+        //                 strokeWidth="2"
+        //                 strokeLinecap="round"
+        //                 strokeLinejoin="round"
+        //             />
+        //         </svg>
+        //     ),
+        //     path: "/dashboard/user/help",
+        // },
         {
             name: "Settings",
             icon: (

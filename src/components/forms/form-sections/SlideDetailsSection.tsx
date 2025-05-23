@@ -21,6 +21,7 @@ interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
 
 const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews }: ISlideDetailsSectionProps) => {
     const dispatch = useAppDispatch();
+    const isSlidePreviews = slidePreviews.length > 0;
 
     return (
         <section className={cn("flex flex-col gap-y-6", className)}>
@@ -52,7 +53,7 @@ const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews 
                 <div className="space-y-5 lg:pl-4 md:pr-4">
                     <h6 className="text-lg">Slide {activeSlideIndex + 1}</h6>
                     <div className="w-auto h-90 rounded-lg overflow-hidden">
-                        {slidePreviews.length > 0 ? (
+                        {isSlidePreviews ? (
                             <img src={slidePreviews[activeSlideIndex]} alt="" className="size-full" />
                         ) : (
                             <div className="size-full grid place-content-center bg-ghost-white text-primary-base rounded-lg border border-bright-gray">
