@@ -41,6 +41,7 @@ const PresentationPracticeForm = () => {
         form.resetField("slides");
         form.resetField("slide_preview_id");
         dispatch(setSlidePreviews([]));
+        dispatch(setActiveSlideIndex(0));
     }, [dispatch, form]);
 
     useEffect(() => {
