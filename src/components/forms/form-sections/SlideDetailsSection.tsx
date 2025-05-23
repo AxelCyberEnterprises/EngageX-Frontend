@@ -18,7 +18,7 @@ interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
     form: UseFormReturn<any>;
     activeSlideIndex: number;
     slidePreviews: string[];
-    handleDeleteSlide?: () => void;
+    handleDeleteSlide: () => void;
 }
 
 const SlideDetailsSection = ({
