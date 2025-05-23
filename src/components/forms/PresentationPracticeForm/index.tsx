@@ -38,8 +38,12 @@ const PresentationPracticeForm = () => {
     const slides = useWatch({ control: form.control, name: "slides" });
 
     const handleDeleteSlide = useCallback(() => {
-        form.resetField("slides");
-        form.resetField("slide_preview_id");
+        form.reset({
+            ...form.getValues(),
+            slides: undefined,
+            slide_preview_id: undefined,
+        });
+
         dispatch(setSlidePreviews([]));
         dispatch(setActiveSlideIndex(0));
     }, [dispatch, form]);
