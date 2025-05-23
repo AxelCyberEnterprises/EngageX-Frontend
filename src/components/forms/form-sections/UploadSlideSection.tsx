@@ -6,7 +6,7 @@ import UploadMediaTrigger from "@/components/widgets/UploadMediaTrigger";
 import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { UnknownAction } from "@reduxjs/toolkit";
-import { Info, LoaderCircle, Plus, UploadCloud } from "lucide-react";
+import { Info, LoaderCircle, Plus, Trash2, UploadCloud } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
 import { pdfjs } from "react-pdf";
 
@@ -15,6 +15,7 @@ interface IUploadSlideSectionProps extends HTMLAttributes<HTMLElement> {
     isGeneratingPreview: boolean;
     sessionType: "presentation" | "pitch";
     slidePreviews: string[];
+    handleDeleteSlide: () => void;
     setActiveSlideIndex: (index: number) => UnknownAction;
 }
 
@@ -26,9 +27,11 @@ const UploadSlideSection = ({
     isGeneratingPreview,
     sessionType,
     slidePreviews,
+    handleDeleteSlide,
     setActiveSlideIndex,
 }: IUploadSlideSectionProps) => {
     const dispatch = useAppDispatch();
+    const isSlidePreviews = slidePreviews.length > 0;
 
     const handleSlideClick = useCallback(
         (index: number) => {
@@ -51,7 +54,7 @@ const UploadSlideSection = ({
                     </DynamicTooltip>
                 </div>
 
-                <div className="space-y-2">
+                <div className="flex flex-col gap-y-2">
                     <p className="text-sm">
                         You have the option to upload your slides or proceed to {sessionType} practice without uploading
                         your slides to the platform
@@ -78,16 +81,25 @@ const UploadSlideSection = ({
                             Upload Slide
                         </Button>
                     </UploadMediaTrigger>
+
+                    {isSlidePreviews && (
+                        <Button
+                            type="button"
+                            className="bg-transparent hover:bg-transparent text-[#BC0010] shadow-none ml-auto"
+                            onClick={handleDeleteSlide}
+                        >
+                            <span className="underline underline-offset-2">Delete slide</span>
+                            <Trash2 className="size-4" />
+                        </Button>
+                    )}
                 </div>
 
                 <Separator className="bg-bright-gray" />
 
                 <div className="space-y-5">
-                    <h6 className="text-lg">
-                        Uploaded Slides {slidePreviews.length > 0 && `(${slidePreviews.length})`}
-                    </h6>
+                    <h6 className="text-lg">Uploaded Slides {isSlidePreviews && `(${slidePreviews.length})`}</h6>
 
-                    {slidePreviews.length > 0 ? (
+                    {isSlidePreviews ? (
                         <div className="flex flex-col gap-y-3">
                             {slidePreviews.map((preview, index) => (
                                 <div
@@ -114,7 +126,16 @@ const UploadSlideSection = ({
 
             <section className="lg:hidden md:absolute fixed bottom-0 inset-x-0 p-4 flex items-start gap-x-3 border-t border-bright-gray bg-white overflow-auto hide-scrollbar z-10 [&>.react-pdf\_\_Document]:flex [&>.react-pdf\_\_Document]:gap-3">
                 <div className="flex flex-col items-center gap-y-2 whitespace-nowrap">
-                    <span className="text-sm">Upload New slide</span>
+                    <div className="flex items-center gap-x-3">
+                        <span className="text-sm">Upload New slide</span>
+                        <DynamicTooltip
+                            tooltipKey="upload-slide"
+                            sideOffset={5}
+                            className="[&_svg]:hidden [&>p]:text-black/80 [&>p]:whitespace-pre-line"
+                        >
+                            <Info className="size-4 shrink-0" />
+                        </DynamicTooltip>
+                    </div>
 
                     <UploadMediaTrigger
                         name="slides"

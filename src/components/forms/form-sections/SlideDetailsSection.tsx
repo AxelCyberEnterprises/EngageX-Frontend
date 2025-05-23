@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
+import { Trash2 } from "lucide-react";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
 import SlidePreviewAndSettingsSection from "./SlidePreviewAndSettingsSection";
@@ -17,10 +18,18 @@ interface ISlideDetailsSectionProps extends HTMLAttributes<HTMLElement> {
     form: UseFormReturn<any>;
     activeSlideIndex: number;
     slidePreviews: string[];
+    handleDeleteSlide?: () => void;
 }
 
-const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews }: ISlideDetailsSectionProps) => {
+const SlideDetailsSection = ({
+    className,
+    form,
+    activeSlideIndex,
+    slidePreviews,
+    handleDeleteSlide,
+}: ISlideDetailsSectionProps) => {
     const dispatch = useAppDispatch();
+    const isSlidePreviews = slidePreviews.length > 0;
 
     return (
         <section className={cn("flex flex-col gap-y-6", className)}>
@@ -51,15 +60,30 @@ const SlideDetailsSection = ({ className, form, activeSlideIndex, slidePreviews 
                 <Separator />
                 <div className="space-y-5 lg:pl-4 md:pr-4">
                     <h6 className="text-lg">Slide {activeSlideIndex + 1}</h6>
-                    <div className="w-auto h-90 rounded-lg overflow-hidden">
-                        {slidePreviews.length > 0 ? (
-                            <img src={slidePreviews[activeSlideIndex]} alt="" className="size-full" />
-                        ) : (
-                            <div className="size-full grid place-content-center bg-ghost-white text-primary-base rounded-lg border border-bright-gray">
-                                <span>Upload slide to get started</span>
-                            </div>
+
+                    <div className="flex flex-col gap-y-2">
+                        <div className="w-auto h-90 rounded-lg overflow-hidden">
+                            {isSlidePreviews ? (
+                                <img src={slidePreviews[activeSlideIndex]} alt="" className="size-full" />
+                            ) : (
+                                <div className="size-full grid place-content-center bg-ghost-white text-primary-base rounded-lg border border-bright-gray">
+                                    <span>Upload slide to get started</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {isSlidePreviews && (
+                            <Button
+                                type="button"
+                                className="lg:hidden inline-flex bg-transparent hover:bg-transparent text-[#BC0010] shadow-none ml-auto"
+                                onClick={handleDeleteSlide}
+                            >
+                                <span className="underline underline-offset-2">Delete slide</span>
+                                <Trash2 className="size-4" />
+                            </Button>
                         )}
                     </div>
+
                     <div className="space-y-6">
                         <ControlledFieldWrapper
                             control={form.control}
