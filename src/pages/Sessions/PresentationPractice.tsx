@@ -549,7 +549,7 @@ const PresentationPractice: React.FC = () => {
                         </div>
 
                         <div className="absolute left-0 bottom-0 z-5">
-                            <div className="w-45 h-25 md:w-60 md:h-35">
+                            <div className="w-52 h-30 md:w-60 md:h-35">
                                 {!slides.length && seshData?.slides_file ? (
                                     <Skeleton className="w-full h-full bg-gray" />
                                 ) : (
@@ -571,13 +571,15 @@ const PresentationPractice: React.FC = () => {
                                             className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
                                             onClick={triggerPrevSlide}
                                         >
-                                            <ChevronLeft className="h-4 w-4" /> Previous Slide
+                                            <ChevronLeft className="h-4 w-4" />{" "}
+                                            <span className="hidden md:inline-block">Previous Slide</span>
                                         </Button>
                                         <Button
                                             className="flex text-grey items-center text-xs border border-primary-blue cursor-pointer bg-white hover:bg-bright-gray"
                                             onClick={triggerNextSlide}
                                         >
-                                            Next Slide <ChevronRight className="h-4 w-4" />
+                                            <span className="hidden md:inline-block">Next Slide</span>{" "}
+                                            <ChevronRight className="h-4 w-4" />
                                         </Button>
                                     </div>
                                 </div>
