@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
-import { useGetSessionReport } from "@/hooks/sessions";
+import { useGetSessionReport, useRequestSessionVideo } from "@/hooks/sessions";
 import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import html2canvas from "html2canvas-pro";
@@ -28,8 +28,24 @@ const PitchSessionReport: React.FC = () => {
     const { id } = useParams();
 
     const { data, isPending, refetch } = useGetSessionReport(id);
+    const { mutate, isPending: requestingVideo, isSuccess: requestedSuccessfully } = useRequestSessionVideo(id);
     const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
 
+    React.useEffect(() => {
+        if (!id || !requestedSuccessfully) return;
+        let interval: NodeJS.Timeout | undefined;
+
+        if (!data?.compiled_video_url) {
+            interval = setInterval(() => {
+                refetch();
+            }, 7000);
+        }
+
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, data?.compiled_video_url, requestedSuccessfully]);
     const pdfRef = useRef<HTMLDivElement>(null);
 
     const handlePDFDownload = useCallback(async () => {
@@ -358,7 +374,17 @@ const PitchSessionReport: React.FC = () => {
                                 </div>
                             ) : (
                                 <div className="h-100 w-full rounded-3xl mb-2 grid place-content-center bg-black/90">
-                                    <LoaderCircle className="size-6 animate-spin stroke-white" />
+                                    {requestedSuccessfully ? (
+                                        <LoaderCircle className="size-6 animate-spin stroke-white" />
+                                    ) : (
+                                        <Button
+                                            className="bg-medium-sea-green hover:bg-medium-sea-green/70 rounded-lg"
+                                            onClick={() => mutate()}
+                                            isLoading={requestingVideo}
+                                        >
+                                            Request session recording
+                                        </Button>
+                                    )}
                                 </div>
                             )}
                             <small className="border-l-2 border-l-maximum-yellow-red pl-3 py-1">
