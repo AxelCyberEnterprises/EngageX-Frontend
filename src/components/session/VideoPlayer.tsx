@@ -87,55 +87,60 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             inactiveVideo.load();
 
             const handleReady = () => {
-              console.log(`✅ canplaythrough fired for video[${inactiveIdx}] with src: ${src}`);
+                console.log(`✅ canplaythrough fired for video[${inactiveIdx}] with src: ${src}`);
             
-              // Extra safety: ensure video is fully buffered and playable
-              if (inactiveVideo.readyState < 4) {
-                console.warn("🚧 Video not fully ready despite canplaythrough");
-                return;
-              }
-
-              const currentlyVisible = refs[activeIdx].current;
-              if (!currentlyVisible || currentlyVisible.readyState < 2) {
-                console.warn(`⚠️ Currently visible video[${activeIdx}] is not playable. Blocking switch to prevent black screen.`);
-                return;
-              }
-
+                // Extra safety: ensure video is fully buffered and playable
+                if (inactiveVideo.readyState < 4) {
+                    console.warn("🚧 Video not fully ready despite canplaythrough");
+                    return;
+                }
             
-              if (latestSrcRef.current === src) {
-                console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
-                
-                setActiveIdx(inactiveIdx); // Start opacity swap
+                const currentlyVisible = refs[activeIdx].current;
+                if (!currentlyVisible || currentlyVisible.readyState < 2) {
+                    console.warn(`⚠️ Currently visible video[${activeIdx}] is not playable. Blocking switch to prevent black screen.`);
+                    return;
+                }
             
-                inactiveVideo.play()
-                  .then(() => {
-                    console.log(`▶️ Playback started for video[${inactiveIdx}]. Waiting to confirm rendering...`);
-                
-                    // Wait 2 animation frames to confirm the new video is visibly rendered
-                    requestAnimationFrame(() => {
-                      requestAnimationFrame(() => {
-                        console.log(`🟢 Confirmed video[${inactiveIdx}] has rendered a frame.`);
-                
-                        // Only now clear the previous video src to avoid flicker
-                        const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
-                       // ✅ Only clear the old video if it's NOT the one currently being shown
-                        if (previouslyActive && previouslyActive !== refs[activeIdx].current && previouslyActive.src !== "") {
-                          previouslyActive.src = "";
-                          console.log(`🧼 Cleared src of inactive video[${inactiveIdx === 0 ? 1 : 0}]`);
-                        } else {
-                          console.log(`❎ Skipped clearing src — it's still the active/visible player.`);
-                        }
-                      });
-                    });
-                  })
-                  .catch((e) => {
-                    console.warn("🚨 Autoplay failed after switching:", e);
-                  });
+                if (latestSrcRef.current === src) {
+                    console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
             
-              } else {
-                console.log(`🛑 Skipped stale video load: attempted=${src}, expected=${latestSrcRef.current}`);
-              }
+                    // ✅ Mute both players before swap
+                    videoA.current && (videoA.current.muted = true);
+                    videoB.current && (videoB.current.muted = true);
+            
+                    setActiveIdx(inactiveIdx); // Start opacity/visibility swap
+            
+                    inactiveVideo.play()
+                        .then(() => {
+                            console.log(`▶️ Playback started for video[${inactiveIdx}]. Waiting to confirm rendering...`);
+            
+                            requestAnimationFrame(() => {
+                                requestAnimationFrame(() => {
+                                    console.log(`🟢 Confirmed video[${inactiveIdx}] has rendered a frame.`);
+            
+                                    // ✅ Properly clear the now-inactive video using inactiveIdx logic
+                                    const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
+                                    if (previouslyActive && previouslyActive.src !== "") {
+                                        previouslyActive.src = "";
+                                        console.log(`🧼 Cleared src of now-inactive video[${inactiveIdx === 0 ? 1 : 0}]`);
+                                    } else {
+                                        console.log(`❎ Skipped clearing src — possibly already cleared or not loaded.`);
+                                    }
+            
+                                    // 🔍 Debugging: log both video states
+                                    console.log("🧪 videoA:", videoA.current?.src, "opacity:", videoA.current?.style.opacity);
+                                    console.log("🧪 videoB:", videoB.current?.src, "opacity:", videoB.current?.style.opacity);
+                                });
+                            });
+                        })
+                        .catch((e) => {
+                            console.warn("🚨 Autoplay failed after switching:", e);
+                        });
+                } else {
+                    console.log(`🛑 Skipped stale video load: attempted=${src}, expected=${latestSrcRef.current}`);
+                }
             };
+
 
             const handleError = () => {
                 console.error(`❌ Video failed to load: ${src}`);
