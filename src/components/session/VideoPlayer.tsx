@@ -105,10 +105,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                     console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
             
                     // ✅ Mute both players before swap
-                    videoA.current && (videoA.current.muted = true);
-                    videoB.current && (videoB.current.muted = true);
+                    if (videoA.current) videoA.current.muted = true;
+                    if (videoB.current) videoB.current.muted = true;
             
-                    setActiveIdx(inactiveIdx); // Start opacity/visibility swap
+                    // ✅ Update index to switch visibility
+                    setActiveIdx(inactiveIdx);
             
                     inactiveVideo.play()
                         .then(() => {
@@ -118,11 +119,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                                 requestAnimationFrame(() => {
                                     console.log(`🟢 Confirmed video[${inactiveIdx}] has rendered a frame.`);
             
-                                    // ✅ Properly clear the now-inactive video using inactiveIdx logic
-                                    const previouslyActive = refs[inactiveIdx === 0 ? 1 : 0].current;
+                                    // ✅ UNCONDITIONALLY clear the now-inactive video
+                                    const previouslyActiveIdx = inactiveIdx === 0 ? 1 : 0;
+                                    const previouslyActive = refs[previouslyActiveIdx].current;
+            
                                     if (previouslyActive && previouslyActive.src !== "") {
                                         previouslyActive.src = "";
-                                        console.log(`🧼 Cleared src of now-inactive video[${inactiveIdx === 0 ? 1 : 0}]`);
+                                        console.log(`🧼 Cleared src of video[${previouslyActiveIdx}]`);
                                     } else {
                                         console.log(`❎ Skipped clearing src — possibly already cleared or not loaded.`);
                                     }
@@ -140,8 +143,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                     console.log(`🛑 Skipped stale video load: attempted=${src}, expected=${latestSrcRef.current}`);
                 }
             };
-
-
             const handleError = () => {
                 console.error(`❌ Video failed to load: ${src}`);
             };
