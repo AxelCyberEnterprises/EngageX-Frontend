@@ -3,7 +3,7 @@ import "./App.css";
 import AppRoutes from "./components/AppRoutes";
 import "./styles/index.scss";
 import ProfileLoader from "./components/profileLoader/ProfileLoader";
-import AccessProtector from "./AccessProtector";
+import VideoPopup from "./components/VideoPopup";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,10 +23,9 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AccessProtector>
-        <ProfileLoader />
-        <AppRoutes />
-      </AccessProtector>
+      <VideoPopup />
+      <ProfileLoader />
+      <AppRoutes />
     </QueryClientProvider>
   );
 }
