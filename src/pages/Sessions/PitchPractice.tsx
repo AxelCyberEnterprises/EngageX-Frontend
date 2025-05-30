@@ -316,7 +316,7 @@ const PresentationPractice: React.FC = () => {
                                 "interested",
                             ];
                             if (validEmotions.includes(parsed.text) && allowSwitch) {
-                                const random = Math.floor(Math.random() * 5) + 1;
+                                const random = Math.floor(Math.random() * 10) + 1;
                                 const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/pitch_studio/${parsed.text}/${random}.mp4`;
                                 console.log("videoUrl", newUrl);
                                 setVideoUrl(newUrl);
