@@ -3,7 +3,7 @@ import PressCard from "./PressCard";
 function AllPressPosts() {
   const posts = [
     {
-      img: "/assets/pressimg1.jpeg",
+      img: "/assets/pressimg1.jpg",
       date: "25 Mar 2025",
       title: "New platform launch",
       download: true,
