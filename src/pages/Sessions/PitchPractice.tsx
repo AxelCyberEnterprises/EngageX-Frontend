@@ -283,7 +283,7 @@ const PresentationPractice: React.FC = () => {
         const connectToRealtime = async () => {
             try {
                 // Get ephemeral token
-                const tokenRes = await axios.get("https://api.engagexai.io/sessions/api/openai/realtime-token/");
+                const tokenRes = await axios.get("https://api-stream.engagexai.io/sessions/api/openai/realtime-token/");
                 const EPHEMERAL_KEY = tokenRes.data.client_secret.value;
 
                 if (!isMounted) return;
@@ -309,7 +309,7 @@ const PresentationPractice: React.FC = () => {
                             console.log(parsed.text);
                             const validEmotions = [
                                 "thinking",
-                                "empathy",
+                                "sorrow",
                                 "excitement",
                                 "laughter",
                                 "surprise",
