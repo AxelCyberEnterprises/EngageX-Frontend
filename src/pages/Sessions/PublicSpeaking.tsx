@@ -327,7 +327,7 @@ const PublicSpeaking: React.FC = () => {
 
     useEffect(() => {
         if (!isMuted) return;
-        const getRandomInt1to5 = () => Math.floor(Math.random() * 10) + 1;
+        const getRandomInt1to5 = () => Math.floor(Math.random() * 9) + 1;
 
         const replaceRandomSegment = (url: string): string => {
             const match = url.match(/(.+\/)(\d)\.mp4$/);
