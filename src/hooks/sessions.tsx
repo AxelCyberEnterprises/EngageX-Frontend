@@ -133,7 +133,7 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
                     duration: durationInSeconds,
                     // ...(slidesDuration && slidesDuration.length > 1 && { slide_specific_timing: slidesDuration }),
                 },
-                "secondary",
+                "default",
             );
         },
         onSuccess: () => {
@@ -186,7 +186,7 @@ export function useRequestSessionVideo(sessionId: string | undefined) {
     return useMutation({
         mutationKey: ["requestSessionVideo"],
         mutationFn: async () => {
-            await apiPost(`/sessions/sessions/${sessionId}/queue-video-compilation/`, undefined, "secondary");
+            await apiPost(`/sessions/sessions/${sessionId}/queue-video-compilation/`, undefined, "default");
         },
         onSuccess: () => {
             console.log("Video requested successfully.");
