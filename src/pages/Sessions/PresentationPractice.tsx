@@ -126,6 +126,7 @@ const PresentationPractice: React.FC = () => {
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question = questionsRef.current[activeQuestion]?.question;
+    const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
 
     const answerQuestion = () => {
         setStartQuestionTimer(true);
@@ -391,6 +392,25 @@ const PresentationPractice: React.FC = () => {
         };
     }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
 
+    useEffect(() => {
+        if (!isMuted) return;
+        const getRandomInt1to5 = () => Math.floor(Math.random() * 9) + 1;
+
+        const replaceRandomSegment = (url: string): string => {
+            const match = url.match(/(.+\/)(\d)\.mp4$/);
+            if (!match) {
+                console.warn("🔍 Couldn't parse URL for random segment:", url);
+                return url;
+            }
+            const newNum = getRandomInt1to5();
+            const newUrl = `${match[1]}${newNum}.mp4`;
+            console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${match[2]}, new: ${newNum})`);
+            return newUrl;
+        };
+
+        setVideoUrl((prevUrl) => replaceRandomSegment(prevUrl));
+    }, [videoReplacementFlag, isMuted]);
+
     return (
         <div className="text-primary-blue">
             {/* question dialog  */}
@@ -545,6 +565,10 @@ const PresentationPractice: React.FC = () => {
                                 loop={true}
                                 isMuted={isMuted}
                                 className="h-full w-full rounded-2xl"
+                                onEnded={() => {
+                                    console.log("Video ended");
+                                    setVideoReplacementFlag((prev) => !prev);
+                                }}
                             />
                         </div>
 
