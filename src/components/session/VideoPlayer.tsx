@@ -7,6 +7,7 @@ interface VideoPlayerProps {
     autoplay?: boolean;
     loop?: boolean;
     className?: string;
+    onEnded?: () => void;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -15,6 +16,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     autoplay = true,
     loop = false,
     className = "",
+    onEnded
 }) => {
     const videoA = useRef<HTMLVideoElement>(null);
     const videoB = useRef<HTMLVideoElement>(null);
@@ -163,6 +165,27 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             };
         }
     }, [src, activeIdx, isMuted, loop, autoplay]);
+
+    useEffect(() => {
+        const activeVideo = (activeIdx === 0 ? videoA : videoB).current;
+        if (!activeVideo || !onEnded) return;
+
+        let hasFiredEnded = false;
+
+        const checkForEnded = () => {
+            const threshold = 0.5; // seconds before end
+            if (!hasFiredEnded && activeVideo.duration && activeVideo.duration - activeVideo.currentTime < threshold) {
+                hasFiredEnded = true;
+                console.log(`🏁 LOGICAL END triggered for src: ${activeVideo.src}`);
+                onEnded();
+            }
+        };
+
+        activeVideo.addEventListener("timeupdate", checkForEnded);
+        return () => {
+            activeVideo.removeEventListener("timeupdate", checkForEnded);
+        };
+    }, [activeIdx, onEnded, loop]);
 
     const wrapperStyle: React.CSSProperties = {
         position: "relative",

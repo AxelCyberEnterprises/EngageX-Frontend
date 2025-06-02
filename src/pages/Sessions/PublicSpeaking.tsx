@@ -89,6 +89,7 @@ const PublicSpeaking: React.FC = () => {
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question = questionsRef.current[activeQuestion]?.question;
+    const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
 
     const answerQuestion = () => {
         setStartQuestionTimer(true);
@@ -189,12 +190,12 @@ const PublicSpeaking: React.FC = () => {
                     console.log("number of questions", questionsRef.current.length);
                     console.log("questions", questionsRef.current);
                 } else if (parsed.type === "full_analysis_update") {
-                console.log(parsed);
-                 if (!parsed.analysis?.error) {
-                    setFeedback(parsed); // ✅ only update when there's no error
-                  } else {
-                    console.warn("WS: Skipping feedback update due to analysis error:", parsed.analysis.error);
-                  }
+                    console.log(parsed);
+                    if (!parsed.analysis?.error) {
+                        setFeedback(parsed); // ✅ only update when there's no error
+                    } else {
+                        console.warn("WS: Skipping feedback update due to analysis error:", parsed.analysis.error);
+                    }
                 } else if (parsed.type === "window_emotion_update") {
                     console.log(parsed);
                 }
@@ -323,6 +324,24 @@ const PublicSpeaking: React.FC = () => {
             }
         };
     }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
+
+    useEffect(() => {
+        const getRandomInt1to5 = () => Math.floor(Math.random() * 5) + 1;
+
+        const replaceRandomSegment = (url: string): string => {
+            const match = url.match(/(.+\/)(\d)\.mp4$/);
+            if (!match) {
+                console.warn("🔍 Couldn't parse URL for random segment:", url);
+                return url;
+            }
+            const newNum = getRandomInt1to5();
+            const newUrl = `${match[1]}${newNum}.mp4`;
+            console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${match[2]}, new: ${newNum})`);
+            return newUrl;
+        };
+
+        setVideoUrl((prevUrl) => replaceRandomSegment(prevUrl));
+    }, [videoReplacementFlag]);
 
     return (
         <div className="text-primary-blue">
@@ -489,6 +508,10 @@ const PublicSpeaking: React.FC = () => {
                                 loop={true}
                                 isMuted={isMuted}
                                 className="h-full w-full rounded-2xl"
+                                onEnded={() => {
+                                    console.log("Video ended");
+                                    setVideoReplacementFlag((prev) => !prev);
+                                }}
                             />
                             {!isLargeScreen && (
                                 <div
