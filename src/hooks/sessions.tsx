@@ -19,7 +19,7 @@ export function useCreatePublicSpeakingSession() {
             localStorage.removeItem("sessionData");
             localStorage.setItem("sessionData", JSON.stringify(data));
 
-            return await apiPost<ISession>("/sessions/sessions/", data, "secondary");
+            return await apiPost<ISession>("/sessions/sessions/", data, "default");
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
@@ -45,9 +45,14 @@ export function usePreviewUploadSlides() {
     return useMutation({
         mutationKey: ["previewUploadSlides"],
         mutationFn: async (slidesFormData: FormData) => {
-            return await apiPost<IPreviewSlideUploadResponse>("/sessions/slide_preview_upload/", slidesFormData, "secondary", {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
+            return await apiPost<IPreviewSlideUploadResponse>(
+                "/sessions/slide_preview_upload/",
+                slidesFormData,
+                "default",
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                },
+            );
         },
     });
 }
@@ -62,7 +67,7 @@ export function useCreatePracticeSession({ sessionType }: { sessionType: "presen
             localStorage.removeItem("sessionData");
             localStorage.setItem("sessionData", JSON.stringify(data));
 
-            return await apiPost<ISession>(`/sessions/sessions/`, data, "secondary");
+            return await apiPost<ISession>(`/sessions/sessions/`, data, "default");
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
@@ -90,7 +95,7 @@ export function useDeleteSessionVideo() {
     return useMutation({
         mutationKey: ["deleteSessionVideo"],
         mutationFn: async (sessionId: string) => {
-            return await apiDelete(`/sessions/sessions/${sessionId}/delete-session-media/`, "secondary");
+            return await apiDelete(`/sessions/sessions/${sessionId}/delete-session-media/`, "default");
         },
         onSuccess: () => {
             toast("Session video deleted successfully.");
@@ -153,7 +158,7 @@ export function useGetSessionReport(sessionId: string | undefined) {
     return useQuery({
         queryKey: ["getSessionReport"],
         queryFn: async () => {
-            return await apiGet<ISession>(`/sessions/sessions-report/${sessionId}/`, "secondary");
+            return await apiGet<ISession>(`/sessions/sessions-report/${sessionId}/`, "default");
         },
     });
 }
@@ -162,7 +167,7 @@ export function useGetSessionData(sessionId: string | undefined) {
     return useQuery({
         queryKey: ["getSessionData"],
         queryFn: async () => {
-            return await apiGet(`/sessions/sessions/${sessionId}/`, "secondary");
+            return await apiGet(`/sessions/sessions/${sessionId}/`, "default");
         },
         enabled: !!sessionId,
     });
@@ -172,7 +177,7 @@ export function useGetSequences() {
     return useQuery({
         queryKey: ["getSequenceData"],
         queryFn: async () => {
-            return await apiGet(`/sessions/improve-existing-sequence`, "secondary");
+            return await apiGet(`/sessions/improve-existing-sequence`, "default");
         },
     });
 }
@@ -181,11 +186,7 @@ export function useRequestSessionVideo(sessionId: string | undefined) {
     return useMutation({
         mutationKey: ["requestSessionVideo"],
         mutationFn: async () => {
-            await apiPost(
-                `/sessions/sessions/${sessionId}/queue-video-compilation/`,
-                undefined,
-                "secondary"
-            );
+            await apiPost(`/sessions/sessions/${sessionId}/queue-video-compilation/`, undefined, "secondary");
         },
         onSuccess: () => {
             console.log("Video requested successfully.");
