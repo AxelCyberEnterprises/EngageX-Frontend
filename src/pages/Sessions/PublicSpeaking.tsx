@@ -326,7 +326,8 @@ const PublicSpeaking: React.FC = () => {
     }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
 
     useEffect(() => {
-        const getRandomInt1to5 = () => Math.floor(Math.random() * 5) + 1;
+        if (!isMuted) return;
+        const getRandomInt1to5 = () => Math.floor(Math.random() * 10) + 1;
 
         const replaceRandomSegment = (url: string): string => {
             const match = url.match(/(.+\/)(\d)\.mp4$/);
@@ -341,7 +342,7 @@ const PublicSpeaking: React.FC = () => {
         };
 
         setVideoUrl((prevUrl) => replaceRandomSegment(prevUrl));
-    }, [videoReplacementFlag]);
+    }, [videoReplacementFlag, isMuted]);
 
     return (
         <div className="text-primary-blue">
