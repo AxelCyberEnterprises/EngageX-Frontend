@@ -171,7 +171,7 @@ const PublicSpeaking: React.FC = () => {
         console.log("First route segment:", firstSegment);
 
         const ws = new WebSocket(
-            `wss://api-stream.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
+            `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
         );
         socket.current = ws;
 
@@ -229,7 +229,7 @@ const PublicSpeaking: React.FC = () => {
         const connectToRealtime = async () => {
             try {
                 // Get ephemeral token
-                const tokenRes = await axios.get("https://api-stream.engagexai.io/sessions/api/openai/realtime-token/");
+                const tokenRes = await axios.get("https://api.engagexai.io/sessions/api/openai/realtime-token/");
                 const EPHEMERAL_KEY = tokenRes.data.client_secret.value;
 
                 if (!isMounted) return;
