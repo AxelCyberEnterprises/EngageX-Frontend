@@ -78,10 +78,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         if (inactiveVideo) {
 
             if (inactiveVideo.src === src) {
-                console.log("🔁 Inactive video already has the right src. Skipping set.");
+                // console.log("🔁 Inactive video already has the right src. Skipping set.");
                 return;
               }
-            console.log(`🛠 Preparing video[${inactiveIdx}] to load: ${src}`);
+            // console.log(`🛠 Preparing video[${inactiveIdx}] to load: ${src}`);
             inactiveVideo.src = src;
             inactiveVideo.muted = isMuted;
             inactiveVideo.loop = loop;
@@ -89,7 +89,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             inactiveVideo.load();
 
             const handleReady = () => {
-                console.log(`✅ canplaythrough fired for video[${inactiveIdx}] with src: ${src}`);
+                // console.log(`✅ canplaythrough fired for video[${inactiveIdx}] with src: ${src}`);
             
                 // Extra safety: ensure video is fully buffered and playable
                 if (inactiveVideo.readyState < 4) {
@@ -104,7 +104,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 }
             
                 if (latestSrcRef.current === src) {
-                    console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
+                    // console.log(`🎬 Switching to video[${inactiveIdx}] for src: ${src}`);
             
                     // ✅ Mute both players before swap
                     if (videoA.current) videoA.current.muted = true;
@@ -115,11 +115,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             
                     inactiveVideo.play()
                         .then(() => {
-                            console.log(`▶️ Playback started for video[${inactiveIdx}]. Waiting to confirm rendering...`);
+                            // console.log(`▶️ Playback started for video[${inactiveIdx}]. Waiting to confirm rendering...`);
             
                             requestAnimationFrame(() => {
                                 requestAnimationFrame(() => {
-                                    console.log(`🟢 Confirmed video[${inactiveIdx}] has rendered a frame.`);
+                                    // console.log(`🟢 Confirmed video[${inactiveIdx}] has rendered a frame.`);
             
                                     // ✅ UNCONDITIONALLY clear the now-inactive video
                                     const previouslyActiveIdx = inactiveIdx === 0 ? 1 : 0;
@@ -127,14 +127,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             
                                     if (previouslyActive && previouslyActive.src !== "") {
                                         previouslyActive.src = "";
-                                        console.log(`🧼 Cleared src of video[${previouslyActiveIdx}]`);
+                                        // console.log(`🧼 Cleared src of video[${previouslyActiveIdx}]`);
                                     } else {
-                                        console.log(`❎ Skipped clearing src — possibly already cleared or not loaded.`);
+                                        // console.log(`❎ Skipped clearing src — possibly already cleared or not loaded.`);
                                     }
             
                                     // 🔍 Debugging: log both video states
-                                    console.log("🧪 videoA:", videoA.current?.src, "opacity:", videoA.current?.style.opacity);
-                                    console.log("🧪 videoB:", videoB.current?.src, "opacity:", videoB.current?.style.opacity);
+                                    // console.log("🧪 videoA:", videoA.current?.src, "opacity:", videoA.current?.style.opacity);
+                                    // console.log("🧪 videoB:", videoB.current?.src, "opacity:", videoB.current?.style.opacity);
                                 });
                             });
                         })
@@ -142,7 +142,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                             console.warn("🚨 Autoplay failed after switching:", e);
                         });
                 } else {
-                    console.log(`🛑 Skipped stale video load: attempted=${src}, expected=${latestSrcRef.current}`);
+                    // console.log(`🛑 Skipped stale video load: attempted=${src}, expected=${latestSrcRef.current}`);
                 }
             };
             const handleError = () => {
@@ -153,7 +153,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             inactiveVideo.addEventListener("error", handleError);
 
             return () => {
-                console.log(`♻️ Cleaning up listeners for video[${inactiveIdx}] with src: ${src}`);
+                // console.log(`♻️ Cleaning up listeners for video[${inactiveIdx}] with src: ${src}`);
                 inactiveVideo.removeEventListener("canplaythrough", handleReady);
                 inactiveVideo.removeEventListener("error", handleError);
 
@@ -176,7 +176,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             const threshold = 0.5; // seconds before end
             if (!hasFiredEnded && activeVideo.duration && activeVideo.duration - activeVideo.currentTime < threshold) {
                 hasFiredEnded = true;
-                console.log(`🏁 LOGICAL END triggered for src: ${activeVideo.src}`);
+                // console.log(`🏁 LOGICAL END triggered for src: ${activeVideo.src}`);
                 onEnded();
             }
         };
