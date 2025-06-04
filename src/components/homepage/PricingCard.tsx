@@ -18,7 +18,7 @@ function PricingCard({ plan }: Params) {
       className={clsx(
         "h-max group font-montserrat p-8 space-y-10 rounded-2xl duration-700 cursor-pointer lg:h-full border flex flex-col justify-between border-[#6F7C8E]",
         plan.highlight &&
-          "relative lg:bottom-[4rem] text-white stroke-white border-none bg-gunmetal"
+        "relative lg:bottom-[4rem] text-white stroke-white border-none bg-gunmetal"
       )}
     >
       <div className="space-y-12">
@@ -78,16 +78,29 @@ function PricingCard({ plan }: Params) {
         </div>
       </div>
 
-      <a href={plan.payment_link} target="_blank">
-        <button
-          className={clsx(
-            "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center justify-center rounded-lg bg-[#6F7C8E]",
-            plan.highlight && "bg-alice-blue text-black"
-          )}
-        >
-          {plan.button_text}
-        </button>
-      </a>
+      <div>
+        <a href={plan.payment_link} target="_blank">
+          <button
+            className={clsx(
+              "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center justify-center rounded-lg bg-[#6F7C8E]",
+              plan.highlight && "bg-alice-blue text-black"
+            )}
+          >
+            {plan.button_text}
+          </button>
+        </a>
+
+        {plan.type === "STARTER PLAN" && <a href={'/auth/login'} target="_blank">
+          <button
+            className={clsx(
+              "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center text-[#252A38] mt-5 justify-center rounded-lg bg-[#EFF6FC]"
+            )}
+          >
+            Gift card code access
+          </button>
+        </a>}
+      </div>
+
     </div>
   );
 }

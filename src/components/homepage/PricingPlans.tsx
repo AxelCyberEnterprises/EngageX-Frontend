@@ -73,14 +73,14 @@ const PricingCards = () => {
       priceId: ""
     },
   ]);
-  
+
   useEffect(() => {
     if (!loadingPaymentInfo && paymentInfo?.tiers) {
       if (!paymentInfo.is_configured || !paymentInfo.tiers) {
         setError('Payment system is not currently configured. Please try again later.');
         return;
       }
-      setPlans(prevPlans => 
+      setPlans(prevPlans =>
         prevPlans.map(plan => {
           const tierData = paymentInfo.tiers[plan.tier];
           if (tierData) {
@@ -95,21 +95,21 @@ const PricingCards = () => {
       );
     }
   }, [paymentInfo, loadingPaymentInfo]);
-  
+
 
   const handleCheckout = async (plan: Plan) => {
     if (processingId || !plan.priceId) return;
-    
+
     // Check if Stripe is configured
     if (!paymentInfo?.is_configured) {
       setError('Payment system is not currently configured. Please try again later.');
       return;
     }
-    
+
     setProcessingId(plan.tier);
     setError(null);
-    
-    try {      
+
+    try {
       const response = await axios.post('https://api.engagexai.io/payments/checkout/', {
         priceId: plan.priceId,
         email: user?.email,
@@ -117,7 +117,7 @@ const PricingCards = () => {
         success_url: paymentInfo?.success_url,
         cancel_url: paymentInfo?.cancel_url
       });
-      
+
       if (response.data && response.data.url) {
         window.location.href = response.data.url;
       } else {
@@ -148,7 +148,7 @@ const PricingCards = () => {
                   <Skeleton className="h-4 w-32 rounded-md" />
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center">
                   <Skeleton className="h-5 w-5 rounded-full mr-3" />
@@ -166,7 +166,7 @@ const PricingCards = () => {
                 )}
               </div>
             </div>
-            
+
             <Skeleton className="h-10 w-full rounded-lg mt-10" />
           </div>
         ))}
@@ -209,7 +209,7 @@ const PricingCards = () => {
               </div>
             </div>
           )}
-          
+
           {plan.tier === "tester" && (
             <div className="absolute -top-4 lg:right-0 sm:right-auto right-0 lg:ml-0 sm:ml-5 ml-0 lg:mr-0 sm:mr-0 mr-5 lg:left-0 flex justify-center">
               <div className="px-4 md:py-[5px] py-1 bg-blue-100 text-blue-800 rounded-full flex items-center text-sm">
@@ -252,8 +252,8 @@ const PricingCards = () => {
                 >
                   <div
                     className={`mr-3 ${plan.highlight
-                        ? ""
-                        : "text-[#64BA9F] group-hover:text-white"
+                      ? ""
+                      : "text-[#64BA9F] group-hover:text-white"
                       }`}
                   >
                     <CheckIcon
@@ -266,17 +266,31 @@ const PricingCards = () => {
             </div>
           </div>
 
-          <button
-            onClick={() => handleCheckout(plan)}
-            disabled={!!processingId || !plan.priceId || !paymentInfo?.is_configured}
-            className={`text-center text-sm mt-10 w-full py-3 rounded-lg group-hover:bg-alice-blue group-hover:text-black
+          <div>
+            <button
+              onClick={() => handleCheckout(plan)}
+              disabled={!!processingId || !plan.priceId || !paymentInfo?.is_configured}
+              className={`text-center text-sm mt-10 w-full py-3 rounded-lg group-hover:bg-alice-blue group-hover:text-black
             ${plan.highlight
-                ? "bg-white text-slate-800"
-                : "bg-slate-400 text-white group-hover:bg-alice-blue group-hover:text-black"
-              } ${(processingId === plan.tier || !plan.priceId || !paymentInfo?.is_configured) ? "opacity-50 cursor-not-allowed" : ""}`}
-          >
-            {processingId === plan.tier ? "Processing..." : plan.buttonText}
-          </button>
+                  ? "bg-white text-slate-800"
+                  : "bg-slate-400 text-white group-hover:bg-alice-blue group-hover:text-black"
+                } ${(processingId === plan.tier || !plan.priceId || !paymentInfo?.is_configured) ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              {processingId === plan.tier ? "Processing..." : plan.buttonText}
+            </button>
+            {plan.type === "STARTER PLAN" && <button
+              onClick={() => handleCheckout(plan)}
+              disabled={!!processingId || !plan.priceId || !paymentInfo?.is_configured}
+              className={`text-center text-sm mt-4 w-full py-3 rounded-lg text-[#252A38] mt-5 justify-center rounded-lg bg-[#EFF6FC] group-hover:bg-alice-blue group-hover:text-black
+            ${plan.highlight
+                  ? "bg-white text-slate-800"
+                  : "group-hover:bg-alice-blue group-hover:text-black text-[#252A38] mt-5 justify-center rounded-lg bg-[#EFF6FC]"
+                } ${(processingId === plan.tier || !plan.priceId || !paymentInfo?.is_configured) ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              {'Gift card code access'}
+            </button>}
+          </div>
+
         </div>
       ))}
     </div>
