@@ -47,7 +47,7 @@ const personalInfoSchema = z.object({
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
 const PersonalInfoForm: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const { data: fullProfile } = useFullUserProfile();
   const queryClient = useQueryClient();
   const {
