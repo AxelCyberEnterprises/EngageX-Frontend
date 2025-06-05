@@ -4,11 +4,11 @@ function AllPressPosts() {
   const posts = [
     {
       img: "/assets/pressimg1.jpg",
-      date: "25 Mar 2025",
+      date: "05 June 2025",
       title: "New platform launch",
       download: true,
       summary:
-        "Join the creator of EngageX™ and its design engineers on Friday, May 16th, from 8:00–8:30 AM CST to learn more about this revolutionary new platform.",
+        "Join the creator of EngageX™ and its design engineers on Thursday, June 05th, from 8:00–8:30 AM CST to learn more about this revolutionary new platform.",
     },
     {
       img: "/assets/pressvid1.mp4",
