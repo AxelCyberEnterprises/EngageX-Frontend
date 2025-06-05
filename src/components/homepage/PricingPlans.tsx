@@ -287,7 +287,7 @@ const PricingCards = () => {
                   : "group-hover:bg-alice-blue group-hover:text-black text-[#252A38] mt-5 justify-center rounded-lg bg-[#EFF6FC]"
                 } ${(processingId === plan.tier || !plan.priceId || !paymentInfo?.is_configured) ? "opacity-50 cursor-not-allowed" : ""}`}
             >
-              {'Gift card code access'}
+              {'Gift card access code'}
             </button>}
           </div>
 
