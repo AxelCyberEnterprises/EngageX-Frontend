@@ -47,6 +47,7 @@ import ScrollToTop from "./ScrollToTop";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import DynamicDialog from "./dialogs/DynamicDialog";
+import VideoPopup from "./VideoPopup";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -179,7 +180,10 @@ export default function AppRoutes() {
                     path="/"
                     element={
                         <WebsiteLayout>
-                            <HomePage />
+                            <>
+                                <VideoPopup />
+                                <HomePage />
+                            </>
                         </WebsiteLayout>
                     }
                 />
