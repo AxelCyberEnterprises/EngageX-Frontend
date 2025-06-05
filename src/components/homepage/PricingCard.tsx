@@ -96,7 +96,7 @@ function PricingCard({ plan }: Params) {
               "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center text-[#252A38] mt-5 justify-center rounded-lg bg-[#EFF6FC]"
             )}
           >
-            Gift card code access
+            Gift card access code
           </button>
         </a>}
       </div>
