@@ -28,7 +28,10 @@ import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { Skeleton } from '../ui/skeleton';
 import moment from 'moment-timezone';
+import { useSearchParams } from "react-router-dom";
 countries.registerLocale(enLocale);
+
+
 
 const personalInfoSchema = z.object({
   first_name: z.string().min(1, 'First name is required').optional(),
@@ -44,6 +47,7 @@ const personalInfoSchema = z.object({
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
 const PersonalInfoForm: React.FC = () => {
+  const [, setSearchParams] = useSearchParams();
   const { data: fullProfile } = useFullUserProfile();
   const queryClient = useQueryClient();
   const {
@@ -201,6 +205,16 @@ const PersonalInfoForm: React.FC = () => {
       fileInputRef.current.value = '';
     }
   };
+
+  const getTotalCredits = () => {
+    if (!profile?.available_credits) return 'No credits available';
+
+    const baseCredits = parseInt(profile.available_credits);
+    const storedValue = localStorage.getItem('clicked');
+    const additionalCredits = parseInt(storedValue ?? "0") || 0;
+    return baseCredits + additionalCredits;
+  };
+
 
   return (
     <Card className="w-full border-none shadow-none py-8">
@@ -462,8 +476,13 @@ const PersonalInfoForm: React.FC = () => {
 
               <div className="pt-4 border-t">
                 <div className="flex flex-col space-y-1">
-                  <p className="font-medium">Credits Remaining: <span className="text-green-500 ml-[2px]">{profile?.available_credits ? parseInt(profile?.available_credits) : 'No credits available'}</span></p>
-                  <p className="text-xs text-[#64BA9F] hover:underline cursor-pointer">You can buy new credits anytime</p>
+                  <p className="font-medium">Credits Remaining: <span className="text-green-500 ml-[2px]">{getTotalCredits()}</span></p>
+                  <p
+                    className="text-xs text-[#64BA9F] hover:underline cursor-pointer"
+                    onClick={() => setSearchParams({ section: "Credits" })}
+                  >
+                    You can buy new credits anytime
+                  </p>
                 </div>
               </div>
 
