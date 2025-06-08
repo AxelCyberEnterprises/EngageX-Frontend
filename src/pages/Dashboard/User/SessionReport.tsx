@@ -50,18 +50,11 @@ const PitchSessionReport: React.FC = () => {
 
     const handlePDFDownload = useCallback(async () => {
         const element = pdfRef.current;
+        const feedbackElement = document.getElementById("session-feedback");
 
-        if (!element) return;
+        if (!element || !feedbackElement) return;
 
         setIsGeneratingPDF(true);
-
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-        });
-
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
 
         const pdf = new jsPDF({
             orientation: "portrait",
@@ -69,30 +62,60 @@ const PitchSessionReport: React.FC = () => {
             format: "a4",
         });
 
+        const scale = 2;
         const margin = 10;
-        const pdfPageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
-        const pdfPageHeight = pdf.internal.pageSize.getHeight() - margin * 2;
 
-        const scaleFactor = pdfPageWidth / imgWidth;
-        const scaledCanvasHeight = imgHeight * scaleFactor;
+        const pageHeightPx = (pdf.internal.pageSize.getHeight() - margin * 2) / scale;
 
-        const totalPages = Math.ceil(scaledCanvasHeight / pdfPageHeight);
+        // Step 1: Find vertical space before session-feedback
+        const containerRect = element.getBoundingClientRect();
+        const feedbackRect = feedbackElement.getBoundingClientRect();
+        const currentOffset = feedbackRect.top - containerRect.top;
+
+        // Step 2: Calculate required height to push feedback section to the next page
+        const extraOffset = pageHeightPx - (currentOffset % pageHeightPx);
+        const spacerHeight = extraOffset < pageHeightPx ? extraOffset : 0;
+
+        // Step 3: Insert a temporary spacer div before feedback section
+        const spacer = document.createElement("div");
+        spacer.style.height = `${spacerHeight}px`;
+        feedbackElement.parentElement?.insertBefore(spacer, feedbackElement);
+
+        // Step 4: Render the canvas
+        const canvas = await html2canvas(element, {
+            scale,
+            useCORS: true,
+        });
+
+        // Step 5: Clean up spacer
+        spacer.remove();
+
+        const imgProps = {
+            width: canvas.width,
+            height: canvas.height,
+        };
+
+        const pdfWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+        const scaleFactor = pdfWidth / imgProps.width;
+        const pdfHeight = imgProps.height * scaleFactor;
+
+        const totalPages = Math.ceil(pdfHeight / (pdf.internal.pageSize.getHeight() - margin * 2));
 
         for (let i = 0; i < totalPages; i++) {
             if (i > 0) pdf.addPage();
 
-            const sourceY = (pdfPageHeight / scaleFactor) * i;
+            const srcY = ((pdf.internal.pageSize.getHeight() - margin * 2) / scaleFactor) * i;
+            const sliceHeight = (pdf.internal.pageSize.getHeight() - margin * 2) / scaleFactor;
 
-            // Create a temporary canvas to hold the slice
             const pageCanvas = document.createElement("canvas");
             const pageContext = pageCanvas.getContext("2d")!;
-            pageCanvas.width = imgWidth;
-            pageCanvas.height = pdfPageHeight / scaleFactor;
+            pageCanvas.width = canvas.width;
+            pageCanvas.height = sliceHeight;
 
-            pageContext.drawImage(canvas, 0, sourceY, imgWidth, pageCanvas.height, 0, 0, imgWidth, pageCanvas.height);
+            pageContext.drawImage(canvas, 0, srcY, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
 
-            const imgData = pageCanvas.toDataURL("image/png");
-            pdf.addImage(imgData, "PNG", margin, margin, pdfPageWidth, pdfPageHeight);
+            const pageImgData = pageCanvas.toDataURL("image/png");
+            pdf.addImage(pageImgData, "PNG", margin, margin, pdfWidth, sliceHeight * scaleFactor);
         }
 
         pdf.save(`Session-Report-${id}.pdf`);
@@ -640,7 +663,7 @@ const PitchSessionReport: React.FC = () => {
                         </div>
                     </section>
 
-                    <section className="px-4 lg:px-8 py-4">
+                    <section id="session-feedback" className="px-4 lg:px-8 py-4">
                         <div className="border-1 border-bright-gray rounded-xl py-5 px-4">
                             <div className="flex flex-col gap-6 md:flex-row">
                                 <div className="md:w-3/5 space-y-4">
