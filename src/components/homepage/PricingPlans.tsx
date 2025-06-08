@@ -284,7 +284,7 @@ const PricingCards = () => {
               className={`text-center text-sm mt-4 w-full py-3 rounded-lg text-[#252A38] mt-5 justify-center rounded-lg bg-[#EFF6FC] group-hover:bg-alice-blue group-hover:text-black
             ${plan.highlight
                   ? "bg-white text-slate-800"
-                  : "group-hover:bg-alice-blue group-hover:text-black text-[#252A38] mt-5 justify-center rounded-lg bg-[#EFF6FC]"
+                  : "group-hover:bg-alice-blue group-hover:text-black text-[#FFFF] mt-5 justify-center rounded-lg bg-[#262b3a]"
                 } ${(processingId === plan.tier || !plan.priceId || !paymentInfo?.is_configured) ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {'Gift card access code'}
