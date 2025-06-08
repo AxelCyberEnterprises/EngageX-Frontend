@@ -2,54 +2,18 @@ import clsx from "clsx";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function StudioSection() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const data = {
-    header: "NEW FEATURES COMING SOON!",
-    title: "Interview Studio",
-    content:
-      "An exciting new vertical Interview Studio will soon be available for specified industry professionals in:",
-    list: [
-      "Industry Interviewing",
-      "Question Library",
-      "SAR Feedback",
-      "AI Interviewers",
-      "Feedback Report",
-      "Post-session Coaching",
-    ],
-    carousel: [
-      {
-        title: "Industry Specific Interviewing",
-        content:
-          "Custom questions aligned with key industries including healthcare, pharma and biotech, marketing, operations, sports, and technology.",
-      },
-      {
-        title: "Over 100 Intuitive Interview questions per industry",
-        content:
-          "Dynamic prompts that adapt based on your responses to simulate real conversations.",
-      },
-      {
-        title: "AI SAR Feedback Analysis",
-        content:
-          "Real time evaluation based on the SAR method to strengthen structured response skills.",
-      },
-      {
-        title: "3D Animated AI Model Simulated Interviewers",
-        content:
-          "Realistic animated interviewers that bring an immersive and engaging experience.",
-      },
-      {
-        title: "Comprehensive Feedback Reporting",
-        content:
-          "Detailed insights that highlight strengths, areas for growth, and actionable improvement tips.",
-      },
-      {
-        title: "Post-Session Coaching",
-        content:
-          "Post session coaching with multiple certified ICF Career Coaches or HR Talent Managers.",
-      },
-    ],
+interface NewFeaturesSectionProps {
+  data: {
+    header: string;
+    title: string;
+    content: string;
+    list: string[];
+    carousel: { title: string; content: string }[];
   };
+}
+
+function NewFeaturesSection({ data }: NewFeaturesSectionProps) {
+  const [activeIdx, setActiveIdx] = useState<number>(0);
 
   return (
     <section className="px-10 lg:px-20 pb-20 space-y-20 py-20 font-montserrat bg-alice-blue">
@@ -74,17 +38,15 @@ function StudioSection() {
         </div>
 
         <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
-          <h2 className="h-max font-montreal leading-snug">Interview Studio</h2>
+          <h2 className="h-max font-montreal leading-snug">{data.title}</h2>
           <p>
-            An exciting new vertical Interview Studio will soon be available for
-            specified industry professionals in: Marketing, Biotech/Pharma,
-            Sales, Operations, Technology, Sports Executives
+            {data.content}
           </p>
         </div>
 
         <section className="space-y-8">
           <div className="flex overflow-auto w-[calc(100vw-2rem)] lg:w-full justify-between gap-3 py-3 px-3 rounded-lg bg-white">
-            {data.list.map((content, idx) => (
+            {data.list.map((content: string, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setActiveIdx(idx)}
@@ -117,8 +79,8 @@ function StudioSection() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M8.4633 10.5927L3.74913 15.3069L2.5708 14.1285L6.6958 10.0035L2.5708 5.87853L3.74913 4.7002L8.4633 9.41436C8.61953 9.57063 8.70729 9.78256 8.70729 10.0035C8.70729 10.2245 8.61953 10.4364 8.4633 10.5927Z"
                       fill="white"
                     />
@@ -134,11 +96,9 @@ function StudioSection() {
               }`}
             >
               <img
-                src={`/assets/studioimg${activeIdx + 1}.${
-                  activeIdx === 5 ? "jpeg" : "png"
-                }`}
+                src={`/assets/${data.title.split(" ").join("").toLowerCase()}img${activeIdx + 1}.png`}
                 alt=""
-                className={`w-full h-full rounded-[20px] object-cover ${
+                className={`w-full h-full rounded-[20px] object-contain ${
                   activeIdx === 5 ? "object-[center_30%]" : ""
                 }`}
               />
@@ -156,8 +116,8 @@ function StudioSection() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M8.4633 10.5927L3.74913 15.3069L2.5708 14.1285L6.6958 10.0035L2.5708 5.87853L3.74913 4.7002L8.4633 9.41436C8.61953 9.57063 8.70729 9.78256 8.70729 10.0035C8.70729 10.2245 8.61953 10.4364 8.4633 10.5927Z"
                       fill="white"
                     />
@@ -172,4 +132,4 @@ function StudioSection() {
   );
 }
 
-export default StudioSection;
+export default NewFeaturesSection;
