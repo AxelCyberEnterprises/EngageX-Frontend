@@ -93,7 +93,7 @@ function PricingCard({ plan }: Params) {
         {plan.type === "STARTER PLAN" && <a href={'/auth/login'} target="_blank">
           <button
             className={clsx(
-              "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center text-[#252A38] mt-5 justify-center rounded-lg bg-[#EFF6FC]"
+              "flex gap-2 mx-auto lg:mx-0 w-full py-4 px-6 items-center text-[#FFFF] mt-5 justify-center rounded-lg bg-[#262b3a]"
             )}
           >
             Gift card access code
