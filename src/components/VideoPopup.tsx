@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const VideoPopup = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'unset';
@@ -10,7 +12,8 @@ const VideoPopup = () => {
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  // Only show on home page
+  if (!isOpen || location.pathname !== '/') return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">

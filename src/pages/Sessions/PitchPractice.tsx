@@ -391,9 +391,14 @@ const PresentationPractice: React.FC = () => {
                 console.warn("🔍 Couldn't parse URL for random segment:", url);
                 return url;
             }
-            const newNum = getRandomInt1to5();
+            const oldNum = match[2];
+            let newNum = getRandomInt1to5().toString();
+            // Keep generating until newNum is different from oldNum
+            while (newNum === oldNum) {
+                newNum = getRandomInt1to5().toString();
+            }
             const newUrl = `${match[1]}${newNum}.mp4`;
-            console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${match[2]}, new: ${newNum})`);
+            console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${oldNum}, new: ${newNum})`);
             return newUrl;
         };
 
