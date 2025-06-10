@@ -101,7 +101,7 @@ function Features() {
   return (
     <main>
       <Hero />
-      <NewFeaturesSection data={newFeaturesDataPharmHQ} />
+      {/* <NewFeaturesSection data={newFeaturesDataPharmHQ} /> */}
       <NewFeaturesSection data={newFeaturesDataTheRookie} />
       <FeaturesSection />
       <HowItWorks />
