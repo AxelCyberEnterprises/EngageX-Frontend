@@ -96,9 +96,9 @@ function NewFeaturesSection({ data }: NewFeaturesSectionProps) {
               }`}
             >
               <img
-                src={`/assets/${data.title.split(" ").join("").toLowerCase()}img${activeIdx + 1}.png`}
+                src={`/assets/${data.title.split(" ").join("").toLowerCase()}img${activeIdx + 1}.${ activeIdx == 0 ? "jpg" : "png"}`}
                 alt=""
-                className={`w-full h-full rounded-[20px] object-contain ${
+                className={`w-full h-full rounded-[20px] ${ activeIdx == 0 ? "object-cover" : "object-contain"} ${
                   activeIdx === 5 ? "object-[center_30%]" : ""
                 }`}
               />
