@@ -214,7 +214,7 @@ const Chatbot = () => {
                     </video>
                 </div>
 
-                <div className="w-full md:w-1/2 h-full overflow-auto hide-scrollbar">
+                <div className="w-full md:w-1/2 h-full rounded-xl overflow-auto hide-scrollbar">
                     <Accordion type="single" collapsible className="w-full space-y-2">
                         {filteredFaqs.length === 0 ? (
                             <div className="p-4 rounded-xl bg-white">
