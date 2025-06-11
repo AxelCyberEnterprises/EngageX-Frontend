@@ -63,7 +63,7 @@ function NewFeaturesSection({ data }: NewFeaturesSectionProps) {
           </div>
 
           <div className="px-4 lg:pl-16 lg:pr-8 w-full flex flex-col lg:flex-row bg-white gap-8 lg:gap-10 items-center py-10 rounded-lg justify-between">
-            <div className="w-full lg:w-1/3 space-y-3">
+            <div className="w-full lg:w-1/2 space-y-3">
               <h3 className="leading-tight">
                 {data.carousel[activeIdx].title}
               </h3>
