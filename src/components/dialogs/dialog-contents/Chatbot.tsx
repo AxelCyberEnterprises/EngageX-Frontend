@@ -1,0 +1,248 @@
+"use client";
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Minus, PlusIcon, Search } from "lucide-react";
+import { useState } from "react";
+
+interface FaqItem {
+    question: string;
+    answer: string;
+}
+
+const faqs: FaqItem[] = [
+    {
+        question: "What is the Session Improvement area in EngageX?",
+        answer: "The Session Improvement area is your personal training zone designed to enhance your speaking performance using various improvement features. You begin by clicking Session Improvement in your dashboard, where you can access options to create or continue Performance Improvement Sequences.",
+    },
+    {
+        question: "What is a New Performance Improvement Sequence?",
+        answer: "It allows you to create a completely new Improvement Sequence from a previous session, independent of any sequences you may have started before.",
+    },
+    {
+        question: "What does continuing an existing Performance Improvement Sequence do?",
+        answer: "It lets you create a new Improvement Session within an existing Sequence, helping you improve how you deliver content you have already used.",
+    },
+    {
+        question: "How do I create a new Improvement Sequence for a session I haven't improved before?",
+        answer: "Select one of your previous sessions, name your new session, click Continue, and then begin your new Improvement Sequence to start improving.",
+    },
+    {
+        question: "What does the Engage X personalized report summary include?",
+        answer: "The personalized report summary provides feedback based on the goals you set, benchmarks aligned with industry standards and communication strategy, session duration, audience engagement metrics, vocal variety, structure, clarity, body language, filler word usage, grammar, and a comprehensive feedback summary including slides if uploaded.",
+    },
+    {
+        question: "How long should my speaking session be for different verticals?",
+        answer: "Recommended timeframes are: Public speaking - 3 to 5 minutes, Storytelling - 2 to 3 minutes, Pitch - 5 to 7 minutes, and Presentations - 10 to 15 minutes maximum to maintain audience attention.",
+    },
+    {
+        question: "What happens when I download my full report and video?",
+        answer: "After downloading, the video will no longer be available in the system for privacy reasons, but your report and session feedback will remain accessible.",
+    },
+    {
+        question: "How can I get additional help reviewing my feedback?",
+        answer: "You can use the “speak with a live coach” button to schedule a one-on-one session with a certified coach for detailed feedback review and expert guidance.",
+    },
+    {
+        question: "What key metrics does the Engage X report evaluate to measure my speaking performance?",
+        answer: "The report evaluates overall captured impact through audience engagement, emotional triggers, vocal variety (volume, pitch, pace, pauses), structure, clarity, body language, brevity, filler word usage, proper grammar, and provides a feedback summary including slide review if applicable.",
+    },
+    {
+        question: "How do I book a session with a live certified coach?",
+        answer: "To book a session, you must first complete a session from any of the five featured vertical offerings. After your session is complete and your report appears, click the 'Speak with a Coach' button in the upper right-hand corner of the report, then select your appointment time from the available slots.",
+    },
+    {
+        question: "Can I reschedule a missed coaching appointment?",
+        answer: "No, missed appointments cannot be rescheduled. If you miss your session, you will need to book a new one.",
+    },
+    {
+        question: "How many coaching sessions am I allowed per session completed?",
+        answer: "You are granted only one coaching session per completed session.",
+    },
+    {
+        question: "What should I do after booking a coaching session?",
+        answer: "After booking, check your email to accept the meeting invitation and review your calendar in Google, Outlook, or iOS to ensure the session appears.",
+    },
+    {
+        question: "What are the three main session types available on EngageX?",
+        answer: "The three main session types are public speaking, presentation practice, and pitch practice.",
+    },
+    {
+        question: "Can I add a session name to my practice session on EngageX?",
+        answer: "Yes, you can add a session name of your choice to help you reference the session later.",
+    },
+    {
+        question: "Is it possible to upload slides for presentation or pitch practice?",
+        answer: "Yes, you can drag and drop or upload PowerPoint files for both presentation practice and pitch practice. Make sure to order the slides according to your speech before uploading.",
+    },
+    {
+        question: "What is the purpose of enabling AI audience-generated session questions?",
+        answer: "Enabling AI audience-generated session questions allows you to receive questions that fit your talk best, helping you practice answering audience questions during your session.",
+    },
+    {
+        question: "How can speaker or slide notes be used during sessions?",
+        answer: "For public speaking, you can add and segment speaker notes into phases to stay organized during delivery. For pitch practice, you can add slide notes below each slide to stay on message.",
+    },
+    {
+        question: "What is the purpose of the EngageX homepage?",
+        answer: "The EngageX homepage serves as a launchpad for dynamic engagement and enterprise-ready solutions.",
+    },
+    {
+        question: "What can I find in the main navigation menu?",
+        answer: "The main navigation menu includes Home, Features, Pricing, Contact, Login, and Get Started.",
+    },
+    {
+        question: "What does the Features section provide?",
+        answer: "The Features section gives a quick tour of what EngageX can do.",
+    },
+    {
+        question: "Where can I find pricing information?",
+        answer: "Pricing shares options tailored to your personal needs or for a team.",
+    },
+    {
+        question: "How do I get in touch with support or start using EngageX?",
+        answer: "You can contact support through the Contact section, and start your journey by clicking the Get Started button.",
+    },
+    {
+        question: "What is the purpose of the Features page on EngageX?",
+        answer: "The Features page expands your awareness of the five distinct verticals EngageX offers to support communication mastery across industries.",
+    },
+    {
+        question: "How many verticals does EngageX offer to support communication mastery?",
+        answer: "EngageX offers five distinct verticals to support communication mastery across industries.",
+    },
+    {
+        question: "What additional information can I find on the Features page besides the five verticals?",
+        answer: "You can discover new and upcoming offerings as well as exciting innovations that set EngageX apart from anything else on the market.",
+    },
+    {
+        question: "What makes EngageX stand out from other communication tools?",
+        answer: "EngageX features exciting innovations that differentiate it from anything else available on the market.",
+    },
+    {
+        question: "What pricing models does EngageX offer?",
+        answer: "EngageX offers a range of pricing models designed for both individuals and enterprise teams of 10 or more.",
+    },
+    {
+        question: "Which EngageX plan is the most popular?",
+        answer: "The growth plan is the most popular option, offering the best balance of value and features.",
+    },
+    {
+        question: "Can I compare EngageX pricing with competitors on this page?",
+        answer: "Yes, this page shows how EngageX stacks up against the competition so you can see why it leads in communication mastery.",
+    },
+    {
+        question: "Is EngageX suitable for enterprise teams?",
+        answer: "Yes, EngageX offers pricing models specifically designed for enterprise teams of 10 or more.",
+    },
+    {
+        question: "What is highlighted as a key benefit of the EngageX pricing page?",
+        answer: "The page highlights the popular growth plan and provides a comparison against competitors to showcase EngageX's advantages.",
+    },
+    {
+        question: "How do I sign up for EngageX?",
+        answer: "Click sign up, then enter your name, email, and a strong password with at least one unique character.",
+    },
+    {
+        question: "What should I do after entering my sign-up details?",
+        answer: "Hit get started, and you will receive a one-time verification code sent to your email.",
+    },
+    {
+        question: "How do I verify my EngageX account?",
+        answer: "Enter the one-time verification code sent to the email you provided during sign-up.",
+    },
+    {
+        question: "What happens after my email is verified?",
+        answer: "You will be prompted to select your desired vertical and career level.",
+    },
+    {
+        question: "What is the next step after selecting my vertical and career level?",
+        answer: "You will be directed to a welcome video from the founder, officially starting your journey with EngageX.",
+    },
+    {
+        question: "How do I access the central hub of the EngageX platform?",
+        answer: "Click the word 'dashboard' in the menu to be guided directly to the central hub of the platform.",
+    },
+    {
+        question: "What should I do if I experience issues or feel uncertain while using the dashboard?",
+        answer: "Click the 'Need Help Navigating' button located in the upper right-hand corner of the page for assistance.",
+    },
+    {
+        question: "What features can I access from my EngageX dashboard?",
+        answer: "You can buy additional session credits, select your communication vertical, view your session history, performance, and progress, and compare past sessions to see your growth over time.",
+    },
+    {
+        question: "Can I track my goals and achievements on the dashboard?",
+        answer: "Yes, the dashboard allows you to track your goals and achievement mastery to help you stay on top of your daily progress and personal development.",
+    },
+    {
+        question: "What is the purpose of the EngageX dashboard?",
+        answer: "The dashboard serves as the central hub where your journey comes to life by providing access to various tools and progress tracking features.",
+    },
+];
+
+const Chatbot = () => {
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const filteredFaqs = faqs.filter(
+        ({ question, answer }) =>
+            question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            answer.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    return (
+        <div className="overflow-hidden grid gap-6 md:p-6 bg-alice-blue size-full">
+            <div className="w-full">
+                <div className="relative w-full">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1F253F] size-4" />
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Search FAQs..."
+                        className="w-full h-11 rounded-lg pl-10 pr-4 py-2 text-sm border border-[#1F253F]/50 focus-visible:border-[#1F253F] transition-colors text-[#1F253F] placeholder:text-[#6B7280]"
+                    />
+                </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:gap-6 gap-4 h-full overflow-hidden">
+                <div className="w-full md:w-1/2 h-full">
+                    <video className="size-full md:min-h-100 object-cover rounded-xl" controls>
+                        <source
+                            src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
+
+                <div className="w-full md:w-1/2 h-full overflow-auto hide-scrollbar">
+                    <Accordion type="single" collapsible className="w-full space-y-2">
+                        {filteredFaqs.length === 0 ? (
+                            <div className="p-4 rounded-xl bg-white">
+                                <p className="text-[#1F253F]">No results found.</p>
+                            </div>
+                        ) : (
+                            filteredFaqs.map(({ answer, question }, index) => (
+                                <AccordionItem
+                                    key={question + index}
+                                    value={"item-" + index}
+                                    className="grid gap-1 p-4 border-b-0 rounded-xl bg-white"
+                                >
+                                    <AccordionTrigger className="group py-0 bg-transparent font-normal *:data-[slot='accordion-chevron']:hidden justify-start items-center cursor-pointer hover:no-underline transition">
+                                        <PlusIcon className="size-4 stroke-[#6B7280] shrink-0 group-data-[state=open]:hidden" />
+                                        <Minus className="size-4 stroke-[#6B7280] shrink-0 group-data-[state=closed]:hidden" />
+                                        <h6 className="text-[#1F253F] text-lg">{question}</h6>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="text-base pb-0 pl-8">
+                                        <p className="text-[#1F253F]">{answer}</p>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))
+                        )}
+                    </Accordion>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Chatbot;
