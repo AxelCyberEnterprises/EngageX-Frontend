@@ -7,7 +7,7 @@ const newFeaturesDataTheRookie = {
   header: "NEW FEATURES COMING SOON!",
   title: "The Rookie",
   content:
-    "An exciting new vertical “THE ROOKIE” will soon be available for Athletes across Multiple sports i.e Basketball, Football, Soccer and Baseballl",
+    "EngageX™️ equips every Rookie and Sophomore player to confidently navigate media communication challenges.",
   list: [
     "Athlete Onboarding",
     "AI Reactions",
@@ -18,9 +18,9 @@ const newFeaturesDataTheRookie = {
   ],
   carousel: [
     {
-      title: "Communication Training For New Athletes",
+      title: "Virtual Speech Coaching for Sports Rookies & Sophomores",
       content:
-        "Equipping rookies with the skills they need to excel both on and off the pitch",
+        "Building confidence, clarity, and composure in every media moment",
     },
     {
       title: "Virtual Room Experience",
