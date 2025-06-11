@@ -57,7 +57,7 @@ function NewFeaturesSection({ data }: NewFeaturesSectionProps) {
                     : "bg-transparent text-black"
                 )}
               >
-                {content}
+                {content} 
               </button>
             ))}
           </div>
