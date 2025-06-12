@@ -23,7 +23,7 @@ export const dialogDataItems: IDialogTemplateProps[] = [
     {
         key: "floating-chatbot",
         classMap: {
-            modal: "bg-alice-blue border-none sm:max-w-4/5 max-h-4/5 [&_[data-slot='dialog-close']]:hidden",
+            modal: "bg-alice-blue border-none sm:max-w-4/5 [&_[data-slot='dialog-close']]:hidden",
         },
     },
 ];
