@@ -217,7 +217,7 @@ const Chatbot = () => {
                     <Accordion
                         type="single"
                         collapsible
-                        className="flex flex-col gap-2 max-h-100 rounded-xl overflow-auto hide-scrollbar"
+                        className="flex flex-col gap-2 md:max-h-100 max-h-80 rounded-xl overflow-auto hide-scrollbar"
                     >
                         {filteredFaqs.length === 0 ? (
                             <div className="p-4 rounded-xl bg-white">
