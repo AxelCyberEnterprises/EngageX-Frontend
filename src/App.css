@@ -38,6 +38,7 @@
   --color-seashell: #FCF0EF;
   --color-dark-gray: #D0D5DD;
   --color-success-green: #0E7B33;
+  --color-anti-flash-white: #F1F1F1;
 }
 
 @plugin "tailwindcss-animate";

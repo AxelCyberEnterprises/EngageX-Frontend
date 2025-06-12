@@ -35,6 +35,7 @@ import UserDashboardHome from "../pages/Dashboard/User/Index";
 import UserSessionReport from "../pages/Dashboard/User/SessionReport";
 import UserSessionHistory from "../pages/Dashboard/User/UserSessionHistory";
 import UserSettings from "../pages/Dashboard/User/UserSettings";
+import EnterpriseSpecialty from "@/pages/Dashboard/User/EnterpriseSpecialty";
 import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
 import Pricing from "../pages/Pricing";
@@ -89,6 +90,7 @@ function UserDashboardRoutes() {
             <Route path="performance-improvement" element={<PerformanceImprovement />} />
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<UserSettings />} />
+            <Route path="enterprise-specialty" element={<EnterpriseSpecialty />} />
             <Route path="help" element={<HelpPage />}>
                 <Route index element={<Help />} />
                 <Route path="safety" element={<SafetyPrivacy />} />
