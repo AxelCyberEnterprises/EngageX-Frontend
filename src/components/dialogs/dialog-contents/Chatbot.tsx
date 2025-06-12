@@ -3,6 +3,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Minus, PlusIcon, Search } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface FaqItem {
     question: string;
@@ -190,22 +191,20 @@ const Chatbot = () => {
     );
 
     return (
-        <div className="overflow-hidden grid gap-6 md:p-6 bg-alice-blue size-full">
-            <div className="w-full">
-                <div className="relative w-full">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1F253F] size-4" />
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Search FAQs..."
-                        className="w-full h-11 rounded-lg pl-10 pr-4 py-2 text-sm border border-[#1F253F]/50 focus-visible:border-[#1F253F] transition-colors text-[#1F253F] placeholder:text-[#6B7280]"
-                    />
-                </div>
+        <div className="flex flex-col gap-6 md:p-6 bg-alice-blue text-[#1F253F]">
+            <div className="relative w-full">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4" />
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search FAQs..."
+                    className="w-full h-11 rounded-lg pl-10 pr-4 py-2 text-sm border border-[#1F253F]/50 focus-visible:border-[#1F253F] transition-colors text-[#1F253F] placeholder:text-[#6B7280]"
+                />
             </div>
 
-            <div className="flex flex-col md:flex-row md:gap-6 gap-4 h-full overflow-hidden">
-                <div className="w-full md:w-1/2 h-full">
+            <div className="flex flex-col md:flex-row md:gap-6 gap-4">
+                <div className="w-full md:w-1/2">
                     <video className="size-full md:min-h-100 object-cover rounded-xl" controls>
                         <source
                             src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
@@ -214,11 +213,15 @@ const Chatbot = () => {
                     </video>
                 </div>
 
-                <div className="w-full md:w-1/2 h-full rounded-xl overflow-auto hide-scrollbar">
-                    <Accordion type="single" collapsible className="w-full space-y-2">
+                <div className="w-full md:w-1/2 space-y-3">
+                    <Accordion
+                        type="single"
+                        collapsible
+                        className="flex flex-col gap-2 max-h-100 rounded-xl overflow-auto hide-scrollbar"
+                    >
                         {filteredFaqs.length === 0 ? (
                             <div className="p-4 rounded-xl bg-white">
-                                <p className="text-[#1F253F]">No results found.</p>
+                                <p>No results found.</p>
                             </div>
                         ) : (
                             filteredFaqs.map(({ answer, question }, index) => (
@@ -230,15 +233,20 @@ const Chatbot = () => {
                                     <AccordionTrigger className="group py-0 bg-transparent font-normal *:data-[slot='accordion-chevron']:hidden justify-start items-center cursor-pointer hover:no-underline transition">
                                         <PlusIcon className="size-4 stroke-[#6B7280] shrink-0 group-data-[state=open]:hidden" />
                                         <Minus className="size-4 stroke-[#6B7280] shrink-0 group-data-[state=closed]:hidden" />
-                                        <h6 className="text-[#1F253F] text-lg">{question}</h6>
+                                        <h6 className="text-[#1F253F] md:text-lg text-base">{question}</h6>
                                     </AccordionTrigger>
-                                    <AccordionContent className="text-base pb-0 pl-8">
-                                        <p className="text-[#1F253F]">{answer}</p>
+                                    <AccordionContent className="md:text-base text-sm pb-0 pl-8">
+                                        <p>{answer}</p>
                                     </AccordionContent>
                                 </AccordionItem>
                             ))
                         )}
                     </Accordion>
+
+                    <p className="md:text-lg text-base [&>a]:underline [&>a]:underline-offset-2">
+                        To contact us directly: <Link to="mailto:info@engagexai.io">info@engagexai.io</Link> or{" "}
+                        <Link to="mailto:support@engagexai.io">support@engagexai.io</Link>
+                    </p>
                 </div>
             </div>
         </div>
