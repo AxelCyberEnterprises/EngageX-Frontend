@@ -15,6 +15,8 @@ import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
 import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
 import Press from "@/pages/Press/Press";
 import PresentationPracticeSession from "@/pages/Sessions/PresentationPractice";
+import TheRookieMediaTraining from "@/pages/Sessions/TheRookieMediaTraining";
+import TheRookieSpeaking from "@/pages/Sessions/TheRookieSpeaking";
 import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
@@ -35,6 +37,7 @@ import UserDashboardHome from "../pages/Dashboard/User/Index";
 import UserSessionReport from "../pages/Dashboard/User/SessionReport";
 import UserSessionHistory from "../pages/Dashboard/User/UserSessionHistory";
 import UserSettings from "../pages/Dashboard/User/UserSettings";
+import EnterpriseSpecialty from "@/pages/Dashboard/User/EnterpriseSpecialty";
 import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
 import Pricing from "../pages/Pricing";
@@ -89,6 +92,7 @@ function UserDashboardRoutes() {
             <Route path="performance-improvement" element={<PerformanceImprovement />} />
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<UserSettings />} />
+            <Route path="enterprise-specialty" element={<EnterpriseSpecialty />} />
             <Route path="help" element={<HelpPage />}>
                 <Route index element={<Help />} />
                 <Route path="safety" element={<SafetyPrivacy />} />
@@ -119,6 +123,8 @@ function SessionRoutes() {
             <Route path="pitch-practice-session/:id" element={<PitchPracticeSession />} />
             <Route path="public-speaking-session/:id" element={<PublicSpeakingSession />} />
             <Route path="presentation-practice-session/:id" element={<PresentationPracticeSession />} />
+            <Route path="the-rookie-media-training/:id" element={<TheRookieMediaTraining />} />
+            <Route path="the-rookie-speaking/:id" element={<TheRookieSpeaking />} />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
