@@ -1,24 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface FloatingChatbotState {
-  showVideo: boolean;
+    isOpen: boolean;
 }
 
 const initialState: FloatingChatbotState = {
-  showVideo: false,
+    isOpen: false,
 };
 
 const floatingChatbotSlice = createSlice({
-  name: "floating_chatbot",
-  initialState,
-  reducers: {
-    toggle: (state) => {
-      state.showVideo = !state.showVideo;
+    name: "floating_chatbot",
+    initialState,
+    reducers: {
+        toggle: (state) => {
+            state.isOpen = !state.isOpen;
+        },
+        hide: (state) => {
+            state.isOpen = false;
+        },
     },
-    hide: (state) => {
-      state.showVideo = false;
-    },
-  },
 });
 
 export const { toggle, hide } = floatingChatbotSlice.actions;
