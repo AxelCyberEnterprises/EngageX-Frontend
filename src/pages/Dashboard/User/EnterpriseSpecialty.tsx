@@ -9,7 +9,7 @@ const EnterpriseSpecialty = () => {
             id: 0,
             image: theRookieBg,
             title: "The Rookie",
-            href: "/dashboard/sessions/enterprise-specialty",
+            href: "/sessions/the-rookie-media-training/1",
             available: true,
         },
         {

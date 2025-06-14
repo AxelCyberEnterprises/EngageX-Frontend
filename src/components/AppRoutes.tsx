@@ -15,6 +15,8 @@ import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
 import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
 import Press from "@/pages/Press/Press";
 import PresentationPracticeSession from "@/pages/Sessions/PresentationPractice";
+import TheRookieMediaTraining from "@/pages/Sessions/TheRookieMediaTraining";
+import TheRookieSpeaking from "@/pages/Sessions/TheRookieSpeaking";
 import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
@@ -121,6 +123,8 @@ function SessionRoutes() {
             <Route path="pitch-practice-session/:id" element={<PitchPracticeSession />} />
             <Route path="public-speaking-session/:id" element={<PublicSpeakingSession />} />
             <Route path="presentation-practice-session/:id" element={<PresentationPracticeSession />} />
+            <Route path="the-rookie-media-training/:id" element={<TheRookieMediaTraining />} />
+            <Route path="the-rookie-speaking/:id" element={<TheRookieSpeaking />} />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
