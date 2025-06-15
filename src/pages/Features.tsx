@@ -7,30 +7,30 @@ const newFeaturesDataTheRookie = {
   header: "NEW FEATURES COMING SOON!",
   title: "The Rookie",
   content:
-    "EngageX™️ equips every Rookie and Sophomore player to confidently navigate media communication challenges.",
+    "An exciting new vertical “THE ROOKIE” will soon be available for Athletes across Multiple sports i.e Basketball, Football, Soccer and Baseballl",
   list: [
     "Athlete Onboarding",
     "AI Reactions",
-    "Smart Coaching",
+    "Certified Coaches",
     "Flexible Training",
     "Feedback Report",
     "Session Analysis",
   ],
   carousel: [
     {
-      title: "Virtual Speech Coaching for Sports Rookies & Sophomores",
+      title: "Communication Training For New Athletes",
       content:
-        "Building confidence, clarity, and composure in every media moment",
+        "EngageX™ equips every Rookie and Sophomore player to confidently navigate media communication challenges",
     },
     {
-      title: "Virtual Room Experience",
+      title: "Experience Real-World Media Simulated Environments",
       content:
-        "Practise and improve your presence in a realistic, interactive digital environment",
+        "Train in the spotlight before you step into it",
     },
     {
       title: "AI + Live Certified Coaching",
       content:
-        "AI and expert coaching to prep you for interviews, media and high pressure moments",
+        "We use a hybrid model of Real life certified coaches and AI feedback to emulate high pressure media moments",
     },
     {
       title: "Train Anytime, Anywhere",
@@ -45,7 +45,7 @@ const newFeaturesDataTheRookie = {
     {
       title: "Comprehensive Feedback Reporting",
       content:
-        "Detailed insights that highlight strengths, areas for growth, and actionable improvement tips.",
+        "Detailed insights that highlight strengths, areas for growth, and actionable improvement tips"
     },
   ],
 };
