@@ -79,8 +79,27 @@ const PublicSpeaking: React.FC = () => {
     };
 
     // Choose 5 random questions from sportsQuestions["basketball"]
-    const questionsRef = useRef<any>([...sportsQuestions["basketball"]]);
+    type SportType = keyof typeof sportsQuestions;
+    const getQuestions = (): string[] => {
+        const sportType = sessionData?.enterprise_settings?.sport_type as SportType | undefined;
+        if (sportType && sportsQuestions[sportType]) {
+            return [...sportsQuestions[sportType]];
+        }
+        return [...sportsQuestions["football"]];
+    };
+    const questionsRef = useRef<string[]>([]);
     const showQuestionTagRef = useRef(false);
+
+    // Update questionsRef.current whenever sessionData changes
+    React.useEffect(() => {
+        questionsRef.current = getQuestions();
+    }, [sessionData]);
+
+    // Log sportType for debugging
+    useEffect(() => {
+        const sportType = sessionData?.enterprise_settings?.sport_type;
+        console.log("sportType:", sportType);
+    }, [sessionData]);
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
@@ -171,7 +190,6 @@ const PublicSpeaking: React.FC = () => {
             return;
         }
         console.log("First route segment:", firstSegment);
-        setQuestionDialogOpen(true);
 
         const ws = new WebSocket(
             `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
@@ -520,7 +538,7 @@ const PublicSpeaking: React.FC = () => {
                                         onStop={() => nextQuestion()}
                                         showTimeRemaining={false}
                                     />
-                                    <div className="mt-3 w-full flex items-end">
+                                    <div className="mt-3 w-full flex justify-end">
                                         <p className="underline cursor-pointer" onClick={nextQuestion}>
                                             Next question &gt;
                                         </p>
