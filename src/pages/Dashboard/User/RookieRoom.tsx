@@ -1,13 +1,13 @@
 import LicenseDraft from "@/assets/images/svgs/license-draft.svg";
 import FeatureWalkthrough from "@/components/dialogs/dialog-contents/FeatureWalkthrough";
-import PublicSpeakingForm from "@/components/forms/PublicSpeakingForm";
+import RookieRoomForm from "@/components/forms/RookieRoomForm";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const PublicSpeaking = () => {
+const RookieRoom = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -41,7 +41,7 @@ const PublicSpeaking = () => {
                 </div>
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-y-2">
-                        <h5>Set up Public Speaking Session</h5>
+                        <h5>Setup the Rookie Room</h5>
                         <div className="hidden items-center gap-x-1 text-sm font-medium">
                             <span>Need help setting up?</span>
                             <Button
@@ -59,10 +59,7 @@ const PublicSpeaking = () => {
                             </Button>
                         </div>
                     </div>
-                    <Button
-                        variant="outline"
-                        className="md:inlineflex hidden text-gunmetal rounded-lg border-gunmetal"
-                    >
+                    <Button variant="outline" className="md:inlineflex hidden text-gunmetal rounded-lg border-gunmetal">
                         Continue with Draft
                     </Button>
                 </div>
@@ -70,9 +67,9 @@ const PublicSpeaking = () => {
                     <img src={LicenseDraft} alt="" width={24} height={24} className="size-6" />
                 </Button>
             </div>
-            <PublicSpeakingForm />
+            <RookieRoomForm />
         </section>
     );
 };
 
-export default PublicSpeaking;
+export default RookieRoom;

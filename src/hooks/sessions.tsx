@@ -41,6 +41,40 @@ export function useCreatePublicSpeakingSession() {
     });
 }
 
+export function useCreateRookieRoomSession() {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    return useMutation({
+        mutationKey: ["createRookieRoomSession"],
+        mutationFn: async (data: IPOSTSessionPayload) => {
+            localStorage.removeItem("sessionData");
+            localStorage.setItem("sessionData", JSON.stringify(data));
+
+            return await apiPost<ISession>("/sessions/sessions/", data, "default");
+        },
+        onSuccess: async ({ id, enterprise_settings }) => {
+            dispatch(closeDialog());
+            if (enterprise_settings?.rookie_type === "media_training")
+                navigate(`/sessions/the-rookie-media-training/${id}`);
+            else if (enterprise_settings?.rookie_type === "speaking") navigate(`/sessions/the-rookie-speakin/${id}`);
+        },
+        onError: (error) => {
+            console.error("Error creating rookie room session: ", error);
+
+            dispatch(closeDialog());
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Error creating session",
+                        description: "An error occurred while creating session, please try again.",
+                    }}
+                />,
+            );
+        },
+    });
+}
+
 export function usePreviewUploadSlides() {
     return useMutation({
         mutationKey: ["previewUploadSlides"],

@@ -3,6 +3,7 @@ import { tokenManager } from "@/lib/utils";
 import CancellationPolicy from "@/pages/CancellationPolicy";
 import Contact from "@/pages/Contact";
 import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
+import EnterpriseSpecialty from "@/pages/Dashboard/User/EnterpriseSpecialty";
 import HelpPage from "@/pages/Dashboard/User/help";
 import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
 import Help from "@/pages/Dashboard/User/help/help";
@@ -12,10 +13,13 @@ import PitchPractice from "@/pages/Dashboard/User/PitchPractice";
 import PresentationPractice from "@/pages/Dashboard/User/PresentationPractice";
 import ProgressTracking from "@/pages/Dashboard/User/ProgressTracking";
 import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
+import RookieRoom from "@/pages/Dashboard/User/RookieRoom";
 import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
 import Press from "@/pages/Press/Press";
 import PresentationPracticeSession from "@/pages/Sessions/PresentationPractice";
 import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
+import TheRookieMediaTraining from "@/pages/Sessions/TheRookieMediaTraining";
+import TheRookieSpeaking from "@/pages/Sessions/TheRookieSpeaking";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, Route, BrowserRouter as Router, Routes, useLocation } from "react-router";
@@ -41,12 +45,12 @@ import Pricing from "../pages/Pricing";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import PitchPracticeSession from "../pages/Sessions/PitchPractice";
 import TermsOfService from "../pages/TermsOfService";
+import DynamicDialog from "./dialogs/DynamicDialog";
 import UserPlan from "./layouts/userAuth";
 import WebsiteLayout from "./layouts/WebsiteLayout";
 import ScrollToTop from "./ScrollToTop";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import DynamicDialog from "./dialogs/DynamicDialog";
 import VideoPopup from "./VideoPopup";
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -82,6 +86,7 @@ function UserDashboardRoutes() {
             <Route path="public-speaking" element={<PublicSpeaking />} />
             <Route path="pitch-practice" element={<PitchPractice />} />
             <Route path="presentation-practice" element={<PresentationPractice />} />
+            <Route path="the-rookie-room" element={<RookieRoom />} />
             <Route path="progress-tracking" element={<ProgressTracking />} />
             <Route path="session-history" element={<UserSessionHistory />} />
             <Route path="session-history/:id" element={<UserSessionReport />} />
@@ -89,6 +94,7 @@ function UserDashboardRoutes() {
             <Route path="performance-improvement" element={<PerformanceImprovement />} />
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<UserSettings />} />
+            <Route path="enterprise-specialty" element={<EnterpriseSpecialty />} />
             <Route path="help" element={<HelpPage />}>
                 <Route index element={<Help />} />
                 <Route path="safety" element={<SafetyPrivacy />} />
@@ -119,6 +125,8 @@ function SessionRoutes() {
             <Route path="pitch-practice-session/:id" element={<PitchPracticeSession />} />
             <Route path="public-speaking-session/:id" element={<PublicSpeakingSession />} />
             <Route path="presentation-practice-session/:id" element={<PresentationPracticeSession />} />
+            <Route path="the-rookie-media-training/:id" element={<TheRookieMediaTraining />} />
+            <Route path="the-rookie-speaking/:id" element={<TheRookieSpeaking />} />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
