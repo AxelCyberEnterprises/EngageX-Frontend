@@ -79,8 +79,27 @@ const PublicSpeaking: React.FC = () => {
     };
 
     // Choose 5 random questions from sportsQuestions["basketball"]
-    const questionsRef = useRef<any>([...sportsQuestions["basketball"]]);
+    type SportType = keyof typeof sportsQuestions;
+    const getQuestions = (): string[] => {
+        const sportType = sessionData?.enterprise_settings?.sport_type as SportType | undefined;
+        if (sportType && sportsQuestions[sportType]) {
+            return [...sportsQuestions[sportType]];
+        }
+        return [...sportsQuestions["football"]];
+    };
+    const questionsRef = useRef<string[]>([]);
     const showQuestionTagRef = useRef(false);
+
+    // Update questionsRef.current whenever sessionData changes
+    React.useEffect(() => {
+        questionsRef.current = getQuestions();
+    }, [sessionData]);
+
+    // Log sportType for debugging
+    useEffect(() => {
+        const sportType = sessionData?.enterprise_settings?.sport_type;
+        console.log("sportType:", sportType);
+    }, [sessionData]);
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
