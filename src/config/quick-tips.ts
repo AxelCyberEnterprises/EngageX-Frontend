@@ -46,3 +46,20 @@ export const presentationPracticeQuickTips = [
         description: "Use slides as visual cues, not a script.",
     },
 ];
+
+export const rookieRoomQuickTips = [
+    {
+        heading: "Add Pauses",
+        description: "Give your audience space to absorb and react.",
+    },
+    {
+        heading: "Connect It to Your Game",
+        description:
+            "Think of this like practice. The reps you put in here shape how you show up when it's game time on camera or in front of a crowd.",
+    },
+    {
+        heading: "Keep It Real & Relatable with Pose",
+        description:
+            "Use authentic language, avoid jargon, and speak to their real-world moments locker room speeches, post-game interviews, community events, commercials.",
+    },
+];
