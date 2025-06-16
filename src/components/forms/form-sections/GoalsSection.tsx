@@ -71,7 +71,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
                             render={({ field }) => (
                                 <Input
                                     {...field}
-                                    placeholder="Ex. Shift doctors from habit-based prescribing to evidence based choices."
+                                    placeholder="Ex. Connect with the audience by being authentic and composed."
                                     className="h-11 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-auro-metal-saurus"
                                 />
                             )}
