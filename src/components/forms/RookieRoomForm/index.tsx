@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { publicSpeakingVEOptions, sportsOptions, trainingTypeOptions } from "@/config/form-field-options";
+import { rookieRoomVEOptions, sportsOptions, trainingTypeOptions } from "@/config/form-field-options";
 import { rookieRoomQuickTips } from "@/config/quick-tips";
 import { cn } from "@/lib/utils";
 import { RookieRoomSchema } from "@/schemas/dashboard/user";
@@ -132,7 +132,7 @@ const RookieRoomForm = () => {
                     <VirtualEnvironmentSection
                         {...{ form }}
                         className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
-                        options={publicSpeakingVEOptions}
+                        options={rookieRoomVEOptions}
                     />
                     <QuickTips tips={rookieRoomQuickTips} />
                 </section>
