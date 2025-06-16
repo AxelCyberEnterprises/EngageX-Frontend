@@ -171,7 +171,6 @@ const PublicSpeaking: React.FC = () => {
             return;
         }
         console.log("First route segment:", firstSegment);
-        setQuestionDialogOpen(true);
 
         const ws = new WebSocket(
             `wss://api.engagexai.io/ws/socket_server/?session_id=${sessionId}&room_name=conference_room`,
@@ -520,7 +519,7 @@ const PublicSpeaking: React.FC = () => {
                                         onStop={() => nextQuestion()}
                                         showTimeRemaining={false}
                                     />
-                                    <div className="mt-3 w-full flex items-end">
+                                    <div className="mt-3 w-full flex justify-end">
                                         <p className="underline cursor-pointer" onClick={nextQuestion}>
                                             Next question &gt;
                                         </p>
