@@ -216,7 +216,7 @@ function FloatingChatbot() {
                             />
                         </div>
 
-                        <div className= "md:h-auto h-full flex flex-col md:flex-row md:gap-6 gap-4 overflow-hidden">
+                        <div className="md:h-auto h-full flex flex-col md:flex-row md:gap-6 gap-4 overflow-hidden">
                             <div className="w-full md:w-1/2">
                                 <video className="size-full md:min-h-100 object-cover rounded-xl" controls>
                                     <source
