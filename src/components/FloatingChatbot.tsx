@@ -201,7 +201,7 @@ function FloatingChatbot() {
             {isOpen && (
                 <>
                     <div className="fixed inset-0 z-40" onClick={() => dispatch(hide())} />
-                    <div className="fixed md:bottom-25 bottom-0 md:right-25 md:size-auto size-full z-60 md:max-w-2/3 flex flex-col gap-6 md:p-8 p-4 bg-alice-blue text-[#1F253F] md:rounded-xl">
+                    <div className="fixed md:bottom-25 bottom-0 md:right-25 md:size-auto size-full z-60 md:max-w-3/5 flex flex-col gap-6 md:p-6 p-4 bg-alice-blue text-[#1F253F] md:rounded-xl">
                         <div className="md:hidden ml-auto size-6 grid place-content-center cursor-pointer hover:bg-[#6B7280]/20 rounded-full transition-colors">
                             <X className="text-[#6B7280] size-5" onClick={() => dispatch(hide())} />
                         </div>
@@ -216,9 +216,9 @@ function FloatingChatbot() {
                             />
                         </div>
 
-                        <div className="md:h-auto h-full flex flex-col md:flex-row md:gap-6 gap-4 overflow-hidden">
+                        <div className=" md:max-h-80 h-full flex flex-col md:flex-row md:gap-6 gap-4 overflow-hidden">
                             <div className="w-full md:w-1/2">
-                                <video className="size-full md:min-h-100 object-cover rounded-xl" controls>
+                                <video className="size-full md:min-h-80 object-cover rounded-xl" controls>
                                     <source
                                         src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
                                         type="video/mp4"
@@ -230,7 +230,7 @@ function FloatingChatbot() {
                                 <Accordion
                                     type="single"
                                     collapsible
-                                    className="flex flex-col gap-2 md:max-h-84 h-full rounded-xl overflow-auto"
+                                    className="flex flex-col gap-2 h-full rounded-xl overflow-auto"
                                 >
                                     {filteredFaqs.length === 0 ? (
                                         <div className="p-4 rounded-xl bg-white">
@@ -246,11 +246,11 @@ function FloatingChatbot() {
                                                 <AccordionTrigger className="group py-0 bg-transparent font-normal *:data-[slot='accordion-chevron']:hidden justify-start items-center cursor-pointer hover:no-underline transition">
                                                     <PlusIcon className="size-4 text-[#6B7280] shrink-0 group-data-[state=open]:hidden" />
                                                     <Minus className="size-4 text-[#6B7280] shrink-0 group-data-[state=closed]:hidden" />
-                                                    <h6 className="text-[#1F253F] md:text-lg text-base leading-normal">
+                                                    <h6 className="text-[#1F253F] text-base leading-normal">
                                                         {question}
                                                     </h6>
                                                 </AccordionTrigger>
-                                                <AccordionContent className="md:text-base text-sm pb-0 pl-8">
+                                                <AccordionContent className="text-[15px] pb-0 pl-8">
                                                     <p>{answer}</p>
                                                 </AccordionContent>
                                             </AccordionItem>
@@ -258,7 +258,7 @@ function FloatingChatbot() {
                                     )}
                                 </Accordion>
 
-                                <p className="md:text-lg text-base [&>a]:underline [&>a]:underline-offset-2">
+                                <p className="text-base [&>a]:underline [&>a]:underline-offset-2">
                                     To contact us directly: <Link to="mailto:info@engagexai.io">info@engagexai.io</Link>{" "}
                                     or <Link to="mailto:support@engagexai.io">support@engagexai.io</Link>
                                 </p>
