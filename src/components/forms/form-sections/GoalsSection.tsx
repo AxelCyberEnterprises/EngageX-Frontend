@@ -2,15 +2,13 @@ import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { BaseSessionSetupSchema } from "@/schemas/dashboard/user";
 import { Plus, Trash2 } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
 import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form";
-import { z } from "zod";
 
-type FormType = z.infer<typeof BaseSessionSetupSchema>;
 interface IGoalsSectionProps extends HTMLAttributes<HTMLElement> {
-    form: UseFormReturn<FormType>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form: UseFormReturn<any>;
 }
 
 const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
@@ -40,7 +38,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
             </div>
             {goals[0]?.goal.trim() && (
                 <div className="space-y-2 p-4 rounded-lg border border-bright-gray bg-[#F8F9FC]">
-                    {goals.map(({ id, goal }, index) => {
+                    {goals.map(({ id, goal }: { id: number; goal: string }, index: number) => {
                         return (
                             goal.trim() && (
                                 <div key={id} className="flex items-center gap-x-1.5 text-sm">

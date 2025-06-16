@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const BaseSessionSetupSchema = z.object({
     session_name: z.string({ required_error: "Session name is required" }).min(1, "Session name is required"),
-    session_type: z.enum(["pitch", "public", "presentation"]),
+    session_type: z.enum(["pitch", "public", "presentation", "enterprise"]),
     goals: z.array(
         z.object({
             id: z.number(),
@@ -27,4 +27,16 @@ export const PitchPracticeSchema = BaseSessionSetupSchema.extend({
 export const PresentationPracticeSchema = BaseSessionSetupSchema.extend({
     slide_preview_id: z.number().optional(),
     slides: MediaSchema.optional(),
+});
+
+export const RookieRoomSchema = BaseSessionSetupSchema.extend({
+    enterprise_settings: z
+        .object({
+            enterprice_type: z.enum(["rookie"]),
+            rookie_type: z.enum(["media_training", "speaking"]),
+            sport_type: z.string(),
+            speaker_notes: z.string(),
+        })
+        .partial()
+        .optional(),
 });
