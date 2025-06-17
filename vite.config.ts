@@ -14,7 +14,4 @@ export default defineConfig({
     optimizeDeps: {
         include: ["pdfjs-dist/legacy/build/pdf"],
     },
-    server: {
-        allowedHosts: [".pinggy.link"]
-    }
 });
