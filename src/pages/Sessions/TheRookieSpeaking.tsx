@@ -74,7 +74,7 @@ const PublicSpeaking: React.FC = () => {
             setDialogOneOpen(false);
             setIsMuted(false);
             setVideoUrl(
-                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
+                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/rookie-room-clapping.mp4",
             );
             setTimeout(() => {
                 setDialogTwoOpen(true);

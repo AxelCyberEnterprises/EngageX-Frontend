@@ -70,7 +70,7 @@ const PublicSpeaking: React.FC = () => {
             setDialogOneOpen(false);
             setIsMuted(false);
             setVideoUrl(
-                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
+                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/rookie-room-clapping.mp4",
             );
             setTimeout(() => {
                 setDialogTwoOpen(true);
@@ -83,9 +83,15 @@ const PublicSpeaking: React.FC = () => {
     const getQuestions = (): string[] => {
         const sportType = sessionData?.enterprise_settings?.sport_type as SportType | undefined;
         if (sportType && sportsQuestions[sportType]) {
-            return [...sportsQuestions[sportType]];
+            // Return 6 randomly selected questions from the chosen sport type
+            const allQuestions = [...sportsQuestions[sportType]];
+            const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 6);
         }
-        return [...sportsQuestions["football"]];
+        // Return 6 randomly selected questions from football as fallback
+        const allQuestions = [...sportsQuestions["football"]];
+        const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 6);
     };
     const questionsRef = useRef<string[]>([]);
     const showQuestionTagRef = useRef(false);
@@ -530,7 +536,10 @@ const PublicSpeaking: React.FC = () => {
                                 }}
                             />
                             {showQuestionTagRef.current && (
-                                <div className="rounded-md bg-white p-4 w-1/2 z-10 absolute top-10 left-3">
+                                <div
+                                    className="rounded-md bg-white p-4 w-1/2 z-10 absolute top-5 -left-13"
+                                    style={{ transform: "scale(0.70)" }}
+                                >
                                     <p className="mb-3">{question}</p>
                                     <TimerComponent
                                         minutes={questionTimerRef.current}
