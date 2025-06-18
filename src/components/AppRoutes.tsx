@@ -52,6 +52,7 @@ import ScrollToTop from "./ScrollToTop";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import VideoPopup from "./VideoPopup";
+import AccessGate from "@/pages/auth/AccessGate";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -86,7 +87,14 @@ function UserDashboardRoutes() {
             <Route path="public-speaking" element={<PublicSpeaking />} />
             <Route path="pitch-practice" element={<PitchPractice />} />
             <Route path="presentation-practice" element={<PresentationPractice />} />
-            <Route path="the-rookie-room" element={<RookieRoom />} />
+            <Route
+                path="the-rookie-room"
+                element={
+                    <AccessGate>
+                        <RookieRoom />
+                    </AccessGate>
+                }
+            />
             <Route path="progress-tracking" element={<ProgressTracking />} />
             <Route path="session-history" element={<UserSessionHistory />} />
             <Route path="session-history/:id" element={<UserSessionReport />} />
@@ -94,7 +102,14 @@ function UserDashboardRoutes() {
             <Route path="performance-improvement" element={<PerformanceImprovement />} />
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<UserSettings />} />
-            <Route path="enterprise-specialty" element={<EnterpriseSpecialty />} />
+            <Route
+                path="enterprise-specialty"
+                element={
+                    <AccessGate>
+                        <EnterpriseSpecialty />
+                    </AccessGate>
+                }
+            />
             <Route path="help" element={<HelpPage />}>
                 <Route index element={<Help />} />
                 <Route path="safety" element={<SafetyPrivacy />} />
@@ -125,8 +140,22 @@ function SessionRoutes() {
             <Route path="pitch-practice-session/:id" element={<PitchPracticeSession />} />
             <Route path="public-speaking-session/:id" element={<PublicSpeakingSession />} />
             <Route path="presentation-practice-session/:id" element={<PresentationPracticeSession />} />
-            <Route path="the-rookie-media-training/:id" element={<TheRookieMediaTraining />} />
-            <Route path="the-rookie-speaking/:id" element={<TheRookieSpeaking />} />
+            <Route
+                path="the-rookie-media-training/:id"
+                element={
+                    <AccessGate>
+                        <TheRookieMediaTraining />
+                    </AccessGate>
+                }
+            />
+            <Route
+                path="the-rookie-speaking/:id"
+                element={
+                    <AccessGate>
+                        <TheRookieSpeaking />
+                    </AccessGate>
+                }
+            />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
