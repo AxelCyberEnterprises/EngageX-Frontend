@@ -1,20 +1,21 @@
-import cardFlower from "../../../assets/images/svgs/card-flower.svg";
-import theRookieBg from "../../../assets/images/jpegs/the-rookie-bg.jpeg";
-import { useState } from "react";
+import PharmaHqImg from "@/assets/images/webps/pharmahq-room.webp";
+import RookieRoomImg from "@/assets/images/webps/rookie-room.webp";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 const EnterpriseSpecialty = () => {
     const cardData = [
         {
             id: 0,
-            image: theRookieBg,
+            image: RookieRoomImg,
             title: "The Rookie",
             href: "./the-rookie-room",
             available: true,
         },
         {
             id: 1,
-            image: theRookieBg,
+            image: PharmaHqImg,
             title: "PharmaHQ",
             href: "/dashboard/sessions/enterprise-specialty",
             available: false,
@@ -36,33 +37,32 @@ const EnterpriseSpecialty = () => {
         <div className="flex flex-col h-full">
             <div className="p-4 md:px-8 flex flex-wrap flex-1">
                 {cardData.map((card, idx) => {
-                    const isActive = selectedCardIdx === idx;
                     const isAvailable = card.available;
+
                     return (
                         <div
                             key={idx}
                             className={`w-full lg:w-1/4 px-2 mb-3 block h-32
-                                ${isAvailable ? "cursor-pointer" : "cursor-default opacity-50"}
+                                ${isAvailable ? "cursor-pointer" : "cursor-not-allowed opacity-60"}
                             `}
                             style={{ textDecoration: "none" }}
                             onClick={() => isAvailable && setSelectedCardIdx(idx)}
                         >
                             <div
-                                className={`p-4 flex flex-col h-full justify-between rounded-md relative overflow-hidden transition-all
-                                    ${isActive && isAvailable ? "bg-alice-blue border border-slate-gray" : "bg-anti-flash-white"}
-                                `}
+                                className={cn(
+                                    "bg-cover bg-center bg-no-repeat p-4 flex flex-col h-full justify-between rounded-md relative overflow-hidden transition-all",
+                                    { "outline-4 outline-medium-sea-green": selectedCardIdx === idx && isAvailable },
+                                )}
+                                style={{
+                                    background: `linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${card.image})`,
+                                }}
                             >
                                 {!isAvailable && (
-                                    <span className="absolute top-2 left-3 text-xs text-slate-500 font-semibold z-10">
+                                    <span className="absolute top-2 left-3 text-xs text-white font-semibold z-10">
                                         Coming soon...
                                     </span>
                                 )}
-                                <img
-                                    src={cardFlower}
-                                    alt="card flower background"
-                                    className="absolute top-0 right-0 h-1/2"
-                                />
-                                <h6 className="absolute bottom-5 left-5 text-primary-blue">{card.title}</h6>
+                                <h6 className="absolute bottom-5 left-5 text-white">{card.title}</h6>
                             </div>
                         </div>
                     );

@@ -58,7 +58,7 @@ export const rookieRoomQuickTips = [
             "Think of this like practice. The reps you put in here shape how you show up when it's game time on camera or in front of a crowd.",
     },
     {
-        heading: "Keep It Real & Relatable with Pose",
+        heading: "Keep It Real & Relatable with Poise",
         description:
             "Use authentic language, avoid jargon, and speak to their real-world moments locker room speeches, post-game interviews, community events, commercials.",
     },
