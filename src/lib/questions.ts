@@ -48,5 +48,17 @@ export const sportsQuestions = {
         "How do you keep the group focused and motivated during a tough losing stretch?",
         "What’s the mood like in the clubhouse right now?",
         "Do you believe the front office is doing enough to support a playoff push?"
+    ],
+    tennis: [
+        "How does it feel to be competing at this level so early in your career?",
+        "What was your mindset going into today’s match?",
+        "Who do you look up to on tour, and why?",
+        "What’s been the biggest adjustment from junior to pro tennis?",
+        "How are you handling the pressure and attention at such a young stage?",
+        "Can you walk us through a key moment in the match?",
+        "What goals have you set for this season or your career overall?",
+        "How do you stay grounded amidst rising fame and expectations?",
+        "What are you working on most in your game right now?",
+        "Off the court, what do you enjoy doing or how do you unwind?"
     ]
 }
