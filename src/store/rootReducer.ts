@@ -1,15 +1,16 @@
 import { combineReducers } from "redux";
 import PerformanceImprovementReducer from "../store/slices/performance_improvement_slice";
 import chatSliceReducer from "./slices/ChatbotSlice";
+import accessReducer from "./slices/accessSlice";
 import authReducer from "./slices/authSlice";
+import brandingReducer from "./slices/brandingSlice";
 import counterReducer from "./slices/counter";
 import pitchPracticeReducer from "./slices/dashboard/user/pitchPracticeSlice";
 import presentationPracticeReducer from "./slices/dashboard/user/presentationPracticeSlice";
 import dynamicDialogReducer from "./slices/dynamicDialogSlice";
-import sessionReducer from "./slices/sessionSlice";
 import floatingChatbotReducer from "./slices/floatingChatbotSlice";
 import profileReducer from "./slices/profileSlice";
-import accessReducer from "./slices/accessSlice";
+import sessionReducer from "./slices/sessionSlice";
 
 const rootReducer = combineReducers({
     counter: counterReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     floating_chatbot: floatingChatbotReducer,
     profile: profileReducer,
     access: accessReducer,
+    branding: brandingReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

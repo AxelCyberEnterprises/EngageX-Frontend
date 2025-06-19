@@ -37,7 +37,7 @@ const RookieRoomForm = () => {
                 enterprise_settings: {
                     enterprice_type: "rookie",
                     rookie_type: "media_training",
-                    sport_type: "football",
+                    sport_type: "basketball",
                     speaker_notes: "",
                 },
             }),
@@ -148,7 +148,7 @@ const RookieRoomForm = () => {
                     <div className="md:mr-25 md:w-fit w-full flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center md:gap-x-3">
                         <Button
                             type="button"
-                            className="bg-green-sheen hover:bg-green-sheen/80 font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            className="bg-green-sheen hover:bg-green-sheen/80 hidden font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
                                     openDialog({

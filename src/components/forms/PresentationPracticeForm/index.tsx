@@ -34,7 +34,6 @@ const PresentationPracticeForm = () => {
             [],
         ),
     });
-
     const slides = useWatch({ control: form.control, name: "slides" });
 
     const handleDeleteSlide = useCallback(() => {

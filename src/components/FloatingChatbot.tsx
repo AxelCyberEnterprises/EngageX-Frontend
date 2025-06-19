@@ -230,7 +230,7 @@ function FloatingChatbot() {
                                 <Accordion
                                     type="single"
                                     collapsible
-                                    className="flex flex-col gap-2 h-full rounded-xl overflow-auto"
+                                    className="flex flex-col gap-2 h-full rounded-xl overflow-auto scrollbar-thin [scrollbar-color:var(--color-primary-blue)_transparent] scrollbar-track-transparent"
                                 >
                                     {filteredFaqs.length === 0 ? (
                                         <div className="p-4 rounded-xl bg-white">
