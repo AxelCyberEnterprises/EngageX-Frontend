@@ -119,7 +119,8 @@ const PublicSpeaking: React.FC = () => {
         setStartQuestionTimer(true);
         setQuestionDialogOpen(false);
         if (socket.current) {
-            socket.current.send(JSON.stringify(question));
+            socket.current.send(question);
+            console.log("Sent question to WebSocket:", question);
         }
     };
 
