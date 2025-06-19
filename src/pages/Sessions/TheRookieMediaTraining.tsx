@@ -410,7 +410,7 @@ const PublicSpeaking: React.FC = () => {
                 open={isQuestionDialogOpen}
                 onOpenChange={activeQuestion > questionsRef.current.length - 1 ? setQuestionDialogOpen : () => {}}
             >
-                <DialogContent className="flex flex-col gap-4">
+                <DialogContent hideCloseButton={true} className="flex flex-col gap-4">
                     <div className="flex gap-4">
                         <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
                             <MessageCircleMore className="text-primary-blue" />
