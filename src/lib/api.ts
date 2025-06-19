@@ -82,9 +82,14 @@ export const apiDelete = async <T>(url: string, type: "default" | "secondary" = 
     return res.data;
 };
 
-export const apiPatch = async <T>(url: string, data?: any, type: "default" | "secondary" = "default") => {
+export const apiPatch = async <T>(
+    url: string,
+    data?: any,
+    type: "default" | "secondary" = "default",
+    config?: AxiosRequestConfig,
+) => {
     const client = getAxiosInstance(type);
-    const res = await client.patch<T>(url, data);
+    const res = await client.patch<T>(url, data, config);
     return res.data;
 };
 
