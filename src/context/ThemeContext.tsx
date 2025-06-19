@@ -1,5 +1,5 @@
 import Logo from "@/assets/images/svgs/logo.svg";
-import { useUserProfile } from "@/hooks/settings";
+import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export interface Theme {
@@ -9,31 +9,42 @@ export interface Theme {
     faviconUrl: string;
 }
 
+const defaultTheme: Theme = {
+    primaryColor: "#10161E",
+    secondaryColor: "#0C76D5",
+    logoUrl: "Logo",
+    faviconUrl: "/vite.svg",
+};
+
 const ThemeContext = createContext<{
     theme: Theme;
     setTheme: (updates: Partial<Theme>) => void;
 }>({
-    theme: {
-        primaryColor: "#10161E",
-        secondaryColor: "#0C76D5",
-        logoUrl: Logo,
-        faviconUrl: "/favicon.ico",
-    },
+    theme: defaultTheme,
     setTheme: () => {},
 });
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-    const { data: profile } = useUserProfile(77);
+const LOCAL_KEY = "branding";
 
-    const [theme, setThemeState] = useState<Theme>({
-        primaryColor: "#10161E",
-        secondaryColor: "#0C76D5",
-        logoUrl: Logo,
-        faviconUrl: "/favicon.ico",
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+    const { data: fullProfile } = useFullUserProfile();
+    const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
+
+    const [theme, setThemeState] = useState<Theme>(() => {
+        try {
+            const cached = localStorage.getItem(LOCAL_KEY);
+            return cached ? JSON.parse(cached) : defaultTheme;
+        } catch {
+            return defaultTheme;
+        }
     });
 
     const setTheme = (updates: Partial<Theme>) => {
-        setThemeState((prev) => ({ ...prev, ...updates }));
+        setThemeState((prev) => {
+            const merged = { ...prev, ...updates };
+            localStorage.setItem(LOCAL_KEY, JSON.stringify(merged));
+            return merged;
+        });
     };
 
     // Fetch saved branding on mount
@@ -43,7 +54,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
                 primaryColor: profile.primary_color || "#10161E",
                 secondaryColor: profile.secondary_color || "#0C76D5",
                 logoUrl: profile.logo || Logo,
-                faviconUrl: profile.favicon || "/favicon.ico",
+                faviconUrl: profile.favicon || "/vite.svg",
             });
         }
     }, [profile]);
@@ -56,7 +67,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [theme.faviconUrl]);
 
-    return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
+    return (
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+            <style>{`:root { --primary: ${theme.primaryColor}; --secondary: ${theme.secondaryColor};}`}</style>
+            {children}
+        </ThemeContext.Provider>
+    );
 };
 
 export const useTheme = () => useContext(ThemeContext);
