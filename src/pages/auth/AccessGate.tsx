@@ -4,12 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { unlock } from "../../store/slices/accessSlice";
 import type { RootState } from "../../store";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 const PASSWORD = "MLS1130";
 
 const AccessGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const unlocked = useSelector((state: RootState) => state.access.unlocked);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [input, setInput] = useState("");
     const [error, setError] = useState(false);
 
@@ -20,6 +23,10 @@ const AccessGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         } else {
             setError(true);
         }
+    };
+
+    const handleBack = () => {
+        navigate(-1);
     };
 
     if (unlocked) return <>{children}</>;
@@ -38,6 +45,9 @@ const AccessGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 {error && <p className="text-red-500 text-sm">Incorrect password. Try again.</p>}
                 <button type="submit" className="bg-black text-white px-4 py-2 rounded w-full">
                     Unlock
+                </button>
+                <button type="button" onClick={handleBack} className="text-black bg-white border border-black px-4 py-2 rounded-md text-sm w-full">
+                    ← Go back
                 </button>
             </form>
         </div>

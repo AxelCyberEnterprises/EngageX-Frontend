@@ -3,14 +3,16 @@ import RookieRoomImg from "@/assets/images/webps/rookie-room.webp";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const EnterpriseSpecialty = () => {
+    const navigate = useNavigate();
     const cardData = [
         {
             id: 0,
             image: RookieRoomImg,
             title: "The Rookie",
-            href: "./the-rookie-room",
+            href: "/dashboard/user/the-rookie-room",
             available: true,
         },
         {
@@ -28,7 +30,7 @@ const EnterpriseSpecialty = () => {
         if (selectedCardIdx !== null) {
             const selectedCard = cardData[selectedCardIdx];
             if (selectedCard && selectedCard.href && selectedCard.available) {
-                window.location.href = selectedCard.href;
+                navigate(selectedCard.href);
             }
         }
     };
