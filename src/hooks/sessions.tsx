@@ -57,7 +57,7 @@ export function useCreateRookieRoomSession() {
             dispatch(closeDialog());
             if (enterprise_settings?.rookie_type === "media_training")
                 navigate(`/sessions/the-rookie-media-training/${id}`);
-            else if (enterprise_settings?.rookie_type === "speaking") navigate(`/sessions/the-rookie-speakin/${id}`);
+            else if (enterprise_settings?.rookie_type === "speaking") navigate(`/sessions/the-rookie-speaking/${id}`);
         },
         onError: (error) => {
             console.error("Error creating rookie room session: ", error);
