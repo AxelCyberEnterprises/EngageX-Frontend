@@ -27,7 +27,7 @@ export interface ISession {
     enterprise_settings: IEnterpriseSettings | null;
     sequence: number | null;
     session_name: string;
-    session_type: "public" | "pitch" | "presentation";
+    session_type: "public" | "pitch" | "presentation" | "enterprise";
     goals: string[];
     date: string;
     duration: string | null;
