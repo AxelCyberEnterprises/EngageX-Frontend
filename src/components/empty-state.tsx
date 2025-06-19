@@ -10,7 +10,7 @@ const EmptyState = ({ className, text }: IEmptyStateProps) => {
     return (
         <div
             className={cn(
-                "flex flex-col items-center justify-center gap-y-3 p-4 bg-ghost-white text-sm text-primary-base rounded-lg",
+                "flex flex-col items-center justify-center gap-3 p-4 bg-ghost-white text-sm text-primary-base rounded-lg",
                 className,
             )}
         >

@@ -16,7 +16,7 @@ import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, To, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 
 const PitchSessionReport: React.FC = () => {
@@ -262,6 +262,20 @@ const PitchSessionReport: React.FC = () => {
             rating: data?.grammar,
         },
     ] as const;
+
+    let newSessionNavigate: To;
+    switch (data?.session_type) {
+        case "enterprise":
+            newSessionNavigate = `../enterprise-specialty`;
+            break;
+        case "pitch":
+        case "presentation":
+            newSessionNavigate = `../${data.session_type}-practice`;
+            break;
+        case "public":
+            newSessionNavigate = `../public-speaking`;
+            break;
+    }
 
     return (
         <div>
@@ -731,11 +745,7 @@ const PitchSessionReport: React.FC = () => {
                             </Link>
                             <Button
                                 className="flex gap-1 py-5 bg-primary-blue hover:bg-primary-blue/90"
-                                onClick={() =>
-                                    navigate(
-                                        `../${data.session_type}-${data.session_type === "public" ? "speaking" : "practice"}`,
-                                    )
-                                }
+                                onClick={() => navigate(newSessionNavigate)}
                             >
                                 Start new session
                             </Button>

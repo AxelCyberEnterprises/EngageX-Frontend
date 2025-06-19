@@ -1,6 +1,13 @@
 import { BaseSessionSetupSchema } from "@/schemas/dashboard/user";
 import { z } from "zod";
 
+interface IEnterpriseSettings {
+    enterprice_type: string;
+    rookie_type: "media_training" | "speaking";
+    sport_type: string;
+    speaker_notes: string;
+}
+
 export interface ISessionChunk {
     chunk_number: number;
     start_time: number;
@@ -17,9 +24,10 @@ export interface ISession {
     company: string;
     session_type_display: string;
     latest_score: number;
+    enterprise_settings: IEnterpriseSettings | null;
     sequence: number | null;
     session_name: string;
-    session_type: "public" | "pitch" | "presentation";
+    session_type: "public" | "pitch" | "presentation" | "enterprise";
     goals: string[];
     date: string;
     duration: string | null;

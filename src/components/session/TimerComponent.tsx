@@ -5,9 +5,10 @@ interface TimerComponentProps {
     minutes: number;
     start: boolean;
     onStop?: () => void;
+    showTimeRemaining?: boolean;
 }
 
-const TimerComponent: React.FC<TimerComponentProps> = ({ minutes, start, onStop }) => {
+const TimerComponent: React.FC<TimerComponentProps> = ({ minutes, start, onStop, showTimeRemaining = true }) => {
     const totalTime = minutes * 60;
     const [timeLeft, setTimeLeft] = useState(totalTime);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -65,12 +66,14 @@ const TimerComponent: React.FC<TimerComponentProps> = ({ minutes, start, onStop 
 
     return (
         <div className="flex flex-col gap-4">
-            <p className="flex items-center">
-                Time Remaining:
-                <span className="ms-1" style={{ color: progressBarColor }}>
-                    {formatTime(timeLeft)}
-                </span>
-            </p>
+            {showTimeRemaining && (
+                <p className="flex items-center">
+                    Time Remaining:
+                    <span className="ms-1" style={{ color: progressBarColor }}>
+                        {formatTime(timeLeft)}
+                    </span>
+                </p>
+            )}
             <SegmentedProgressBar percent={start ? percentage : 0} color={progressBarColor} divisions={1} />
         </div>
     );

@@ -45,7 +45,7 @@ const UploadMediaTrigger = <T extends FieldValues, K extends Path<T>>({
                         <ErrorToast
                             {...{
                                 heading: "Invalid file type",
-                                description: error.message.replace(/application\/[a-zA-Z0-9.\-+]+,?\s*/g, ""),
+                                description: error.message.replace(/[a-z]+\/[a-zA-Z0-9.\-+]+,?\s*/g, ""),
                             }}
                         />,
                     );

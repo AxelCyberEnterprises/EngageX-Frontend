@@ -22,6 +22,10 @@ export interface UserProfile {
   email_alert?: string;
   practice_reminder?: string;
   session_analysis?: string;
+  logo?: string;
+  favicon?: string;
+  primary_color?: string;
+  secondary_color?: string;
 }
 
 export function useUserProfile(id: any) {

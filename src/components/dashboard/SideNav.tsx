@@ -3,12 +3,14 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/svgs/logo.svg";
 // import { Input } from "../ui/input";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "../ui/sidebar";
-import { useDispatch } from "react-redux";
+import { useTheme } from "@/context/ThemeContext";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
+import { useDispatch } from "react-redux";
 import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "../ui/sidebar";
 
 const SideNav: React.FC = () => {
+    const { theme } = useTheme();
     const location = useLocation();
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
@@ -219,6 +221,29 @@ const SideNav: React.FC = () => {
                 </svg>
             ),
             path: "/dashboard/user/session-comparison",
+        },
+        {
+            name: "Enterprise Specialty",
+            icon: (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="me-5"
+                    width="24"
+                    height="24"
+                    color="#BDBDBD"
+                    fill="none"
+                >
+                    <path d="M12.0002 18L12.0002 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path
+                        d="M2.35157 13.2135C1.99855 10.9162 1.82204 9.76763 2.25635 8.74938C2.69065 7.73112 3.65421 7.03443 5.58132 5.64106L7.02117 4.6C9.41847 2.86667 10.6171 2 12.0002 2C13.3832 2 14.5819 2.86667 16.9792 4.6L18.419 5.64106C20.3462 7.03443 21.3097 7.73112 21.744 8.74938C22.1783 9.76763 22.0018 10.9162 21.6488 13.2135L21.3478 15.1724C20.8473 18.4289 20.5971 20.0572 19.4292 21.0286C18.2613 22 16.5538 22 13.139 22H10.8614C7.44652 22 5.73909 22 4.57118 21.0286C3.40327 20.0572 3.15305 18.4289 2.65261 15.1724L2.35157 13.2135Z"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            ),
+            path: "/dashboard/user/enterprise-specialty",
         },
     ];
 
@@ -535,14 +560,17 @@ const SideNav: React.FC = () => {
     ];
 
     return (
-        <Sidebar className="side__nav mobile_color text-white py-5 px-4">
-            <SidebarHeader className="py-7 lg:py-3 px-4">
+        <Sidebar
+            className="side__nav mobile_color text-white py-5 px-4"
+            style={{ backgroundColor: theme.secondaryColor }}
+        >
+            <SidebarHeader className="py-7 lg:py-3 px-4" style={{ backgroundColor: theme.secondaryColor }}>
                 <Link to="/">
-                    <img src={logo} alt="EngageX™ Logo" className="w-8/12 px-3 lg:px-0" />
+                    <img src={theme.logoUrl || logo} alt="EngageX™ Logo" className="w-8/12 h- px-3 lg:px-0" />
                 </Link>
             </SidebarHeader>
 
-            <SidebarContent className="top__links lg:px-0 px-4">
+            <SidebarContent className="top__links lg:px-0 px-4" style={{ backgroundColor: theme.secondaryColor }}>
                 {/* <div className="relative my-4 mx-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -603,7 +631,7 @@ const SideNav: React.FC = () => {
                     ))}
             </SidebarContent>
 
-            <SidebarFooter className="bottom__links w-full p-0">
+            <SidebarFooter className="bottom__links w-full p-0" style={{ backgroundColor: theme.secondaryColor }}>
                 {lastSegment === "user" &&
                     userBottomLinks.map((link, index) => (
                         <Link

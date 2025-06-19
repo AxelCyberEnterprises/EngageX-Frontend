@@ -2,10 +2,10 @@ import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper
 import { Textarea } from "@/components/ui/textarea";
 import { HTMLAttributes } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { FormType } from ".";
 
 interface IInputSpeakerNotesSectionProps extends HTMLAttributes<HTMLElement> {
-    form: UseFormReturn<FormType>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form: UseFormReturn<any>;
 }
 
 const InputSpeakerNotesSection = ({ form }: IInputSpeakerNotesSectionProps) => {
