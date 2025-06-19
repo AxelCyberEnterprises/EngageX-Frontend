@@ -3,12 +3,14 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/svgs/logo.svg";
 // import { Input } from "../ui/input";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "../ui/sidebar";
-import { useDispatch } from "react-redux";
+import { useTheme } from "@/context/ThemeContext";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
+import { useDispatch } from "react-redux";
 import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "../ui/sidebar";
 
 const SideNav: React.FC = () => {
+    const { theme } = useTheme();
     const location = useLocation();
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
@@ -558,14 +560,17 @@ const SideNav: React.FC = () => {
     ];
 
     return (
-        <Sidebar className="side__nav mobile_color text-white py-5 px-4">
-            <SidebarHeader className="py-7 lg:py-3 px-4">
+        <Sidebar
+            className="side__nav mobile_color text-white py-5 px-4"
+            style={{ backgroundColor: theme.secondaryColor }}
+        >
+            <SidebarHeader className="py-7 lg:py-3 px-4" style={{ backgroundColor: theme.secondaryColor }}>
                 <Link to="/">
-                    <img src={logo} alt="EngageX™ Logo" className="w-8/12 px-3 lg:px-0" />
+                    <img src={theme.logoUrl || logo} alt="EngageX™ Logo" className="w-8/12 h- px-3 lg:px-0" />
                 </Link>
             </SidebarHeader>
 
-            <SidebarContent className="top__links lg:px-0 px-4">
+            <SidebarContent className="top__links lg:px-0 px-4" style={{ backgroundColor: theme.secondaryColor }}>
                 {/* <div className="relative my-4 mx-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -626,7 +631,7 @@ const SideNav: React.FC = () => {
                     ))}
             </SidebarContent>
 
-            <SidebarFooter className="bottom__links w-full p-0">
+            <SidebarFooter className="bottom__links w-full p-0" style={{ backgroundColor: theme.secondaryColor }}>
                 {lastSegment === "user" &&
                     userBottomLinks.map((link, index) => (
                         <Link
