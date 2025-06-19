@@ -1,4 +1,5 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useFullUserProfile, useUpdateUserProfile } from "@/hooks/settings";
 import { cn } from "@/lib/utils";
 import { BrandingSchema } from "@/schemas/branding-schema";
 import { RootState, useAppDispatch } from "@/store";
@@ -10,11 +11,14 @@ import { useCallback, useEffect, useMemo } from "react";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 import { z } from "zod";
 import ControlledFieldWrapper from "../controlled-fields/field-wrapper";
 import CnameSetupHelp from "../dialogs/dialog-contents/CnameSetupHelp";
 import EmptyState from "../empty-state";
 import { Button } from "../ui/button";
+import ErrorToast from "../ui/custom-toasts/error-toast";
+import SuccessToast from "../ui/custom-toasts/success-toasts";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 import { Form } from "../ui/form";
 import { Input } from "../ui/input";
@@ -48,6 +52,9 @@ const brandingColorsSections = [
 ] as const;
 
 const BrandingForm = ({ className }: IBrandingFormProps) => {
+    const { data: fullProfile } = useFullUserProfile();
+    const { mutate: updateProfile, isPending } = useUpdateUserProfile(fullProfile?.results?.[0]?.id);
+
     const { previews } = useSelector((state: RootState) => state.branding);
     const dispatch = useAppDispatch();
 
@@ -84,6 +91,43 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
         [dispatch, form, previews],
     );
 
+    const handleSubmit = useCallback(
+        (values: FormType) => {
+            const formData = new FormData();
+            formData.append("primary_color", values.primary_color!);
+            formData.append("secondary_color", values.secondary_color!);
+
+            if (values.logo && values.logo[0]) {
+                formData.append("logo", values.logo[0]);
+            }
+            if (values.favicon && values.favicon[0]) {
+                formData.append("favicon", values.favicon[0]);
+            }
+
+            updateProfile(formData, {
+                onSuccess: () => {
+                    dispatch(setPreviews({ companyLogoPreview: "", faviconPreview: "" }));
+                    toast(
+                        <SuccessToast
+                            heading="Branding changes saved successfully"
+                            description="You may need to refresh the browser or clear cache to see changes."
+                        />,
+                    );
+                },
+                onError: (error) => {
+                    console.error("Error updating branding: ", error);
+                    toast(
+                        <ErrorToast
+                            heading="Error Updating Branding"
+                            description="An error occurred while updating your branding settings. Please try again."
+                        />,
+                    );
+                },
+            });
+        },
+        [dispatch, updateProfile],
+    );
+
     useEffect(() => {
         const previews = {
             companyLogoPreview: companyLogo && companyLogo[0] ? URL.createObjectURL(companyLogo[0]) : "",
@@ -111,7 +155,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
 
     return (
         <Form {...form}>
-            <form className={cn("md:px-2 pb-8", className)} onSubmit={form.handleSubmit(() => {})}>
+            <form className={cn("md:px-2 pb-8", className)} onSubmit={form.handleSubmit(handleSubmit)}>
                 <div className="lg:w-auto md:w-4/5 w-full">
                     <h3 className="text-lg mb-4">Branding Uploads Section</h3>
 
@@ -237,7 +281,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                                                     }}
                                                 />
                                             </PopoverTrigger>
-                                            <PopoverContent className="p-0 size-fit border-none">
+                                            <PopoverContent className="p-0 md:mr-0 mr-4 size-fit border-none">
                                                 <HexColorPicker {...field} color={field.value} />
                                             </PopoverContent>
                                         </Popover>
@@ -251,12 +295,15 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                 <div className="mt-8 flex items-center md:justify-end gap-2">
                     <Button
                         type="button"
+                        disabled={isPending}
                         variant="outline"
                         className="h-10 md:w-auto w-full text-gunmetal hover:text-gunmetal font-normal border-gunmetal"
                     >
                         Cancel
                     </Button>
-                    <Button className="h-10 md:w-auto w-full">Save Branding</Button>
+                    <Button type="submit" disabled={isPending} isLoading={isPending} className="h-10 md:w-auto w-full">
+                        Save Branding
+                    </Button>
                 </div>
             </form>
         </Form>
