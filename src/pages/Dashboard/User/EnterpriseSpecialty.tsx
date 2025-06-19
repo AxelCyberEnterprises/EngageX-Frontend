@@ -23,7 +23,7 @@ const EnterpriseSpecialty = () => {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="p-4 md:px-8 flex flex-wrap flex-1">
+            <div className="p-4 md:px-8 flex flex-wrap">
                 {cardData.map((card, idx) => {
                     const isAvailable = card.available;
 
@@ -31,12 +31,12 @@ const EnterpriseSpecialty = () => {
                         <Link
                             key={idx}
                             to={card.href}
-                            className="w-full lg:w-1/4 px-2 mb-3 block h-32 cursor-pointer"
+                            className="w-full lg:w-1/4 md:w-1/2 px-2 mb-3 block h-32 cursor-pointer"
                             style={{ textDecoration: "none" }}
                         >
                             <div
                                 className={cn(
-                                    "bg-cover bg-center bg-no-repeat p-4 flex flex-col h-full justify-between rounded-md relative overflow-hidden transition-all"
+                                    "bg-cover bg-center bg-no-repeat p-4 flex flex-col h-full justify-between rounded-md relative overflow-hidden transition-all",
                                 )}
                                 style={{
                                     background: `linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${card.image})`,
@@ -48,12 +48,12 @@ const EnterpriseSpecialty = () => {
                     ) : (
                         <div
                             key={idx}
-                            className="w-full lg:w-1/4 px-2 mb-3 block h-32 cursor-not-allowed opacity-60"
+                            className="w-full lg:w-1/4 md:w-1/2 px-2 mb-3 block h-32 cursor-not-allowed opacity-60"
                             style={{ textDecoration: "none" }}
                         >
                             <div
                                 className={cn(
-                                    "bg-cover bg-center bg-no-repeat p-4 flex flex-col h-full justify-between rounded-md relative overflow-hidden transition-all"
+                                    "bg-cover bg-center bg-no-repeat p-4 flex flex-col h-full justify-between rounded-md relative overflow-hidden transition-all",
                                 )}
                                 style={{
                                     background: `linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${card.image})`,
@@ -65,7 +65,7 @@ const EnterpriseSpecialty = () => {
                                 <h6 className="absolute bottom-5 left-5 text-white">{card.title}</h6>
                             </div>
                         </div>
-                    )
+                    );
                 })}
             </div>
         </div>
