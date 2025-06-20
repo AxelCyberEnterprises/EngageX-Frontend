@@ -102,9 +102,9 @@ const RookieRoomForm = () => {
                                                         </FormControl>
                                                         <div
                                                             className={cn(
-                                                                "bg-[#F9FAFB] hover:bg-[#0F161E]/90 hover:text-white grid place-content-center h-10 px-4 py-2 w-full font-normal transition-colors",
+                                                                "bg-[#F9FAFB] hover:bg-primary/90 hover:text-white grid place-content-center h-10 px-4 py-2 w-full font-normal transition-colors",
                                                                 {
-                                                                    "bg-[#0F161E] text-white":
+                                                                    "bg-primary text-white":
                                                                         form.watch(
                                                                             "enterprise_settings.rookie_type",
                                                                         ) === value,
@@ -168,7 +168,7 @@ const RookieRoomForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            className="bg-gunmetal hover:bg-gunmetal/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            className="bg-primary hover:bg-primary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
                                     openDialog({

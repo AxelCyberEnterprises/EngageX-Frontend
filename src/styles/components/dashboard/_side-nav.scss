@@ -12,7 +12,7 @@
             
             &.active,
             &:hover {
-                background-color: $color-gunmetal;
+                background-color: var(--secondary-foreground);
                 color: $color-green-sheen;
 
                 svg {

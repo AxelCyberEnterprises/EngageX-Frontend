@@ -52,7 +52,7 @@ const StartEnterpriseSession = ({ initiationType, setValue, handleSubmit }: ISta
             <Button
                 disabled={isPending || isGetSessionsPending}
                 isLoading={isPending}
-                className="bg-gunmetal hover:bg-gunmetal/90 font-normal w-full h-11"
+                className="bg-primary hover:bg-primary/90 font-normal w-full h-11"
                 onClick={handleProceed}
             >
                 Proceed

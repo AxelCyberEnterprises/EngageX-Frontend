@@ -137,7 +137,7 @@ const StartPracticeSetupSession = ({
             <Button
                 disabled={isPending || isGetSessionsPending || isSummaryGenerationPending}
                 isLoading={isPending || isSummaryGenerationPending}
-                className="bg-gunmetal hover:bg-gunmetal/90 font-normal w-full h-11"
+                className="bg-primary hover:bg-primary/90 font-normal w-full h-11"
                 onClick={handleProceed}
             >
                 Proceed

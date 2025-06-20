@@ -1,4 +1,5 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useTheme } from "@/context/ThemeContext";
 import { useFullUserProfile, useUpdateUserProfile } from "@/hooks/settings";
 import { cn } from "@/lib/utils";
 import { BrandingSchema } from "@/schemas/branding-schema";
@@ -52,6 +53,8 @@ const brandingColorsSections = [
 ] as const;
 
 const BrandingForm = ({ className }: IBrandingFormProps) => {
+    const { theme } = useTheme(); // Assuming useTheme is used for theming purposes, but not utilized in this component
+
     const { data: fullProfile } = useFullUserProfile();
     const { mutate: updateProfile, isPending } = useUpdateUserProfile(fullProfile?.results?.[0]?.id);
 
@@ -60,7 +63,10 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
 
     const form = useForm<FormType>({
         resolver: zodResolver(BrandingSchema),
-        defaultValues: useMemo(() => ({ primary_color: "#10161E", secondary_color: "#0C76D5" }), []),
+        defaultValues: useMemo(
+            () => ({ primary_color: theme.primaryColor, secondary_color: theme.secondaryColor }),
+            [theme.primaryColor, theme.secondaryColor],
+        ),
     });
     const companyLogo = useWatch({ control: form.control, name: "logo" });
     const favicon = useWatch({ control: form.control, name: "favicon" });
@@ -227,7 +233,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                             )}
                         />
                         <span
-                            className="md:inline hidden text-[#64BA9F] hover:text-[#64BA9F] text-sm underline underline-offset-2 cursor-pointer w-fit"
+                            className="md:inline hidden text-secondary hover:text-secondary text-sm underline underline-offset-2 cursor-pointer w-fit"
                             onClick={() =>
                                 dispatch(openDialog({ key: "cname-setup-help", children: <CnameSetupHelp /> }))
                             }
@@ -236,7 +242,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                         </span>
                         <Drawer>
                             <DrawerTrigger asChild>
-                                <span className="md:hidden inline text-[#64BA9F] hover:text-[#64BA9F] text-sm underline underline-offset-2 cursor-pointer w-fit">
+                                <span className="md:hidden inline text-secondary hover:text-secondary text-sm underline underline-offset-2 cursor-pointer w-fit">
                                     How do I set up my CNAME?
                                 </span>
                             </DrawerTrigger>

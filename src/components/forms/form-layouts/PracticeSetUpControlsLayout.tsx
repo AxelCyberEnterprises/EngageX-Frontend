@@ -102,7 +102,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                     </Button>
                     <Button
                         type="button"
-                        className="bg-gunmetal hover:bg-gunmetal/80 text-white font-normal transition"
+                        className="bg-primary hover:bg-primary/80 text-white font-normal transition"
                         onClick={() =>
                             dispatch(
                                 openDialog({
@@ -162,7 +162,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                     </Button>
                     <Button
                         type="button"
-                        className="bg-gunmetal hover:bg-gunmetal/90 font-normal transition"
+                        className="bg-primary hover:bg-primary/90 font-normal transition"
                         onClick={() =>
                             dispatch(
                                 openDialog({

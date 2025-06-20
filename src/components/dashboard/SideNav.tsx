@@ -560,17 +560,14 @@ const SideNav: React.FC = () => {
     ];
 
     return (
-        <Sidebar
-            className="side__nav mobile_color text-white py-5 px-4"
-            style={{ backgroundColor: theme.secondaryColor }}
-        >
-            <SidebarHeader className="py-7 lg:py-3 px-4" style={{ backgroundColor: theme.secondaryColor }}>
+        <Sidebar className="side__nav mobile_color bg-secondary text-white py-5 px-4">
+            <SidebarHeader className="py-7 bg-secondary lg:py-3 px-4">
                 <Link to="/">
                     <img src={theme.logoUrl || logo} alt="EngageX™ Logo" className="w-8/12 h- px-3 lg:px-0" />
                 </Link>
             </SidebarHeader>
 
-            <SidebarContent className="top__links lg:px-0 px-4" style={{ backgroundColor: theme.secondaryColor }}>
+            <SidebarContent className="top__links bg-secondary lg:px-0 px-4">
                 {/* <div className="relative my-4 mx-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -631,7 +628,7 @@ const SideNav: React.FC = () => {
                     ))}
             </SidebarContent>
 
-            <SidebarFooter className="bottom__links w-full p-0" style={{ backgroundColor: theme.secondaryColor }}>
+            <SidebarFooter className="bottom__links bg-secondary w-full p-0">
                 {lastSegment === "user" &&
                     userBottomLinks.map((link, index) => (
                         <Link
