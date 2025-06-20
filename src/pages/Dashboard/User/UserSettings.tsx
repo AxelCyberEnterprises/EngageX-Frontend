@@ -101,7 +101,7 @@ const UserSettings: React.FC = () => {
                                     </p>
                                 )}
                                 {activeIndex === index && (
-                                    <span className="absolute -bottom-[2px] left-0 w-full h-[2px] bg-[#252A39] transition-colors duration-700"></span>
+                                    <span className="absolute -bottom-[2px] left-0 w-full h-[2px] bg-secondary transition-colors duration-700"></span>
                                 )}
                             </div>
                         ))}

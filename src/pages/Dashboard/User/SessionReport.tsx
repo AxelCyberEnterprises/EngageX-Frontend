@@ -339,7 +339,7 @@ const PitchSessionReport: React.FC = () => {
                                             to="https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="bg-primary-blue hover:bg-primary-blue/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
+                                            className="bg-primary hover:bg-primary/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
                                             onClick={() => setDialogOneOpen(false)}
                                         >
                                             Speak with A Coach
@@ -569,7 +569,7 @@ const PitchSessionReport: React.FC = () => {
                                         <div className="w-full lg:w-8/12 mt-3 lg:mt-0">
                                             <SegmentedProgressBar
                                                 percent={metric.rating!}
-                                                color={"#252A39"}
+                                                color={"var(--primary)"}
                                                 divisions={1}
                                             />
                                         </div>
@@ -601,7 +601,7 @@ const PitchSessionReport: React.FC = () => {
                                         <div className="w-full lg:w-8/12 mt-3 lg:mt-0">
                                             <SegmentedProgressBar
                                                 percent={metric.rating!}
-                                                color={"#252A39"}
+                                                color={"var(--primary)"}
                                                 divisions={1}
                                             />
                                         </div>
@@ -744,7 +744,7 @@ const PitchSessionReport: React.FC = () => {
                                 View session history
                             </Link>
                             <Button
-                                className="flex gap-1 py-5 bg-primary-blue hover:bg-primary-blue/90"
+                                className="flex gap-1 py-5 bg-primary hover:bg-primary/90"
                                 onClick={() => navigate(newSessionNavigate)}
                             >
                                 Start new session

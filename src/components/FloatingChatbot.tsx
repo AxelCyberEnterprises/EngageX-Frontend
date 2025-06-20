@@ -230,7 +230,7 @@ function FloatingChatbot() {
                                 <Accordion
                                     type="single"
                                     collapsible
-                                    className="flex flex-col gap-2 h-full rounded-xl overflow-auto scrollbar-thin [scrollbar-color:var(--color-primary-blue)_transparent] scrollbar-track-transparent"
+                                    className="flex flex-col gap-2 h-full rounded-xl overflow-auto scrollbar-thin [scrollbar-color:var(--color-primary)_transparent] scrollbar-track-transparent"
                                 >
                                     {filteredFaqs.length === 0 ? (
                                         <div className="p-4 rounded-xl bg-white">
@@ -268,7 +268,7 @@ function FloatingChatbot() {
                 </>
             )}
             <Button
-                className="size-16 shadow-xl rounded-full z-50 bg-primary-blue hover:bg-primary-blue fixed bottom-10 right-10"
+                className="size-16 shadow-xl rounded-full z-50 bg-primary hover:bg-primary fixed bottom-10 right-10"
                 onClick={() => dispatch(toggle())}
             >
                 <Headset className="size-6 text-white" />

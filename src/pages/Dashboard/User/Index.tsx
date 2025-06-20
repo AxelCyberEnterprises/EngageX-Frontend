@@ -368,7 +368,7 @@ const UserDashboardHome: React.FC = () => {
                             you to focus directly on enhancing your skills in specific areas.
                         </p>
                         <Link to="performance-improvement">
-                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3">Improve Session</Button>
+                            <Button className="bg-primary hover:bg-primary/90 py-3">Improve Session</Button>
                         </Link>
                     </div>
 
@@ -487,7 +487,7 @@ const UserDashboardHome: React.FC = () => {
                         </div>
 
                         {/* <Link to="progress-tracking">
-                            <Button className="bg-primary-blue hover:bg-primary-blue/90 py-3 w-full mt-6">
+                            <Button className="bg-primary hover:bg-primary/90 py-3 w-full mt-6">
                                 View Goals
                             </Button>
                         </Link> */}

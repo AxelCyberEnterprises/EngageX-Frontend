@@ -10,8 +10,8 @@ export interface Theme {
 }
 
 const defaultTheme: Theme = {
-    primaryColor: "#10161E",
-    secondaryColor: "#0C76D5",
+    primaryColor: "#262b3a",
+    secondaryColor: "#10161e",
     logoUrl: "Logo",
     faviconUrl: "/vite.svg",
 };
@@ -47,12 +47,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         });
     };
 
-    // Fetch saved branding on mount
+    // Update branding theme on mount
     useEffect(() => {
         if (profile) {
             setTheme({
-                primaryColor: profile.primary_color || "#10161E",
-                secondaryColor: profile.secondary_color || "#0C76D5",
+                primaryColor: profile.primary_color || "#262b3a",
+                secondaryColor: profile.secondary_color || "#10161e",
                 logoUrl: profile.logo || Logo,
                 faviconUrl: profile.favicon || "/vite.svg",
             });
@@ -69,7 +69,15 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
-            <style>{`:root { --primary: ${theme.primaryColor}; --secondary: ${theme.secondaryColor};}`}</style>
+            <style>
+                {`
+                    :root {
+                        --primary: ${theme.primaryColor};
+                        --secondary: ${theme.secondaryColor};
+                        --secondary-foreground: ${theme.primaryColor};
+                    }
+                `}
+            </style>
             {children}
         </ThemeContext.Provider>
     );
