@@ -563,7 +563,7 @@ const SideNav: React.FC = () => {
         <Sidebar className="side__nav mobile_color bg-secondary text-white py-5 px-4">
             <SidebarHeader className="py-7 bg-secondary lg:py-3 px-4">
                 <Link to="/">
-                    <img src={theme.logoUrl || logo} alt="EngageX™ Logo" className="w-8/12 h- px-3 lg:px-0" />
+                    <img src={theme.logoUrl || logo} alt="EngageX™ Logo" className="w-8/12 max-h-10 object-contain object-left px-3 lg:px-0" />
                 </Link>
             </SidebarHeader>
 
