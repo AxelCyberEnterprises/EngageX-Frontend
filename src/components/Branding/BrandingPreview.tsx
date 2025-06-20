@@ -200,7 +200,7 @@ const BrandingPreview = () => {
     const notificationCount = 4; // Example static value for preview
 
     return (
-        <section className="flex size-full overflow-hidden pointerevents-none">
+        <section className="flex size-full overflow-hidden pointer-events-none">
             {/* Sidebar */}
             <aside className="w-8/25 min-h-[400px] flex flex-col" style={{ backgroundColor: secondaryColor }}>
                 <header className="flex items-center px-4 py-3">
