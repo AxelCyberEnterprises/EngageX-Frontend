@@ -64,7 +64,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
     const form = useForm<FormType>({
         resolver: zodResolver(BrandingSchema),
         defaultValues: useMemo(
-            () => ({ primary_color: theme.primaryColor, secondary_color: theme.secondaryColor }),
+            () => ({ domain: "", primary_color: theme.primaryColor, secondary_color: theme.secondaryColor }),
             [theme.primaryColor, theme.secondaryColor],
         ),
     });
@@ -80,6 +80,11 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
             colorInput.select();
         }
     }, []);
+
+    const handleCancel = useCallback(() => {
+        form.reset();
+        dispatch(setPreviews({ companyLogoPreview: "", faviconPreview: "" }));
+    }, [dispatch, form]);
 
     const handleDelete = useCallback(
         (name: "logo" | "favicon") => {
@@ -304,6 +309,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                         disabled={isPending}
                         variant="outline"
                         className="h-10 md:w-auto w-full text-gunmetal hover:text-gunmetal font-normal border-gunmetal"
+                        onClick={handleCancel}
                     >
                         Cancel
                     </Button>
