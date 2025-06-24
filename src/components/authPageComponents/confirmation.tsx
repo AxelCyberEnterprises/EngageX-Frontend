@@ -123,7 +123,7 @@ const Confirmation: React.FC = () => {
                         <Button
                             type="submit"
                             isLoading={isPending}
-                            className="text-white flex-4/6 py-6 bg-[#262b3a] hover:bg-[#262b3ada] rounded-lg"
+                            className="text-white flex-4/6 py-6 bg-primary hover:bg-primary/90 rounded-lg"
                         >
                             Verify
                         </Button>

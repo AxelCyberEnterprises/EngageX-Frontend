@@ -33,7 +33,7 @@ export const RookieRoomSchema = BaseSessionSetupSchema.extend({
     enterprise_settings: z
         .object({
             enterprice_type: z.enum(["rookie"]),
-            rookie_type: z.enum(["media_training", "speaking"]),
+            rookie_type: z.enum(["media_training", "speaking", "coach_gm"]),
             sport_type: z.string(),
             speaker_notes: z.string(),
         })

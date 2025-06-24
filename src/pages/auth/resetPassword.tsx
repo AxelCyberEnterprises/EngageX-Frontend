@@ -151,7 +151,7 @@ const ResetPassword: React.FC = () => {
 
                     <Button
                         type="submit"
-                        className="bg-[#262b3a] hover:bg-[#262b3ada] font-[Inter] py-6 rounded-lg text-white"
+                        className="bg-primary hover:bg-primary/90 font-[Inter] py-6 rounded-lg text-white"
                         isLoading={isPending}
                     >
                         {"Reset password"}

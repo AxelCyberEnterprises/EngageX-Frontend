@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { rookieRoomVEOptions, sportsOptions, trainingTypeOptions } from "@/config/form-field-options";
+import {
+    rookieRoomCoachVEOptions,
+    rookieRoomVEOptions,
+    sportsOptions,
+    trainingTypeOptions,
+} from "@/config/form-field-options";
 import { rookieRoomQuickTips } from "@/config/quick-tips";
 import { cn } from "@/lib/utils";
 import { RookieRoomSchema } from "@/schemas/dashboard/user";
@@ -13,7 +18,7 @@ import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import GoalsSection from "../form-sections/GoalsSection";
 import InputSpeakerNotesSection from "../form-sections/InputSpeakerNotesSection";
@@ -37,13 +42,14 @@ const RookieRoomForm = () => {
                 enterprise_settings: {
                     enterprice_type: "rookie",
                     rookie_type: "media_training",
-                    sport_type: "basketball",
+                    sport_type: "nba_basketball",
                     speaker_notes: "",
                 },
             }),
             [],
         ),
     });
+    const rookieType = useWatch({ control: form.control, name: "enterprise_settings.rookie_type" });
 
     return (
         <Form {...form}>
@@ -95,7 +101,10 @@ const RookieRoomForm = () => {
                                             className="grid-cols-2 gap-0 rounded-md border border-bright-gray overflow-hidden"
                                         >
                                             {trainingTypeOptions.map(({ name, value }, index) => (
-                                                <FormItem key={value + index}>
+                                                <FormItem
+                                                    key={value + index}
+                                                    className="first:border-r nth-3:border-t border-bright-gray nth-3:col-span-2"
+                                                >
                                                     <FormLabel className="cursor-pointer">
                                                         <FormControl className="hidden">
                                                             <RadioGroupItem value={value} />
@@ -132,7 +141,7 @@ const RookieRoomForm = () => {
                     <VirtualEnvironmentSection
                         {...{ form }}
                         className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
-                        options={rookieRoomVEOptions}
+                        options={rookieType === "coach_gm" ? rookieRoomCoachVEOptions : rookieRoomVEOptions}
                     />
                     <QuickTips tips={rookieRoomQuickTips} />
                 </section>
@@ -168,6 +177,7 @@ const RookieRoomForm = () => {
                         </Button>
                         <Button
                             type="button"
+                            disabled={rookieType === "coach_gm"}
                             className="bg-primary hover:bg-primary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(

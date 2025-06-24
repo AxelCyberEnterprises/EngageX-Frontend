@@ -100,7 +100,7 @@ const Login: React.FC = () => {
                     <Button
                         type="submit"
                         isLoading={isPending}
-                        className="py-6 font-[Inter] bg-[#262b3a] hover:bg-[#262b3ada] rounded-lg"
+                        className="py-6 font-[Inter] bg-primary hover:bg-primary/90 rounded-lg"
                     >
                         Login
                     </Button>
@@ -123,7 +123,7 @@ const Login: React.FC = () => {
 
                 <Link
                     to="../forgot-password"
-                    className="font-semibold hover:bg-transparent p-2 bg-transparent shadow-none rounded-lg text-sm text-[#262b3a]"
+                    className="font-semibold hover:bg-transparent p-2 bg-transparent shadow-none rounded-lg text-sm text-primary"
                 >
                     Forgot Password
                 </Link>
@@ -145,7 +145,7 @@ const Login: React.FC = () => {
                     Don't have an account?{" "}
                     <Link
                         to="../signup"
-                        className="text-[#262b3a] hover:bg-transparent hover:underline shadow-none font-semibold bg-transparent p-0"
+                        className="text-primary hover:bg-transparent hover:underline shadow-none font-semibold bg-transparent p-0"
                     >
                         Sign up
                     </Link>
