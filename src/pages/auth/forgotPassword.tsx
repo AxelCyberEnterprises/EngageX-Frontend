@@ -78,7 +78,7 @@ const ForgotPassword: React.FC = () => {
                         <Button
                             type="submit"
                             isLoading={isPending}
-                            className="text-white flex items-center justify-center flex-[4.5] bg-[#262b3a] hover:bg-[#262b3ada] h-auto py-4 rounded-lg"
+                            className="text-white flex items-center justify-center flex-[4.5] bg-primary hover:bg-primary/90 h-auto py-4 rounded-lg"
                         >
                             Get OTP
                         </Button>

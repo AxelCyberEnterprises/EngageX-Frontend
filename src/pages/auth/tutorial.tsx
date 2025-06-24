@@ -31,7 +31,7 @@ const Tutorial: React.FC = () => {
 
                 <button
                     onClick={() => navigate("/dashboard/user")}
-                    className="font-[Montserrat] rounded-lg w-full md:py-5 py-4 lg:max-w-4/5 bg-[#262b3a] hover:bg-[#262b3ada] text-white" // Added text-white for visibility
+                    className="font-[Montserrat] rounded-lg w-full md:py-5 py-4 lg:max-w-4/5 bg-primary hover:bg-primary/90 text-white" // Added text-white for visibility
                 >
                     Finish up
                 </button>
