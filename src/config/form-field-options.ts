@@ -39,7 +39,7 @@ export const trainingTypeOptions = [
         name: "Coach/GM",
         value: "coach_gm",
         description:
-            "Coach/GM training is designed to help you improve your skills as a coach or general manager, whether you're preparing for a new season, a draft, or any other important event.",
+            "Rookie to Coach, Rookie to GM, Coach to Rookie training is designed to address all three aspects of improved communication skills whether you are preparing for new season, upcoming game, post game, draft or important event.",
     },
 ];
 
