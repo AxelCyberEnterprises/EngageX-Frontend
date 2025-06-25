@@ -259,8 +259,14 @@ function FloatingChatbot() {
                                 </Accordion>
 
                                 <p className="text-base [&>a]:underline [&>a]:underline-offset-2">
-                                    To contact us directly: <Link to="mailto:info@engagexai.io">info@engagexai.io</Link>{" "}
-                                    or <Link to="mailto:support@engagexai.io">support@engagexai.io</Link>
+                                    To contact us directly:{" "}
+                                    <Link to="mailto:info@engagexai.io" className="text-primary">
+                                        info@engagexai.io
+                                    </Link>{" "}
+                                    or{" "}
+                                    <Link to="mailto:support@engagexai.io" className="text-primary">
+                                        support@engagexai.io
+                                    </Link>
                                 </p>
                             </div>
                         </div>

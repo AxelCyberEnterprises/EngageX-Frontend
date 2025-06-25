@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { tokenManager } from "@/lib/utils";
+import AccessGate from "@/pages/auth/AccessGate";
 import CancellationPolicy from "@/pages/CancellationPolicy";
 import Contact from "@/pages/Contact";
 import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
@@ -30,7 +31,7 @@ import ForgotPassword from "../pages/auth/forgotPassword";
 import LoginPage from "../pages/auth/login";
 import ResetPassword from "../pages/auth/resetPassword";
 import Tutorial from "../pages/auth/tutorial";
-import CookiePolicy from "../pages/CookiePolicy";
+import SecurityAndCompliance from "../pages/SecurityAndCompliance";
 import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
 import AdminDashboardHome from "../pages/Dashboard/Admin/Index";
 import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
@@ -52,7 +53,6 @@ import ScrollToTop from "./ScrollToTop";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import VideoPopup from "./VideoPopup";
-import AccessGate from "@/pages/auth/AccessGate";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -241,10 +241,10 @@ export default function AppRoutes() {
                     }
                 />
                 <Route
-                    path="cookie-policy"
+                    path="security-and-compliance"
                     element={
                         <WebsiteLayout>
-                            <CookiePolicy />
+                            <SecurityAndCompliance />
                         </WebsiteLayout>
                     }
                 />
