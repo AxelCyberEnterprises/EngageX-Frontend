@@ -41,7 +41,7 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
                                             <FormControl className="hidden">
                                                 <RadioGroupItem value={value} />
                                             </FormControl>
-                                            <FormLabel className="cursor-pointer">
+                                            <FormLabel className="cursor-pointer" onClick={() => field.onChange(value)}>
                                                 <div
                                                     className={cn("w-full relative rounded-lg isolate", {
                                                         "outline-4 outline-medium-sea-green":
