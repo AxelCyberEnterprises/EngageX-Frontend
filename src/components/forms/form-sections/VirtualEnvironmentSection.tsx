@@ -34,7 +34,7 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
                                 <RadioGroup
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
-                                    className="flex flex-col"
+                                    className="flex lg:flex-col md:flex-row flex-col"
                                 >
                                     {options.map(({ name, value, src }, index) => (
                                         <FormItem key={value + index}>

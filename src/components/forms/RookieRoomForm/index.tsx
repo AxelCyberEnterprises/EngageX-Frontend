@@ -17,7 +17,7 @@ import { RookieRoomSchema } from "@/schemas/dashboard/user";
 import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import GoalsSection from "../form-sections/GoalsSection";
@@ -51,6 +51,10 @@ const RookieRoomForm = () => {
     });
     const rookieType = useWatch({ control: form.control, name: "enterprise_settings.rookie_type" });
 
+    useEffect(() => {
+        form.setValue("virtual_environment", rookieType === "coach_gm" ? "nba_room" : "conference_room");
+    }, [form, rookieType]);
+
     return (
         <Form {...form}>
             <form className="flex lg:flex-row flex-col lg:gap-10 gap-6">
@@ -69,8 +73,9 @@ const RookieRoomForm = () => {
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent className="border-none">
-                                        {sportsOptions.map(({ name, value }) => (
+                                        {sportsOptions.map(({ name, value }, index) => (
                                             <SelectItem
+                                                key={value + index}
                                                 value={value}
                                                 className="h-11 [&_svg:not([class*='text-'])]:text-[#64BA9F]"
                                             >
