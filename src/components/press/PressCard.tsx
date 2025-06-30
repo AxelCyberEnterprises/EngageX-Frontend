@@ -10,7 +10,7 @@ interface Params {
         video?: boolean;
     };
 }
-
+                         
 function PressCard({ post }: Params) {
   const [showVideo, setShowVideo] = useState(false);
 
