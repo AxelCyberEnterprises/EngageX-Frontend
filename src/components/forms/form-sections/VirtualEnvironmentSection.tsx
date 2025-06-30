@@ -15,9 +15,16 @@ interface IVirtualEnvironmentSectionProps extends HTMLAttributes<HTMLElement> {
         value: string;
         src: string;
     }[];
+    overlay?: boolean;
 }
 
-const VirtualEnvironmentSection = ({ className, form, instruction, options }: IVirtualEnvironmentSectionProps) => {
+const VirtualEnvironmentSection = ({
+    className,
+    form,
+    instruction,
+    options,
+    overlay = true,
+}: IVirtualEnvironmentSectionProps) => {
     return (
         <section className={cn("space-y-5 border border-bright-gray p-4 rounded-2xl", className)}>
             <div className="space-y-1">
@@ -67,7 +74,9 @@ const VirtualEnvironmentSection = ({ className, form, instruction, options }: IV
                                                     >
                                                         <Check className="size-4 stroke-3" />
                                                     </div>
-                                                    <div className="absolute inset-0 bg-black/50 rounded-lg" />
+                                                    {overlay && (
+                                                        <div className="absolute inset-0 bg-black/50 rounded-lg" />
+                                                    )}
                                                 </div>
                                             </FormLabel>
                                         </FormItem>
