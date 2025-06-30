@@ -147,6 +147,7 @@ const RookieRoomForm = () => {
                         {...{ form }}
                         className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
                         options={rookieType === "coach_gm" ? rookieRoomCoachVEOptions : rookieRoomVEOptions}
+                        overlay={rookieType !== "coach_gm"}
                     />
                     <QuickTips tips={rookieRoomQuickTips} />
                 </section>
