@@ -8,7 +8,7 @@ function AllPressPosts() {
       title: "New platform launch",
       download: true,
       summary:
-        "Join the creator of EngageX™ and its design engineers on Thursday, June 05th, from 8:00–8:30 AM CST to learn more about this revolutionary new platform.",
+        "Join the Creator of EngageX™️ and some of the members of the Dream team, watch the video to gain insight on the Revolutionary new Platform that transforms speaking and hear about what collaborating to bring this idea to life was like.",
     },
     {
       img: "/assets/pressvid1.mp4",

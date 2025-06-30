@@ -40,10 +40,10 @@ function Hero() {
             our carbon footprint while unlocking powerful features like
             real-time engagement analysis, intelligent speech coaching, and
             instant feedback generation. Our commitment to sustainability drives
-            every layer of our AI pipeline: • We prioritize refinement over
+            every layer of our AI pipeline: <br /><br />• We prioritize refinement over
             reinvention, maximizing efficiency by improving what’s already world
-            class. • We deploy lightweight, cloud optimized systems, minimizing
-            energy use without sacrificing speed or accuracy. • We reduce
+            class. <br /><br />• We deploy lightweight, cloud optimized systems, minimizing
+            energy use without sacrificing speed or accuracy. <br /><br />• We reduce
             environmental waste by skipping redundant training cycles and using
             infrastructure powered by cleaner energy. At EngageX™, we’re proving
             that AI can be bold, brilliant, and better for the planet.

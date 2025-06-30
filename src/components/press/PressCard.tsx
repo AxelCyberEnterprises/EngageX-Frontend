@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 interface Params {
   post: {
     img: string;
@@ -10,6 +12,8 @@ interface Params {
 }
 
 function PressCard({ post }: Params) {
+  const [showVideo, setShowVideo] = useState(false);
+
   return (
     <div className="w-full lg:w-[25rem] space-y-6">
       <div className="h-[25rem] w-full lg:w-[25rem] relative overflow-clip object-cover">
@@ -48,13 +52,44 @@ function PressCard({ post }: Params) {
               />
             </svg>
           ) : (
-            <button className="py-2 px-4 bg-black text-white rounded-lg">
+            <button
+              className="py-2 px-4 bg-black text-white rounded-lg"
+              onClick={() => setShowVideo(true)}
+            >
               Download
             </button>
           )}
         </div>
         <p className="text-[#667085] font-montserrat">{post.summary}</p>
       </div>
+      {showVideo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 bg-opacity-70">
+          <div className="bg-white rounded-lg p-4 relative w-full max-w-2xl">
+            <button
+              className="absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 shadow transition-colors duration-200"
+              onClick={() => setShowVideo(false)}
+              aria-label="Close"
+              type="button"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="4.3934" y1="4.3934" x2="15.6066" y2="15.6066" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round"/>
+                <line x1="15.6066" y1="4.3934" x2="4.3934" y2="15.6066" stroke="#1A1A1A" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </button>
+            <div className="aspect-w-16 aspect-h-9 w-full">
+              <iframe
+                width="100%"
+                height="400"
+                src="https://www.youtube.com/embed/fEn36uc_ziA"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
