@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 interface Params {
-  post: {
-    img: string;
-    date: string;
-    download?: boolean;
-    title: string;
-    summary: string;
-    video?: boolean;
-  };
+    post: {
+        img: string;
+        date: string;
+        download?: boolean;
+        title: string;
+        summary: string;
+        video?: boolean;
+    };
 }
 
 function PressCard({ post }: Params) {
