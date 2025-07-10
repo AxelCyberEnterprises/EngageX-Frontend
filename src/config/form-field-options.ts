@@ -1,4 +1,5 @@
 import NBARoom from "@/assets/images/jpegs/nba-room.jpg";
+import NFLRoom from "@/assets/images/jpegs/nfl-room.jpg";
 import WNBARoom from "@/assets/images/jpegs/wnba-room.jpg";
 import BoardRoom1 from "@/assets/images/webps/boardroom-1.webp";
 import BoardRoom2 from "@/assets/images/webps/boardroom-2.webp";
@@ -17,10 +18,13 @@ export const presentationPracticeVEOptions = [
 
 export const rookieRoomVEOptions = [{ name: "Conference Room", value: "conference_room", src: RookieRoom }];
 
-export const rookieRoomCoachVEOptions = [
-    { name: "NBA Room", value: "nba_room", src: NBARoom },
-    { name: "WNBA Room", value: "wnba_room", src: WNBARoom },
-];
+export const rookieRoomCoachVEOptions = {
+    nba_basketball: [
+        { name: "NBA Room", value: "nba_room", src: NBARoom },
+        { name: "WNBA Room", value: "wnba_room", src: WNBARoom },
+    ],
+    nfl: [{ name: "NFL Room", value: "nfl_room", src: NFLRoom }],
+};
 
 export const trainingTypeOptions = [
     {
@@ -46,7 +50,7 @@ export const trainingTypeOptions = [
 export const sportsOptions = [
     { name: "NBA Basketball", value: "nba_basketball" },
     { name: "WNBA Basketball", value: "wnba_basketball" },
-    { name: "Football", value: "football" },
+    { name: "NFL", value: "nfl" },
     { name: "Soccer", value: "soccer" },
     { name: "Baseball", value: "baseball" },
     { name: "Hockey", value: "hockey" },
