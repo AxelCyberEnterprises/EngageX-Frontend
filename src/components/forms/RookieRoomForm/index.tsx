@@ -50,10 +50,23 @@ const RookieRoomForm = () => {
         ),
     });
     const rookieType = useWatch({ control: form.control, name: "enterprise_settings.rookie_type" });
+    const sportType = useWatch({ control: form.control, name: "enterprise_settings.sport_type" });
 
     useEffect(() => {
-        form.setValue("virtual_environment", rookieType === "coach_gm" ? "nba_room" : "conference_room");
-    }, [form, rookieType]);
+        let newVE: FormType["virtual_environment"] | undefined;
+        
+        if (rookieType === "coach_gm") {
+            if (sportType === "nfl") {
+                newVE = "nfl_room";
+            } else {
+                newVE = "nba_room";
+            }
+        } else {
+            newVE = "conference_room";
+        }
+
+        form.setValue("virtual_environment", newVE);
+    }, [form, rookieType, sportType]);
 
     return (
         <Form {...form}>
@@ -146,7 +159,12 @@ const RookieRoomForm = () => {
                     <VirtualEnvironmentSection
                         {...{ form }}
                         className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
-                        options={rookieType === "coach_gm" ? rookieRoomCoachVEOptions : rookieRoomVEOptions}
+                        options={
+                            rookieType === "coach_gm"
+                                ? rookieRoomCoachVEOptions[sportType as keyof typeof rookieRoomCoachVEOptions] ||
+                                  rookieRoomCoachVEOptions["nba_basketball"]
+                                : rookieRoomVEOptions
+                        }
                         overlay={rookieType !== "coach_gm"}
                     />
                     <QuickTips tips={rookieRoomQuickTips} />
