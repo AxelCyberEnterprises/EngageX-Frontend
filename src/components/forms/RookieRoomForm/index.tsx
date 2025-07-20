@@ -53,16 +53,23 @@ const RookieRoomForm = () => {
     const sportType = useWatch({ control: form.control, name: "enterprise_settings.sport_type" });
 
     useEffect(() => {
-        let newVE: FormType["virtual_environment"] | undefined;
-        
+        let newVE: FormType["virtual_environment"] = "conference_room";
+
         if (rookieType === "coach_gm") {
-            if (sportType === "nfl") {
-                newVE = "nfl_room";
-            } else {
-                newVE = "nba_room";
+            switch (sportType) {
+                case "nba_basketball":
+                    newVE = "nba_room";
+                    break;
+                case "wnba_basketball":
+                    newVE = "wnba_room";
+                    break;
+                case "nfl":
+                    newVE = "nfl_room";
+                    break;
+                default:
+                    newVE = "conference_room";
+                    break;
             }
-        } else {
-            newVE = "conference_room";
         }
 
         form.setValue("virtual_environment", newVE);
@@ -161,8 +168,7 @@ const RookieRoomForm = () => {
                         className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
                         options={
                             rookieType === "coach_gm"
-                                ? rookieRoomCoachVEOptions[sportType as keyof typeof rookieRoomCoachVEOptions] ||
-                                  rookieRoomCoachVEOptions["nba_basketball"]
+                                ? rookieRoomCoachVEOptions[sportType as keyof typeof rookieRoomCoachVEOptions]
                                 : rookieRoomVEOptions
                         }
                         overlay={rookieType !== "coach_gm"}
@@ -201,7 +207,6 @@ const RookieRoomForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            disabled={rookieType === "coach_gm"}
                             className="bg-primary hover:bg-primary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
