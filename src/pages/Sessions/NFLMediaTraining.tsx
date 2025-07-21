@@ -402,7 +402,7 @@ const PublicSpeaking: React.FC = () => {
             {/* question dialog  */}
             <Dialog
                 open={isQuestionDialogOpen}
-                onOpenChange={activeQuestion > questionsRef.current.length - 1 ? setQuestionDialogOpen : () => {}}
+                onOpenChange={((activeQuestion > questionsRef.current.length - 1) && isSocketConnected) ? setQuestionDialogOpen : () => {}}
             >
                 <DialogContent hideCloseButton={true} className="flex flex-col gap-4">
                     <div className="flex gap-4">
