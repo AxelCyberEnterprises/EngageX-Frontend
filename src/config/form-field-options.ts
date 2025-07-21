@@ -39,7 +39,7 @@ export const trainingTypeOptions = [
             "Speaking training is designed to help you improve your public speaking skills, whether you're preparing for a presentation, a speech, or any other speaking engagement.",
     },
     {
-        name: "Coach/GM",
+        name: "Coach",
         value: "coach_gm",
         description:
             "Rookie to Coach, Rookie to GM, Coach to Rookie training is designed to address all three aspects of improved communication skills whether you are preparing for new season, upcoming game, post game, draft or important event.",
