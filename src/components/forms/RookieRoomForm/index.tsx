@@ -42,7 +42,7 @@ const RookieRoomForm = () => {
                 enterprise_settings: {
                     enterprice_type: "rookie",
                     rookie_type: "media_training",
-                    sport_type: "nba_basketball",
+                    sport_type: "nba",
                     speaker_notes: "",
                 },
             }),
@@ -56,11 +56,11 @@ const RookieRoomForm = () => {
 
     if (rookieType === "coach") {
         switch (sportType) {
-            case "nba_basketball":
+            case "nba":
                 videoSrc =
                     "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+Intro.mp4";
                 break;
-            case "wnba_basketball":
+            case "wnba":
                 videoSrc =
                     "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+Intro+Video+.mp4";
                 break;
@@ -85,10 +85,10 @@ const RookieRoomForm = () => {
 
         if (rookieType === "coach") {
             switch (sportType) {
-                case "nba_basketball":
+                case "nba":
                     newVE = "nba_room";
                     break;
-                case "wnba_basketball":
+                case "wnba":
                     newVE = "wnba_room";
                     break;
                 case "nfl":

@@ -22,15 +22,8 @@ const StartEnterpriseSession = ({ initiationType, videoSrc, setValue, handleSubm
 
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {
-            const { enterprise_settings } = values;
             const payload = {
                 ...values,
-                ...(enterprise_settings?.sport_type?.includes("basketball") && {
-                    enterprise_settings: {
-                        ...enterprise_settings,
-                        sport_type: "basketball",
-                    },
-                }),
                 goals: values.goals.map(({ goal }) => goal).filter(Boolean),
             };
 

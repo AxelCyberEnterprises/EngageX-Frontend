@@ -19,8 +19,8 @@ export const presentationPracticeVEOptions = [
 export const rookieRoomVEOptions = [{ name: "Conference Room", value: "conference_room", src: RookieRoom }];
 
 export const rookieRoomCoachVEOptions = {
-    nba_basketball: [{ name: "NBA Room", value: "nba_room", src: NBARoom }],
-    wnba_basketball: [{ name: "WNBA Room", value: "wnba_room", src: WNBARoom }],
+    nba: [{ name: "NBA Room", value: "nba_room", src: NBARoom }],
+    wnba: [{ name: "WNBA Room", value: "wnba_room", src: WNBARoom }],
     nfl: [{ name: "NFL Room", value: "nfl_room", src: NFLRoom }],
     mlb: [{ name: "MLB Room", value: "mlb_room", src: NFLRoom }],
 };
@@ -47,8 +47,8 @@ export const trainingTypeOptions = [
 ];
 
 export const sportsOptions = [
-    { name: "NBA Basketball", value: "nba_basketball" },
-    { name: "WNBA Basketball", value: "wnba_basketball" },
+    { name: "NBA", value: "nba" },
+    { name: "WNBA", value: "wnba" },
     { name: "NFL", value: "nfl" },
     { name: "MLB", value: "mlb" },
 ];
