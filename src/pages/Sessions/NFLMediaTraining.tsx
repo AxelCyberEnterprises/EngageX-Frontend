@@ -107,7 +107,7 @@ const PublicSpeaking: React.FC = () => {
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question = questionsRef.current[activeQuestion];
-    const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
+    // const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
 
     const answerQuestion = () => {
         showQuestionTagRef.current = true;
@@ -270,19 +270,19 @@ const PublicSpeaking: React.FC = () => {
                         const parsed = JSON.parse(event.data);
                         if (parsed.text) {
                             console.log(parsed.text);
-                            const validEmotions = [
-                                "thinking",
-                                "sorrow",
-                                "excitement",
-                                "laughter",
-                                "surprise",
-                                "interested",
-                            ];
-                            if (validEmotions.includes(parsed.text) && allowSwitch) {
-                                const random = Math.floor(Math.random() * 10) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
-                                setVideoUrl(newUrl);
-                            }
+                            // const validEmotions = [
+                            //     "thinking",
+                            //     "sorrow",
+                            //     "excitement",
+                            //     "laughter",
+                            //     "surprise",
+                            //     "interested",
+                            // ];
+                            // if (validEmotions.includes(parsed.text) && allowSwitch) {
+                            //     const random = Math.floor(Math.random() * 10) + 1;
+                            //     const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
+                            //     setVideoUrl(newUrl);
+                            // }
                         }
                     } catch (err) {
                         console.warn("Invalid message:", event.data, err);
@@ -342,29 +342,29 @@ const PublicSpeaking: React.FC = () => {
         };
     }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
 
-    useEffect(() => {
-        if (!isMuted) return;
-        const getRandomInt1to5 = () => Math.floor(Math.random() * 10) + 1;
+    // useEffect(() => {
+    //     if (!isMuted) return;
+    //     const getRandomInt1to5 = () => Math.floor(Math.random() * 10) + 1;
 
-        const replaceRandomSegment = (url: string): string => {
-            const match = url.match(/(.+\/)(\d+)\.mp4$/);
-            if (!match) {
-                console.warn("🔍 Couldn't parse URL for random segment:", url);
-                return url;
-            }
-            const oldNum = match[2];
-            let newNum = getRandomInt1to5().toString();
-            // Keep generating until newNum is different from oldNum
-            while (newNum === oldNum) {
-                newNum = getRandomInt1to5().toString();
-            }
-            const newUrl = `${match[1]}${newNum}.mp4`;
-            console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${oldNum}, new: ${newNum})`);
-            return newUrl;
-        };
+    //     const replaceRandomSegment = (url: string): string => {
+    //         const match = url.match(/(.+\/)(\d+)\.mp4$/);
+    //         if (!match) {
+    //             console.warn("🔍 Couldn't parse URL for random segment:", url);
+    //             return url;
+    //         }
+    //         const oldNum = match[2];
+    //         let newNum = getRandomInt1to5().toString();
+    //         // Keep generating until newNum is different from oldNum
+    //         while (newNum === oldNum) {
+    //             newNum = getRandomInt1to5().toString();
+    //         }
+    //         const newUrl = `${match[1]}${newNum}.mp4`;
+    //         console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${oldNum}, new: ${newNum})`);
+    //         return newUrl;
+    //     };
 
-        setVideoUrl((prevUrl) => replaceRandomSegment(prevUrl));
-    }, [videoReplacementFlag, isMuted]);
+    //     setVideoUrl((prevUrl) => replaceRandomSegment(prevUrl));
+    // }, [videoReplacementFlag, isMuted]);
 
     return (
         <div className="text-primary-blue">
@@ -527,7 +527,7 @@ const PublicSpeaking: React.FC = () => {
                                 className="h-full w-full rounded-2xl"
                                 onEnded={() => {
                                     console.log("Video ended");
-                                    setVideoReplacementFlag((prev) => !prev);
+                                    // setVideoReplacementFlag((prev) => !prev);
                                 }}
                             />
                             {showQuestionTagRef.current && (
