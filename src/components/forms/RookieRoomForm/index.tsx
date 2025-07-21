@@ -55,7 +55,7 @@ const RookieRoomForm = () => {
     useEffect(() => {
         let newVE: FormType["virtual_environment"] = "conference_room";
 
-        if (rookieType === "coach_gm") {
+        if (rookieType === "coach") {
             switch (sportType) {
                 case "nba_basketball":
                     newVE = "nba_room";
@@ -65,6 +65,9 @@ const RookieRoomForm = () => {
                     break;
                 case "nfl":
                     newVE = "nfl_room";
+                    break;
+                case "mlb":
+                    newVE = "mlb_room";
                     break;
                 default:
                     newVE = "conference_room";
@@ -167,11 +170,11 @@ const RookieRoomForm = () => {
                         {...{ form }}
                         className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
                         options={
-                            rookieType === "coach_gm"
+                            rookieType === "coach"
                                 ? rookieRoomCoachVEOptions[sportType as keyof typeof rookieRoomCoachVEOptions]
                                 : rookieRoomVEOptions
                         }
-                        overlay={rookieType !== "coach_gm"}
+                        overlay={rookieType !== "coach"}
                     />
                     <QuickTips tips={rookieRoomQuickTips} />
                 </section>
@@ -207,6 +210,7 @@ const RookieRoomForm = () => {
                         </Button>
                         <Button
                             type="button"
+                            disabled={sportType === "mlb"}
                             className="bg-primary hover:bg-primary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(

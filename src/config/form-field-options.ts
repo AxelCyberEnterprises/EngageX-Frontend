@@ -22,7 +22,7 @@ export const rookieRoomCoachVEOptions = {
     nba_basketball: [{ name: "NBA Room", value: "nba_room", src: NBARoom }],
     wnba_basketball: [{ name: "WNBA Room", value: "wnba_room", src: WNBARoom }],
     nfl: [{ name: "NFL Room", value: "nfl_room", src: NFLRoom }],
-    mlb: [{ name: "Conference Room", value: "conference_room", src: RookieRoom }],
+    mlb: [{ name: "MLB Room", value: "mlb_room", src: NFLRoom }],
 };
 
 export const trainingTypeOptions = [
@@ -40,7 +40,7 @@ export const trainingTypeOptions = [
     },
     {
         name: "Coach",
-        value: "coach_gm",
+        value: "coach",
         description:
             "Rookie to Coach, Rookie to GM, Coach to Rookie training is designed to address all three aspects of improved communication skills whether you are preparing for new season, upcoming game, post game, draft or important event.",
     },
