@@ -10,11 +10,12 @@ import StartSession from ".";
 
 interface IStartEnterpriseSessionProps extends React.ComponentProps<"div"> {
     initiationType: "skip" | "start";
+    videoSrc?: string;
     setValue?: UseFormReturn<FormType>["setValue"];
     handleSubmit: UseFormReturn<FormType>["handleSubmit"];
 }
 
-const StartEnterpriseSession = ({ initiationType, setValue, handleSubmit }: IStartEnterpriseSessionProps) => {
+const StartEnterpriseSession = ({ initiationType, videoSrc, setValue, handleSubmit }: IStartEnterpriseSessionProps) => {
     const { mutate: createRookieRoomSession, isPending } = useCreateRookieRoomSession();
     const { data, isPending: isGetSessionsPending } = useSessionHistory();
     const dispatch = useAppDispatch();
@@ -50,7 +51,7 @@ const StartEnterpriseSession = ({ initiationType, setValue, handleSubmit }: ISta
     }, [data, dispatch, handleSessionSetupSubmit, handleSubmit, initiationType, setValue]);
 
     return (
-        <StartSession>
+        <StartSession videoSrc={videoSrc}>
             <Button
                 disabled={isPending}
                 variant="outline"

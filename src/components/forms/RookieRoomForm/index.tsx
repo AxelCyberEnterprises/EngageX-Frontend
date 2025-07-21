@@ -52,6 +52,34 @@ const RookieRoomForm = () => {
     const rookieType = useWatch({ control: form.control, name: "enterprise_settings.rookie_type" });
     const sportType = useWatch({ control: form.control, name: "enterprise_settings.sport_type" });
 
+    let videoSrc: string | undefined;
+
+    if (rookieType === "coach") {
+        switch (sportType) {
+            case "nba_basketball":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+Intro.mp4";
+                break;
+            case "wnba_basketball":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+Intro+Video+.mp4";
+                break;
+            case "nfl":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+Football+Intro+.mp4";
+                break;
+            case "mlb":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+Football+Intro+.mp4";
+                break;
+        }
+    } else if (rookieType === "media_training") {
+        videoSrc =
+            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/Media+Intro.MP4";
+    } else if (rookieType === "speaking") {
+        videoSrc = "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4";
+    }
+
     useEffect(() => {
         let newVE: FormType["virtual_environment"] = "conference_room";
 
@@ -198,6 +226,7 @@ const RookieRoomForm = () => {
                                         children: (
                                             <StartEnterpriseSession
                                                 initiationType="skip"
+                                                videoSrc={videoSrc}
                                                 setValue={form.setValue}
                                                 handleSubmit={form.handleSubmit}
                                             />
@@ -219,6 +248,7 @@ const RookieRoomForm = () => {
                                         children: (
                                             <StartEnterpriseSession
                                                 initiationType="start"
+                                                videoSrc={videoSrc}
                                                 handleSubmit={form.handleSubmit}
                                             />
                                         ),

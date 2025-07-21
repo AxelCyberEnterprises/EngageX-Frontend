@@ -7,7 +7,7 @@ export const sportsQuestions = {
         "Do you feel the coaching staff is maximizing your strengths right now?",
         "In your honest opinion, is this team built to win a championship as currently constructed?",
         "What adjustments do you think need to be made defensively after tonight’s showing?",
-        "Do you feel the officiating had any impact on the final result?"
+        "Do you feel the officiating had any impact on the final result?",
     ],
     football: [
         "When you're in a game like this, what’s going through your mind emotionally and mentally — how do you personally process it all?",
@@ -17,7 +17,7 @@ export const sportsQuestions = {
         "What’s your response to critics questioning this team’s physical toughness?",
         "What was the mood in the locker room following such a tough loss?",
         "Was there a breakdown in communication on that key defensive lapse?",
-        "How do you shift the team’s mindset and get ready for next week?"
+        "How do you shift the team’s mindset and get ready for next week?",
     ],
     hockey: [
         "Emotionally, what has this season felt like for you on a personal level?",
@@ -27,7 +27,7 @@ export const sportsQuestions = {
         "Is there a leadership issue that needs to be addressed in the room?",
         "Do you feel the team was simply outworked tonight?",
         "In your view, was the goalie pulled too early, too late, or at the right time?",
-        "Do you believe this group is built to withstand the grind of playoff-style hockey?"
+        "Do you believe this group is built to withstand the grind of playoff-style hockey?",
     ],
     soccer: [
         "What did it feel like to be out there today — how do you personally reflect on the match emotionally and mentally?",
@@ -37,7 +37,7 @@ export const sportsQuestions = {
         "Why do you think the team is struggling to convert chances in front of goal?",
         "Is the manager under pressure after this result?",
         "How would you assess your performance in the final third today?",
-        "Was the tactical approach effective against their setup?"
+        "Was the tactical approach effective against their setup?",
     ],
     baseball: [
         "As a player, how does a night like this feel for you personally — does it linger or do you move on quickly?",
@@ -47,7 +47,7 @@ export const sportsQuestions = {
         "Based on the talent in this clubhouse, would you say the team is underperforming?",
         "How do you keep the group focused and motivated during a tough losing stretch?",
         "What’s the mood like in the clubhouse right now?",
-        "Do you believe the front office is doing enough to support a playoff push?"
+        "Do you believe the front office is doing enough to support a playoff push?",
     ],
     tennis: [
         "How does it feel to be competing at this level so early in your career?",
@@ -59,6 +59,24 @@ export const sportsQuestions = {
         "What goals have you set for this season or your career overall?",
         "How do you stay grounded amidst rising fame and expectations?",
         "What are you working on most in your game right now?",
-        "Off the court, what do you enjoy doing or how do you unwind?"
-    ]
-}
+        "Off the court, what do you enjoy doing or how do you unwind?",
+    ],
+};
+
+export const nflRookieQuestions = [
+    "Tell me about your journey to the NFL—what drives you to keep pushing every day?",
+    "What’s the biggest obstacle you’ve had to overcome in your career so far?",
+    "How do you handle the pressure that comes with being a rookie in this league?",
+    "Where do you see yourself fitting into our team culture and leadership structure?",
+    "What have you picked up so far from the veterans in this locker room?",
+    "How do you respond when a coach or teammate gives you tough feedback?",
+    "Walk me through how you prepare—mentally and physically—for a big game.",
+    "What’s your mindset after a bad play, and how do you bounce back?",
+    "You’re not always in the spotlight yet—how are you bringing value on special teams or in a backup role?",
+    "Let’s say the media pins a tough loss on you—how would you handle that situation?",
+    "You score the game-winner—what are you saying to the fans afterward?",
+    "How do you plan to use your platform off the field, beyond football?",
+    "How do you plan to lead as a rookie without stepping on any toes?",
+    "In your eyes, what does it mean to be a professional—on and off the field?",
+    "If you noticed a teammate struggling mentally or emotionally, what would you do?",
+];
