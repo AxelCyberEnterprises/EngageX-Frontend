@@ -19,6 +19,9 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
     const { data, isPending: isGetSessionsPending } = useSessionHistory();
     const dispatch = useAppDispatch();
 
+    const videoSrc =
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/Mike+Public+Speaking+and+Stortellying+INtro.MP4";
+
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {
             const payload = { ...values, goals: values.goals.map(({ goal }) => goal).filter(Boolean) };
@@ -40,7 +43,7 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
     }, [data, dispatch, handleSessionSetupSubmit, handleSubmit, initiationType, setValue]);
 
     return (
-        <StartSession>
+        <StartSession videoSrc={videoSrc}>
             <Button
                 disabled={isPending}
                 variant="outline"
