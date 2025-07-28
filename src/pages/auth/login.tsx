@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useLogin } from "@/hooks/auth";
+import { setAuthPageImage } from "@/store/slices/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { z } from "zod";
 import { welcomeMessage } from "../../components/layouts/userAuth";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../../components/ui/form";
-import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Checkbox } from "../../components/ui/checkbox";
-import { useLogin } from "@/hooks/auth";
-import { useDispatch } from "react-redux";
-import { setAuthPageImage } from "@/store/slices/authSlice";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../components/ui/form";
+import { Input } from "../../components/ui/input";
 // import googleIcon from "@/assets/images/svgs/google-icon.svg";
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
 
@@ -100,7 +100,7 @@ const Login: React.FC = () => {
                     <Button
                         type="submit"
                         isLoading={isPending}
-                        className="py-6 font-[Inter] bg-primary hover:bg-primary/90 rounded-lg"
+                        className="py-6 font-[Inter] bg-[#262b3a] hover:bg-[#262b3ada] rounded-lg"
                     >
                         Login
                     </Button>
@@ -123,7 +123,7 @@ const Login: React.FC = () => {
 
                 <Link
                     to="../forgot-password"
-                    className="font-semibold hover:bg-transparent p-2 bg-transparent shadow-none rounded-lg text-sm text-primary"
+                    className="font-semibold hover:bg-transparent p-2 bg-transparent shadow-none rounded-lg text-sm text-[#262b3a]"
                 >
                     Forgot Password
                 </Link>
@@ -145,7 +145,7 @@ const Login: React.FC = () => {
                     Don't have an account?{" "}
                     <Link
                         to="../signup"
-                        className="text-primary hover:bg-transparent hover:underline shadow-none font-semibold bg-transparent p-0"
+                        className="text-[#262b3a] hover:bg-transparent hover:underline shadow-none font-semibold bg-transparent p-0"
                     >
                         Sign up
                     </Link>

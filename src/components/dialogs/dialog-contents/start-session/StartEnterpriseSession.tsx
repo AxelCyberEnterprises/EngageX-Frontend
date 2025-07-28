@@ -56,7 +56,7 @@ const StartEnterpriseSession = ({ initiationType, videoSrc, setValue, handleSubm
             <Button
                 disabled={isPending || isGetSessionsPending}
                 isLoading={isPending}
-                className="bg-primary hover:bg-primary/90 font-normal w-full h-11"
+                className="bg-branding-primary hover:bg-branding-primary/90 font-normal w-full h-11"
                 onClick={handleProceed}
             >
                 Proceed

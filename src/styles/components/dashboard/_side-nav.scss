@@ -2,17 +2,17 @@
     $vw: 100vw;
     background-color: $color-chinese-black;
     color: $color-white;
-    
+
     .top__links,
     .bottom__links {
         .link {
             border-radius: 4px;
             transition: all 0.8s ease;
             color: $color-white;
-            
+
             &.active,
             &:hover {
-                background-color: var(--secondary-foreground);
+                background-color: var(--branding-secondary-foreground);
                 color: $color-green-sheen;
 
                 svg {
@@ -23,21 +23,19 @@
     }
 }
 
-
-
-
-.mobile_links{
+.mobile_links {
     color: $color-white;
     border-radius: 4px;
-            transition: all 0.8s ease;
-            color: $color-white;
+    transition: all 0.8s ease;
+    color: $color-white;
+
     &.active,
     &:hover {
         color: $color-green-sheen;
         background-color: $color-gunmetal;
+
         svg {
             color: $color-green-sheen;
         }
     }
-
 }

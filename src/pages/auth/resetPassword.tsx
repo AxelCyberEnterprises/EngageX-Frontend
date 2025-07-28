@@ -72,7 +72,6 @@ const ResetPassword: React.FC = () => {
             </p>
             <OtpSentToast show={otpSent} onClose={() => dispatch(setOtpSent(false))} />
 
-
             <Form {...form}>
                 <form
                     className="max-md:w-full px-1 sm:w-[75%] sm:mx-auto flex flex-col gap-4"
@@ -151,14 +150,14 @@ const ResetPassword: React.FC = () => {
 
                     <Button
                         type="submit"
-                        className="bg-primary hover:bg-primary/90 font-[Inter] py-6 rounded-lg text-white"
+                        className="bg-[#262b3a] hover:bg-[#262b3ada] font-[Inter] py-6 rounded-lg text-white"
                         isLoading={isPending}
                     >
                         {"Reset password"}
                     </Button>
                 </form>
             </Form>
-            {error && (error.message)}
+            {error && error.message}
         </div>
     );
 };

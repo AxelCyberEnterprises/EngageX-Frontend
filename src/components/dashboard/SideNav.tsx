@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/images/svgs/logo.svg";
+import logo from "@/assets/images/svgs/logo.svg";
 // import { Input } from "../ui/input";
-import { useTheme } from "@/context/ThemeContext";
+import { useTheme } from "@/context/ThemeContext/hook";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { useDispatch } from "react-redux";
 import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
@@ -560,14 +560,18 @@ const SideNav: React.FC = () => {
     ];
 
     return (
-        <Sidebar className="side__nav mobile_color bg-secondary text-white py-5 px-4">
-            <SidebarHeader className="py-7 bg-secondary lg:py-3 px-4">
+        <Sidebar className="side__nav mobile_color bg-branding-secondary text-white py-5 px-4">
+            <SidebarHeader className="py-7 bg-branding-secondary lg:py-3 px-4">
                 <Link to="/">
-                    <img src={theme.logoUrl || logo} alt="EngageX™ Logo" className="w-8/12 max-h-10 object-contain object-left px-3 lg:px-0" />
+                    <img
+                        src={theme.logoUrl || logo}
+                        alt="EngageX™ Logo"
+                        className="w-8/12 max-h-10 object-contain object-left px-3 lg:px-0"
+                    />
                 </Link>
             </SidebarHeader>
 
-            <SidebarContent className="top__links bg-secondary lg:px-0 px-4">
+            <SidebarContent className="top__links bg-branding-secondary lg:px-0 px-4">
                 {/* <div className="relative my-4 mx-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -628,7 +632,7 @@ const SideNav: React.FC = () => {
                     ))}
             </SidebarContent>
 
-            <SidebarFooter className="bottom__links bg-secondary w-full p-0">
+            <SidebarFooter className="bottom__links bg-branding-secondary w-full p-0">
                 {lastSegment === "user" &&
                     userBottomLinks.map((link, index) => (
                         <Link

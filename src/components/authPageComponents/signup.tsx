@@ -39,7 +39,7 @@ const signupSchema = z
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
-const Signup: React.FC = () => {
+const signuSignup: React.FC = () => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
     const [passwordStrength, setPasswordStrength] = React.useState("");
@@ -258,7 +258,7 @@ const Signup: React.FC = () => {
                         type="submit"
                         name="submit"
                         isLoading={isPending}
-                        className="rounded-lg font-[Montserrat] bg-primary hover:bg-primary/90 py-6"
+                        className="rounded-lg font-[Montserrat] bg-[#262b3a] hover:bg-[#262b3ada] py-6"
                     >
                         Get Started
                     </Button>
@@ -292,7 +292,7 @@ const Signup: React.FC = () => {
                 <p>Already have an account?</p>
                 <Link
                     to="../login"
-                    className="font-semibold bg-transparent hover:underline shadow-none hover:bg-none text-primary/90 w-fit p-0"
+                    className="font-semibold bg-transparent hover:underline shadow-none hover:bg-none text-black w-fit p-0"
                 >
                     Log in
                 </Link>
