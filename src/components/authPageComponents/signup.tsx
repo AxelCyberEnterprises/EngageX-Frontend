@@ -39,7 +39,7 @@ const signupSchema = z
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
-const signuSignup: React.FC = () => {
+const Signup: React.FC = () => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
     const [passwordStrength, setPasswordStrength] = React.useState("");
