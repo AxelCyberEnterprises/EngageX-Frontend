@@ -22,7 +22,7 @@ import VideoPlayer from "@/components/session/VideoPlayer";
 import { useLocation } from "react-router-dom";
 import { sportsQuestions } from "@/lib/questions";
 
-const PublicSpeaking: React.FC = () => {
+const NFLMediaTraining: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
@@ -342,30 +342,6 @@ const PublicSpeaking: React.FC = () => {
         };
     }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
 
-    // useEffect(() => {
-    //     if (!isMuted) return;
-    //     const getRandomInt1to5 = () => Math.floor(Math.random() * 10) + 1;
-
-    //     const replaceRandomSegment = (url: string): string => {
-    //         const match = url.match(/(.+\/)(\d+)\.mp4$/);
-    //         if (!match) {
-    //             console.warn("🔍 Couldn't parse URL for random segment:", url);
-    //             return url;
-    //         }
-    //         const oldNum = match[2];
-    //         let newNum = getRandomInt1to5().toString();
-    //         // Keep generating until newNum is different from oldNum
-    //         while (newNum === oldNum) {
-    //             newNum = getRandomInt1to5().toString();
-    //         }
-    //         const newUrl = `${match[1]}${newNum}.mp4`;
-    //         console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${oldNum}, new: ${newNum})`);
-    //         return newUrl;
-    //     };
-
-    //     setVideoUrl((prevUrl) => replaceRandomSegment(prevUrl));
-    // }, [videoReplacementFlag, isMuted]);
-
     return (
         <div className="text-primary-blue">
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
@@ -660,4 +636,4 @@ const PublicSpeaking: React.FC = () => {
     );
 };
 
-export default PublicSpeaking;
+export default NFLMediaTraining;
