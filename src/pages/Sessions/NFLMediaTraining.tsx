@@ -1,26 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useRef, useState } from "react";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
-import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
-import VoiceAnalytics from "@/components/session/VoiceAnalytics";
-import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
-import VideoStreamer from "@/components/session/RecordView";
 import EngagementMetrics from "@/components/session/EngagementMetrics";
-import { useParams } from "react-router-dom";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import alert from "../../assets/images/svgs/alert.svg";
-import TimerComponent from "@/components/session/TimerComponent";
-import { useMediaQuery } from "react-responsive";
 import MobileEngagementMetrics from "@/components/session/MobileEngagementMetrics";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
-import { useEffect } from "react";
-import { useEndSession } from "@/hooks/sessions";
+import VideoStreamer from "@/components/session/RecordView";
+import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
+import TimerComponent from "@/components/session/TimerComponent";
 import VideoPlayer from "@/components/session/VideoPlayer";
-import { useLocation } from "react-router-dom";
-import { sportsQuestions } from "@/lib/questions";
+import VoiceAnalytics from "@/components/session/VoiceAnalytics";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useEndSession } from "@/hooks/sessions";
+import { nflRookieQuestions } from "@/lib/questions";
+import axios from "axios";
+import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import { useLocation, useParams } from "react-router-dom";
+import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
+import alert from "../../assets/images/svgs/alert.svg";
 
 const NFLMediaTraining: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
@@ -33,7 +31,7 @@ const NFLMediaTraining: React.FC = () => {
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
     const [sessionData, setSessionData] = useState<any | undefined>(undefined);
-    const [isMuted, setIsMuted] = useState(true);
+    const [isMuted] = useState(true);
     const [duration, setDuration] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
@@ -64,7 +62,7 @@ const NFLMediaTraining: React.FC = () => {
         setStopStreamer(true);
         setAllowSwitch(false);
         setDialogOneOpen(false);
-        setIsMuted(false);
+        // setIsMuted(false);
         // setVideoUrl(
         //     "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/rookie-room-clapping.mp4",
         // );
@@ -73,18 +71,9 @@ const NFLMediaTraining: React.FC = () => {
         }, 7000);
     };
 
-    // Choose 5 random questions from sportsQuestions["basketball"]
-    type SportType = keyof typeof sportsQuestions;
     const getQuestions = (): string[] => {
-        const sportType = sessionData?.enterprise_settings?.sport_type as SportType | undefined;
-        if (sportType && sportsQuestions[sportType]) {
-            // Return 6 randomly selected questions from the chosen sport type
-            const allQuestions = [...sportsQuestions[sportType]];
-            const shuffled = allQuestions.sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, 6);
-        }
-        // Return 6 randomly selected questions from football as fallback
-        const allQuestions = [...sportsQuestions["football"]];
+        // Return 6 randomly selected questions from the chosen sport type
+        const allQuestions = [...nflRookieQuestions];
         const shuffled = allQuestions.sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 6);
     };
@@ -378,7 +367,11 @@ const NFLMediaTraining: React.FC = () => {
             {/* question dialog  */}
             <Dialog
                 open={isQuestionDialogOpen}
-                onOpenChange={((activeQuestion > questionsRef.current.length - 1) && isSocketConnected) ? setQuestionDialogOpen : () => {}}
+                onOpenChange={
+                    activeQuestion > questionsRef.current.length - 1 && isSocketConnected
+                        ? setQuestionDialogOpen
+                        : () => {}
+                }
             >
                 <DialogContent hideCloseButton={true} className="flex flex-col gap-4">
                     <div className="flex gap-4">
@@ -508,7 +501,7 @@ const NFLMediaTraining: React.FC = () => {
                             />
                             {showQuestionTagRef.current && (
                                 <div
-                                    className="rounded-md bg-white p-4 w-1/2 z-10 absolute top-24 left-32 md:top-46 md:left-50"
+                                    className="rounded-md bg-white p-4 w-1/2 z-10 absolute top-5 -left-13"
                                     style={{ transform: "scale(0.70)" }}
                                 >
                                     <p className="mb-3">{question}</p>

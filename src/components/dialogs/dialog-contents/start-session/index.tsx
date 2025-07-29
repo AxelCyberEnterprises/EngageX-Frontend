@@ -4,7 +4,7 @@ interface IStartSessionProps extends React.ComponentProps<"div"> {
     videoSrc?: string;
 }
 
-const StartSession = ({ children }: IStartSessionProps) => {
+const StartSession = ({ children, videoSrc }: IStartSessionProps) => {
     return (
         <div className="flex flex-col justify-between gap-8">
             <div className="space-y-4">
@@ -22,7 +22,10 @@ const StartSession = ({ children }: IStartSessionProps) => {
                 <div className="flex items-center gap-x-4">{children}</div>
                 <video className="w-full h-60 object-cover rounded-xl" controls>
                     <source
-                        src="https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
+                        src={
+                            videoSrc ||
+                            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
+                        }
                         type="video/mp4"
                     />
                 </video>

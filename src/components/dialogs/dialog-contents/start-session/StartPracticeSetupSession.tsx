@@ -35,6 +35,12 @@ const StartPracticeSetupSession = ({
     const navigate = useNavigate();
 
     const { session_type: sessionType, slides } = getValues();
+    const videoSrc =
+        sessionType === "presentation"
+            ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/Sarah+Presentation+Room+Intro+Video+.MP4"
+            : sessionType === "pitch"
+              ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/New+Daniella+Pitch+Room+INtro.MP4"
+              : "";
 
     const { data, isPending: isGetSessionsPending } = useSessionHistory();
 
@@ -125,7 +131,7 @@ const StartPracticeSetupSession = ({
     }, [data, dispatch, handleSessionSetupSubmit, handleSubmit, initiationType, sessionType, setValue]);
 
     return (
-        <StartSession>
+        <StartSession videoSrc={videoSrc}>
             <Button
                 disabled={isPending || isSummaryGenerationPending}
                 variant="outline"

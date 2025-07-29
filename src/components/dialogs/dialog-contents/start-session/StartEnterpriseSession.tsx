@@ -10,26 +10,20 @@ import StartSession from ".";
 
 interface IStartEnterpriseSessionProps extends React.ComponentProps<"div"> {
     initiationType: "skip" | "start";
+    videoSrc?: string;
     setValue?: UseFormReturn<FormType>["setValue"];
     handleSubmit: UseFormReturn<FormType>["handleSubmit"];
 }
 
-const StartEnterpriseSession = ({ initiationType, setValue, handleSubmit }: IStartEnterpriseSessionProps) => {
+const StartEnterpriseSession = ({ initiationType, videoSrc, setValue, handleSubmit }: IStartEnterpriseSessionProps) => {
     const { mutate: createRookieRoomSession, isPending } = useCreateRookieRoomSession();
     const { data, isPending: isGetSessionsPending } = useSessionHistory();
     const dispatch = useAppDispatch();
 
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {
-            const { enterprise_settings } = values;
             const payload = {
                 ...values,
-                ...(enterprise_settings?.sport_type?.includes("basketball") && {
-                    enterprise_settings: {
-                        ...enterprise_settings,
-                        sport_type: "basketball",
-                    },
-                }),
                 goals: values.goals.map(({ goal }) => goal).filter(Boolean),
             };
 
@@ -50,7 +44,7 @@ const StartEnterpriseSession = ({ initiationType, setValue, handleSubmit }: ISta
     }, [data, dispatch, handleSessionSetupSubmit, handleSubmit, initiationType, setValue]);
 
     return (
-        <StartSession>
+        <StartSession videoSrc={videoSrc}>
             <Button
                 disabled={isPending}
                 variant="outline"
