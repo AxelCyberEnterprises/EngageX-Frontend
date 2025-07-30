@@ -55,10 +55,26 @@ export function useCreateRookieRoomSession() {
         },
         onSuccess: async ({ id, enterprise_settings }) => {
             dispatch(closeDialog());
-            if (enterprise_settings?.rookie_type === "media_training")
+            if (enterprise_settings?.rookie_type === "media_training") {
                 navigate(`/sessions/the-rookie-media-training/${id}`);
-            else if (enterprise_settings?.rookie_type === "speaking") navigate(`/sessions/the-rookie-speaking/${id}`);
-            else if (enterprise_settings?.rookie_type === "coach") navigate(`/sessions/NFL-coach-room/${id}`);
+            } else if (enterprise_settings?.rookie_type === "speaking") {
+                navigate(`/sessions/the-rookie-speaking/${id}`);
+            } else if (
+                enterprise_settings?.rookie_type === "coach" &&
+                enterprise_settings?.sport_type === "nfl"
+            ) {
+                navigate(`/sessions/NFL-coach-room/${id}`);
+            } else if (
+                enterprise_settings?.rookie_type === "coach" &&
+                enterprise_settings?.sport_type === "nba"
+            ) {
+                navigate(`/sessions/NBA-coach-room/${id}`);
+            } else if (
+                enterprise_settings?.rookie_type === "coach" &&
+                enterprise_settings?.sport_type === "wnba"
+            ) {
+                navigate(`/sessions/WNBA-coach-room/${id}`);
+            }
         },
         onError: (error) => {
             console.error("Error creating rookie room session: ", error);

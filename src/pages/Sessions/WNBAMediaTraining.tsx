@@ -20,7 +20,7 @@ import { useLocation, useParams } from "react-router-dom";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
 
-const NFLMediaTraining: React.FC = () => {
+const WNBAMediaTraining: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
@@ -37,7 +37,7 @@ const NFLMediaTraining: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+No+Sound.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/No+sound+WNBA.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -45,9 +45,8 @@ const NFLMediaTraining: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [questionImg] = useState<string>(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+question.jpeg",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+Dashboard+face+card+.PNG",
     );
-    
     const location = useLocation();
 
     const stopTimer = (duration?: any) => {
@@ -93,6 +92,7 @@ const NFLMediaTraining: React.FC = () => {
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question = questionsRef.current[activeQuestion];
+    // const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
 
     const answerQuestion = () => {
         showQuestionTagRef.current = true;
@@ -605,4 +605,4 @@ const NFLMediaTraining: React.FC = () => {
     );
 };
 
-export default NFLMediaTraining;
+export default WNBAMediaTraining;
