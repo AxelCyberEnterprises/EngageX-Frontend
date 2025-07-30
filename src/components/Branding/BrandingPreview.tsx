@@ -296,7 +296,7 @@ const BrandingPreview = () => {
                                                 <img
                                                     src={companyLogoPreview}
                                                     alt="Company Logo"
-                                                    className="size-full object-cover"
+                                                    className="size-full object-contain"
                                                 />
                                             ) : (
                                                 <EmptyState
@@ -332,7 +332,7 @@ const BrandingPreview = () => {
                                                 <img
                                                     src={faviconPreview}
                                                     alt="Favicon"
-                                                    className="size-full object-cover"
+                                                    className="size-full object-contain"
                                                 />
                                             ) : (
                                                 <EmptyState

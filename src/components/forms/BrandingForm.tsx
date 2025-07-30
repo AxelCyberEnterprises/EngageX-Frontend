@@ -180,13 +180,13 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                                             <img
                                                 src={previews.companyLogoPreview}
                                                 alt=""
-                                                className="size-full object-cover"
+                                                className="size-full object-contain"
                                             />
                                         ) : previews.faviconPreview && section.name === "favicon" ? (
                                             <img
                                                 src={previews.faviconPreview}
                                                 alt=""
-                                                className="size-full object-cover"
+                                                className="size-full object-contain"
                                             />
                                         ) : (
                                             <EmptyState
