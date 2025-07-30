@@ -1,5 +1,5 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useTheme } from "@/context/ThemeContext";
+import { useTheme } from "@/context/ThemeContext/hook";
 import { useFullUserProfile, useUpdateUserProfile } from "@/hooks/settings";
 import { cn } from "@/lib/utils";
 import { BrandingSchema } from "@/schemas/branding-schema";
@@ -180,13 +180,13 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                                             <img
                                                 src={previews.companyLogoPreview}
                                                 alt=""
-                                                className="size-full object-cover"
+                                                className="size-full object-contain"
                                             />
                                         ) : previews.faviconPreview && section.name === "favicon" ? (
                                             <img
                                                 src={previews.faviconPreview}
                                                 alt=""
-                                                className="size-full object-cover"
+                                                className="size-full object-contain"
                                             />
                                         ) : (
                                             <EmptyState
@@ -238,7 +238,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                             )}
                         />
                         <span
-                            className="md:inline hidden text-secondary hover:text-secondary text-sm underline underline-offset-2 cursor-pointer w-fit"
+                            className="md:inline hidden text-branding-secondary hover:text-branding-secondary text-sm underline underline-offset-2 cursor-pointer w-fit"
                             onClick={() =>
                                 dispatch(openDialog({ key: "cname-setup-help", children: <CnameSetupHelp /> }))
                             }
@@ -247,7 +247,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                         </span>
                         <Drawer>
                             <DrawerTrigger asChild>
-                                <span className="md:hidden inline text-secondary hover:text-secondary text-sm underline underline-offset-2 cursor-pointer w-fit">
+                                <span className="md:hidden inline text-branding-secondary hover:text-branding-secondary text-sm underline underline-offset-2 cursor-pointer w-fit">
                                     How do I set up my CNAME?
                                 </span>
                             </DrawerTrigger>
@@ -313,7 +313,12 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                     >
                         Cancel
                     </Button>
-                    <Button type="submit" disabled={isPending} isLoading={isPending} className="h-10 md:w-auto w-full">
+                    <Button
+                        type="submit"
+                        disabled={isPending}
+                        isLoading={isPending}
+                        className="bg-branding-primary hover:bg-branding-primary/90 h-10 md:w-auto w-full"
+                    >
                         Save Branding
                     </Button>
                 </div>

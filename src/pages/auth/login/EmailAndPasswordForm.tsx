@@ -1,31 +1,32 @@
-import React, { useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
-import { welcomeMessage } from "../../components/layouts/userAuth";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "../../components/ui/form";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
-import { Checkbox } from "../../components/ui/checkbox";
-import { useLogin } from "@/hooks/auth";
-import { useDispatch } from "react-redux";
-import { setAuthPageImage } from "@/store/slices/authSlice";
-// import googleIcon from "@/assets/images/svgs/google-icon.svg";
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
+import Office from "@/assets/images/svgs/hugeicons-office.svg";
+import { useLogin } from "@/hooks/auth";
+import { setAuthPageImage, setSigninFlow } from "@/store/slices/authSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { z } from "zod";
+import { welcomeMessage } from "../../../components/layouts/userAuth";
+import { Button } from "../../../components/ui/button";
+import { Checkbox } from "../../../components/ui/checkbox";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../../components/ui/form";
+import { Input } from "../../../components/ui/input";
 
-const loginSchema = z.object({
+const emailAndPasswordSchema = z.object({
     email: z.string().email("Invalid email address").min(1, "Email is required").trim().toLowerCase(),
     password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
-const Login: React.FC = () => {
+type emailAndPasswordValues = z.infer<typeof emailAndPasswordSchema>;
+
+const EmailAndPasswordForm: React.FC = () => {
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const form = useForm<LoginFormValues>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<emailAndPasswordValues>({
+        resolver: zodResolver(emailAndPasswordSchema),
         defaultValues: {
             email: "",
             password: "",
@@ -34,7 +35,7 @@ const Login: React.FC = () => {
 
     const { mutate: login, isPending, error } = useLogin();
 
-    const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    const onSubmit: SubmitHandler<emailAndPasswordValues> = async (data) => {
         login(data);
     };
     const location = useLocation();
@@ -100,7 +101,7 @@ const Login: React.FC = () => {
                     <Button
                         type="submit"
                         isLoading={isPending}
-                        className="py-6 font-[Inter] bg-primary hover:bg-primary/90 rounded-lg"
+                        className="py-6 font-[Inter] bg-[#262b3a] hover:bg-[#262b3ada] rounded-lg"
                     >
                         Login
                     </Button>
@@ -123,29 +124,30 @@ const Login: React.FC = () => {
 
                 <Link
                     to="../forgot-password"
-                    className="font-semibold hover:bg-transparent p-2 bg-transparent shadow-none rounded-lg text-sm text-primary"
+                    className="font-semibold hover:bg-transparent p-2 bg-transparent shadow-none rounded-lg text-sm text-[#262b3a]"
                 >
                     Forgot Password
                 </Link>
             </section>
-            {/* <div className="relative w-full sm:w-3/4 mx-auto font-[Inter] text-center my-5 ">
+            <div className="relative w-full sm:w-3/4 mx-auto font-[Inter] text-center my-5 ">
                 <div className="absolute top-1/2 transform -translate-y-1/2 w-full border-b border-gray-300 z-10"></div>
-                <span className="relative z-20 bg-white px-3">OR</span>
+                <span className="relative z-20 bg-white px-3 text-[#667085] text-sm">OR</span>
             </div>
             <button
-                onClick={handleGoogleLogin}
-                className="flex w-full bg-transparent hover:scale-[1.03] duration-300 border border-[#d0d5dda2] font-[Montserrat] py-2.5 text-black p-4 rounded-lg sm:w-3/4 mx-auto  justify-center gap-4"
+                type="button"
+                className="flex w-full bg-transparent border border-[#d0d5dda2] py-2.5 text-black p-4 rounded-lg sm:w-3/4 mx-auto justify-center gap-4"
+                onClick={() => dispatch(setSigninFlow("organization"))}
             >
-                <img src={googleIcon} className="w-[20px]" alt="" />
-                <p>Sign up with Google</p>
-            </button> */}
+                <img src={Office} alt="" className="size-5" />
+                <p>Login with your organization</p>
+            </button>
 
-            <div className="w-full mt-1">
+            <div className="w-full mt-4">
                 <p className="flex items-center text-sm text-muted-foreground gap-1 justify-center">
                     Don't have an account?{" "}
                     <Link
                         to="../signup"
-                        className="text-primary hover:bg-transparent hover:underline shadow-none font-semibold bg-transparent p-0"
+                        className="text-[#262b3a] hover:bg-transparent hover:underline shadow-none font-semibold bg-transparent p-0"
                     >
                         Sign up
                     </Link>
@@ -155,4 +157,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+export default EmailAndPasswordForm;

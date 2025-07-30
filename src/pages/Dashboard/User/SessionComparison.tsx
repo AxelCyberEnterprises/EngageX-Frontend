@@ -192,7 +192,7 @@ const SessionComparison: React.FC = () => {
 
         <div className="mt-6 flex justify-end">
           <Button
-            className="bg-primary hover:bg-primary/90 text-white shadow-none"
+            className="bg-branding-primary hover:bg-branding-primary/90 text-white shadow-none"
             onClick={() => handleCompareSequences('comparison')}
             disabled={!selectedSequence1 || !selectedSequence2 || compareSessionsLoading}
           >

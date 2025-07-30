@@ -2,6 +2,7 @@ import Logo from "@/assets/images/svgs/logo.svg";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/store";
 import { Download, Trash2 } from "lucide-react";
+import React from "react";
 import { useSelector } from "react-redux";
 import EmptyState from "../empty-state";
 import { Button } from "../ui/button";
@@ -211,18 +212,31 @@ const BrandingPreview = () => {
                     />
                 </header>
                 <nav className="flex-1 flex flex-col justify-between">
-                    <ul className="space-y-2 px-4 text-white text-base font-medium">
+                    <ul className="space-y-2 px-2 text-white text-base font-medium">
                         {navItems.map((item) => (
-                            <li key={item} className="py-1 flex items-center gap-2 [&_svg]:size-3">
+                            <li
+                                key={item}
+                                className="py-1 px-2 flex items-center gap-2 [&_svg]:size-3 [&_svg]:shrink-0"
+                            >
                                 {icons[item as keyof typeof icons]}
                                 <span className="text-xs">{item}</span>
                             </li>
                         ))}
                     </ul>
-                    <ul className="space-y-2 mt-8 px-4 mb-4 text-white text-base font-medium">
+                    <ul className="space-y-2 mt-8 px-2 mb-4 text-white text-base font-medium">
                         {bottomLinks.map((item) => (
-                            <li key={item} className="py-1 flex items-center gap-2 [&_svg]:size-3">
-                                {icons[item as keyof typeof icons]}
+                            <li
+                                key={item}
+                                className="py-1 px-2 flex items-center gap-2 [&_svg]:size-3 [&_svg]:shrink-0 rounded"
+                                style={
+                                    item === "Settings"
+                                        ? { backgroundColor: primaryColor, color: "#64ba9e" }
+                                        : undefined
+                                }
+                            >
+                                {React.cloneElement(icons[item as keyof typeof icons], {
+                                    style: item === "Settings" ? { color: "#64ba9e" } : undefined,
+                                })}
                                 <span className="text-xs">{item}</span>
                             </li>
                         ))}
@@ -282,7 +296,7 @@ const BrandingPreview = () => {
                                                 <img
                                                     src={companyLogoPreview}
                                                     alt="Company Logo"
-                                                    className="size-full object-cover"
+                                                    className="size-full object-contain"
                                                 />
                                             ) : (
                                                 <EmptyState
@@ -318,7 +332,7 @@ const BrandingPreview = () => {
                                                 <img
                                                     src={faviconPreview}
                                                     alt="Favicon"
-                                                    className="size-full object-cover"
+                                                    className="size-full object-contain"
                                                 />
                                             ) : (
                                                 <EmptyState

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ThemeProvider } from "@/context/ThemeContext";
 import { tokenManager } from "@/lib/utils";
 import AccessGate from "@/pages/auth/AccessGate";
 import CancellationPolicy from "@/pages/CancellationPolicy";
@@ -34,7 +35,6 @@ import ForgotPassword from "../pages/auth/forgotPassword";
 import LoginPage from "../pages/auth/login";
 import ResetPassword from "../pages/auth/resetPassword";
 import Tutorial from "../pages/auth/tutorial";
-import SecurityAndCompliance from "../pages/SecurityAndCompliance";
 import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
 import AdminDashboardHome from "../pages/Dashboard/Admin/Index";
 import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
@@ -47,6 +47,7 @@ import Features from "../pages/Features";
 import HomePage from "../pages/HomePage";
 import Pricing from "../pages/Pricing";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
+import SecurityAndCompliance from "../pages/SecurityAndCompliance";
 import PitchPracticeSession from "../pages/Sessions/PitchPractice";
 import TermsOfService from "../pages/TermsOfService";
 import DynamicDialog from "./dialogs/DynamicDialog";
@@ -237,102 +238,104 @@ function MainRoutes() {
 export default function AppRoutes() {
     return (
         <Router>
-            <DynamicDialog />
-            <ScrollToTop />
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <WebsiteLayout>
-                            <>
-                                <VideoPopup />
-                                <HomePage />
-                            </>
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="features"
-                    element={
-                        <WebsiteLayout>
-                            <Features />
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="privacy-policy"
-                    element={
-                        <WebsiteLayout>
-                            <PrivacyPolicy />
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="security-and-compliance"
-                    element={
-                        <WebsiteLayout>
-                            <SecurityAndCompliance />
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="pricing"
-                    element={
-                        <WebsiteLayout>
-                            <Pricing />
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="contact"
-                    element={
-                        <WebsiteLayout>
-                            <Contact />
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="terms-of-service"
-                    element={
-                        <WebsiteLayout>
-                            <TermsOfService />
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="cancellation-policy"
-                    element={
-                        <WebsiteLayout>
-                            <CancellationPolicy />
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="press"
-                    element={
-                        <WebsiteLayout>
-                            <Press />
-                        </WebsiteLayout>
-                    }
-                />
-                <Route
-                    path="auth/*"
-                    element={
-                        <UserPlan>
-                            <AuthRoutes />
-                        </UserPlan>
-                    }
-                />
-                <Route
-                    path="/*"
-                    element={
-                        <RequireAuth>
-                            <MainRoutes />
-                        </RequireAuth>
-                    }
-                />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+            <ThemeProvider>
+                <DynamicDialog />
+                <ScrollToTop />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <WebsiteLayout>
+                                <>
+                                    <VideoPopup />
+                                    <HomePage />
+                                </>
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="features"
+                        element={
+                            <WebsiteLayout>
+                                <Features />
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="privacy-policy"
+                        element={
+                            <WebsiteLayout>
+                                <PrivacyPolicy />
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="security-and-compliance"
+                        element={
+                            <WebsiteLayout>
+                                <SecurityAndCompliance />
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="pricing"
+                        element={
+                            <WebsiteLayout>
+                                <Pricing />
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="contact"
+                        element={
+                            <WebsiteLayout>
+                                <Contact />
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="terms-of-service"
+                        element={
+                            <WebsiteLayout>
+                                <TermsOfService />
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="cancellation-policy"
+                        element={
+                            <WebsiteLayout>
+                                <CancellationPolicy />
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="press"
+                        element={
+                            <WebsiteLayout>
+                                <Press />
+                            </WebsiteLayout>
+                        }
+                    />
+                    <Route
+                        path="auth/*"
+                        element={
+                            <UserPlan>
+                                <AuthRoutes />
+                            </UserPlan>
+                        }
+                    />
+                    <Route
+                        path="/*"
+                        element={
+                            <RequireAuth>
+                                <MainRoutes />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </ThemeProvider>
         </Router>
     );
 }

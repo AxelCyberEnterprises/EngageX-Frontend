@@ -37,7 +37,7 @@ const Credits = () => {
         <div className="py-16 px-8 flex flex-col justify-center items-center">
           <h3 className='lg:text-xl text-lg'>Enterprise & Team Plans</h3>
           <p className='font-light pb-3 pt-2 text-center md:w-[37%] sm:w-[65%] w-full sm:text-base text-sm'>Request your own <span className='text-[#6F7C8E]'>custom price</span>  and get a <span className='text-[#6F7C8E]'>custom solution</span> for your organization</p>
-          <button onClick={()=>{setIsOpen(true)}} className='bg-primary rounded-[10px] md:w-[20%] sm:w-[35%] w-full py-2 text-sm font-light'>Send a Request</button>
+          <button onClick={()=>{setIsOpen(true)}} className='bg-branding-primary rounded-[10px] md:w-[20%] sm:w-[35%] w-full py-2 text-sm font-light'>Send a Request</button>
         </div>
       </div>
     </>

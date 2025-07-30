@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { tokenManager } from "@/lib/utils";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
+import { tokenManager } from "@/lib/utils";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 interface Question {
     id: number;
@@ -37,6 +37,8 @@ interface AuthState {
     questions: Question[];
     topicQuestion: string;
     signupFlow: string;
+    signinFlow: "emailAndPassword" | "organization" | "otp";
+    companyEmail: string;
     routeFromLogin: boolean;
     signupData: SignupData | null;
     user: AuthUser | null;
@@ -80,6 +82,8 @@ const initialState: AuthState = {
     ],
     topicQuestion: "What do you plan on doing?",
     signupFlow: "signup",
+    signinFlow: "emailAndPassword",
+    companyEmail: "",
     routeFromLogin: false,
     signupData: null, // Stores signup details
     user: storedUser ? (JSON.parse(storedUser) as AuthUser) : null,
@@ -112,6 +116,12 @@ const authSlice = createSlice({
         },
         setSignupFlow: (state, action: PayloadAction<string>) => {
             state.signupFlow = action.payload;
+        },
+        setSigninFlow: (state, action: PayloadAction<AuthState["signinFlow"]>) => {
+            state.signinFlow = action.payload;
+        },
+        setCompanyEmail: (state, action: PayloadAction<string>) => {
+            state.companyEmail = action.payload;
         },
         setContactStatus: (state, action: PayloadAction<string>) => {
             state.contactStatus = action.payload;
@@ -188,7 +198,7 @@ const authSlice = createSlice({
                 state.user = null;
                 state.isAuthenticated = false;
             }
-        }
+        },
     },
 });
 
@@ -208,6 +218,8 @@ export function useAutoClearSuccessMessage() {
 export const {
     setTopicQuestion,
     setSignupFlow,
+    setSigninFlow,
+    setCompanyEmail,
     setAuthPageImage,
     setOtpSent,
     setContactStatus,
