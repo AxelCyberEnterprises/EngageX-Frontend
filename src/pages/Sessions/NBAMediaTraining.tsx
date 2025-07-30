@@ -20,7 +20,7 @@ import { useLocation, useParams } from "react-router-dom";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
 
-const NFLMediaTraining: React.FC = () => {
+const NBAMediaTraining: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
@@ -37,7 +37,7 @@ const NFLMediaTraining: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+No+Sound.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+No+sound.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -45,9 +45,8 @@ const NFLMediaTraining: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [questionImg] = useState<string>(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+question.jpeg",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+dashboard+face+card+.JPG",
     );
-    
     const location = useLocation();
 
     const stopTimer = (duration?: any) => {
@@ -605,4 +604,4 @@ const NFLMediaTraining: React.FC = () => {
     );
 };
 
-export default NFLMediaTraining;
+export default NBAMediaTraining;

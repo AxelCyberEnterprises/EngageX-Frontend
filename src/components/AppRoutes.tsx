@@ -22,6 +22,8 @@ import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import TheRookieMediaTraining from "@/pages/Sessions/TheRookieMediaTraining";
 import TheRookieSpeaking from "@/pages/Sessions/TheRookieSpeaking";
 import NFLMediaTraining from "@/pages/Sessions/NFLMediaTraining";
+import NBAMediaTraining from "@/pages/Sessions/NBAMediaTraining";
+import WNBAMediaTraining from "@/pages/Sessions/WNBAMediaTraining";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Link, Navigate, Route, BrowserRouter as Router, Routes, useLocation } from "react-router";
@@ -162,6 +164,22 @@ function SessionRoutes() {
                 element={
                     <AccessGate>
                         <NFLMediaTraining />
+                    </AccessGate>
+                }
+            />
+            <Route
+                path="NBA-coach-room/:id"
+                element={
+                    <AccessGate>
+                        <NBAMediaTraining />
+                    </AccessGate>
+                }
+            />
+            <Route
+                path="WNBA-coach-room/:id"
+                element={
+                    <AccessGate>
+                        <WNBAMediaTraining />
                     </AccessGate>
                 }
             />
