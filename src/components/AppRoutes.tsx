@@ -18,12 +18,12 @@ import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
 import RookieRoom from "@/pages/Dashboard/User/RookieRoom";
 import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
 import Press from "@/pages/Press/Press";
+import NBAMediaTraining from "@/pages/Sessions/NBAMediaTraining";
+import NFLMediaTraining from "@/pages/Sessions/NFLMediaTraining";
 import PresentationPracticeSession from "@/pages/Sessions/PresentationPractice";
 import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import TheRookieMediaTraining from "@/pages/Sessions/TheRookieMediaTraining";
 import TheRookieSpeaking from "@/pages/Sessions/TheRookieSpeaking";
-import NFLMediaTraining from "@/pages/Sessions/NFLMediaTraining";
-import NBAMediaTraining from "@/pages/Sessions/NBAMediaTraining";
 import WNBAMediaTraining from "@/pages/Sessions/WNBAMediaTraining";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
@@ -56,6 +56,7 @@ import WebsiteLayout from "./layouts/WebsiteLayout";
 import ScrollToTop from "./ScrollToTop";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import { Toaster } from "./ui/sonner";
 import VideoPopup from "./VideoPopup";
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -241,6 +242,7 @@ export default function AppRoutes() {
             <ThemeProvider>
                 <DynamicDialog />
                 <ScrollToTop />
+                <Toaster toastOptions={{ classNames: { content: "size-full" } }} />
                 <Routes>
                     <Route
                         path="/"

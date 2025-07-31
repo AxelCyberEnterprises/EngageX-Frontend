@@ -2,6 +2,7 @@ import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRequestLogin } from "@/hooks/auth";
 import { setCompanyEmail, setSigninFlow } from "@/store/slices/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
@@ -17,6 +18,7 @@ type FormType = z.infer<typeof OrganizationSchema>;
 
 const OrganizationForm = () => {
     const dispatch = useDispatch();
+    const { mutate: requestLogin, isPending } = useRequestLogin();
 
     const form = useForm<FormType>({
         resolver: zodResolver(OrganizationSchema),
@@ -26,9 +28,9 @@ const OrganizationForm = () => {
     const handleSubmit = useCallback(
         ({ email }: FormType) => {
             dispatch(setCompanyEmail(email));
-            dispatch(setSigninFlow("otp"));
+            requestLogin({ email });
         },
-        [dispatch],
+        [dispatch, requestLogin],
     );
 
     return (
@@ -63,7 +65,9 @@ const OrganizationForm = () => {
                                     />
                                 )}
                             />
-                            <Button className="h-12">Send SSO code</Button>
+                            <Button disabled={isPending} isLoading={isPending} className="h-12">
+                                Send SSO code
+                            </Button>
                         </form>
                     </Form>
                 </div>

@@ -1,9 +1,12 @@
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
+import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
 import { apiGet, apiPatch, apiPost } from "@/lib/api";
 import {
     // AuthUser,
     login,
     setEmailForPasswordReset,
     setOtpSent,
+    setSigninFlow,
     setSignupFlow,
     setSuccessMessage,
     setUserIdAfterSignup,
@@ -118,6 +121,55 @@ export function useLogin() {
         },
         onError: (error) => {
             console.error(error);
+        },
+    });
+}
+
+export function useRequestLogin() {
+    const dispatch = useDispatch();
+
+    return useMutation({
+        mutationKey: ["requestLogin"],
+        mutationFn: async (data: { email: string }) => {
+            return await apiPost<{ message: string }>("/enterprise/sso/request-login/", data);
+        },
+        onSuccess: () => {
+            dispatch(setSigninFlow("otp"));
+
+            toast(<SuccessToast description="If your email is registered, you will receive a one time pin." />);
+        },
+        onError: (error) => {
+            console.error("SSO code request failed:", error);
+
+            toast(<ErrorToast description="An error occurred while creating sso code, please try again." />);
+        },
+    });
+}
+
+export function useVerifyLogin() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationKey: ["verifyLogin"],
+        mutationFn: async (data: { email: string; code: string }) => {
+            return await apiPost<LoginResponse>("/enterprise/sso/verify-login/", data);
+        },
+        onSuccess: (data) => {
+            const admin = data.data.is_admin;
+            console.log(admin);
+            dispatch(login(data));
+            navigate(admin ? "/dashboard/admin" : "/dashboard/user");
+        },
+        onError: (error) => {
+            console.error("SSO code request failed:", error);
+
+            toast(
+                <ErrorToast
+                    heading="Failed to Send SSO Code"
+                    description={"We couldn't send the SSO code. Please check your email and try again."}
+                />,
+            );
         },
     });
 }

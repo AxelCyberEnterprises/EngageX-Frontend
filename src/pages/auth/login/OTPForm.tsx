@@ -2,9 +2,11 @@ import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { useVerifyLogin } from "@/hooks/auth";
 import { RootState } from "@/store";
 import { setSigninFlow } from "@/store/slices/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { ArrowLeft } from "lucide-react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -21,13 +23,16 @@ type FormType = z.infer<typeof OTPSchema>;
 const OTPForm = () => {
     const { companyEmail } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
+    const { mutate: verifyLogin, isPending } = useVerifyLogin();
 
     const form = useForm<FormType>({
         resolver: zodResolver(OTPSchema),
         defaultValues: useMemo(() => ({ otp: "" }), []),
     });
 
-    // const handleSubmit = () => {};
+    const handleSubmit = ({ otp }: FormType) => {
+        verifyLogin({ email: companyEmail, code: otp });
+    };
 
     return (
         <section className="h-dvh flex items-center justify-center py-8">
@@ -49,24 +54,27 @@ const OTPForm = () => {
                     </div>
 
                     <Form {...form}>
-                        <form
-                            className="grid gap-7.5"
-                            onSubmit={form.handleSubmit(() => dispatch(setSigninFlow("otp")))}
-                        >
+                        <form className="grid gap-7.5" onSubmit={form.handleSubmit(handleSubmit)}>
                             <ControlledFieldWrapper
                                 control={form.control}
                                 name="otp"
                                 render={({ field }) => (
-                                    <InputOTP maxLength={6} {...field}>
+                                    <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS} {...field}>
                                         <InputOTPGroup className="gap-2.5 mx-auto">
                                             {Array.from({ length: 6 }, (_, index) => (
-                                                <InputOTPSlot key={index} index={index} className="size-12 rounded-md border border-light-silver" />
+                                                <InputOTPSlot
+                                                    key={index}
+                                                    index={index}
+                                                    className="size-12 rounded-md border border-light-silver"
+                                                />
                                             ))}
                                         </InputOTPGroup>
                                     </InputOTP>
                                 )}
                             />
-                            <Button className="h-12">Login</Button>
+                            <Button className="h-12" type="submit" disabled={isPending} isLoading={isPending}>
+                                Login
+                            </Button>
                         </form>
                     </Form>
                 </div>
