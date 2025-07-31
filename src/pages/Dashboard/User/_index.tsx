@@ -1,10 +1,13 @@
 import MultiStepAgreement from "@/components/dashboard/agreementModal/modal";
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
 import { Button } from "@/components/ui/button";
+import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
+import usePerformanceChart from "@/hooks/usePerformanceChart";
 import { RootState } from "@/store";
 import { ISession } from "@/types/sessions";
 import { UseQueryResult } from "@tanstack/react-query";
+import { Info } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -14,6 +17,8 @@ import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
+import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress";
+import ShadLineChart from "../../../components/dashboard/ShadLineChart";
 
 interface DashboardData {
     latest_session_dict: {
@@ -42,16 +47,77 @@ interface DashboardData {
 }
 
 const UserDashboardHome: React.FC = () => {
-    // --- Selectors and State ---
     const profile = useSelector((state: RootState) => state.profile.data);
     const [showAgreementModal, setShowAgreementModal] = useState(false);
     const { data, isLoading } = useDashboardData() as UseQueryResult<DashboardData, Error>;
     const user = useSelector((state: RootState) => state.auth.user);
+    useEffect(() => {
+        const agreementModalShown = localStorage.getItem("agreementModalShown");
+        if ((user?.first_login || user?.first_time_verification) && !agreementModalShown) {
+            setShowAgreementModal(true);
+            localStorage.setItem("agreementModalShown", "true");
+        }
+    }, [user?.first_login, user?.first_time_verification]);
+
+    const [goalsData, setGoalsData] = useState({
+        audience_engagement: 0,
+        body_language: 0,
+        captured_impact: 0,
+        emotional_impact: 0,
+        language_and_word_choice: 0,
+        structure_and_clarity: 0,
+        transformative_communication: 0,
+        vocal_variety: 0,
+    });
+    useEffect(() => {
+        const defaultGoalData = {
+            audience_engagement: 0,
+            body_language: 0,
+            captured_impact: 0,
+            emotional_impact: 0,
+            language_and_word_choice: 0,
+            structure_and_clarity: 0,
+            transformative_communication: 0,
+            vocal_variety: 0,
+        };
+
+        if (data?.goals_and_achievement) {
+            setGoalsData(data?.goals_and_achievement);
+        } else {
+            setGoalsData(defaultGoalData);
+        }
+    }, [data]);
+
+    const [goalFraction, setGoalFraction] = useState("0/0");
+    useEffect(() => {
+        const totalGoals = Object.keys(goalsData).length;
+        const goalsAbove80 = Object.values(goalsData).filter((value) => value >= 8).length;
+        const fraction = `${goalsAbove80}/${totalGoals}`;
+        setGoalFraction(fraction);
+        console.log(`You have completed ${fraction} of your goals`);
+    }, [goalsData]);
+    const [numerator, denominator] = goalFraction.split("/").map(Number);
     const { mutate: authQuestions } = useAddAuthQuestion();
+    // const userIdAfterSignup = useSelector((state: RootState) => state.auth.userIdAfterSignup);
+    const userQuestions = JSON.parse(localStorage.getItem("userQuestions") || "{}");
     const signupData = useSelector((state: RootState) => state.auth.signupData);
+    console.log(userQuestions.role);
+    console.log(signupData);
+    useEffect(() => {
+        if (profile?.user_intent && profile?.purpose) {
+            authQuestions({
+                userId: String(user?.user_id),
+                purpose: signupData?.planQuestion.toLowerCase() ?? "",
+                user_intent: signupData?.roleQuestion.toLowerCase() ?? "",
+                email: user?.email,
+                password: signupData?.password,
+            });
+        }
+    }, []);
     const score = data?.latest_session_dict?.session_score || 0;
+    // const agreementTrigger: number = data?.performance_analytics?.length || 0;
+
     const sessionType = data?.latest_session_dict?.session_type || "Public Speaking";
-    const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
     const cardsData = [
         {
             image: speakingBg,
@@ -117,33 +183,109 @@ const UserDashboardHome: React.FC = () => {
         },
     ];
 
-    // --- useEffects ---
-    useEffect(() => {
-        const agreementModalShown = localStorage.getItem("agreementModalShown");
-        if ((user?.first_login || user?.first_time_verification) && !agreementModalShown) {
-            setShowAgreementModal(true);
-            localStorage.setItem("agreementModalShown", "true");
-        }
-    }, [user?.first_login, user?.first_time_verification]);
+    const greenCheckSvg = (
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M9 4.5C9 2.01472 6.98528 0 4.5 0C2.01472 0 0 2.01472 0 4.5C0 6.98528 2.01472 9 4.5 9C2.01472 9 0 11.0147 0 13.5C0 15.9853 2.01472 18 4.5 18C6.98528 18 9 15.9853 9 13.5C9 15.9853 11.0147 18 13.5 18C15.9853 18 18 15.9853 18 13.5C18 11.0147 15.9853 9 13.5 9C15.9853 9 18 6.98528 18 4.5C18 2.01472 15.9853 0 13.5 0C11.0147 0 9 2.01472 9 4.5Z"
+                fill="#64BA9E"
+            />
+        </svg>
+    );
 
-    useEffect(() => {
-        if (profile?.user_intent && profile?.purpose) {
-            authQuestions({
-                userId: String(user?.user_id),
-                purpose: signupData?.planQuestion.toLowerCase() ?? "",
-                user_intent: signupData?.roleQuestion.toLowerCase() ?? "",
-                email: user?.email,
-                password: signupData?.password,
-            });
-        }
-    }, [authQuestions, profile?.purpose, profile?.user_intent, signupData?.password, signupData?.planQuestion, signupData?.roleQuestion, user?.email, user?.user_id]);
+    const yellowSvg = (
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M9 4.5C9 2.01472 6.98528 0 4.5 0C2.01472 0 0 2.01472 0 4.5C0 6.98528 2.01472 9 4.5 9C2.01472 9 0 11.0147 0 13.5C0 15.9853 2.01472 18 4.5 18C6.98528 18 9 15.9853 9 13.5C9 15.9853 11.0147 18 13.5 18C15.9853 18 18 15.9853 18 13.5C18 11.0147 15.9853 9 13.5 9C15.9853 9 18 6.98528 18 4.5C18 2.01472 15.9853 0 13.5 0C11.0147 0 9 2.01472 9 4.5Z"
+                fill="#C29C81"
+            />
+        </svg>
+    );
+    const goals = [
+        {
+            title: "Vocal Variety",
+            percent: 0,
+            color: "#64BA9E",
+        },
+        {
+            title: "Overall Captured Impact",
+            percent: 0,
+            color: "#64BA9E",
+        },
+        {
+            title: "Emotional Impact",
+            percent: 0,
+            color: "#ECB25E",
+        },
+        {
+            title: "Body Language",
+            percent: 0,
+            color: "#64BA9E",
+        },
+        {
+            title: "Transformative Communication",
+            percent: 0,
+            color: "#64BA9E",
+        },
+        {
+            title: "Audience Engagement",
+            percent: 0,
+            color: "#64BA9F",
+        },
+        {
+            title: "Structure and Clarity",
+            percent: 0,
+            color: "#ECB25E",
+        },
+        {
+            title: "Language and Word Choice",
+            percent: 0,
+            color: "#ECB25E",
+        },
+    ];
+    const updatedGoals = goals.map((goal) => {
+        const key = goal.title.toLowerCase().replace(/\s+/g, "_"); // e.g. "Audience Engagement" -> "audience_engagement"
+        const rawValue = goalsData[key as keyof typeof goalsData];
 
+        return {
+            ...goal,
+            percent: rawValue !== undefined ? rawValue * 10 : goal.percent,
+        };
+    });
+
+    // function applyChunkOffset(arr: Array<{ [key: string]: any }>, chunkSize = 7, offset = 4) {
+    //     return arr.map((item, index) => {
+    //         const chunkOffset = (index + offset) * chunkSize;
+    //         return {
+    //             ...item,
+    //             chunk_offset: chunkOffset,
+    //             impact: item.impact,
+    //             trigger: item.trigger_response,
+    //             conviction: item.conviction,
+    //         };
+    //     });
+    // }
+    // const result: {
+    //     chunk_offset: number;
+    //     impact: number;
+    //     trigger: number;
+    //     conviction: number;
+    // }[] = applyChunkOffset(data?.performance_analytics?.filter(Boolean) || [], 7);
+
+    // const chartColors = {
+    //     Impact: "#252A39",
+    //     Trigger: "#40B869",
+    //     Conviction: "#F5B546",
+    // };
+    const { chartColors, chartData } = usePerformanceChart({
+        performanceAnalytics: data?.performance_analytics,
+    });
+
+    const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
     useEffect(() => {
         console.log("newChartData: ", newChartData);
         console.log(setNewChartData);
     }, [newChartData]);
 
-    // --- JSX and rest of logic ---
     if (isLoading) {
         return <UserDashboardSkeleton />;
     }
@@ -151,7 +293,7 @@ const UserDashboardHome: React.FC = () => {
     return (
         <div className="user__dashboard__index p-4 md:px-8">
             {(score ?? 0) > 10 && (score ?? 0) <= 99 && (
-                <p className="independence mb-5">You're making progress! Pick up where you left off</p>
+                <p className="independence mb-5">You’re making progress! Pick up where you left off</p>
             )}
 
             {/* cards */}
@@ -199,44 +341,161 @@ const UserDashboardHome: React.FC = () => {
                 ))}
             </div>
 
-            {/* latest session score  */}
-            <div className="session__score w-full p-5 rounded-[12px]">
-                <p className="big mb-5">Your latest session score</p>
-                <div className="mb-2 flex justify-between">
-                    <p className="dark__charcoal">{sessionType} Score</p>
-                    <p className="big">{score ?? 0}%</p>
+            <div className="flex flex-wrap">
+                <div className="w-full lg:w-6/9 lg:pe-2 mb-3">
+                    {/* latest session score  */}
+                    <div className="session__score w-full p-5 rounded-[12px]">
+                        <p className="big mb-5">Your latest session score</p>
+                        <div className="mb-2 flex justify-between">
+                            <p className="dark__charcoal">{sessionType} Score</p>
+                            <p className="big">{score ?? 0}%</p>
+                        </div>
+                        <SegmentedProgressBar percent={score ?? 0} color="#40B869" divisions={5} />
+                        {(score ?? 0) > 10 && <p className="dark__charcoal mt-6">✊Keep going! You’re improving!</p>}
+                        {(score ?? 0) === 100 && (
+                            <p className="dark__charcoal mt-6">👏 Bravo! You’ve reached the finish line!</p>
+                        )}
+                    </div>
+
+                    {/* improve past session  */}
+                    <div
+                        className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
+                        style={{ backgroundImage: `url(${improveBg})` }}
+                    >
+                        <h6 className="pb-3">Improve past session</h6>
+                        <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
+                            Select any of your previous sessions to continue practicing with the same setup, allowing
+                            you to focus directly on enhancing your skills in specific areas.
+                        </p>
+                        <Link to="performance-improvement">
+                            <Button className="bg-branding-primary hover:bg-branding-primary/90 py-3">
+                                Improve Session
+                            </Button>
+                        </Link>
+                    </div>
+
+                    {/* performance analytics */}
+                    <div className="analytics px-5 py-7 mt-6 mb-4 rounded-[8px]">
+                        <div className="flex justify-between items-center mb-6">
+                            <p className="big chinese__black">Performance Analytics</p>
+                            <div className="flex items-center">
+                                {/* <select className="me-4 px-3 py-2 rounded-[8px]">
+                  <option value="weekly">Past 7 Days</option>
+                  <option value="monthly">Past Month</option>
+                  <option value="yearly">Past Year</option>
+                </select> */}
+                                <Link to="progress-tracking?section=Performance+Analysis">
+                                    <small className="underline cursor-pointer gunmetal">View All</small>
+                                </Link>
+                            </div>
+                        </div>
+                        {(user?.first_login || user?.first_time_verification) && (
+                            <MultiStepAgreement
+                                open={showAgreementModal}
+                                onClose={() => {
+                                    setShowAgreementModal(false);
+                                    localStorage.setItem("agreementModalShown", "true");
+                                }}
+                            />
+                        )}
+                        <div className="chart__div">
+                            <ShadLineChart
+                                data={chartData.filter(Boolean).map((item) => ({
+                                    month: item.chunk_offset,
+                                    Impact: item.impact,
+                                    "Trigger Response": item.trigger,
+                                    Conviction: item.conviction,
+                                }))}
+                                colors={chartColors}
+                            />
+                        </div>
+                        <p className="mt-6">
+                            <span className="text-medium-sea-green">Trigger Response</span> measures audience engagement
+                            by tracking how specific words or phrases evoke a response or reaction.
+                        </p>
+                    </div>
                 </div>
-                <SegmentedProgressBar percent={score ?? 0} color="#40B869" divisions={5} />
-                {(score ?? 0) > 10 && <p className="dark__charcoal mt-6">✊Keep going! You're improving!</p>}
-                {(score ?? 0) === 100 && (
-                    <p className="dark__charcoal mt-6">👏 Bravo! You've reached the finish line!</p>
-                )}
-            </div>
 
-            {/* improve past session  */}
-            <div
-                className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
-                style={{ backgroundImage: `url(${improveBg})` }}
-            >
-                <h6 className="pb-3">Improve past session</h6>
-                <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
-                    Select any of your previous sessions to continue practicing with the same setup, allowing you to
-                    focus directly on enhancing your skills in specific areas.
-                </p>
-                <Link to="performance-improvement">
-                    <Button className="bg-branding-primary hover:bg-branding-primary/90 py-3">Improve Session</Button>
-                </Link>
-            </div>
+                {/* goals and achievements */}
+                <div className="w-full lg:w-3/9 lg:ps-2 mb-3 lg:mb-10">
+                    <div className="goals p-5 rounded-[12px]">
+                        <div className="flex items-center justify-between gap-2">
+                            <p className="chinese__black big">Your goals & achievements</p>
+                            <DynamicTooltip
+                                tooltipKey={"goals-and-achievements"}
+                                sideOffset={5}
+                                align="end"
+                                alignOffset={-25}
+                                className="[&_svg]:hidden [&>p]:text-black/80"
+                            >
+                                <Info className="size-4.5 shrink-0" />
+                            </DynamicTooltip>
+                        </div>
 
-            {(user?.first_login || user?.first_time_verification) && (
-                <MultiStepAgreement
-                    open={showAgreementModal}
-                    onClose={() => {
-                        setShowAgreementModal(false);
-                        localStorage.setItem("agreementModalShown", "true");
-                    }}
-                />
-            )}
+                        <div className="progress__div relative flex flex-col items-center w-full mt-7 mb-6">
+                            <SemiCircleProgress
+                                percent={(numerator ?? 0) / (denominator === 0 ? 1 : denominator)}
+                                color="#7387FF"
+                            />
+                            <h2 className="pt-20 mb-2">🎊</h2>
+                            <p className="mb-3">
+                                {numerator} Achievement{numerator === 1 ? "" : "s"} Completed
+                            </p>
+                            <h2 className="mb-3">{goalFraction}</h2>
+
+                            {numerator / denominator >= 5 / 8 && numerator / denominator < 8 / 8 && (
+                                <p className="gunmetal text-center">Yay! you’ve achieved most of your goals</p>
+                            )}
+                            {numerator / denominator === 8 / 8 && (
+                                <p className="gunmetal text-center">
+                                    Well done! You have completed 100% of your goals.
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="progress__bars__div">
+                            {updatedGoals?.map((goal, index) => (
+                                <div key={index} className="flex progress__bar__item mb-3 items-stretch justify-around">
+                                    <div className="rounded-4xl w-12 icon__bg me-2 aspect-square flex items-center justify-center">
+                                        {goal.percent >= 80 ? greenCheckSvg : yellowSvg}
+                                    </div>
+                                    <div className="w-5/6 flex flex-col justify-between h-full">
+                                        <div className="flex justify-between mb-2 mt-1.5 dark__charcoal">
+                                            <small>{goal.title}</small>
+                                            <small>
+                                                {goal.percent > 70
+                                                    ? "Level 3"
+                                                    : goal.percent > 30
+                                                      ? "Level 2"
+                                                      : "Level 1"}
+                                            </small>
+                                        </div>
+                                        <div className="mt-1">
+                                            <SegmentedProgressBar
+                                                percent={goal.percent}
+                                                color={
+                                                    goal.percent >= 80
+                                                        ? "#64BA9E"
+                                                        : goal.percent >= 10
+                                                          ? "#ECB25E"
+                                                          : "#C29C81"
+                                                }
+                                                divisions={10}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* <Link to="progress-tracking">
+                            <Button className="bg-branding-primary hover:bg-branding-primary/90 py-3 w-full mt-6">
+                                View Goals
+                            </Button>
+                        </Link> */}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
