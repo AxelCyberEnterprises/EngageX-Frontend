@@ -107,14 +107,7 @@ function UserDashboardRoutes() {
             <Route path="performance-improvement" element={<PerformanceImprovement />} />
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<UserSettings />} />
-            <Route
-                path="enterprise-specialty"
-                element={
-                    <AccessGate>
-                        <EnterpriseSpecialty />
-                    </AccessGate>
-                }
-            />
+            <Route path="enterprise-specialty" element={<EnterpriseSpecialty />} />
             <Route path="help" element={<HelpPage />}>
                 <Route index element={<Help />} />
                 <Route path="safety" element={<SafetyPrivacy />} />
@@ -145,46 +138,11 @@ function SessionRoutes() {
             <Route path="pitch-practice-session/:id" element={<PitchPracticeSession />} />
             <Route path="public-speaking-session/:id" element={<PublicSpeakingSession />} />
             <Route path="presentation-practice-session/:id" element={<PresentationPracticeSession />} />
-            <Route
-                path="the-rookie-media-training/:id"
-                element={
-                    <AccessGate>
-                        <TheRookieMediaTraining />
-                    </AccessGate>
-                }
-            />
-            <Route
-                path="the-rookie-speaking/:id"
-                element={
-                    <AccessGate>
-                        <TheRookieSpeaking />
-                    </AccessGate>
-                }
-            />
-            <Route
-                path="NFL-coach-room/:id"
-                element={
-                    <AccessGate>
-                        <NFLMediaTraining />
-                    </AccessGate>
-                }
-            />
-            <Route
-                path="NBA-coach-room/:id"
-                element={
-                    <AccessGate>
-                        <NBAMediaTraining />
-                    </AccessGate>
-                }
-            />
-            <Route
-                path="WNBA-coach-room/:id"
-                element={
-                    <AccessGate>
-                        <WNBAMediaTraining />
-                    </AccessGate>
-                }
-            />
+            <Route path="the-rookie-media-training/:id" element={<TheRookieMediaTraining />} />
+            <Route path="the-rookie-speaking/:id" element={<TheRookieSpeaking />} />
+            <Route path="NFL-coach-room/:id" element={<NFLMediaTraining />} />
+            <Route path="NBA-coach-room/:id" element={<NBAMediaTraining />} />
+            <Route path="WNBA-coach-room/:id" element={<WNBAMediaTraining />} />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
@@ -210,9 +168,11 @@ function MainRoutes() {
                 <Route
                     path="dashboard/user/*"
                     element={
-                        <DashboardLayout>
-                            <UserDashboardRoutes />
-                        </DashboardLayout>
+                        <AccessGate>
+                            <DashboardLayout>
+                                <UserDashboardRoutes />
+                            </DashboardLayout>
+                        </AccessGate>
                     }
                 />
                 <Route
@@ -226,9 +186,11 @@ function MainRoutes() {
                 <Route
                     path="sessions/*"
                     element={
-                        <SessionsLayout>
-                            <SessionRoutes />
-                        </SessionsLayout>
+                        <AccessGate>
+                            <SessionsLayout>
+                                <SessionRoutes />
+                            </SessionsLayout>
+                        </AccessGate>
                     }
                 />
             </Routes>
