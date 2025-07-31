@@ -3,7 +3,6 @@ import "./App.css";
 import AppRoutes from "./components/AppRoutes";
 import ProfileLoader from "./components/profileLoader/ProfileLoader";
 import "./styles/index.scss";
-import { ThemeProvider } from "./context/ThemeContext";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -23,10 +22,8 @@ const queryClient = new QueryClient({
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <ThemeProvider>
-                <ProfileLoader />
-                <AppRoutes />
-            </ThemeProvider>
+            <ProfileLoader />
+            <AppRoutes />
         </QueryClientProvider>
     );
 }

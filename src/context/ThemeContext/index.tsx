@@ -1,28 +1,8 @@
 import Logo from "@/assets/images/svgs/logo.svg";
 import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
-import { createContext, useContext, useEffect, useState } from "react";
-
-export interface Theme {
-    primaryColor: string;
-    secondaryColor: string;
-    logoUrl: string;
-    faviconUrl: string;
-}
-
-const defaultTheme: Theme = {
-    primaryColor: "#262b3a",
-    secondaryColor: "#10161e",
-    logoUrl: "Logo",
-    faviconUrl: "/vite.svg",
-};
-
-const ThemeContext = createContext<{
-    theme: Theme;
-    setTheme: (updates: Partial<Theme>) => void;
-}>({
-    theme: defaultTheme,
-    setTheme: () => {},
-});
+import { useEffect, useState } from "react";
+import { defaultTheme, ThemeContext } from "./hook";
+import { Theme } from "./types";
 
 const LOCAL_KEY = "branding";
 
@@ -54,27 +34,27 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
                 primaryColor: profile.primary_color || "#262b3a",
                 secondaryColor: profile.secondary_color || "#10161e",
                 logoUrl: profile.logo || Logo,
-                faviconUrl: profile.favicon || "/vite.svg",
+                faviconUrl: profile.favicon || "/favicon.svg",
             });
         }
     }, [profile]);
 
     // Update favicon when it changes
-    useEffect(() => {
-        const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-        if (link && theme.faviconUrl) {
-            link.href = theme.faviconUrl;
-        }
-    }, [theme.faviconUrl]);
+    // useEffect(() => {
+    //     const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    //     if (link && theme.faviconUrl) {
+    //         link.href = theme.faviconUrl;
+    //     }
+    // }, [theme.faviconUrl]);
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
             <style>
                 {`
                     :root {
-                        --primary: ${theme.primaryColor};
-                        --secondary: ${theme.secondaryColor};
-                        --secondary-foreground: ${theme.primaryColor};
+                        --branding-primary: ${theme.primaryColor};
+                        --branding-secondary: ${theme.secondaryColor};
+                        --branding-secondary-foreground: ${theme.primaryColor};
                     }
                 `}
             </style>
@@ -82,5 +62,3 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         </ThemeContext.Provider>
     );
 };
-
-export const useTheme = () => useContext(ThemeContext);

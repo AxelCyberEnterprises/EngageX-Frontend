@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg";
+import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link, useLocation} from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { useForgotPassword } from "@/hooks/auth";
-import authPageImage2 from "@/assets/images/jpegs/authPage-image-2.jpeg"
 import { setAuthPageImage } from "@/store/slices/authSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { z } from "zod";
 
 const forgotPasswordSchema = z.object({
     email: z.string().email("Invalid email address").min(1, "Email is required"),
@@ -17,11 +17,11 @@ const forgotPasswordSchema = z.object({
 
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 const ForgotPassword: React.FC = () => {
-    const location = useLocation()
-    const dispatch = useDispatch()
-    useEffect(()=>{
-        dispatch(setAuthPageImage(authPageImage2))
-    },[location.pathname])
+    const location = useLocation();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setAuthPageImage(authPageImage2));
+    }, [location.pathname]);
     const form = useForm<ForgotPasswordFormValues>({
         resolver: zodResolver(forgotPasswordSchema),
         defaultValues: {
@@ -78,7 +78,7 @@ const ForgotPassword: React.FC = () => {
                         <Button
                             type="submit"
                             isLoading={isPending}
-                            className="text-white flex items-center justify-center flex-[4.5] bg-primary hover:bg-primary/90 h-auto py-4 rounded-lg"
+                            className="text-white flex items-center justify-center flex-[4.5] bg-[#262b3a] hover:bg-[#262b3ada] h-auto py-4 rounded-lg"
                         >
                             Get OTP
                         </Button>

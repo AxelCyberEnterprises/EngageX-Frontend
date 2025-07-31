@@ -339,7 +339,7 @@ const PitchSessionReport: React.FC = () => {
                                             to="https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="bg-primary hover:bg-primary/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
+                                            className="bg-branding-primary hover:bg-branding-primary/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
                                             onClick={() => setDialogOneOpen(false)}
                                         >
                                             Speak with A Coach
@@ -744,7 +744,7 @@ const PitchSessionReport: React.FC = () => {
                                 View session history
                             </Link>
                             <Button
-                                className="flex gap-1 py-5 bg-primary hover:bg-primary/90"
+                                className="flex gap-1 py-5 bg-branding-primary hover:bg-branding-primary/90"
                                 onClick={() => navigate(newSessionNavigate)}
                             >
                                 Start new session

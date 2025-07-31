@@ -83,13 +83,13 @@ const TopNav: React.FC = () => {
                 <div className="line h-4.5 mx-3 w-0.5 bg-gray"></div>
                 <div className="user__image">
                     <div
-                        className={`w-11 h-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 ${!profile?.profile_picture &&  'border border-[#D0D5DD] bg-[#D0D5DD]'}`}
+                        className={`size-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 ${!profile?.profile_picture &&  'border border-[#D0D5DD] bg-[#D0D5DD]'}`}
                     >
                         {profile?.profile_picture ? (
                             <img src={profile?.profile_picture} alt={`user image`} className="w-full h-full object-cover" />
                         ) : (
                             <span
-                                className="font-medium text-sm leading-none mt-1 text-[#10161e]"
+                                className="font-medium text-sm leading-none text-[#10161e]"
                             >
                                 {initials}
                             </span>

@@ -1,16 +1,16 @@
-import React, { useEffect, useRef } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { setAuthPageImage, setSignupFlow, useAutoClearSuccessMessage } from "../../store/slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
+import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
 import { Form } from "@/components/ui/form";
 import { useEmailConfirmation } from "@/hooks/auth";
-import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg"
+import { RootState } from "@/store";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useEffect, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { z } from "zod";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { setAuthPageImage, setSignupFlow, useAutoClearSuccessMessage } from "../../store/slices/authSlice";
 
 const verificationSchema = z.object({
     code: z.string().length(6, "Verification code must be 6 characters"),
@@ -24,12 +24,10 @@ const Confirmation: React.FC = () => {
     const signupData = useSelector((state: RootState) => state.auth.signupData);
     const successMessage = useSelector((state: RootState) => state.auth.successMessage);
 
-
-
-      const location = useLocation()
-                    useEffect(()=>{
-                        dispatch(setAuthPageImage(authPageImage1))
-                    },[location.pathname])
+    const location = useLocation();
+    useEffect(() => {
+        dispatch(setAuthPageImage(authPageImage1));
+    }, [location.pathname]);
     const form = useForm<VerificationFormValues>({
         resolver: zodResolver(verificationSchema),
         defaultValues: { code: "" },
@@ -42,14 +40,16 @@ const Confirmation: React.FC = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const value = e.target.value;
 
-        if (/^\d$/.test(value)) {  // Allow only single digit
+        if (/^\d$/.test(value)) {
+            // Allow only single digit
             const newCode = form.getValues("code").split("");
             newCode[index] = value;
             form.setValue("code", newCode.join(""));
             if (index < 5 && inputRefs.current[index + 1]) {
                 inputRefs.current[index + 1]?.focus();
             }
-        } else if (value === "") {  // Handle backspace
+        } else if (value === "") {
+            // Handle backspace
             const newCode = form.getValues("code").split("");
             newCode[index] = "";
             form.setValue("code", newCode.join(""));
@@ -123,7 +123,7 @@ const Confirmation: React.FC = () => {
                         <Button
                             type="submit"
                             isLoading={isPending}
-                            className="text-white flex-4/6 py-6 bg-primary hover:bg-primary/90 rounded-lg"
+                            className="text-white flex-4/6 py-6 bg-[#262b3a] hover:bg-[#262b3ada] rounded-lg"
                         >
                             Verify
                         </Button>

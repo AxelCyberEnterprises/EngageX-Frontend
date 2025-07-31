@@ -240,7 +240,7 @@ const RookieRoomForm = () => {
                         <Button
                             type="button"
                             disabled={sportType === "mlb"}
-                            className="bg-primary hover:bg-primary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            className="bg-branding-primary hover:bg-branding-primary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
                                     openDialog({
