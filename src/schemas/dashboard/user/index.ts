@@ -11,7 +11,16 @@ export const BaseSessionSetupSchema = z.object({
         }),
     ),
     virtual_environment: z.enum(
-        ["conference_room", "pitch_studio", "board_room_1", "board_room_2", "nba_room", "wnba_room", "nfl_room", "mlb_room"],
+        [
+            "conference_room",
+            "pitch_studio",
+            "board_room_1",
+            "board_room_2",
+            "nba_room",
+            "wnba_room",
+            "nfl_room",
+            "mlb_room",
+        ],
         {
             required_error: "Virtual environment is required",
         },
@@ -36,7 +45,7 @@ export const RookieRoomSchema = BaseSessionSetupSchema.extend({
     enterprise_settings: z
         .object({
             enterprice_type: z.enum(["rookie"]),
-            rookie_type: z.enum(["media_training", "speaking", "coach"]),
+            rookie_type: z.enum(["media_training", "speaking", "coach", "gm"]),
             sport_type: z.string(),
             speaker_notes: z.string(),
         })

@@ -1,5 +1,6 @@
 import { apiGet, apiPatch, apiPost } from "@/lib/api";
 import { tokenManager } from "@/lib/utils";
+import { IEnterpriseUser } from "@/types/user";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface UserProfile {
@@ -49,6 +50,13 @@ export function useFullUserProfile() {
             return response;
         },
         enabled: !!token,
+    });
+}
+
+export function useEnterpriseUsers() {
+    return useQuery({
+        queryKey: ["enterpriseUsers"],
+        queryFn: () => apiGet<IEnterpriseUser[]>("/enterprise/enterprise-users/"),
     });
 }
 
