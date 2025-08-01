@@ -76,7 +76,7 @@ const RookieRoomForm = () => {
     } else if (rookieType === "media_training") {
         videoSrc =
             "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/Media+Intro.MP4";
-    } else if (rookieType === "speaking") {
+    } else if (rookieType === "gm") {
         videoSrc = "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4";
     }
 
@@ -159,7 +159,7 @@ const RookieRoomForm = () => {
                                             {trainingTypeOptions.map(({ name, value }, index) => (
                                                 <FormItem
                                                     key={value + index}
-                                                    className="first:border-r nth-3:border-t border-bright-gray nth-3:col-span-2"
+                                                    className="nth-2:border-r first:border-b border-bright-gray first:col-span-2"
                                                 >
                                                     <FormLabel className="cursor-pointer">
                                                         <FormControl className="hidden">

@@ -156,20 +156,13 @@ export function useVerifyLogin() {
             return await apiPost<LoginResponse>("/enterprise/sso/verify-login/", data);
         },
         onSuccess: (data) => {
-            const admin = data.data.is_admin;
-            console.log(admin);
             dispatch(login(data));
-            navigate(admin ? "/dashboard/admin" : "/dashboard/user");
+            navigate("/dashboard/user");
         },
         onError: (error) => {
             console.error("SSO code request failed:", error);
 
-            toast(
-                <ErrorToast
-                    heading="Failed to Send SSO Code"
-                    description={"We couldn't send the SSO code. Please check your email and try again."}
-                />,
-            );
+            toast(<ErrorToast description={error.message} />);
         },
     });
 }

@@ -1,14 +1,17 @@
+import practiceBg from "@/assets/images/pngs/practice-bg-dashboard.png";
+import RookieBg from "@/assets/images/pngs/rookie-bg.png";
 import MultiStepAgreement from "@/components/dashboard/agreementModal/modal";
+import DashboardCard from "@/components/dashboard/DashboardCard";
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
 import { Button } from "@/components/ui/button";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
+import { useEnterpriseUsers } from "@/hooks/settings";
 import { RootState } from "@/store";
 import { ISession } from "@/types/sessions";
 import { UseQueryResult } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import practiceBg from "../../../assets/images/jpegs/practice-bg-dashboard.jpeg";
 import presentationBg from "../../../assets/images/jpegs/presentation-bg.jpeg";
 import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
@@ -45,17 +48,22 @@ const UserDashboardHome: React.FC = () => {
     // --- Selectors and State ---
     const profile = useSelector((state: RootState) => state.profile.data);
     const [showAgreementModal, setShowAgreementModal] = useState(false);
-    const { data, isLoading } = useDashboardData() as UseQueryResult<DashboardData, Error>;
+    const { data: dashboardData, isLoading: isDashboardDataLoading } = useDashboardData() as UseQueryResult<
+        DashboardData,
+        Error
+    >;
+    const { data: enterpriseUsersData, isLoading: isEnterpriseUsersLoading } = useEnterpriseUsers();
     const user = useSelector((state: RootState) => state.auth.user);
     const { mutate: authQuestions } = useAddAuthQuestion();
     const signupData = useSelector((state: RootState) => state.auth.signupData);
-    const score = data?.latest_session_dict?.session_score || 0;
-    const sessionType = data?.latest_session_dict?.session_type || "Public Speaking";
-    const [newChartData, setNewChartData] = useState([data?.performance_analytics ?? null]);
+    const score = dashboardData?.latest_session_dict?.session_score || 0;
+    const sessionType = dashboardData?.latest_session_dict?.session_type || "Public Speaking";
+    const [newChartData, setNewChartData] = useState([dashboardData?.performance_analytics ?? null]);
+
     const cardsData = [
         {
             image: speakingBg,
-            title: "Public Speaking / Storytelling",
+            title: "Public Speaking",
             text: "Improve delivery & structure with real-time AI feedback and Coaching expertise",
             buttonText: "Start Public Speaking",
             href: "./public-speaking",
@@ -116,6 +124,10 @@ const UserDashboardHome: React.FC = () => {
             ),
         },
     ];
+    // Check if user is an enterprise user and get their user type
+    const enterpriseUser = enterpriseUsersData?.find((enterpriseUser) => enterpriseUser.user.email === user?.email);
+    const isEnterpriseUser = !!enterpriseUser;
+    const enterpriseUserType = enterpriseUser?.user_type;
 
     // --- useEffects ---
     useEffect(() => {
@@ -136,7 +148,16 @@ const UserDashboardHome: React.FC = () => {
                 password: signupData?.password,
             });
         }
-    }, [authQuestions, profile?.purpose, profile?.user_intent, signupData?.password, signupData?.planQuestion, signupData?.roleQuestion, user?.email, user?.user_id]);
+    }, [
+        authQuestions,
+        profile?.purpose,
+        profile?.user_intent,
+        signupData?.password,
+        signupData?.planQuestion,
+        signupData?.roleQuestion,
+        user?.email,
+        user?.user_id,
+    ]);
 
     useEffect(() => {
         console.log("newChartData: ", newChartData);
@@ -144,7 +165,7 @@ const UserDashboardHome: React.FC = () => {
     }, [newChartData]);
 
     // --- JSX and rest of logic ---
-    if (isLoading) {
+    if (isDashboardDataLoading || isEnterpriseUsersLoading) {
         return <UserDashboardSkeleton />;
     }
 
@@ -156,35 +177,45 @@ const UserDashboardHome: React.FC = () => {
 
             {/* cards */}
             <div className="flex flex-wrap -mx-2 items-stretch">
-                <div className="w-full lg:w-1/4 px-2 mb-3">
-                    <div className="index__card p-4 flex flex-col h-full justify-between rounded-[12px] relative overflow-hidden">
-                        <img src={cardFlower} alt="card flower background" className="absolute top-0 right-0 h-1/2" />
-                        <small className="independence mb-3.5">Session Credits</small>
-                        <h4 className="gunmetal mb-5.5">{data?.available_credit}</h4>
-                        <Link className="w-full" to={"/dashboard/user/settings?section=credits"}>
-                            {data?.available_credit === 0 ? (
-                                <button className="p-3 w-full rounded-md">Buy credits</button>
-                            ) : (
-                                <button className="p-3 w-full rounded-md">Buy more credits</button>
-                            )}
+                {isEnterpriseUser && enterpriseUserType === "general" ? (
+                    <DashboardCard bgImage={speakingBg} className="block">
+                        <Link to="/dashboard/user/the-coaching-room">
+                            <button className="p-3 w-full rounded-md">Start Coaching</button>
                         </Link>
-                    </div>
-                </div>
-                {cardsData.map((card, index) => (
-                    <div key={index} className="w-full md:w-1/3 lg:w-1/4 px-2 mb-3 hidden md:block">
-                        <div
-                            className="index__card other__cards p-4 flex flex-col h-full justify-between rounded-[8px] relative overflow-hidden"
-                            style={{
-                                background: `linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${card.image})`,
-                            }}
-                        >
-                            <h6 className="text-white mb-4">{card.title}</h6>
-                            <small className="light__silver mb-5">{card.text}</small>
-                            <Link to={card.href}>
-                                <button className="p-3 w-full rounded-md">{card.buttonText}</button>
+                    </DashboardCard>
+                ) : isEnterpriseUser && enterpriseUserType === "rookie" ? (
+                    <DashboardCard bgImage={RookieBg} className="block">
+                        <Link to="/dashboard/user/the-rookie-room">
+                            <button className="p-3 w-full rounded-md">Start Rookie</button>
+                        </Link>
+                    </DashboardCard>
+                ) : (
+                    <div className="w-full lg:w-1/4 px-2 mb-3">
+                        <div className="index__card p-4 flex flex-col h-full justify-between rounded-[12px] relative overflow-hidden">
+                            <img
+                                src={cardFlower}
+                                alt="card flower background"
+                                className="absolute top-0 right-0 h-1/2"
+                            />
+                            <small className="independence mb-3.5">Session Credits</small>
+                            <h4 className="gunmetal mb-5.5">{dashboardData?.available_credit}</h4>
+                            <Link className="w-full" to={"/dashboard/user/settings?section=credits"}>
+                                {dashboardData?.available_credit === 0 ? (
+                                    <button className="p-3 w-full rounded-md">Buy credits</button>
+                                ) : (
+                                    <button className="p-3 w-full rounded-md">Buy more credits</button>
+                                )}
                             </Link>
                         </div>
                     </div>
+                )}
+
+                {cardsData.map((card, index) => (
+                    <DashboardCard key={index} bgImage={card.image}>
+                        <Link to={card.href}>
+                            <button className="p-3 w-full rounded-md">{card.buttonText}</button>
+                        </Link>
+                    </DashboardCard>
                 ))}
             </div>
 
