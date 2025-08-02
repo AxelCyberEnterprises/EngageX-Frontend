@@ -26,7 +26,7 @@ const CoachingForm = () => {
         resolver: zodResolver(CoachingSchema),
         defaultValues: useMemo(
             () => ({
-                session_type: "coaching",
+                session_type: "enterprise",
                 virtual_environment: "conference_room",
                 goals: [{ id: 1, goal: "" }],
             }),

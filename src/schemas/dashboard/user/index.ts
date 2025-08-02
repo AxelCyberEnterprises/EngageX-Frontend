@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const BaseSessionSetupSchema = z.object({
     session_name: z.string({ required_error: "Session name is required" }).min(1, "Session name is required"),
-    session_type: z.enum(["pitch", "public", "presentation", "enterprise", "coaching"]),
+    session_type: z.enum(["pitch", "public", "presentation", "enterprise"]),
     goals: z.array(
         z.object({
             id: z.number(),
