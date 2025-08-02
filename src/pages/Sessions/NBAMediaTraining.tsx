@@ -83,7 +83,14 @@ const NBAMediaTraining: React.FC = () => {
     // Update questionsRef.current whenever sessionQuestions changes
     useEffect(() => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
-            questionsRef.current = (sessionQuestions as any).results;
+            const results = (sessionQuestions as any).results;
+            if (Array.isArray(results)) {
+                // Pick 6 random questions
+                const shuffled = results.sort(() => 0.5 - Math.random());
+                questionsRef.current = shuffled.slice(0, 6);
+            } else {
+                questionsRef.current = [];
+            }
         } else {
             questionsRef.current = [];
         }
