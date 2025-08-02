@@ -41,6 +41,38 @@ export function useCreatePublicSpeakingSession() {
     });
 }
 
+export function useCreateCoachingSession() {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    return useMutation({
+        mutationKey: ["createCoachingSession"],
+        mutationFn: async (data: IPOSTSessionPayload) => {
+            localStorage.removeItem("sessionData");
+            localStorage.setItem("sessionData", JSON.stringify(data));
+
+            return await apiPost<ISession>("/sessions/sessions/", data, "default");
+        },
+        onSuccess: async (data) => {
+            dispatch(closeDialog());
+            navigate(`/sessions/coaching-session/${data.id}`);
+        },
+        onError: (error) => {
+            console.error("Error creating coaching session: ", error);
+
+            dispatch(closeDialog());
+            toast(
+                <ErrorToast
+                    {...{
+                        heading: "Error creating session",
+                        description: "An error occurred while creating session, please try again.",
+                    }}
+                />,
+            );
+        },
+    });
+}
+
 export function useCreateRookieRoomSession() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -59,20 +91,11 @@ export function useCreateRookieRoomSession() {
                 navigate(`/sessions/the-rookie-media-training/${id}`);
             } else if (enterprise_settings?.rookie_type === "speaking") {
                 navigate(`/sessions/the-rookie-speaking/${id}`);
-            } else if (
-                enterprise_settings?.rookie_type === "coach" &&
-                enterprise_settings?.sport_type === "nfl"
-            ) {
+            } else if (enterprise_settings?.rookie_type === "coach" && enterprise_settings?.sport_type === "nfl") {
                 navigate(`/sessions/NFL-coach-room/${id}`);
-            } else if (
-                enterprise_settings?.rookie_type === "coach" &&
-                enterprise_settings?.sport_type === "nba"
-            ) {
+            } else if (enterprise_settings?.rookie_type === "coach" && enterprise_settings?.sport_type === "nba") {
                 navigate(`/sessions/NBA-coach-room/${id}`);
-            } else if (
-                enterprise_settings?.rookie_type === "coach" &&
-                enterprise_settings?.sport_type === "wnba"
-            ) {
+            } else if (enterprise_settings?.rookie_type === "coach" && enterprise_settings?.sport_type === "wnba") {
                 navigate(`/sessions/WNBA-coach-room/${id}`);
             }
         },

@@ -5,6 +5,7 @@ import AccessGate from "@/pages/auth/AccessGate";
 import CancellationPolicy from "@/pages/CancellationPolicy";
 import Contact from "@/pages/Contact";
 import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
+import CoachingRoom from "@/pages/Dashboard/User/CoachingRoom";
 import EnterpriseSpecialty from "@/pages/Dashboard/User/EnterpriseSpecialty";
 import HelpPage from "@/pages/Dashboard/User/help";
 import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
@@ -90,6 +91,7 @@ function UserDashboardRoutes() {
         <Routes>
             <Route index element={<UserDashboardHome />} />
             <Route path="public-speaking" element={<PublicSpeaking />} />
+            <Route path="the-coaching-room" element={<CoachingRoom />} />
             <Route path="pitch-practice" element={<PitchPractice />} />
             <Route path="presentation-practice" element={<PresentationPractice />} />
             <Route

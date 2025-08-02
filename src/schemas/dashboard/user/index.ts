@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const BaseSessionSetupSchema = z.object({
     session_name: z.string({ required_error: "Session name is required" }).min(1, "Session name is required"),
-    session_type: z.enum(["pitch", "public", "presentation", "enterprise"]),
+    session_type: z.enum(["pitch", "public", "presentation", "enterprise", "coaching"]),
     goals: z.array(
         z.object({
             id: z.number(),
@@ -30,6 +30,10 @@ export const BaseSessionSetupSchema = z.object({
 });
 
 export const PublicSpeakingSchema = BaseSessionSetupSchema;
+
+export const CoachingSchema = BaseSessionSetupSchema.omit({
+    allow_ai_questions: true,
+});
 
 export const PitchPracticeSchema = BaseSessionSetupSchema.extend({
     slide_preview_id: z.number().optional(),
