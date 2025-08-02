@@ -11,7 +11,6 @@ import VoiceAnalytics from "@/components/session/VoiceAnalytics";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useEndSession } from "@/hooks/sessions";
-import { nflRookieQuestions } from "@/lib/questions";
 import axios from "axios";
 import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -19,8 +18,13 @@ import { useMediaQuery } from "react-responsive";
 import { useLocation, useParams } from "react-router-dom";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
+import { useGetSessionQuestions } from "@/hooks/sessions";
+import { LoaderCircle } from "lucide-react";
+import type { IQuestion } from "@/types/sessions";
+import { useAudioPlayer } from "react-use-audio-player";
 
 const WNBAMediaTraining: React.FC = () => {
+    const { load } = useAudioPlayer();
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
@@ -47,7 +51,16 @@ const WNBAMediaTraining: React.FC = () => {
     const [questionImg] = useState<string>(
         "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+Dashboard+face+card+.PNG",
     );
+    const questionsRef = useRef<IQuestion[]>([]);
+    const showQuestionTagRef = useRef(false);
+    const [stopTime, setStopTime] = useState(false);
+    const [stopStreamer, setStopStreamer] = useState(false);
+    const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
+    const questionTimerRef = useRef<number>(0.5);
+    const [startQuestionTimer, setStartQuestionTimer] = useState(false);
+    const question: IQuestion | undefined = questionsRef.current[activeQuestion];
     const location = useLocation();
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions();
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -67,32 +80,23 @@ const WNBAMediaTraining: React.FC = () => {
         }, 7000);
     };
 
-    const getQuestions = (): string[] => {
-        // Return 6 randomly selected questions from the chosen sport type
-        const allQuestions = [...nflRookieQuestions];
-        const shuffled = allQuestions.sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, 6);
-    };
-    const questionsRef = useRef<string[]>([]);
-    const showQuestionTagRef = useRef(false);
-
-    // Update questionsRef.current whenever sessionData changes
-    React.useEffect(() => {
-        questionsRef.current = getQuestions();
-    }, [sessionData]);
-
-    // Log sportType for debugging
+    // Update questionsRef.current whenever sessionQuestions changes
     useEffect(() => {
-        const sportType = sessionData?.enterprise_settings?.sport_type;
-        console.log("sportType:", sportType);
-    }, [sessionData]);
-    const [stopTime, setStopTime] = useState(false);
-    const [stopStreamer, setStopStreamer] = useState(false);
-    const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
-    const questionTimerRef = useRef<number>(0.5);
-    const [startQuestionTimer, setStartQuestionTimer] = useState(false);
-    const question = questionsRef.current[activeQuestion];
-    // const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
+        if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
+            questionsRef.current = (sessionQuestions as any).results;
+        } else {
+            questionsRef.current = [];
+        }
+    }, [sessionQuestions]);
+
+    useEffect(() => {
+        if (isQuestionDialogOpen && question && question.audio_url) {
+            load(question.audio_url, {
+                initialVolume: 0.75,
+                autoplay: true,
+            });
+        }
+    }, [isQuestionDialogOpen, activeQuestion]);
 
     const answerQuestion = () => {
         showQuestionTagRef.current = true;
@@ -354,33 +358,40 @@ const WNBAMediaTraining: React.FC = () => {
                         <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
                             <MessageCircleMore className="text-primary-blue" />
                         </div>
-
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4 flex-1">
                             <DialogTitle className="text-primary-blue/70 font-normal text-2xl">Question</DialogTitle>
-                            <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
-
-                            <div className="flex justify-end gap-3">
-                                <Button
-                                    className="bg-transparent hover:bg-bright-gray text-independence py-6"
-                                    onClick={() => nextQuestion()}
-                                >
-                                    {activeQuestion >= questionsRef.current.length - 1
-                                        ? "Finish"
-                                        : startQuestionTimer
-                                          ? "Next Question"
-                                          : "Skip"}
-                                </Button>
-                                <Button
-                                    className="bg-primary-blue hover:bg-primary-blue/80 py-6"
-                                    onClick={() => answerQuestion()}
-                                    disabled={startQuestionTimer}
-                                >
-                                    Answer Now
-                                </Button>
-                            </div>
+                            {getQuestionsPending ? (
+                                <DialogDescription className="flex items-center justify-center py-10 w-full">
+                                    <LoaderCircle className="size-4 animate-spin text-primary-blue" />
+                                </DialogDescription>
+                            ) : (
+                                <>
+                                    <DialogDescription className="text-primary-blue big">
+                                        {question?.question_text}
+                                    </DialogDescription>
+                                    <div className="flex justify-end gap-3 w-full">
+                                        <Button
+                                            className="bg-transparent hover:bg-bright-gray text-independence py-6"
+                                            onClick={() => nextQuestion()}
+                                        >
+                                            {activeQuestion >= questionsRef.current.length - 1
+                                                ? "Finish"
+                                                : startQuestionTimer
+                                                  ? "Next Question"
+                                                  : "Skip"}
+                                        </Button>
+                                        <Button
+                                            className="bg-primary-blue hover:bg-primary-blue/80 py-6"
+                                            onClick={() => answerQuestion()}
+                                            disabled={startQuestionTimer}
+                                        >
+                                            Answer Now
+                                        </Button>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
-
                     <img
                         src={questionImg}
                         alt="woman in blue giving a presentation"
@@ -480,7 +491,7 @@ const WNBAMediaTraining: React.FC = () => {
                                     className="rounded-md bg-white p-4 w-1/2 z-10 absolute top-5 -left-13"
                                     style={{ transform: "scale(0.70)" }}
                                 >
-                                    <p className="mb-3">{question}</p>
+                                    <p className="mb-3">{question?.question_text}</p>
                                     <TimerComponent
                                         minutes={questionTimerRef.current}
                                         start={startQuestionTimer}

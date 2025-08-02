@@ -95,3 +95,16 @@ export interface IPreviewSlideUploadResponse {
         user: number;
     };
 }
+
+export interface IQuestion {
+    id: number;
+    enterprise: number;
+    enterprise_name: string;
+    vertical: string;
+    vertical_display: string;
+    question_text: string;
+    audio_url: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+}

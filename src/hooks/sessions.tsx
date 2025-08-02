@@ -263,3 +263,12 @@ export function useRequestSessionVideo(sessionId: string | undefined) {
         },
     });
 }
+
+export function useGetSessionQuestions() {
+    return useQuery({
+        queryKey: ["getSessionQuestions"],
+        queryFn: async () => {
+            return await apiGet(`/enterprise/enterprise-questions/`, "default");
+        },
+    });
+}

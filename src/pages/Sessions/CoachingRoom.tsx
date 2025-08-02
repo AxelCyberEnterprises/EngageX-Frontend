@@ -1,30 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useRef, useState } from "react";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
+import VoiceAnalytics from "@/components/session/VoiceAnalytics";
+import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
+import VideoStreamer from "@/components/session/RecordView";
 import EngagementMetrics from "@/components/session/EngagementMetrics";
+import { useParams } from "react-router-dom";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import alert from "../../assets/images/svgs/alert.svg";
+import TimerComponent from "@/components/session/TimerComponent";
+import { useMediaQuery } from "react-responsive";
 import MobileEngagementMetrics from "@/components/session/MobileEngagementMetrics";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
-import VideoStreamer from "@/components/session/RecordView";
-import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
-import TimerComponent from "@/components/session/TimerComponent";
-import VideoPlayer from "@/components/session/VideoPlayer";
-import VoiceAnalytics from "@/components/session/VoiceAnalytics";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useEffect } from "react";
 import { useEndSession } from "@/hooks/sessions";
-import axios from "axios";
-import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import { useLocation, useParams } from "react-router-dom";
-import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
-import alert from "../../assets/images/svgs/alert.svg";
-import { useGetSessionQuestions } from "@/hooks/sessions";
-import { LoaderCircle } from "lucide-react";
-import type { IQuestion } from "@/types/sessions";
-import { useAudioPlayer } from "react-use-audio-player";
+import VideoPlayer from "@/components/session/VideoPlayer";
+import { useLocation } from "react-router-dom";
+import { sportsQuestions } from "@/lib/questions";
 
-const NBAMediaTraining: React.FC = () => {
-    const { load } = useAudioPlayer();
+const PublicSpeaking: React.FC = () => {
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
@@ -35,32 +33,23 @@ const NBAMediaTraining: React.FC = () => {
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
     const [sessionData, setSessionData] = useState<any | undefined>(undefined);
-    const [isMuted] = useState(true);
+    const [isMuted, setIsMuted] = useState(true);
     const [duration, setDuration] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+No+sound.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/thinking/1.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [questionImg] = useState<string>(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+dashboard+face+card+.JPG",
+    const [questionImg, setQuestionImg] = useState<string>(
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png",
     );
-    const questionsRef = useRef<IQuestion[]>([]);
-    const showQuestionTagRef = useRef(false);
-    const [stopTime, setStopTime] = useState(false);
-    const [stopStreamer, setStopStreamer] = useState(false);
-    const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
-    const questionTimerRef = useRef<number>(0.5);
-    const [startQuestionTimer, setStartQuestionTimer] = useState(false);
-    const question: IQuestion | undefined = questionsRef.current[activeQuestion];
     const location = useLocation();
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions();
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -72,31 +61,58 @@ const NBAMediaTraining: React.FC = () => {
     };
 
     const closeAndShowClapVideo = () => {
-        setStopStreamer(true);
-        setAllowSwitch(false);
-        setDialogOneOpen(false);
-        setTimeout(() => {
-            setDialogTwoOpen(true);
-        }, 7000);
+        if (activeQuestion < questionsRef.current.length - 1) {
+            setDialogOneOpen(false);
+            setQuestionDialogOpen(true);
+        } else {
+            setStopStreamer(true);
+            setAllowSwitch(false);
+            setDialogOneOpen(false);
+            setIsMuted(false);
+            setVideoUrl(
+                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/rookie-room-clapping.mp4",
+            );
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 7000);
+        }
     };
 
-    // Update questionsRef.current whenever sessionQuestions changes
-    useEffect(() => {
-        if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
-            questionsRef.current = (sessionQuestions as any).results;
-        } else {
-            questionsRef.current = [];
+    // Choose 5 random questions from sportsQuestions["basketball"]
+    type SportType = keyof typeof sportsQuestions;
+    const getQuestions = (): string[] => {
+        const sportType = sessionData?.enterprise_settings?.sport_type as SportType | undefined;
+        if (sportType && sportsQuestions[sportType]) {
+            // Return 6 randomly selected questions from the chosen sport type
+            const allQuestions = [...sportsQuestions[sportType]];
+            const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 6);
         }
-    }, [sessionQuestions]);
+        // Return 6 randomly selected questions from football as fallback
+        const allQuestions = [...sportsQuestions["football"]];
+        const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 6);
+    };
+    const questionsRef = useRef<string[]>([]);
+    const showQuestionTagRef = useRef(false);
 
+    // Update questionsRef.current whenever sessionData changes
+    React.useEffect(() => {
+        questionsRef.current = getQuestions();
+    }, [sessionData]);
+
+    // Log sportType for debugging
     useEffect(() => {
-        if (isQuestionDialogOpen && question && question.audio_url) {
-            load(question.audio_url, {
-                initialVolume: 0.75,
-                autoplay: true,
-            });
-        }
-    }, [isQuestionDialogOpen, activeQuestion]);
+        const sportType = sessionData?.enterprise_settings?.sport_type;
+        console.log("sportType:", sportType);
+    }, [sessionData]);
+    const [stopTime, setStopTime] = useState(false);
+    const [stopStreamer, setStopStreamer] = useState(false);
+    const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
+    const questionTimerRef = useRef<number>(0.5);
+    const [startQuestionTimer, setStartQuestionTimer] = useState(false);
+    const question = questionsRef.current[activeQuestion];
+    const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
 
     const answerQuestion = () => {
         showQuestionTagRef.current = true;
@@ -123,6 +139,11 @@ const NBAMediaTraining: React.FC = () => {
             if (prev < nQuestions - 1) {
                 // NOT last question, prepare the next one
                 setQuestionDialogOpen(false);
+                setQuestionImg(
+                    Math.random() > 0.5
+                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
+                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png",
+                );
                 setQuestionDialogOpen(true);
                 return prev + 1;
             } else {
@@ -131,6 +152,10 @@ const NBAMediaTraining: React.FC = () => {
                 setStopStreamer(true);
                 setAllowSwitch(false);
                 setDialogOneOpen(false);
+                setIsMuted(false);
+                setVideoUrl(
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
+                );
                 setTimeout(() => {
                     setDialogTwoOpen(true);
                 }, 7000);
@@ -255,6 +280,19 @@ const NBAMediaTraining: React.FC = () => {
                         const parsed = JSON.parse(event.data);
                         if (parsed.text) {
                             console.log(parsed.text);
+                            const validEmotions = [
+                                "thinking",
+                                "sorrow",
+                                "excitement",
+                                "laughter",
+                                "surprise",
+                                "interested",
+                            ];
+                            if (validEmotions.includes(parsed.text) && allowSwitch) {
+                                const random = Math.floor(Math.random() * 10) + 1;
+                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
+                                setVideoUrl(newUrl);
+                            }
                         }
                     } catch (err) {
                         console.warn("Invalid message:", event.data, err);
@@ -314,6 +352,30 @@ const NBAMediaTraining: React.FC = () => {
         };
     }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
 
+    useEffect(() => {
+        if (!isMuted) return;
+        const getRandomInt1to5 = () => Math.floor(Math.random() * 10) + 1;
+
+        const replaceRandomSegment = (url: string): string => {
+            const match = url.match(/(.+\/)(\d+)\.mp4$/);
+            if (!match) {
+                console.warn("🔍 Couldn't parse URL for random segment:", url);
+                return url;
+            }
+            const oldNum = match[2];
+            let newNum = getRandomInt1to5().toString();
+            // Keep generating until newNum is different from oldNum
+            while (newNum === oldNum) {
+                newNum = getRandomInt1to5().toString();
+            }
+            const newUrl = `${match[1]}${newNum}.mp4`;
+            console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${oldNum}, new: ${newNum})`);
+            return newUrl;
+        };
+
+        setVideoUrl((prevUrl) => replaceRandomSegment(prevUrl));
+    }, [videoReplacementFlag, isMuted]);
+
     return (
         <div className="text-primary-blue">
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
@@ -326,6 +388,9 @@ const NBAMediaTraining: React.FC = () => {
                             <SquareArrowUpRight className="me-1" /> End Session
                         </Button>
                     )}
+                    {/* <div className="flex justify-between items-center mb-4">
+                        <h4 className="mb-0 md:mb-4">Public Speaking Session</h4>
+                    </div> */}
                     <div className="inline-block py-2 px-4 md:hidden bg-ghost-white border border-bright-gray rounded-3xl w-auto mt-2">
                         <p>{sessionData?.session_name}</p>
                     </div>
@@ -347,51 +412,40 @@ const NBAMediaTraining: React.FC = () => {
             {/* question dialog  */}
             <Dialog
                 open={isQuestionDialogOpen}
-                onOpenChange={
-                    activeQuestion > questionsRef.current.length - 1 && isSocketConnected
-                        ? setQuestionDialogOpen
-                        : () => {}
-                }
+                onOpenChange={activeQuestion > questionsRef.current.length - 1 ? setQuestionDialogOpen : () => {}}
             >
                 <DialogContent hideCloseButton={true} className="flex flex-col gap-4">
                     <div className="flex gap-4">
                         <div className="rounded-full w-16 h-16 bg-bright-gray flex items-center justify-center">
                             <MessageCircleMore className="text-primary-blue" />
                         </div>
-                        <div className="flex flex-col gap-4 flex-1">
+
+                        <div className="flex flex-col gap-4">
                             <DialogTitle className="text-primary-blue/70 font-normal text-2xl">Question</DialogTitle>
-                            {getQuestionsPending ? (
-                                <DialogDescription className="flex items-center justify-center py-10 w-full">
-                                    <LoaderCircle className="size-4 animate-spin text-primary-blue" />
-                                </DialogDescription>
-                            ) : (
-                                <>
-                                    <DialogDescription className="text-primary-blue big">
-                                        {question?.question_text}
-                                    </DialogDescription>
-                                    <div className="flex justify-end gap-3 w-full">
-                                        <Button
-                                            className="bg-transparent hover:bg-bright-gray text-independence py-6"
-                                            onClick={() => nextQuestion()}
-                                        >
-                                            {activeQuestion >= questionsRef.current.length - 1
-                                                ? "Finish"
-                                                : startQuestionTimer
-                                                  ? "Next Question"
-                                                  : "Skip"}
-                                        </Button>
-                                        <Button
-                                            className="bg-primary-blue hover:bg-primary-blue/80 py-6"
-                                            onClick={() => answerQuestion()}
-                                            disabled={startQuestionTimer}
-                                        >
-                                            Answer Now
-                                        </Button>
-                                    </div>
-                                </>
-                            )}
+                            <DialogDescription className="text-primary-blue big">{question}</DialogDescription>
+
+                            <div className="flex justify-end gap-3">
+                                <Button
+                                    className="bg-transparent hover:bg-bright-gray text-independence py-6"
+                                    onClick={() => nextQuestion()}
+                                >
+                                    {activeQuestion >= questionsRef.current.length - 1
+                                        ? "Finish"
+                                        : startQuestionTimer
+                                          ? "Next Question"
+                                          : "Skip"}
+                                </Button>
+                                <Button
+                                    className="bg-primary-blue hover:bg-primary-blue/80 py-6"
+                                    onClick={() => answerQuestion()}
+                                    disabled={startQuestionTimer}
+                                >
+                                    Answer Now
+                                </Button>
+                            </div>
                         </div>
                     </div>
+
                     <img
                         src={questionImg}
                         alt="woman in blue giving a presentation"
@@ -483,7 +537,7 @@ const NBAMediaTraining: React.FC = () => {
                                 className="h-full w-full rounded-2xl"
                                 onEnded={() => {
                                     console.log("Video ended");
-                                    // setVideoReplacementFlag((prev) => !prev);
+                                    setVideoReplacementFlag((prev) => !prev);
                                 }}
                             />
                             {showQuestionTagRef.current && (
@@ -491,7 +545,7 @@ const NBAMediaTraining: React.FC = () => {
                                     className="rounded-md bg-white p-4 w-1/2 z-10 absolute top-5 -left-13"
                                     style={{ transform: "scale(0.70)" }}
                                 >
-                                    <p className="mb-3">{question?.question_text}</p>
+                                    <p className="mb-3">{question}</p>
                                     <TimerComponent
                                         minutes={questionTimerRef.current}
                                         start={startQuestionTimer}
@@ -616,4 +670,4 @@ const NBAMediaTraining: React.FC = () => {
     );
 };
 
-export default NBAMediaTraining;
+export default PublicSpeaking;
