@@ -85,7 +85,7 @@ export function useCreateRookieRoomSession() {
 
             return await apiPost<ISession>("/sessions/sessions/", data, "default");
         },
-        onSuccess: async ({ id, enterprise_settings }) => {
+        onSuccess: async ({ id, enterprise_settings, session_name }) => {
             dispatch(closeDialog());
             if (enterprise_settings?.rookie_type === "media_training") {
                 navigate(`/sessions/the-rookie-media-training/${id}`);
@@ -97,6 +97,8 @@ export function useCreateRookieRoomSession() {
                 navigate(`/sessions/NBA-coach-room/${id}`);
             } else if (enterprise_settings?.rookie_type === "coach" && enterprise_settings?.sport_type === "wnba") {
                 navigate(`/sessions/WNBA-coach-room/${id}`);
+            } else if (session_name.includes("Coaching Room")) {
+                navigate(`/sessions/coaching-room/${id}`);
             }
         },
         onError: (error) => {
@@ -283,6 +285,15 @@ export function useRequestSessionVideo(sessionId: string | undefined) {
                     }}
                 />,
             );
+        },
+    });
+}
+
+export function useGetSessionQuestions() {
+    return useQuery({
+        queryKey: ["getSessionQuestions"],
+        queryFn: async () => {
+            return await apiGet(`/enterprise/enterprise-questions/`, "default");
         },
     });
 }
