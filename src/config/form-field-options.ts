@@ -9,6 +9,8 @@ import RookieRoom from "@/assets/images/webps/rookie-room.webp";
 
 export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
 
+export const coachingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
+
 export const pitchPracticeVEOptions = [{ name: "Pitch Studio", value: "pitch_studio", src: PitchStudio }];
 
 export const presentationPracticeVEOptions = [
