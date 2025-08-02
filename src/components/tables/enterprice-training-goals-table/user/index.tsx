@@ -13,13 +13,13 @@ const dummyEnterpriseTrainingGoals: IEnterpriseTrainingGoals[] = [
     {
         id: 2,
         goal: "Coach/GM Training",
-        organization: "NFL",
+        organization: "NBA",
         progress: 4,
     },
     {
         id: 3,
         goal: "Public Speaking Training",
-        organization: "MLB",
+        organization: "NBA",
         progress: 9,
     },
 ];
