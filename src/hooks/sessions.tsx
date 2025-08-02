@@ -55,7 +55,7 @@ export function useCreateCoachingSession() {
         },
         onSuccess: async (data) => {
             dispatch(closeDialog());
-            navigate(`/sessions/coaching-session/${data.id}`);
+            navigate(`/sessions/coaching-room/${data.id}`);
         },
         onError: (error) => {
             console.error("Error creating coaching session: ", error);
