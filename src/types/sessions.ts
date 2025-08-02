@@ -3,7 +3,7 @@ import { z } from "zod";
 
 interface IEnterpriseSettings {
     enterprice_type: string;
-    rookie_type: "media_training" | "speaking";
+    rookie_type: "media_training" | "speaking" | "coach" | "gm";
     sport_type: string;
     speaker_notes: string;
 }

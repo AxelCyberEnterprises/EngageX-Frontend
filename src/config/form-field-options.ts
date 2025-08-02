@@ -9,6 +9,8 @@ import RookieRoom from "@/assets/images/webps/rookie-room.webp";
 
 export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
 
+export const coachingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
+
 export const pitchPracticeVEOptions = [{ name: "Pitch Studio", value: "pitch_studio", src: PitchStudio }];
 
 export const presentationPracticeVEOptions = [
@@ -33,16 +35,16 @@ export const trainingTypeOptions = [
             "Media training is an excellent tool that prepares major league sports professionals & athletes for public-facing media engagement.",
     },
     {
-        name: "Speaking",
-        value: "speaking",
-        description:
-            "Speaking training is designed to help you improve your public speaking skills, whether you're preparing for a presentation, a speech, or any other speaking engagement.",
-    },
-    {
         name: "Coach",
         value: "coach",
         description:
             "Rookie to Coach, Rookie to GM, Coach to Rookie training is designed to address all three aspects of improved communication skills whether you are preparing for new season, upcoming game, post game, draft or important event.",
+    },
+    {
+        name: "General Manager",
+        value: "gm",
+        description:
+            "General Manager training prepares you for high-stakes communication scenarios including press conferences, player negotiations, trade discussions, and organizational leadership presentations that require strategic messaging and executive presence.",
     },
 ];
 

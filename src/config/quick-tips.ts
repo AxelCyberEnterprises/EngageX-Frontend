@@ -17,6 +17,25 @@ export const publicSpeakingQuickTips = [
     },
 ];
 
+export const coachingQuickTips = [
+    {
+        heading: "Add Pauses",
+        description: "Give your audience space to absorb and react.",
+    },
+    {
+        heading: "Be Authentic",
+        description: "Share your genuine experiences and insights as a coach.",
+    },
+    {
+        heading: "Focus on Growth",
+        description: "Emphasize learning opportunities and development areas.",
+    },
+    {
+        heading: "Connect with Your Team",
+        description: "Speak in a way that resonates with your players and staff.",
+    },
+];
+
 export const pitchPracticeQuickTips = [
     {
         heading: "Add Pauses",
