@@ -4,18 +4,76 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 // import { Input } from "../ui/input";
 import { useTheme } from "@/context/ThemeContext/hook";
+import { RootState } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "../ui/sidebar";
 
 const SideNav: React.FC = () => {
     const { theme } = useTheme();
     const location = useLocation();
+    const profile = useSelector((state: RootState) => state.profile.data);
+    const dispatch = useDispatch();
+
     const pathSegments = location.pathname.split("/").filter(Boolean);
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
+    // Check if user is an enterprise user and get their user type
+    const isEnterpriseUser = profile?.is_enterprise_user;
+    const enterpriseUserType = profile?.user_type;
 
-    const dispatch = useDispatch();
+    // Helper function to get coaching link based on user type
+    const getCoachingLink = () => {
+        if (!isEnterpriseUser) return null;
+
+        const coachingIcon = (
+            <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className="me-5"
+                color="#BDBDBD"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M13 15C10.708 21 4.292 15 2 21L13 15ZM15.5 15H17.001C19.358 15 20.537 15 21.269 14.268C22.001 13.536 22.001 12.357 22.001 10V8C22.001 5.643 22.001 4.464 21.269 3.732C20.537 3 19.36 3 17.001 3H13.001C10.644 3 9.466 3 8.734 3.732C8.114 4.352 8.018 5.293 8.004 7"
+                    fill="currentColor"
+                />
+                <path
+                    d="M7.5 15C8.88071 15 10 13.8807 10 12.5C10 11.1193 8.88071 10 7.5 10C6.11929 10 5 11.1193 5 12.5C5 13.8807 6.11929 15 7.5 15Z"
+                    fill="currentColor"
+                />
+                <path d="M12 7H18H12ZM18 11H15H18Z" fill="currentColor" />
+                <path
+                    d="M13 15C10.708 21 4.292 15 2 21M15.5 15H17.001C19.358 15 20.537 15 21.269 14.268C22.001 13.536 22.001 12.357 22.001 10V8C22.001 5.643 22.001 4.464 21.269 3.732C20.537 3 19.36 3 17.001 3H13.001C10.644 3 9.466 3 8.734 3.732C8.114 4.352 8.018 5.293 8.004 7M12 7H18M18 11H15M10 12.5C10 13.8807 8.88071 15 7.5 15C6.11929 15 5 13.8807 5 12.5C5 11.1193 6.11929 10 7.5 10C8.88071 10 10 11.1193 10 12.5Z"
+                    stroke="currentColor"
+                    stroke-width="0.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        );
+
+        if (enterpriseUserType === "general") {
+            return {
+                name: "Coaching",
+                icon: coachingIcon,
+                path: "/dashboard/user/the-coaching-room",
+            };
+        }
+
+        if (enterpriseUserType === "rookie") {
+            return {
+                name: "Rookie",
+                icon: coachingIcon,
+                path: "/dashboard/user/the-rookie-room",
+            };
+        }
+
+        return null;
+    };
+
     const userLinks = [
         {
             name: "Dashboard",
@@ -40,38 +98,7 @@ const SideNav: React.FC = () => {
             ),
             path: "/dashboard/user",
         },
-        {
-            name: "Coaching Training",
-            icon: (
-                <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    className="me-5"
-                    color="#BDBDBD"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M13 15C10.708 21 4.292 15 2 21L13 15ZM15.5 15H17.001C19.358 15 20.537 15 21.269 14.268C22.001 13.536 22.001 12.357 22.001 10V8C22.001 5.643 22.001 4.464 21.269 3.732C20.537 3 19.36 3 17.001 3H13.001C10.644 3 9.466 3 8.734 3.732C8.114 4.352 8.018 5.293 8.004 7"
-                        fill="currentColor"
-                    />
-                    <path
-                        d="M7.5 15C8.88071 15 10 13.8807 10 12.5C10 11.1193 8.88071 10 7.5 10C6.11929 10 5 11.1193 5 12.5C5 13.8807 6.11929 15 7.5 15Z"
-                        fill="currentColor"
-                    />
-                    <path d="M12 7H18H12ZM18 11H15H18Z" fill="currentColor" />
-                    <path
-                        d="M13 15C10.708 21 4.292 15 2 21M15.5 15H17.001C19.358 15 20.537 15 21.269 14.268C22.001 13.536 22.001 12.357 22.001 10V8C22.001 5.643 22.001 4.464 21.269 3.732C20.537 3 19.36 3 17.001 3H13.001C10.644 3 9.466 3 8.734 3.732C8.114 4.352 8.018 5.293 8.004 7M12 7H18M18 11H15M10 12.5C10 13.8807 8.88071 15 7.5 15C6.11929 15 5 13.8807 5 12.5C5 11.1193 6.11929 10 7.5 10C8.88071 10 10 11.1193 10 12.5Z"
-                        stroke="currentColor"
-                        stroke-width="0.75"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
-            ),
-            path: "/dashboard/user/the-rookie-room",
-        },
+        getCoachingLink(),
         {
             name: "Public Speaking",
             icon: (
@@ -614,16 +641,16 @@ const SideNav: React.FC = () => {
         </div> */}
 
                 {lastSegment === "user" &&
-                    userLinks.map((link, index) => (
+                    userLinks.filter(Boolean).map((link, index) => (
                         <Link
-                            to={link.path}
+                            to={link?.path ?? ""}
                             key={index}
                             className={`link flex items-center  mobile_links w-full py-2 px-3 mb-0.5 ${
-                                location.pathname === link.path ? "active" : ""
+                                location.pathname === link?.path ? "active" : ""
                             }`}
                         >
-                            {link.icon}
-                            <p>{link.name}</p>
+                            {link?.icon}
+                            <p>{link?.name}</p>
                         </Link>
                     ))}
                 {lastSegment === "admin" &&

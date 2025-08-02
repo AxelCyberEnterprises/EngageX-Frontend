@@ -27,6 +27,8 @@ export interface UserProfile {
     favicon?: string;
     primary_color?: string;
     secondary_color?: string;
+    is_enterprise_user: boolean;
+    user_type: "general" | "rookie";
 }
 
 export function useUserProfile(id: any) {

@@ -5,7 +5,6 @@ import DashboardCard from "@/components/dashboard/DashboardCard";
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
 import { Button } from "@/components/ui/button";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
-import { useEnterpriseUsers } from "@/hooks/settings";
 import { RootState } from "@/store";
 import { ISession } from "@/types/sessions";
 import { UseQueryResult } from "@tanstack/react-query";
@@ -52,7 +51,6 @@ const UserDashboardHome: React.FC = () => {
         DashboardData,
         Error
     >;
-    const { data: enterpriseUsersData, isLoading: isEnterpriseUsersLoading } = useEnterpriseUsers();
     const user = useSelector((state: RootState) => state.auth.user);
     const { mutate: authQuestions } = useAddAuthQuestion();
     const signupData = useSelector((state: RootState) => state.auth.signupData);
@@ -125,9 +123,8 @@ const UserDashboardHome: React.FC = () => {
         },
     ];
     // Check if user is an enterprise user and get their user type
-    const enterpriseUser = enterpriseUsersData?.find((enterpriseUser) => enterpriseUser.user.email === user?.email);
-    const isEnterpriseUser = !!enterpriseUser;
-    const enterpriseUserType = enterpriseUser?.user_type;
+    const isEnterpriseUser = profile?.is_enterprise_user;
+    const enterpriseUserType = profile?.user_type;
 
     // --- useEffects ---
     useEffect(() => {
@@ -165,7 +162,7 @@ const UserDashboardHome: React.FC = () => {
     }, [newChartData]);
 
     // --- JSX and rest of logic ---
-    if (isDashboardDataLoading || isEnterpriseUsersLoading) {
+    if (isDashboardDataLoading) {
         return <UserDashboardSkeleton />;
     }
 
