@@ -12,7 +12,7 @@ import {
     setUserIdAfterSignup,
 } from "@/store/slices/authSlice";
 import { IGETSessionsResponse } from "@/types/sessions";
-import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -105,6 +105,7 @@ export interface LoginResponse {
 }
 
 export function useLogin() {
+    const queryClient = useQueryClient();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -115,8 +116,11 @@ export function useLogin() {
         },
         onSuccess: async (data) => {
             const admin = data.data.is_admin;
-            console.log(admin);
+
             dispatch(login(data));
+            queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+            queryClient.invalidateQueries({ queryKey: ["full-profile"] });
+
             navigate(admin ? "/dashboard/admin" : "/dashboard/user");
         },
         onError: (error) => {
