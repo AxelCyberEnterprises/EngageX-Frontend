@@ -5,7 +5,7 @@ import { Form } from "@/components/ui/form";
 import { coachingVEOptions } from "@/config/form-field-options";
 import { coachingQuickTips } from "@/config/quick-tips";
 import { useTheme } from "@/context/ThemeContext/hook";
-import { SECONDARY_COLOR } from "@/lib/constants";
+import { PRIMARY_COLOR } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { CoachingSchema } from "@/schemas/dashboard/user";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
@@ -24,7 +24,7 @@ export type FormType = z.infer<typeof CoachingSchema>;
 
 const CoachingForm = () => {
     const {
-        theme: { secondaryColor },
+        theme: { primaryColor },
     } = useTheme();
     const dispatch = useDispatch();
 
@@ -71,8 +71,8 @@ const CoachingForm = () => {
                             className={cn(
                                 "bg-green-sheen hover:bg-green-sheen/90 font-normal md:w-fit w-full md:h-9 h-11 transition",
                                 {
-                                    "bg-branding-secondary hover:bg-branding-secondary/90":
-                                        secondaryColor !== SECONDARY_COLOR,
+                                    "bg-branding-primary hover:bg-branding-primary/90":
+                                        primaryColor !== PRIMARY_COLOR,
                                 },
                             )}
                             onClick={() =>
@@ -94,7 +94,7 @@ const CoachingForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            className="bg-branding-primary hover:bg-branding-primary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            className="bg-branding-secondary hover:bg-branding-secondary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
                                     openDialog({

@@ -6,7 +6,8 @@ import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton"
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
-import { SECONDARY_COLOR } from "@/lib/constants";
+import { PRIMARY_COLOR } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { RootState } from "@/store";
 import { ISession } from "@/types/sessions";
 import { UseQueryResult } from "@tanstack/react-query";
@@ -60,7 +61,7 @@ const UserDashboardHome: React.FC = () => {
     const sessionType = dashboardData?.latest_session_dict?.session_type || "Public Speaking";
     const [newChartData, setNewChartData] = useState([dashboardData?.performance_analytics ?? null]);
     const {
-        theme: { secondaryColor },
+        theme: { primaryColor },
     } = useTheme();
 
     const cardsData = [
@@ -192,10 +193,9 @@ const UserDashboardHome: React.FC = () => {
                         <Link to="/dashboard/user/the-rookie-room">
                             <button
                                 type="button"
-                                className="p-3 w-full rounded-md"
-                                style={{
-                                    backgroundColor: secondaryColor !== SECONDARY_COLOR ? secondaryColor : undefined,
-                                }}
+                                className={cn("p-3 w-full rounded-md", {
+                                    "bg-branding-primary": primaryColor !== PRIMARY_COLOR,
+                                })}
                             >
                                 Start Rookie
                             </button>
@@ -231,10 +231,9 @@ const UserDashboardHome: React.FC = () => {
                         <Link to={card.href}>
                             <button
                                 type="button"
-                                className="p-3 w-full rounded-md"
-                                style={{
-                                    backgroundColor: secondaryColor !== SECONDARY_COLOR ? secondaryColor : undefined,
-                                }}
+                                className={cn("p-3 w-full rounded-md", {
+                                    "bg-branding-primary": primaryColor !== PRIMARY_COLOR,
+                                })}
                             >
                                 {card.buttonText}
                             </button>
@@ -279,7 +278,7 @@ const UserDashboardHome: React.FC = () => {
                     focus directly on enhancing your skills in specific areas.
                 </p>
                 <Link to="performance-improvement">
-                    <Button type="button" className="bg-branding-primary hover:bg-branding-primary/90 py-3">
+                    <Button type="button" className="bg-branding-secondary hover:bg-branding-secondary/90 py-3">
                         Improve Session
                     </Button>
                 </Link>

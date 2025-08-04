@@ -47,7 +47,7 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
             <Button
                 disabled={isPending}
                 variant="outline"
-                className="text-branding-primary hover:text-branding-primary border-branding-primary font-normal w-full h-11"
+                className="text-branding-secondary hover:text-branding-secondary border-branding-secondary font-normal w-full h-11"
                 onClick={() => dispatch(closeDialog())}
             >
                 Cancel
@@ -55,7 +55,7 @@ const StartPublicSpeakingSession = ({ initiationType, setValue, handleSubmit }: 
             <Button
                 disabled={isPending || isGetSessionsPending}
                 isLoading={isPending}
-                className="bg-branding-primary hover:bg-branding-primary/90 font-normal w-full h-11"
+                className="bg-branding-secondary hover:bg-branding-secondary/90 font-normal w-full h-11"
                 onClick={handleProceed}
             >
                 Proceed

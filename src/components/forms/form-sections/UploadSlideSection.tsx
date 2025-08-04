@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
 import UploadMediaTrigger from "@/components/widgets/UploadMediaTrigger";
 import { useTheme } from "@/context/ThemeContext/hook";
-import { SECONDARY_COLOR } from "@/lib/constants";
+import { PRIMARY_COLOR } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { UnknownAction } from "@reduxjs/toolkit";
@@ -33,7 +33,7 @@ const UploadSlideSection = ({
     setActiveSlideIndex,
 }: IUploadSlideSectionProps) => {
     const {
-        theme: { secondaryColor },
+        theme: { primaryColor },
     } = useTheme();
     const dispatch = useAppDispatch();
     const isSlidePreviews = slidePreviews.length > 0;
@@ -86,8 +86,8 @@ const UploadSlideSection = ({
                                 className={cn(
                                     "w-full font-normal bg-green-sheen hover:bg-green-sheen/90 transition-colors",
                                     {
-                                        "bg-branding-secondary hover:bg-branding-secondary/90":
-                                            secondaryColor !== SECONDARY_COLOR,
+                                        "bg-branding-primary hover:bg-branding-primary/90":
+                                            primaryColor !== PRIMARY_COLOR,
                                     },
                                 )}
                             >

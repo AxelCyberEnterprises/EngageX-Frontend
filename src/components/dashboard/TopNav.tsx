@@ -9,7 +9,7 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
-import { SECONDARY_COLOR } from "@/lib/constants";
+import { PRIMARY_COLOR } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { Play } from "lucide-react";
@@ -21,7 +21,7 @@ import { Button } from "../ui/button";
 
 const TopNav: React.FC = () => {
     const {
-        theme: { secondaryColor },
+        theme: { primaryColor },
     } = useTheme();
     const location = useLocation();
     const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const TopNav: React.FC = () => {
     return (
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-8 md:border-b-1 border-bright-gray">
             <div className="flex items-center gap-2">
-                <SidebarTrigger className="-ml-1 hidden md:flex p-5 bg-branding-primary hover:bg-branding-primary/90 hover:text-white" />
+                <SidebarTrigger className="-ml-1 hidden md:flex p-5 bg-branding-secondary hover:bg-branding-secondary/90 hover:text-white" />
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -85,8 +85,8 @@ const TopNav: React.FC = () => {
                     className={cn(
                         "flex bg-white text-green-sheen border border-green-sheen hover:bg-green-sheen hover:text-white",
                         {
-                            "border-branding-secondary hover:bg-branding-secondary/90 text-branding-secondary":
-                                secondaryColor !== SECONDARY_COLOR,
+                            "border-branding-primary hover:bg-branding-primary/90 text-branding-primary":
+                                primaryColor !== PRIMARY_COLOR,
                         },
                     )}
                 >
@@ -109,7 +109,7 @@ const TopNav: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <SidebarTrigger className="md:hidden p-5 bg-branding-primary hover:bg-branding-primary/90 hover:text-white" />
+            <SidebarTrigger className="md:hidden p-5 bg-branding-secondary hover:bg-branding-secondary/90 hover:text-white" />
         </header>
     );
 };

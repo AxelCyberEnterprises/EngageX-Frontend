@@ -2,7 +2,7 @@ import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/context/ThemeContext/hook";
-import { SECONDARY_COLOR } from "@/lib/constants";
+import { PRIMARY_COLOR } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Plus, Trash2 } from "lucide-react";
 import { HTMLAttributes, useCallback } from "react";
@@ -15,7 +15,7 @@ interface IGoalsSectionProps extends HTMLAttributes<HTMLElement> {
 
 const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
     const {
-        theme: { secondaryColor },
+        theme: { primaryColor },
     } = useTheme();
     const goals = useWatch({
         name: "goals",
@@ -87,9 +87,9 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
                     type="button"
                     variant="outline"
                     onClick={addGoal}
-                    className={cn("text-green-sheen hover:text-green-sheen border-green-sheen w-fit rounded-lg", {
-                        "border-branding-secondary hover:bg-branding-secondary text-branding-secondary":
-                            secondaryColor !== SECONDARY_COLOR,
+                    className={cn("text-green-sheen hover:text-white border-green-sheen hover:bg-green-sheen w-fit rounded-lg", {
+                        "border-branding-primary hover:bg-branding-primary text-branding-primary":
+                            primaryColor !== PRIMARY_COLOR,
                     })}
                 >
                     <Plus className="size-4" />
