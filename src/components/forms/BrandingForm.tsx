@@ -308,7 +308,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                         type="button"
                         disabled={isPending}
                         variant="outline"
-                        className="h-10 md:w-auto w-full text-gunmetal hover:text-gunmetal font-normal border-gunmetal"
+                        className="h-10 md:w-auto w-full text-branding-primary hover:text-branding-primary font-normal border-branding-primary"
                         onClick={handleCancel}
                     >
                         Cancel

@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { capitalize } from "@mui/material";
@@ -10,6 +11,8 @@ import StartPracticeSetupSession from "../../dialogs/dialog-contents/start-sessi
 import { Button } from "../../ui/button";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "../../ui/drawer";
 import SlidePreviewAndSettingsSection from "../form-sections/SlidePreviewAndSettingsSection";
+import { useTheme } from "@/context/ThemeContext/hook";
+import { SECONDARY_COLOR } from "@/lib/constants";
 
 interface IPracticeSetUpControlsLayout extends HTMLAttributes<HTMLDivElement> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,6 +20,9 @@ interface IPracticeSetUpControlsLayout extends HTMLAttributes<HTMLDivElement> {
 }
 
 const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsLayout) => {
+    const {
+        theme: { secondaryColor },
+    } = useTheme();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -141,7 +147,9 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                     </Button>
                     <Button
                         type="button"
-                        className="bg-green-sheen hover:bg-green-sheen/80 font-normal transition"
+                        className={cn("bg-green-sheen hover:bg-green-sheen/90 font-normal transition", {
+                            "bg-branding-secondary hover:bg-branding-secondary/90": secondaryColor !== SECONDARY_COLOR,
+                        })}
                         onClick={() =>
                             dispatch(
                                 openDialog({
