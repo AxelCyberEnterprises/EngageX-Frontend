@@ -4,40 +4,50 @@ import SegmentedProgressBar from "../dashboard/SegmentedProgressBar";
 interface TimerComponentProps {
     minutes: number;
     start: boolean;
+    stop?: boolean; // <-- NEW prop to pause the timer
     onStop?: () => void;
     showTimeRemaining?: boolean;
 }
 
-const TimerComponent: React.FC<TimerComponentProps> = ({ minutes, start, onStop, showTimeRemaining = true }) => {
+const TimerComponent: React.FC<TimerComponentProps> = ({
+    minutes,
+    start,
+    stop = false,
+    onStop,
+    showTimeRemaining = true,
+}) => {
     const totalTime = minutes * 60;
     const [timeLeft, setTimeLeft] = useState(totalTime);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const hasStoppedRef = useRef(false);
 
-    // Reset timer when `start` becomes false
+    // Handle timer logic based on start and stop
     useEffect(() => {
-        if (!start) {
-            // Cleanup interval and reset timer
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-                intervalRef.current = null;
-            }
-            setTimeLeft(totalTime); // Reset timer
-            hasStoppedRef.current = false; // Reset stop flag
-            return;
+        // Always clear existing interval
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
         }
 
-        // Start timer
-        intervalRef.current = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(intervalRef.current!);
-                    intervalRef.current = null;
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
+        // If timer is started AND not paused, begin interval
+        if (start && !stop) {
+            intervalRef.current = setInterval(() => {
+                setTimeLeft((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(intervalRef.current!);
+                        intervalRef.current = null;
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+
+        // Reset if timer is stopped (fully)
+        if (!start) {
+            setTimeLeft(totalTime);
+            hasStoppedRef.current = false;
+        }
 
         return () => {
             if (intervalRef.current) {
@@ -45,9 +55,9 @@ const TimerComponent: React.FC<TimerComponentProps> = ({ minutes, start, onStop,
                 intervalRef.current = null;
             }
         };
-    }, [start, totalTime]);
+    }, [start, stop, totalTime]);
 
-    // Notify parent when timer finishes
+    // Trigger onStop when timer finishes
     useEffect(() => {
         if (start && timeLeft === 0 && !hasStoppedRef.current) {
             hasStoppedRef.current = true;
