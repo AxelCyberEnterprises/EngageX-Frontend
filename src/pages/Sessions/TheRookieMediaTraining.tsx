@@ -63,7 +63,7 @@ const PublicSpeaking: React.FC = () => {
     const showQuestionTagRef = useRef(false);
     const question = questionsRef.current[activeQuestion];
     const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions();
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions("media_training");
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -71,25 +71,31 @@ const PublicSpeaking: React.FC = () => {
         setDuration(duration);
         setStopTime(true);
         setDialogOneOpen(false);
+        setQuestionDialogOpen(false);
         setStopStreamer(true);
     };
 
+    const isSessionCompletedInTime = () => {
+        if (!duration) return false;
+        const minutes = parseInt(duration.split(":")[0], 10);
+        return minutes !== time;
+    };
+
+    const isLastQuestion = () => {
+        return activeQuestion >= questionsRef.current.length - 1;
+    };
+
     const closeAndShowClapVideo = () => {
-        if (activeQuestion < questionsRef.current.length - 1) {
-            setDialogOneOpen(false);
-            setQuestionDialogOpen(true);
-        } else {
-            setStopStreamer(true);
-            setAllowSwitch(false);
-            setDialogOneOpen(false);
-            setIsMuted(false);
-            setVideoUrl(
-                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/rookie-room-clapping.mp4",
-            );
-            setTimeout(() => {
-                setDialogTwoOpen(true);
-            }, 7000);
-        }
+        setStopStreamer(true);
+        setAllowSwitch(false);
+        setDialogOneOpen(false);
+        setIsMuted(false);
+        setVideoUrl(
+            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/rookie-room-clapping.mp4",
+        );
+        setTimeout(() => {
+            setDialogTwoOpen(true);
+        }, 7000);
     };
 
     // Update questionsRef.current whenever sessionQuestions changes
@@ -115,7 +121,7 @@ const PublicSpeaking: React.FC = () => {
                 autoplay: true,
             });
         }
-    }, [isQuestionDialogOpen, activeQuestion]);
+    }, [isQuestionDialogOpen, question]);
 
     const answerQuestion = () => {
         showQuestionTagRef.current = true;
@@ -132,6 +138,7 @@ const PublicSpeaking: React.FC = () => {
     };
 
     const nextQuestion = () => {
+        if (stopTime) return;
         showQuestionTagRef.current = false;
         setQuestionDialogOpen(true);
         // Use a functional update to get the new value
@@ -151,6 +158,7 @@ const PublicSpeaking: React.FC = () => {
                 return prev + 1;
             } else {
                 // Last question, finish up
+                stopTimer();
                 setQuestionDialogOpen(false);
                 setStopStreamer(true);
                 setAllowSwitch(false);
@@ -442,7 +450,7 @@ const PublicSpeaking: React.FC = () => {
                                             className="bg-transparent hover:bg-bright-gray text-independence py-6"
                                             onClick={() => nextQuestion()}
                                         >
-                                            {activeQuestion >= questionsRef.current.length - 1
+                                            {isLastQuestion()
                                                 ? "Finish"
                                                 : startQuestionTimer
                                                   ? "Next Question"
@@ -499,7 +507,7 @@ const PublicSpeaking: React.FC = () => {
                     <DialogHeader>
                         <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
                         <DialogTitle className="text-primary-blue text-left">Session ended</DialogTitle>
-                        {duration && parseInt(duration.split(":")[0], 10) !== time ? (
+                        {isSessionCompletedInTime() ? (
                             <DialogDescription className="text-auro-metal-saurus text-left">
                                 Great job! You completed the session within the allocated time. Kindly proceed by
                                 clicking next to view your result.
@@ -563,12 +571,13 @@ const PublicSpeaking: React.FC = () => {
                                     <TimerComponent
                                         minutes={questionTimerRef.current}
                                         start={startQuestionTimer}
+                                        stop={stopTime}
                                         onStop={() => nextQuestion()}
                                         showTimeRemaining={false}
                                     />
                                     <div className="mt-3 w-full flex justify-end">
                                         <p className="underline cursor-pointer" onClick={nextQuestion}>
-                                            Next question &gt;
+                                            {isLastQuestion() ? "Finish session" : "Next question >"}
                                         </p>
                                     </div>
                                 </div>
