@@ -77,7 +77,7 @@ const UserSettings: React.FC = () => {
                                 <img src={Arrow} alt="arrow" className="w-4 h-4" />
                             </button>
                         </div>
-                        <SidebarTrigger className="-ml-1 p-5 bg-branding-primary hover:bg-branding-primary/90" />
+                        <SidebarTrigger className="-ml-1 p-5 bg-branding-primary hover:bg-branding-primary/90 hover:text-white" />
                     </div>
                 </div>
 

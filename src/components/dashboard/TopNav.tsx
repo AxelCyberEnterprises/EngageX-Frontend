@@ -41,7 +41,7 @@ const TopNav: React.FC = () => {
     return (
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-8 md:border-b-1 border-bright-gray">
             <div className="flex items-center gap-2">
-                <SidebarTrigger className="-ml-1 hidden md:flex p-5 bg-branding-primary hover:bg-branding-primary/90" />
+                <SidebarTrigger className="-ml-1 hidden md:flex p-5 bg-branding-primary hover:bg-branding-primary/90 hover:text-white" />
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -109,7 +109,7 @@ const TopNav: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <SidebarTrigger className="md:hidden p-5 bg-branding-primary hover:bg-branding-primary/90" />
+            <SidebarTrigger className="md:hidden p-5 bg-branding-primary hover:bg-branding-primary/90 hover:text-white" />
         </header>
     );
 };
