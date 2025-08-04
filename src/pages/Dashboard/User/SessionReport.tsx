@@ -9,9 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
+import { useTheme } from "@/context/ThemeContext/hook";
 import { useGetSessionReport, useRequestSessionVideo } from "@/hooks/sessions";
 import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
+import { PRIMARY_COLOR } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react";
@@ -25,6 +28,9 @@ const PitchSessionReport: React.FC = () => {
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const navigate = useNavigate();
+    const {
+        theme: { primaryColor },
+    } = useTheme();
     const { id } = useParams();
 
     const { data, isPending, refetch } = useGetSessionReport(id);
@@ -415,7 +421,13 @@ const PitchSessionReport: React.FC = () => {
                                         <LoaderCircle className="size-6 animate-spin stroke-white" />
                                     ) : (
                                         <Button
-                                            className="bg-medium-sea-green hover:bg-medium-sea-green/70 rounded-lg"
+                                            className={cn(
+                                                "bg-medium-sea-green hover:bg-medium-sea-green/90 rounded-lg",
+                                                {
+                                                    "bg-branding-primary hover:bg-branding-primary/90":
+                                                        primaryColor !== PRIMARY_COLOR,
+                                                },
+                                            )}
                                             onClick={() => mutate()}
                                             isLoading={requestingVideo}
                                         >
@@ -744,7 +756,7 @@ const PitchSessionReport: React.FC = () => {
                                 View session history
                             </Link>
                             <Button
-                                className="flex gap-1 py-5 bg-branding-primary hover:bg-branding-primary/90"
+                                className="flex gap-1 py-5 bg-branding-secondary hover:bg-branding-secondary/90"
                                 onClick={() => navigate(newSessionNavigate)}
                             >
                                 Start new session

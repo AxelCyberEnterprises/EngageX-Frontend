@@ -308,7 +308,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                         type="button"
                         disabled={isPending}
                         variant="outline"
-                        className="h-10 md:w-auto w-full text-gunmetal hover:text-gunmetal font-normal border-gunmetal"
+                        className="h-10 md:w-auto w-full text-branding-secondary hover:text-branding-secondary font-normal border-branding-secondary"
                         onClick={handleCancel}
                     >
                         Cancel
@@ -317,7 +317,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                         type="submit"
                         disabled={isPending}
                         isLoading={isPending}
-                        className="bg-branding-primary hover:bg-branding-primary/90 h-10 md:w-auto w-full"
+                        className="bg-branding-secondary hover:bg-branding-secondary/90 h-10 md:w-auto w-full"
                     >
                         Save Branding
                     </Button>

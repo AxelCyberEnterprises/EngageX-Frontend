@@ -6,6 +6,9 @@ import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { publicSpeakingVEOptions } from "@/config/form-field-options";
 import { publicSpeakingQuickTips } from "@/config/quick-tips";
+import { useTheme } from "@/context/ThemeContext/hook";
+import { PRIMARY_COLOR } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { PublicSpeakingSchema } from "@/schemas/dashboard/user";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +25,9 @@ import VirtualEnvironmentSection from "../form-sections/VirtualEnvironmentSectio
 export type FormType = z.infer<typeof PublicSpeakingSchema>;
 
 const PublicSpeakingForm = () => {
+    const {
+        theme: { primaryColor },
+    } = useTheme();
     const dispatch = useDispatch();
 
     const form = useForm<FormType>({
@@ -78,7 +84,13 @@ const PublicSpeakingForm = () => {
                     <div className="md:mr-25 md:w-fit w-full flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center md:gap-x-3">
                         <Button
                             type="button"
-                            className="bg-green-sheen hover:bg-green-sheen/80 font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            className={cn(
+                                "bg-green-sheen hover:bg-green-sheen/90 font-normal md:w-fit w-full md:h-9 h-11 transition",
+                                {
+                                    "bg-branding-primary hover:bg-branding-primary/90":
+                                        primaryColor !== PRIMARY_COLOR,
+                                },
+                            )}
                             onClick={() =>
                                 dispatch(
                                     openDialog({
@@ -98,7 +110,7 @@ const PublicSpeakingForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            className="bg-branding-primary hover:bg-branding-primary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
+                            className="bg-branding-secondary hover:bg-branding-secondary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
                                     openDialog({

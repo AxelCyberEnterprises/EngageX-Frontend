@@ -1,3 +1,6 @@
+import { useTheme } from "@/context/ThemeContext/hook";
+import { PRIMARY_COLOR } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { capitalize } from "@mui/material";
@@ -17,6 +20,9 @@ interface IPracticeSetUpControlsLayout extends HTMLAttributes<HTMLDivElement> {
 }
 
 const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsLayout) => {
+    const {
+        theme: { primaryColor },
+    } = useTheme();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -141,7 +147,9 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                     </Button>
                     <Button
                         type="button"
-                        className="bg-green-sheen hover:bg-green-sheen/80 font-normal transition"
+                        className={cn("bg-green-sheen hover:bg-green-sheen/90 font-normal transition", {
+                            "bg-branding-primary hover:bg-branding-primary/90": primaryColor !== PRIMARY_COLOR,
+                        })}
                         onClick={() =>
                             dispatch(
                                 openDialog({
@@ -162,7 +170,7 @@ const PracticeSetUpControlsLayout = ({ children, form }: IPracticeSetUpControlsL
                     </Button>
                     <Button
                         type="button"
-                        className="bg-branding-primary hover:bg-branding-primary/90 font-normal transition"
+                        className="bg-branding-secondary hover:bg-branding-secondary/90 font-normal transition"
                         onClick={() =>
                             dispatch(
                                 openDialog({

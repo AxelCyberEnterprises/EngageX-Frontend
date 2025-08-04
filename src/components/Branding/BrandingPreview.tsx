@@ -192,7 +192,7 @@ const bottomLinks = ["Help & Support", "Settings", "Logout"];
 const BrandingPreview = () => {
     const {
         previews: { companyLogoPreview, faviconPreview },
-        colors: { primaryColor, secondaryColor },
+        colors: { secondaryColor },
     } = useSelector((state: RootState) => state.branding);
 
     // Tabs for settings
@@ -230,7 +230,7 @@ const BrandingPreview = () => {
                                 className="py-1 px-2 flex items-center gap-2 [&_svg]:size-3 [&_svg]:shrink-0 rounded"
                                 style={
                                     item === "Settings"
-                                        ? { backgroundColor: primaryColor, color: "#64ba9e" }
+                                        ? { backgroundColor: secondaryColor, color: "#64ba9e" }
                                         : undefined
                                 }
                             >
@@ -381,13 +381,14 @@ const BrandingPreview = () => {
                             <div className="mt-8 flex items-center justify-end gap-2">
                                 <button
                                     type="button"
-                                    className="h-6 text-[8px] px-3 text-gunmetal font-normal bg-transparent border border-gunmetal rounded-sm"
+                                    className="h-6 text-[8px] px-3 font-normal bg-transparent border rounded-sm"
+                                    style={{ borderColor: secondaryColor, color: secondaryColor }}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     className="h-6 text-[8px] px-3 rounded-sm"
-                                    style={{ backgroundColor: primaryColor }}
+                                    style={{ backgroundColor: secondaryColor }}
                                 >
                                     Save Branding
                                 </button>

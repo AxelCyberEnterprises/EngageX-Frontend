@@ -135,7 +135,7 @@ const StartPracticeSetupSession = ({
             <Button
                 disabled={isPending || isSummaryGenerationPending}
                 variant="outline"
-                className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal w-full h-11"
+                className="text-branding-secondary hover:text-branding-secondary border-branding-secondary font-normal w-full h-11"
                 onClick={() => dispatch(closeDialog())}
             >
                 Cancel
@@ -143,7 +143,7 @@ const StartPracticeSetupSession = ({
             <Button
                 disabled={isPending || isGetSessionsPending || isSummaryGenerationPending}
                 isLoading={isPending || isSummaryGenerationPending}
-                className="bg-branding-primary hover:bg-branding-primary/90 font-normal w-full h-11"
+                className="bg-branding-secondary hover:bg-branding-secondary/90 font-normal w-full h-11"
                 onClick={handleProceed}
             >
                 Proceed
