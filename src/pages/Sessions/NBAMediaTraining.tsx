@@ -60,7 +60,7 @@ const NBAMediaTraining: React.FC = () => {
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question: IQuestion | undefined = questionsRef.current[activeQuestion];
     const location = useLocation();
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions();
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions("coach");
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -68,7 +68,18 @@ const NBAMediaTraining: React.FC = () => {
         setDuration(duration);
         setStopTime(true);
         setDialogOneOpen(false);
+        setQuestionDialogOpen(false);
         setStopStreamer(true);
+    };
+
+    const isSessionCompletedInTime = () => {
+        if (!duration) return false;
+        const minutes = parseInt(duration.split(":")[0], 10);
+        return minutes !== time;
+    };
+
+    const isLastQuestion = () => {
+        return activeQuestion >= questionsRef.current.length - 1;
     };
 
     const closeAndShowClapVideo = () => {
@@ -103,7 +114,7 @@ const NBAMediaTraining: React.FC = () => {
                 autoplay: true,
             });
         }
-    }, [isQuestionDialogOpen, activeQuestion]);
+    }, [isQuestionDialogOpen, question]);
 
     const answerQuestion = () => {
         showQuestionTagRef.current = true;
@@ -120,6 +131,7 @@ const NBAMediaTraining: React.FC = () => {
     };
 
     const nextQuestion = () => {
+        if (stopTime) return;
         showQuestionTagRef.current = false;
         setQuestionDialogOpen(true);
         // Use a functional update to get the new value
@@ -134,13 +146,12 @@ const NBAMediaTraining: React.FC = () => {
                 return prev + 1;
             } else {
                 // Last question, finish up
+                stopTimer();
                 setQuestionDialogOpen(false);
                 setStopStreamer(true);
                 setAllowSwitch(false);
                 setDialogOneOpen(false);
-                setTimeout(() => {
-                    setDialogTwoOpen(true);
-                }, 7000);
+                setDialogTwoOpen(true);
                 return prev; // no increment, or return to 0 if you want
             }
         });
@@ -381,7 +392,7 @@ const NBAMediaTraining: React.FC = () => {
                                             className="bg-transparent hover:bg-bright-gray text-independence py-6"
                                             onClick={() => nextQuestion()}
                                         >
-                                            {activeQuestion >= questionsRef.current.length - 1
+                                            {isLastQuestion()
                                                 ? "Finish"
                                                 : startQuestionTimer
                                                   ? "Next Question"
@@ -438,7 +449,7 @@ const NBAMediaTraining: React.FC = () => {
                     <DialogHeader>
                         <img src={alert} alt="green image of users" className="w-16 h-16 mb-4" />
                         <DialogTitle className="text-primary-blue text-left">Session ended</DialogTitle>
-                        {duration && parseInt(duration.split(":")[0], 10) !== time ? (
+                        {isSessionCompletedInTime() ? (
                             <DialogDescription className="text-auro-metal-saurus text-left">
                                 Great job! You completed the session within the allocated time. Kindly proceed by
                                 clicking next to view your result.
@@ -502,12 +513,13 @@ const NBAMediaTraining: React.FC = () => {
                                     <TimerComponent
                                         minutes={questionTimerRef.current}
                                         start={startQuestionTimer}
+                                        stop={stopTime}
                                         onStop={() => nextQuestion()}
                                         showTimeRemaining={false}
                                     />
                                     <div className="mt-3 w-full flex justify-end">
                                         <p className="underline cursor-pointer" onClick={nextQuestion}>
-                                            Next question &gt;
+                                            {isLastQuestion() ? "Finish session" : "Next question >"}
                                         </p>
                                     </div>
                                 </div>

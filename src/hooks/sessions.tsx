@@ -289,11 +289,11 @@ export function useRequestSessionVideo(sessionId: string | undefined) {
     });
 }
 
-export function useGetSessionQuestions() {
+export function useGetSessionQuestions(vertical: string) {
     return useQuery({
-        queryKey: ["getSessionQuestions"],
+        queryKey: ["getSessionQuestions", vertical],
         queryFn: async () => {
-            return await apiGet(`/enterprise/enterprise-questions/`, "default");
+            return await apiGet(`/enterprise/enterprise-questions/?vertical=${vertical}`, "default");
         },
     });
 }
