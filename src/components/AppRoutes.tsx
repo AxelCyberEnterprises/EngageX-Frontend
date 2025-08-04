@@ -19,13 +19,16 @@ import PublicSpeaking from "@/pages/Dashboard/User/PublicSpeaking";
 import RookieRoom from "@/pages/Dashboard/User/RookieRoom";
 import SessionComparison from "@/pages/Dashboard/User/SessionComparison";
 import Press from "@/pages/Press/Press";
-import NBAMediaTraining from "@/pages/Sessions/NBAMediaTraining";
-import NFLMediaTraining from "@/pages/Sessions/NFLMediaTraining";
+import NBAMediaTraining from "@/pages/Sessions/NBACoachTraining";
+import NFLMediaTraining from "@/pages/Sessions/NFLCoachTraining";
 import PresentationPracticeSession from "@/pages/Sessions/PresentationPractice";
 import PublicSpeakingSession from "@/pages/Sessions/PublicSpeaking";
 import TheRookieMediaTraining from "@/pages/Sessions/TheRookieMediaTraining";
 import TheRookieSpeaking from "@/pages/Sessions/TheRookieSpeaking";
-import WNBAMediaTraining from "@/pages/Sessions/WNBAMediaTraining";
+import WNBAMediaTraining from "@/pages/Sessions/WNBACoachTraining";
+import NBAGMTraining from "@/pages/Sessions/NBAGMTraining";
+import WNBAGMTraining from "@/pages/Sessions/WNBAGMTraining";
+import NFLGMTraining from "@/pages/Sessions/NFLGMTraining";
 import CoachingRoomSession from "@/pages/Sessions/CoachingRoom";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
@@ -146,6 +149,9 @@ function SessionRoutes() {
             <Route path="NFL-coach-room/:id" element={<NFLMediaTraining />} />
             <Route path="NBA-coach-room/:id" element={<NBAMediaTraining />} />
             <Route path="WNBA-coach-room/:id" element={<WNBAMediaTraining />} />
+            <Route path="NFL-GM-room/:id" element={<NFLGMTraining />} />
+            <Route path="NBA-GM-room/:id" element={<NBAGMTraining />} />
+            <Route path="WNBA-GM-room/:id" element={<WNBAGMTraining />} />
             <Route path="coaching-room/:id" element={<CoachingRoomSession />} />
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>

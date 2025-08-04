@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const PASSWORD = "MLS1130";
 
 const AccessGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const unlocked = useSelector((state: RootState) => !state.access.unlocked);
+    const unlocked = useSelector((state: RootState) => state.access.unlocked);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
