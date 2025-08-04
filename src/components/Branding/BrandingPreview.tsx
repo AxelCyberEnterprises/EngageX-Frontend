@@ -192,7 +192,7 @@ const bottomLinks = ["Help & Support", "Settings", "Logout"];
 const BrandingPreview = () => {
     const {
         previews: { companyLogoPreview, faviconPreview },
-        colors: { primaryColor, secondaryColor },
+        colors: { secondaryColor },
     } = useSelector((state: RootState) => state.branding);
 
     // Tabs for settings
