@@ -87,7 +87,7 @@ const GoalsSection = ({ className, form }: IGoalsSectionProps) => {
                     type="button"
                     variant="outline"
                     onClick={addGoal}
-                    className={cn("text-green-sheen hover:text-green-sheen border-green-sheen w-fit rounded-lg", {
+                    className={cn("text-green-sheen hover:text-white border-green-sheen hover:bg-green-sheen w-fit rounded-lg", {
                         "border-branding-primary hover:bg-branding-primary text-branding-primary":
                             primaryColor !== PRIMARY_COLOR,
                     })}
