@@ -233,7 +233,7 @@ const PersonalInfoForm: React.FC = () => {
                                 onClick={() => {
                                     setIsEditMode(true);
                                 }}
-                                className="w-full sm:w-auto text-white bg-branding-primary hover:bg-branding-primary/90"
+                                className="w-full sm:w-auto text-white bg-branding-secondary hover:bg-branding-secondary/90"
                             >
                                 <img
                                     src={profileEdit}
@@ -500,7 +500,7 @@ const PersonalInfoForm: React.FC = () => {
                                 <Button
                                     type="submit"
                                     disabled={isUpdating}
-                                    className="w-full sm:w-auto bg-branding-primary hover:bg-branding-primary/90"
+                                    className="w-full sm:w-auto bg-branding-secondary hover:bg-branding-secondary/90"
                                 >
                                     {isUpdating ? "Saving..." : "Save"}
                                 </Button>
