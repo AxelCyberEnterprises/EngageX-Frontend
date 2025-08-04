@@ -1,10 +1,12 @@
-import practiceBg from "@/assets/images/pngs/practice-bg-dashboard.png";
+import practiceBg from "@/assets/images/jpegs/practice-bg-dashboard.jpeg";
 import RookieBg from "@/assets/images/pngs/rookie-bg.png";
 import MultiStepAgreement from "@/components/dashboard/agreementModal/modal";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/context/ThemeContext/hook";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
+import { SECONDARY_COLOR } from "@/lib/constants";
 import { RootState } from "@/store";
 import { ISession } from "@/types/sessions";
 import { UseQueryResult } from "@tanstack/react-query";
@@ -57,6 +59,9 @@ const UserDashboardHome: React.FC = () => {
     const score = dashboardData?.latest_session_dict?.session_score || 0;
     const sessionType = dashboardData?.latest_session_dict?.session_type || "Public Speaking";
     const [newChartData, setNewChartData] = useState([dashboardData?.performance_analytics ?? null]);
+    const {
+        theme: { secondaryColor },
+    } = useTheme();
 
     const cardsData = [
         {
@@ -177,13 +182,23 @@ const UserDashboardHome: React.FC = () => {
                 {isEnterpriseUser && enterpriseUserType === "general" ? (
                     <DashboardCard bgImage={speakingBg} className="block">
                         <Link to="/dashboard/user/the-coaching-room">
-                            <button className="p-3 w-full rounded-md">Start Coaching</button>
+                            <button type="button" className="p-3 w-full rounded-md">
+                                Start Coaching
+                            </button>
                         </Link>
                     </DashboardCard>
                 ) : isEnterpriseUser && enterpriseUserType === "rookie" ? (
                     <DashboardCard bgImage={RookieBg} className="block">
                         <Link to="/dashboard/user/the-rookie-room">
-                            <button className="p-3 w-full rounded-md">Start Rookie</button>
+                            <button
+                                type="button"
+                                className="p-3 w-full rounded-md"
+                                style={{
+                                    backgroundColor: secondaryColor !== SECONDARY_COLOR ? secondaryColor : undefined,
+                                }}
+                            >
+                                Start Rookie
+                            </button>
                         </Link>
                     </DashboardCard>
                 ) : (
@@ -198,9 +213,13 @@ const UserDashboardHome: React.FC = () => {
                             <h4 className="gunmetal mb-5.5">{dashboardData?.available_credit}</h4>
                             <Link className="w-full" to={"/dashboard/user/settings?section=credits"}>
                                 {dashboardData?.available_credit === 0 ? (
-                                    <button className="p-3 w-full rounded-md">Buy credits</button>
+                                    <button type="button" className="p-3 w-full rounded-md">
+                                        Buy credits
+                                    </button>
                                 ) : (
-                                    <button className="p-3 w-full rounded-md">Buy more credits</button>
+                                    <button type="button" className="p-3 w-full rounded-md">
+                                        Buy more credits
+                                    </button>
                                 )}
                             </Link>
                         </div>
@@ -210,7 +229,15 @@ const UserDashboardHome: React.FC = () => {
                 {cardsData.map((card, index) => (
                     <DashboardCard key={index} bgImage={card.image}>
                         <Link to={card.href}>
-                            <button className="p-3 w-full rounded-md">{card.buttonText}</button>
+                            <button
+                                type="button"
+                                className="p-3 w-full rounded-md"
+                                style={{
+                                    backgroundColor: secondaryColor !== SECONDARY_COLOR ? secondaryColor : undefined,
+                                }}
+                            >
+                                {card.buttonText}
+                            </button>
                         </Link>
                     </DashboardCard>
                 ))}
@@ -234,7 +261,7 @@ const UserDashboardHome: React.FC = () => {
                     <p className="dark__charcoal">{sessionType} Score</p>
                     <p className="big">{score ?? 0}%</p>
                 </div>
-                <SegmentedProgressBar percent={score ?? 0} color="#40B869" divisions={5} />
+                <SegmentedProgressBar percent={score ?? 0} color="#64b99e" divisions={5} />
                 {(score ?? 0) > 10 && <p className="dark__charcoal mt-6">✊Keep going! You're improving!</p>}
                 {(score ?? 0) === 100 && (
                     <p className="dark__charcoal mt-6">👏 Bravo! You've reached the finish line!</p>
@@ -252,7 +279,9 @@ const UserDashboardHome: React.FC = () => {
                     focus directly on enhancing your skills in specific areas.
                 </p>
                 <Link to="performance-improvement">
-                    <Button className="bg-branding-primary hover:bg-branding-primary/90 py-3">Improve Session</Button>
+                    <Button type="button" className="bg-branding-primary hover:bg-branding-primary/90 py-3">
+                        Improve Session
+                    </Button>
                 </Link>
             </div>
 

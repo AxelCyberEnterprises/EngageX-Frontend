@@ -162,61 +162,57 @@ const NotificationSettings: React.FC = () => {
   }
 
   return (
-    <Card className="w-full border-none shadow-none py-8">
-      <CardHeader className="px-0 pb-0">
-        <div className="flex flex-row sm:items-center justify-between gap-4 w-full">
-          <div>
-            <CardTitle className="text-xl font-medium text-[#10161E]">Notifications</CardTitle>
-            <p className="text-sm text-[#6F7C8E] mt-1">Choose how you want to customize your notifications</p>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="px-0 pt-6 md:w-[60%]">
-        <div className="space-y-8">
-          {categories.map((category) => (
-            <div key={category.id} className="space-y-4">
-              <h3 className="text-lg font-medium text-[#10161E]">{category.title}</h3>
-              <div className="space-y-4">
-                {category.options.map((option) => (
-                  <div
-                    key={option.id}
-                    className="flex items-start gap-4 py-2"
-                  >
-                    <Switch
-                      checked={option.enabled}
-                      onCheckedChange={() => toggleOption(category.id, option.id)}
-                      className="p-0 justify-start w-8 [&_[data-slot='switch-thumb']]:size-4"
-                    >
-                    </Switch>
-
-                    <div className="space-y-1">
-                      <p className="font-medium text-[#10161E]">{option.title}</p>
-                      <p className="text-sm text-[#6F7C8E]">{option.description}</p>
-                    </div>
+      <Card className="w-full border-none shadow-none py-8">
+          <CardHeader className="px-0 pb-0">
+              <div className="flex flex-row sm:items-center justify-between gap-4 w-full">
+                  <div>
+                      <CardTitle className="text-xl font-medium text-[#10161E]">Notifications</CardTitle>
+                      <p className="text-sm text-[#6F7C8E] mt-1">Choose how you want to customize your notifications</p>
                   </div>
-                ))}
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-8 flex sm:flex-row flex-col sm:justify-end w-full gap-6">
-          <Button
-            variant="outline"
-            onClick={handleCancel}
-            className="border-[#D0D5DD] text-[#6F7C8E] sm:hidden w-full sm:w-auto"
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSave}
-            className="px-10 w-full sm:w-auto"
-            disabled={isUpdating}
-          >
-            {isUpdating ? "Saving..." : "Save"}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+          </CardHeader>
+          <CardContent className="px-0 pt-6 md:w-[60%]">
+              <div className="space-y-8">
+                  {categories.map((category) => (
+                      <div key={category.id} className="space-y-4">
+                          <h3 className="text-lg font-medium text-[#10161E]">{category.title}</h3>
+                          <div className="space-y-4">
+                              {category.options.map((option) => (
+                                  <div key={option.id} className="flex items-start gap-4 py-2">
+                                      <Switch
+                                          checked={option.enabled}
+                                          onCheckedChange={() => toggleOption(category.id, option.id)}
+                                          className="p-0 justify-start w-8 [&_[data-slot='switch-thumb']]:size-4"
+                                      ></Switch>
+
+                                      <div className="space-y-1">
+                                          <p className="font-medium text-[#10161E]">{option.title}</p>
+                                          <p className="text-sm text-[#6F7C8E]">{option.description}</p>
+                                      </div>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                  ))}
+              </div>
+              <div className="mt-8 flex sm:flex-row flex-col sm:justify-end w-full gap-6">
+                  <Button
+                      variant="outline"
+                      onClick={handleCancel}
+                      className="border-[#D0D5DD] text-[#6F7C8E] sm:hidden w-full sm:w-auto"
+                  >
+                      Cancel
+                  </Button>
+                  <Button
+                      onClick={handleSave}
+                      className="px-10 w-full sm:w-auto bg-branding-primary hover:bg-branding-primary/90"
+                      disabled={isUpdating}
+                  >
+                      {isUpdating ? "Saving..." : "Save"}
+                  </Button>
+              </div>
+          </CardContent>
+      </Card>
   );
 };
 

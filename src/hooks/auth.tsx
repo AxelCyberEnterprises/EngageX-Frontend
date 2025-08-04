@@ -120,6 +120,7 @@ export function useLogin() {
             dispatch(login(data));
             queryClient.invalidateQueries({ queryKey: ["user-profile"] });
             queryClient.invalidateQueries({ queryKey: ["full-profile"] });
+            queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
 
             navigate(admin ? "/dashboard/admin" : "/dashboard/user");
         },

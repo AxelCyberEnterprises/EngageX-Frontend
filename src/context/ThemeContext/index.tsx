@@ -31,8 +31,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (profile) {
             setTheme({
-                primaryColor: profile.primary_color || "#262b3a",
-                secondaryColor: profile.secondary_color || "#10161e",
+                primaryColor: profile.primary_color || defaultTheme.primaryColor,
+                secondaryColor: profile.secondary_color || defaultTheme.secondaryColor,
                 logoUrl: profile.logo || Logo,
                 faviconUrl: profile.favicon || "/favicon.svg",
             });

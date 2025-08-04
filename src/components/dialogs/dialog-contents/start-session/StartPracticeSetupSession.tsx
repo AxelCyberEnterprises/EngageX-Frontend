@@ -135,7 +135,7 @@ const StartPracticeSetupSession = ({
             <Button
                 disabled={isPending || isSummaryGenerationPending}
                 variant="outline"
-                className="text-gunmetal hover:text-gunmetal border-gunmetal font-normal w-full h-11"
+                className="text-branding-primary hover:text-branding-primary border-branding-primary font-normal w-full h-11"
                 onClick={() => dispatch(closeDialog())}
             >
                 Cancel

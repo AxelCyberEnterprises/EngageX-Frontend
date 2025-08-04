@@ -18,6 +18,9 @@ import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react
 import React, { useCallback, useRef, useState } from "react";
 import { Link, To, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
+import { cn } from "@/lib/utils";
+import { useTheme } from "@/context/ThemeContext/hook";
+import { SECONDARY_COLOR } from "@/lib/constants";
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
@@ -25,6 +28,9 @@ const PitchSessionReport: React.FC = () => {
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const navigate = useNavigate();
+    const {
+        theme: { secondaryColor },
+    } = useTheme();
     const { id } = useParams();
 
     const { data, isPending, refetch } = useGetSessionReport(id);
@@ -415,7 +421,13 @@ const PitchSessionReport: React.FC = () => {
                                         <LoaderCircle className="size-6 animate-spin stroke-white" />
                                     ) : (
                                         <Button
-                                            className="bg-medium-sea-green hover:bg-medium-sea-green/70 rounded-lg"
+                                            className={cn(
+                                                "bg-medium-sea-green hover:bg-medium-sea-green/90 rounded-lg",
+                                                {
+                                                    "bg-branding-secondary hover:bg-branding-secondary/90":
+                                                        secondaryColor !== SECONDARY_COLOR,
+                                                },
+                                            )}
                                             onClick={() => mutate()}
                                             isLoading={requestingVideo}
                                         >
