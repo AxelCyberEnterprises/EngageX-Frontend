@@ -38,7 +38,7 @@ const AccessGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <p>
                     Welcome to EngageX over the next 72 hours we will be enhancing the platform with some wonderful new
                     features. Since our customers are our 1st priority, we decided not to risk the user experience and
-                    will republish on July 31st.{" "}
+                    will republish on August 5th.
                 </p>
                 <Input
                     type="password"
