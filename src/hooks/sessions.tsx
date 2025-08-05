@@ -97,6 +97,12 @@ export function useCreateRookieRoomSession() {
                 navigate(`/sessions/NBA-coach-room/${id}`);
             } else if (enterprise_settings?.rookie_type === "coach" && enterprise_settings?.sport_type === "wnba") {
                 navigate(`/sessions/WNBA-coach-room/${id}`);
+            } else if (enterprise_settings?.rookie_type === "gm" && enterprise_settings?.sport_type === "nfl") {
+                navigate(`/sessions/NFL-GM-room/${id}`);
+            } else if (enterprise_settings?.rookie_type === "gm" && enterprise_settings?.sport_type === "nba") {
+                navigate(`/sessions/NBA-GM-room/${id}`);
+            } else if (enterprise_settings?.rookie_type === "gm" && enterprise_settings?.sport_type === "wnba") {
+                navigate(`/sessions/WNBA-GM-room/${id}`);
             } else if (session_name.includes("Coaching Room")) {
                 navigate(`/sessions/coaching-room/${id}`);
             }

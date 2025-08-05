@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
     rookieRoomCoachVEOptions,
+    rookieRoomGMVEOptions,
     rookieRoomVEOptions,
     sportsOptions,
     trainingTypeOptions,
@@ -52,38 +53,10 @@ const RookieRoomForm = () => {
     const rookieType = useWatch({ control: form.control, name: "enterprise_settings.rookie_type" });
     const sportType = useWatch({ control: form.control, name: "enterprise_settings.sport_type" });
 
-    let videoSrc: string | undefined;
-
-    if (rookieType === "coach") {
-        switch (sportType) {
-            case "nba":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+Intro.mp4";
-                break;
-            case "wnba":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+Intro+Video+.mp4";
-                break;
-            case "nfl":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+Football+Intro+.mp4";
-                break;
-            case "mlb":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+Football+Intro+.mp4";
-                break;
-        }
-    } else if (rookieType === "media_training") {
-        videoSrc =
-            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/Media+Intro.MP4";
-    } else if (rookieType === "gm") {
-        videoSrc = "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4";
-    }
-
     useEffect(() => {
         let newVE: FormType["virtual_environment"] = "conference_room";
 
-        if (rookieType === "coach") {
+        if (rookieType === "coach" || rookieType === "gm") {
             switch (sportType) {
                 case "nba":
                     newVE = "nba_room";
@@ -105,6 +78,57 @@ const RookieRoomForm = () => {
 
         form.setValue("virtual_environment", newVE);
     }, [form, rookieType, sportType]);
+
+    const virtualEnvironmentOptions =
+        rookieType === "coach"
+            ? rookieRoomCoachVEOptions[sportType as keyof typeof rookieRoomCoachVEOptions]
+            : rookieType === "gm"
+              ? rookieRoomGMVEOptions[sportType as keyof typeof rookieRoomGMVEOptions]
+              : rookieRoomVEOptions;
+    let videoSrc: string | undefined;
+
+    if (rookieType === "coach") {
+        switch (sportType) {
+            case "nba":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+Intro.mp4";
+                break;
+            case "wnba":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+Intro+Video+.mp4";
+                break;
+            case "nfl":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+Football+Intro+.mp4";
+                break;
+            case "mlb":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+Football+Intro+.mp4";
+                break;
+        }
+    } else if (rookieType === "gm") {
+        switch (sportType) {
+            case "nba":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+GM+Intro+.MP4";
+                break;
+            case "wnba":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+GM+Intro+.MP4";
+                break;
+            case "nfl":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+GM+intro.MP4";
+                break;
+            case "mlb":
+                videoSrc =
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+GM+intro.MP4";
+                break;
+        }
+    } else if (rookieType === "media_training") {
+        videoSrc =
+            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/Media+Intro.MP4";
+    }
 
     return (
         <Form {...form}>
@@ -197,12 +221,8 @@ const RookieRoomForm = () => {
                     <VirtualEnvironmentSection
                         {...{ form }}
                         className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
-                        options={
-                            rookieType === "coach"
-                                ? rookieRoomCoachVEOptions[sportType as keyof typeof rookieRoomCoachVEOptions]
-                                : rookieRoomVEOptions
-                        }
-                        overlay={rookieType !== "coach"}
+                        options={virtualEnvironmentOptions}
+                        overlay={!(["coach", "gm"] as Array<typeof rookieType>).includes(rookieType!)}
                     />
                     <QuickTips tips={rookieRoomQuickTips} />
                 </section>
