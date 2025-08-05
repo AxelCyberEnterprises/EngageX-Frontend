@@ -6,7 +6,7 @@ const StartSession = ({ children, videoSrc }: IStartSessionProps) => {
     return (
         <div className="flex flex-col justify-between gap-8">
             <div className="space-y-2">
-                <h6>Start your Session</h6>
+                <h6>Start your session</h6>
                 <p>Confirm you're ready to use your session credit.</p>
                 <p>
                     Reminder: Remember to record for at least 2 minutes and take pauses to allow the audience to react.
