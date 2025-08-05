@@ -14,15 +14,17 @@ const StartSession = ({ children, videoSrc }: IStartSessionProps) => {
             </div>
             <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-x-4">{children}</div>
-                <video className="w-full h-60 object-cover rounded-xl" controls>
-                    <source
-                        src={
-                            videoSrc ||
-                            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
-                        }
-                        type="video/mp4"
-                    />
-                </video>
+                <div className="overflow-hidden">
+                    <video className="w-full h-60 object-cover rounded-xl" controls>
+                        <source
+                            src={
+                                videoSrc ||
+                                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
+                            }
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
             </div>
         </div>
     );
