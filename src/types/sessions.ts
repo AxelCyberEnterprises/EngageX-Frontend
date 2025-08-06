@@ -2,7 +2,7 @@ import { BaseSessionSetupSchema } from "@/schemas/dashboard/user";
 import { z } from "zod";
 
 interface IEnterpriseSettings {
-    enterprice_type: string;
+    enterprise_type: "rookie";
     rookie_type: "media_training" | "speaking" | "coach" | "gm";
     sport_type: string;
     speaker_notes: string;
