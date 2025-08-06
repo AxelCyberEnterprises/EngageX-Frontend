@@ -60,7 +60,7 @@ const WNBAMediaTraining: React.FC = () => {
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question: IQuestion | undefined = questionsRef.current[activeQuestion];
     const location = useLocation();
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions("coach");
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions("coach", "wnba");
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
