@@ -295,11 +295,14 @@ export function useRequestSessionVideo(sessionId: string | undefined) {
     });
 }
 
-export function useGetSessionQuestions(vertical: string) {
+export function useGetSessionQuestions(vertical: string, sport_type?: string) {
     return useQuery({
-        queryKey: ["getSessionQuestions", vertical],
+        queryKey: ["getSessionQuestions", vertical, sport_type],
         queryFn: async () => {
-            return await apiGet(`/enterprise/enterprise-questions/?vertical=${vertical}`, "default");
+            // Prepare query string conditionally
+            let url = `/enterprise/enterprise-questions/?vertical=${vertical}`;
+            if (sport_type) url += `&sport_type=${sport_type}`;
+            return await apiGet(url, "default");
         },
     });
 }
