@@ -272,7 +272,11 @@ const PitchSessionReport: React.FC = () => {
     let newSessionNavigate: To;
     switch (data?.session_type) {
         case "enterprise":
-            newSessionNavigate = `../enterprise-specialty`;
+            if (data.enterprise_settings?.enterprise_type === "rookie") {
+                newSessionNavigate = "../the-rookie-room";
+            } else {
+                newSessionNavigate = "../the-coaching-room";
+            }
             break;
         case "pitch":
         case "presentation":
