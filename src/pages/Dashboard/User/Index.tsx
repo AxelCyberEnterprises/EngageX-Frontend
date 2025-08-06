@@ -1,5 +1,5 @@
 import practiceBg from "@/assets/images/jpegs/practice-bg-dashboard.jpeg";
-import RookieBg from "@/assets/images/pngs/rookie-bg.png";
+import RookieBg from "@/assets/images/jpegs/rookie-bg.jpg";
 import MultiStepAgreement from "@/components/dashboard/agreementModal/modal";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
@@ -268,21 +268,23 @@ const UserDashboardHome: React.FC = () => {
             </div>
 
             {/* improve past session  */}
-            <div
-                className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
-                style={{ backgroundImage: `url(${improveBg})` }}
-            >
-                <h6 className="pb-3">Improve past session</h6>
-                <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
-                    Select any of your previous sessions to continue practicing with the same setup, allowing you to
-                    focus directly on enhancing your skills in specific areas.
-                </p>
-                <Link to="performance-improvement">
-                    <Button type="button" className="bg-branding-secondary hover:bg-branding-secondary/90 py-3">
-                        Improve Session
-                    </Button>
-                </Link>
-            </div>
+            {enterpriseUserType !== "rookie" && (
+                <div
+                    className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
+                    style={{ backgroundImage: `url(${improveBg})` }}
+                >
+                    <h6 className="pb-3">Improve past session</h6>
+                    <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
+                        Select any of your previous sessions to continue practicing with the same setup, allowing you to
+                        focus directly on enhancing your skills in specific areas.
+                    </p>
+                    <Link to="performance-improvement">
+                        <Button type="button" className="bg-branding-secondary hover:bg-branding-secondary/90 py-3">
+                            Improve Session
+                        </Button>
+                    </Link>
+                </div>
+            )}
 
             {(user?.first_login || user?.first_time_verification) && (
                 <MultiStepAgreement
