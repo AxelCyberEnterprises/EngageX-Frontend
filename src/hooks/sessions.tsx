@@ -268,7 +268,7 @@ export function useRequestSessionVideo(sessionId: string | undefined) {
     return useMutation({
         mutationKey: ["requestSessionVideo"],
         mutationFn: async () => {
-            await apiPost(`/sessions/sessions/${sessionId}/queue-video-compilation/`, undefined, "default");
+            await apiPost(`/sessions/sessions/${sessionId}/compile-video/`, undefined, "default");
         },
         onSuccess: () => {
             console.log("Video requested successfully.");
