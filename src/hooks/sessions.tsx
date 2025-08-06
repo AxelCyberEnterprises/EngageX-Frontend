@@ -295,25 +295,41 @@ export function useRequestSessionVideo(sessionId: string | undefined) {
     });
 }
 
+// 1. Define the types. (You can add more fields if you like.)
+type EnterpriseQuestion = {
+  id: number;
+  sport_type: string;
+  question_text: string;
+  [key: string]: any; // catch-all for other properties
+};
+
+type PaginatedQuestions = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: EnterpriseQuestion[];
+};
+
+// 2. Export the hook. Copy/paste this whole function:
 export function useGetSessionQuestions(vertical: string, sport_type?: string) {
-    return useQuery({
+    return useQuery<PaginatedQuestions>({
         queryKey: ["getSessionQuestions", vertical, sport_type],
         queryFn: async () => {
             let url = `/enterprise/enterprise-questions/?vertical=${vertical}`;
+            // You can leave this line for possible backend-side filtering
             if (sport_type) url += `&sport_type=${sport_type}`;
-            const data = await apiGet(url, "default");
-
-            // Only filter if sport_type is set
+            // Make the API call and cast its response to the expected type
+            const data = await apiGet(url, "default") as PaginatedQuestions;
+            // Filter results locally just in case the backend misbehaves
             const filtered = sport_type
-                ? { 
-                    ...data, 
-                    results: data.results?.filter(
-                        (q: any) => q.sport_type === sport_type
-                    ) 
+                ? {
+                    ...data,
+                    results: data.results.filter(
+                        (q) => q.sport_type === sport_type
+                    )
                 }
                 : data;
-
-            console.log('Filtered questions:', filtered.results); // For verification
+            console.log('Filtered questions:', filtered.results);
             return filtered;
         },
     });
