@@ -31,14 +31,11 @@ function Hero() {
           platform
         </h1>
         <p className="big text-dark-electric-blue font-light text-center lg:text-left">
-          Prepare, persuade, perfect, and present with confidence in a realistic
-          AI-powered environment. Our web-based, mobile-friendly platform and
-          ios app are built for sales professionals, entrepreneurs, athletes,
-          and corporate leaders. Designed to sharpen communication, captivate
-          audiences, and elevate influence. The platform features a hybrid
-          coaching model that combines AI technology with insights from
-          certified coaches, delivering expert guidance that goes beyond
-          peer-based feedback.
+          Prepare, persuade, perfect, and present with confidence in a realistic, AI-powered environment. 
+          Our web-based, mobile-friendly platform is designed for athletes, sales professionals, entrepreneurs, and corporate professionals.
+          It helps users train and refine their communication skills, captivate audiences, and elevate their influence.
+          The platform features a hybrid coaching model that blends advanced technology with insights from the industry’s best certified professional coaches,
+          delivering expert guidance that goes far beyond peer feedback.
         </p>
         <div className="flex gap-10 sm:flex-row flex-col">
           <Link to="/dashboard/user/">
