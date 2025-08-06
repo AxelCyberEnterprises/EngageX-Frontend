@@ -299,12 +299,22 @@ export function useGetSessionQuestions(vertical: string, sport_type?: string) {
     return useQuery({
         queryKey: ["getSessionQuestions", vertical, sport_type],
         queryFn: async () => {
-            // Prepare query string conditionally
             let url = `/enterprise/enterprise-questions/?vertical=${vertical}`;
             if (sport_type) url += `&sport_type=${sport_type}`;
             const data = await apiGet(url, "default");
-            console.log("API response from useGetSessionQuestions:", data); // <--- LOG HERE
-            return data;
+
+            // Only filter if sport_type is set
+            const filtered = sport_type
+                ? { 
+                    ...data, 
+                    results: data.results?.filter(
+                        (q: any) => q.sport_type === sport_type
+                    ) 
+                }
+                : data;
+
+            console.log('Filtered questions:', filtered.results); // For verification
+            return filtered;
         },
     });
 }
