@@ -302,7 +302,12 @@ export function useGetSessionQuestions(vertical: string, sport_type?: string) {
             // Prepare query string conditionally
             let url = `/enterprise/enterprise-questions/?vertical=${vertical}`;
             if (sport_type) url += `&sport_type=${sport_type}`;
-            return await apiGet(url, "default");
+            console.log("Fetching questions with sport_type:", sport_type); // Log sport_type
+
+            const data = await apiGet(url, "default");
+            console.log("Fetched questions:", data?.results); // Log questions
+
+            return data;
         },
     });
 }
