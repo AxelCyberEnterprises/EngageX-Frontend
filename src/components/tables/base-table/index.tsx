@@ -35,6 +35,8 @@ interface BaseTableProps<TData, TValue> {
     tableHeaderClassName?: string;
     tableHeaderItemClassName?: string;
     tableContainerClassName?: string;
+    tableRowClassName?: string;
+    tableCellClassName?: string;
     pageSize?: number;
     hidePagination?: boolean;
     isLoading?: boolean;
@@ -53,6 +55,8 @@ export function BaseTable<TData, TValue>({
     tableHeaderClassName,
     tableHeaderItemClassName,
     tableContainerClassName,
+    tableCellClassName,
+    tableRowClassName,
     hidePagination,
     emptyState,
     pageSize
@@ -165,10 +169,10 @@ export function BaseTable<TData, TValue>({
                                         }
                                     }}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className="hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray"
+                                    className={cn("hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray", tableRowClassName)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id} className="text-dark-charcoal p-4 align-baseline">
+                                        <TableCell key={cell.id} className={cn("text-dark-charcoal p-4 align-baseline", tableCellClassName)}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}

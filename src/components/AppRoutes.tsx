@@ -62,6 +62,8 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Toaster } from "./ui/sonner";
 import VideoPopup from "./VideoPopup";
+import { Overview } from "@/pages/Dashboard/Admin/Overview";
+import NewLayout from "./layouts/NewLayout";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -117,7 +119,6 @@ function UserDashboardRoutes() {
                 <Route path="safety" element={<SafetyPrivacy />} />
                 <Route path="message" element={<Chat />} />
             </Route>
-
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
@@ -131,6 +132,14 @@ function AdminDashboardRoutes() {
             <Route path="session-history/:id" element={<AdminSessionReport />} />
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
+        </Routes>
+    );
+}
+function NewDashboardRoutes() {
+    return (
+        <Routes>
+            <Route path="overview" element={<Overview />} />
             <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
         </Routes>
     );
@@ -189,6 +198,14 @@ function MainRoutes() {
                         <DashboardLayout>
                             <AdminDashboardRoutes />
                         </DashboardLayout>
+                    }
+                />
+                <Route
+                    path="dashboard/admin/organization/*"
+                    element={
+                        <NewLayout>
+                            <NewDashboardRoutes />
+                        </NewLayout>
                     }
                 />
                 <Route
