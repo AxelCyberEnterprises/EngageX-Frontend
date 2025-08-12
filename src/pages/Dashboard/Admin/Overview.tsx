@@ -74,7 +74,7 @@ const Overview = () => {
       <h3 className='pb-6 md:pl-6 pl-3 border-b border-[#ECEEF4] font-medium md:text-2xl text-xl'>Organizations view details</h3>
       {/* Header */}
       <div className="flex items-center justify-between py-3">
-        <Search/>
+        <Search className='md:hidden flex'/>
         <div className="md:flex items-center gap-3 hidden">
           <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-[#000000]">
             <img src={lakers} alt="lakers image" className="w-full h-full object-cover" />
