@@ -1,20 +1,20 @@
+import { Goal } from "./data";
 import { BaseTable } from "../base-table";
 import { columns } from "./columns";
-import { Member } from "./data";
 
-interface MembersTableProps {
-  data: Member[];
+interface GoalsTableProps {
+  data: Goal[];
   pageSize?: number;
   hidePagination?: boolean;
-  loadingMembers?: boolean;
+  loadingGoals?: boolean;
 }
 
-export const MembersTable = ({ 
-  data, 
+export const GoalsTable = ({
+  data,
   pageSize = 5,
   hidePagination,
-  loadingMembers
-}: MembersTableProps) => {
+  loadingGoals
+}: GoalsTableProps) =>{
   return (
     <BaseTable
       columns={columns}
@@ -26,7 +26,7 @@ export const MembersTable = ({
       tableCellClassName="align-middle"
       tableRowClassName="[&>*]:!border-[#D0D5DD]"
       hidePagination={hidePagination}
-      isLoading={loadingMembers}
+      isLoading={loadingGoals}
       session={false}
     />
   );

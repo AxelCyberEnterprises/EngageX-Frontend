@@ -2,9 +2,10 @@
 import coaching from '../../../assets/images/svgs/coaching.svg';
 import archive from '../../../assets/images/svgs/archive.svg';
 import lakers from '../../../assets/images/pngs/lakers.png';
-import { useState } from 'react';
 import { Member } from '@/components/tables/members-table/data';
 import { MembersTable } from '@/components/tables/members-table';
+import { Goal } from '@/components/tables/active-goals-table/data';
+import { GoalsTable } from '@/components/tables/active-goals-table';
 
 const Overview = () => {
   const dummyMembersData: Member[] = [
@@ -49,6 +50,24 @@ const Overview = () => {
       creditsUsed: 5,
     },
   ];
+
+  const dummyGoalsData: Goal[] = [
+    {
+      id: "1",
+      roomType: "Rookie Room",
+      goal: 80,
+      completionRate: 80,
+      dueDate: "July 10, 2025",
+    },
+    {
+      id: "2",
+      roomType: "General Room",
+      goal: 50,
+      completionRate: 92,
+      dueDate: "July 9, 2025",
+    },
+  ];
+
   return (
     <div className="p-6 bg-white min-h-screen">
       <h3 className='pb-6 pl-6 border-b border-[#ECEEF4] font-medium text-2xl'>Organizations view details</h3>
@@ -127,11 +146,11 @@ const Overview = () => {
           <h5 className='font-medium'>Active Goals</h5>
           <button className='border border-[#E4E7EC] bg-transparent p-3 text-base rounded-sm text-[#252A39]'>View all</button>
         </div>
-        <MembersTable
-          data={dummyMembersData}
+        <GoalsTable
+          data={dummyGoalsData}
           pageSize={5}
           hidePagination={true}
-          loadingMembers={false}
+          loadingGoals={false}
         />
       </div>
 

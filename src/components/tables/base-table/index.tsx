@@ -41,6 +41,7 @@ interface BaseTableProps<TData, TValue> {
     hidePagination?: boolean;
     isLoading?: boolean;
     emptyState?: React.ReactNode;
+    session?: boolean;
 }
 
 export function BaseTable<TData, TValue>({
@@ -59,7 +60,8 @@ export function BaseTable<TData, TValue>({
     tableRowClassName,
     hidePagination,
     emptyState,
-    pageSize
+    pageSize,
+    session = true,
 }: BaseTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -161,7 +163,7 @@ export function BaseTable<TData, TValue>({
                                     key={row.id}
                                     onClick={() => {
                                         const rowData = row.original as { id?: string };
-                                        if (rowData.id) {
+                                        if (rowData.id && session) {
                                             dispatch(setSessionId(rowData.id));
                                             navigate(
                                                 `/dashboard/${user.is_admin ? "admin" : "user"}/session-history/${rowData.id}`,

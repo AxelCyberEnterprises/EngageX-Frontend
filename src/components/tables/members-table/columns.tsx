@@ -1,5 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { ColumnDef } from "@tanstack/react-table";
 import { Member } from "./data";
+import { useRef, useState } from "react";
+import { useClickOutside } from "@/hooks/useClickoutside";
 
 export const columns: ColumnDef<Member, any>[] = [
   {
@@ -63,16 +66,65 @@ export const columns: ColumnDef<Member, any>[] = [
         Actions
       </div>
     ),
-    cell: () => (
-      <div className="flex justify-center">
-        <button className=" rounded-lg transition-colors bg-transparent rotate-90">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 12C11.1046 12 12 11.1046 12 10C12 8.89543 11.1046 8 10 8C8.89543 8 8 8.89543 8 10C8 11.1046 8.89543 12 10 12Z" fill="#6B7280" />
-            <path d="M10 5C11.1046 5 12 4.10457 12 3C12 1.89543 11.1046 1 10 1C8.89543 1 8 1.89543 8 3C8 4.10457 8.89543 5 10 5Z" fill="#6B7280" />
-            <path d="M10 19C11.1046 19 12 18.1046 12 17C12 15.8954 11.1046 15 10 15C8.89543 15 8 15.8954 8 17C8 18.1046 8.89543 19 10 19Z" fill="#6B7280" />
-          </svg>
-        </button>
-      </div>
-    ),
-  },
+    cell: ({ row }) => {
+      const [isOpen, setIsOpen] = useState(false);
+      const popupRef = useRef<HTMLDivElement | null>(null);
+      const buttonRef = useRef<HTMLButtonElement | null>(null);
+      useClickOutside(popupRef, buttonRef, () => { setIsOpen(false) });
+      const handleMenuClick = (event: React.MouseEvent, action: string) => {
+        event.stopPropagation();
+        console.log(`Action performed: ${action}`);
+        setIsOpen(false);
+      };
+
+      return (
+        <div className="flex justify-center relative">
+          <button
+            ref={buttonRef}
+            className="rounded-lg transition-colors bg-transparent rotate-90"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen(!isOpen);
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 12C11.1046 12 12 11.1046 12 10C12 8.89543 11.1046 8 10 8C8.89543 8 8 8.89543 8 10C8 11.1046 8.89543 12 10 12Z" fill="#6B7280" />
+              <path d="M10 5C11.1046 5 12 4.10457 12 3C12 1.89543 11.1046 1 10 1C8.89543 1 8 1.89543 8 3C8 4.10457 8.89543 5 10 5Z" fill="#6B7280" />
+              <path d="M10 19C11.1046 19 12 18.1046 12 17C12 15.8954 11.1046 15 10 15C8.89543 15 8 15.8954 8 17C8 18.1046 8.89543 19 10 19Z" fill="#6B7280" />
+            </svg>
+          </button>
+          {isOpen && (
+            <div ref={popupRef} className="absolute top-full right-0 w-40 bg-white z-[999] shadow-lg rounded-lg">
+              <ul className="py-1">
+                <li
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  onClick={(e) => handleMenuClick(e, "View Progress")}
+                >
+                  View Progress
+                </li>
+                <li
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  onClick={(e) => handleMenuClick(e, "Edit Roles")}
+                >
+                  Edit Roles
+                </li>
+                <li
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  onClick={(e) => handleMenuClick(e, "Assign Credit")}
+                >
+                  Assign Credit
+                </li>
+                <li
+                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  onClick={(e) => handleMenuClick(e, "Reset Password")}
+                >
+                  Reset Password
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+      );
+    },
+  }
 ];
