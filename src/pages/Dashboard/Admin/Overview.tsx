@@ -6,6 +6,7 @@ import { Member } from '@/components/tables/members-table/data';
 import { MembersTable } from '@/components/tables/members-table';
 import { Goal } from '@/components/tables/active-goals-table/data';
 import { GoalsTable } from '@/components/tables/active-goals-table';
+import { PlusIcon, Search } from 'lucide-react';
 
 const Overview = () => {
   const dummyMembersData: Member[] = [
@@ -70,10 +71,11 @@ const Overview = () => {
 
   return (
     <div className="p-6 bg-white min-h-screen">
-      <h3 className='pb-6 pl-6 border-b border-[#ECEEF4] font-medium text-2xl'>Organizations view details</h3>
+      <h3 className='pb-6 md:pl-6 pl-3 border-b border-[#ECEEF4] font-medium md:text-2xl text-xl'>Organizations view details</h3>
       {/* Header */}
       <div className="flex items-center justify-between py-3">
-        <div className="flex items-center gap-3">
+        <Search/>
+        <div className="md:flex items-center gap-3 hidden">
           <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-[#000000]">
             <img src={lakers} alt="lakers image" className="w-full h-full object-cover" />
           </div>
@@ -83,14 +85,15 @@ const Overview = () => {
         <div className="flex items-center gap-3">
           <button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent font-normal flex items-center gap-2">
             <img src={archive} alt="verticals icon" className="w-4" />
-            Accessible verticals
+            <span className='md:flex hidden'>Accessible verticals</span>
           </button>
           <button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent font-normal flex items-center gap-2">
             <img src={coaching} alt="coaching icon" className="w-4" />
-            1 on 1 Coaching
+            <span className='md:flex hidden'>1 on 1 Coaching</span>
           </button>
           <button className="px-4 py-3 bg-[#64BA9F] text-white rounded-md flex items-center gap-2">
-            Add member
+            <PlusIcon className='text-white flex md:hidden h-4.5'/>
+            <span className='md:flex hidden'>Add member</span>
           </button>
         </div>
       </div>
@@ -99,33 +102,33 @@ const Overview = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Members */}
         <div className="bg-white border border-gray-200 rounded-md p-[2px] shadow-[0_0_0_1px_#00000014,_inset_0_0_0_1px_#FFFFFF]">
-          <div className="bg-white border border-gray-200 space-y-12 rounded-md p-4">
+          <div className="bg-white border border-gray-200 md:space-y-12 space-y-6 rounded-md p-4">
             <h3 className="text-sm font-medium text-[#474D63]">Total Members</h3>
-            <p className="text-4xl font-medium text-[#18181B]">120</p>
+            <p className="lg:text-4xl md:text-3xl text-2xl font-medium text-[#18181B]">120</p>
           </div>
         </div>
 
         {/* Total Credits Left */}
         <div className="bg-white border border-gray-200 rounded-md p-[2px] shadow-[0_0_0_1px_#00000014,_inset_0_0_0_1px_#FFFFFF]">
-          <div className="bg-white border border-gray-200 space-y-12 rounded-md p-4">
+          <div className="bg-white border border-gray-200 md:space-y-12 space-y-6 rounded-md p-4">
             <h3 className="text-sm font-medium text-[#474D63]">Total Credits Left</h3>
-            <p className="text-4xl font-medium text-[#18181B]">85/1000</p>
+            <p className="lg:text-4xl md:text-3xl text-2xl font-medium text-[#18181B]">85/1000</p>
           </div>
         </div>
 
         {/* 1 on 1 Coaching activated */}
         <div className="bg-white border border-gray-200 rounded-md p-[2px] shadow-[0_0_0_1px_#00000014,_inset_0_0_0_1px_#FFFFFF]">
-          <div className="bg-white border border-gray-200 space-y-12 rounded-md p-4">
+          <div className="bg-white border border-gray-200 md:space-y-12 space-y-6 rounded-md p-4">
             <h3 className="text-sm font-medium text-[#474D63]">1 on 1 Coaching activated</h3>
-            <p className="text-4xl font-medium text-[#18181B]">20</p>
+            <p className="lg:text-4xl md:text-3xl text-2xl font-medium text-[#18181B]">20</p>
           </div>
         </div>
 
         {/* Goals Completion */}
         <div className="bg-white border border-gray-200 rounded-md p-[2px] shadow-[0_0_0_1px_#00000014,_inset_0_0_0_1px_#FFFFFF]">
-          <div className="bg-white border border-gray-200 space-y-12 rounded-md p-4">
+          <div className="bg-white border border-gray-200 md:space-y-12 space-y-6 rounded-md p-4">
             <h3 className="text-sm font-medium text-[#474D63]">Goals Completion</h3>
-            <p className="text-4xl font-medium text-[#18181B]">79%</p>
+            <p className="lg:text-4xl md:text-3xl text-2xl font-medium text-[#18181B]">79%</p>
           </div>
         </div>
       </div>
