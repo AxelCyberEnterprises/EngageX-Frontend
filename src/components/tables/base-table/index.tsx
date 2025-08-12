@@ -71,13 +71,16 @@ export function BaseTable<TData, TValue>({
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
+    const [paginationState, setPaginationState] = useState<PaginationState>(
+        pagination ?? { pageIndex: 0, pageSize: pageSize || 20 },
+    );
     const table = useReactTable({
         data,
         columns,
         state: {
             columnFilters,
             columnVisibility,
-            pagination,
+            pagination: paginationState,
             rowSelection,
             sorting,
         },
@@ -87,7 +90,7 @@ export function BaseTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
-        onPaginationChange: setPagination,
+        onPaginationChange: setPaginationState,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
         manualPagination: true,

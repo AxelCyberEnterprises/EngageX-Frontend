@@ -64,6 +64,7 @@ import { Toaster } from "./ui/sonner";
 import VideoPopup from "./VideoPopup";
 import { Overview } from "@/pages/Dashboard/Admin/Overview";
 import NewLayout from "./layouts/NewLayout";
+import { OrganizationsDashboard } from "@/pages/Dashboard/Admin/OrgDashboard";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -140,6 +141,7 @@ function NewDashboardRoutes() {
     return (
         <Routes>
             <Route path="overview" element={<Overview />} />
+            <Route path="dashboard" element={<OrganizationsDashboard />} />
             <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
         </Routes>
     );

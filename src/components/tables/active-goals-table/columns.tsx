@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 // import { useRef, useState } from "react";
 // import { useClickOutside } from "@/hooks/useClickoutside";
 import { Goal } from "./data";
-import { EditIcon, Trash, Trash2Icon } from "lucide-react";
+import { EditIcon, Trash2Icon } from "lucide-react";
 
 export const columns: ColumnDef<Goal, any>[] = [
     {

@@ -1,4 +1,5 @@
 
+import { useState } from 'react';
 import coaching from '../../../assets/images/svgs/coaching.svg';
 import archive from '../../../assets/images/svgs/archive.svg';
 import lakers from '../../../assets/images/pngs/lakers.png';
@@ -7,8 +8,11 @@ import { MembersTable } from '@/components/tables/members-table';
 import { Goal } from '@/components/tables/active-goals-table/data';
 import { GoalsTable } from '@/components/tables/active-goals-table';
 import { PlusIcon, Search } from 'lucide-react';
+import AccessibleVerticalsModal from '@/components/modals/modalVariants/AccessibleVerticalsModal';
 
 const Overview = () => {
+  const [showVerticalsModal, setShowVerticalsModal] = useState(false);
+
   const dummyMembersData: Member[] = [
     {
       id: "1",
@@ -74,16 +78,37 @@ const Overview = () => {
       <h3 className='pb-6 md:pl-6 pl-3 border-b border-[#ECEEF4] font-medium md:text-2xl text-xl'>Organizations view details</h3>
       {/* Header */}
       <div className="flex items-center justify-between py-3">
-        <Search className='md:hidden flex'/>
+        {/* <Search className='md:hidden flex'/> */}
+        {/* <div className="md:hidden flex relative">
+            <Search className="w-5 h-5 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search Users"
+              // value={searchTerm}
+              // onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:border-transparent outline-none w-64"
+            />
+          </div> */}
+          
         <div className="md:flex items-center gap-3 hidden">
           <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-[#000000]">
             <img src={lakers} alt="lakers image" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-2xl font-medium text-[#333333]">Acme Inc.</h1>
         </div>
-
+            
         <div className="flex items-center gap-3">
-          <button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent font-normal flex items-center gap-2">
+        <div className="hidden md:flex relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search Users"
+              // value={searchTerm}
+              // onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:border-transparent outline-none w-64"
+            />
+          </div>
+          <button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent font-normal flex items-center gap-2" onClick={() => setShowVerticalsModal(true)}>
             <img src={archive} alt="verticals icon" className="w-4" />
             <span className='md:flex hidden'>Accessible verticals</span>
           </button>
@@ -157,6 +182,10 @@ const Overview = () => {
         />
       </div>
 
+      <AccessibleVerticalsModal 
+        show={showVerticalsModal} 
+        onClose={() => setShowVerticalsModal(false)} 
+      />
     </div>
   );
 };

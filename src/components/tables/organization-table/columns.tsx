@@ -1,63 +1,75 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { ColumnDef } from "@tanstack/react-table";
-import { Member } from "./data";
+import { OrganizationTableData } from "./data";
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickoutside";
 
-export const columns: ColumnDef<Member, any>[] = [
+export const columns: ColumnDef<OrganizationTableData, any>[] = [
   {
-    accessorKey: "member",
+    accessorKey: "name",
     header: () => (
       <div className="flex items-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Member
+        Organization Name
       </div>
     ),
     cell: ({ row }) => {
-      const member = row.original;
+      const organization = row.original;
       return (
         <div className="flex items-center gap-3">
-          <img
-            src={member.avatar}
-            alt={member.name}
-            className="w-10 h-10 rounded-full object-cover"
-          />
-          <span className="font-medium text-gray-900">{member.name}</span>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <img
+              src={organization.logo}
+              alt={organization.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <span className="font-medium text-gray-900">{organization.name}</span>
         </div>
       );
     },
   },
   {
-    accessorKey: "role",
+    accessorKey: "industryType",
     header: () => (
       <div className="flex items-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Role
+        Industry Type
       </div>
     ),
     cell: ({ row }) => (
-      <div className="mb-auto text-gray-700">{row.getValue("role")}</div>
+      <div className="mb-auto text-gray-700">{row.getValue("industryType")}</div>
     ),
   },
   {
-    accessorKey: "lastLogin",
+    accessorKey: "members",
     header: () => (
       <div className="flex items-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Last Login
+        Members
       </div>
     ),
     cell: ({ row }) => (
-      <div className="text-gray-700">{row.getValue("lastLogin")}</div>
+      <div className="text-gray-700 font-medium">{row.getValue("members")}</div>
     ),
   },
   {
-    accessorKey: "creditsUsed",
+    accessorKey: "trainingStatus",
     header: () => (
       <div className="flex items-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Credits used
+        Training Status
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="text-gray-700 font-medium">{row.getValue("creditsUsed")}</div>
-    ),
+    cell: ({ row }) => {
+      const status = row.getValue("trainingStatus") as string;
+      const isActive = status === "Active";
+      
+      return (
+        <div className="flex items-center gap-2">
+          <div className={`w-2 h-2 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`} />
+          <span className={`text-sm font-medium ${isActive ? 'text-green-700' : 'text-red-700'}`}>
+            {status}
+          </span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "action",
@@ -66,11 +78,12 @@ export const columns: ColumnDef<Member, any>[] = [
         Actions
       </div>
     ),
-    cell: () => {
+    cell: ({ row }) => {
       const [isOpen, setIsOpen] = useState(false);
       const popupRef = useRef<HTMLDivElement | null>(null);
       const buttonRef = useRef<HTMLButtonElement | null>(null);
       useClickOutside(popupRef, buttonRef, () => { setIsOpen(false) });
+      
       const handleMenuClick = (event: React.MouseEvent, action: string) => {
         event.stopPropagation();
         console.log(`Action performed: ${action}`);
@@ -94,32 +107,47 @@ export const columns: ColumnDef<Member, any>[] = [
             </svg>
           </button>
           {isOpen && (
-            <div ref={popupRef} className="absolute top-full right-0 w-40 bg-white z-[999] shadow-lg rounded-lg">
+            <div ref={popupRef} className="absolute top-full right-0 w-48 bg-white z-[999] shadow-lg rounded-lg border border-gray-200">
               <ul className="py-1">
                 <li
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "View Progress")}
+                  onClick={(e) => handleMenuClick(e, "View Details")}
                 >
-                  View Progress
+                  View Details
                 </li>
                 <li
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Edit Roles")}
+                  onClick={(e) => handleMenuClick(e, "Edit Organization")}
                 >
-                  Edit Roles
+                  Edit Organization
                 </li>
                 <li
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Assign Credit")}
+                  onClick={(e) => handleMenuClick(e, "Manage Members")}
                 >
-                  Assign Credit
+                  Manage Members
                 </li>
                 <li
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Reset Password")}
+                  onClick={(e) => handleMenuClick(e, "Assign Credits")}
                 >
-                  Reset Password
+                  Assign Credits
                 </li>
+                {row.original.trainingStatus === "Active" ? (
+                  <li
+                    className="px-4 py-2 text-red-600 hover:bg-red-50 cursor-pointer"
+                    onClick={(e) => handleMenuClick(e, "Blacklist")}
+                  >
+                    Blacklist
+                  </li>
+                ) : (
+                  <li
+                    className="px-4 py-2 text-green-600 hover:bg-green-50 cursor-pointer"
+                    onClick={(e) => handleMenuClick(e, "Activate")}
+                  >
+                    Activate
+                  </li>
+                )}
               </ul>
             </div>
           )}

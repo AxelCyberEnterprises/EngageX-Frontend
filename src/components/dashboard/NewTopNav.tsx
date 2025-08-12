@@ -1,37 +1,29 @@
 import {
   Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
+  // BreadcrumbItem,
+  // BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+  // BreadcrumbPage,
+  // BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useTheme } from "@/context/ThemeContext/hook";
 import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
-import { PRIMARY_COLOR } from "@/lib/constants";
-import { cn } from "@/lib/utils";
-import { openDialog } from "@/store/slices/dynamicDialogSlice";
-import { Bell, BellIcon } from "lucide-react";
+import { BellIcon } from "lucide-react";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import home2 from '../../assets/images/svgs/home2.svg';
 
 const NewTopNav: React.FC = () => {
-  const {
-    theme: { primaryColor },
-  } = useTheme();
   const location = useLocation();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { data: fullProfile } = useFullUserProfile();
   const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
-  const pathnames = location.pathname.split("/").filter((path) => path);
-  const pathSegments = location.pathname.split("/").filter(Boolean);
-  const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
+  // const pathnames = location.pathname.split("/").filter((path) => path);
+  // const pathSegments = location.pathname.split("/").filter(Boolean);
+  // const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
   const initials = `${profile?.first_name?.[0] ?? ""}${profile?.last_name?.[0] ?? ""}`.toUpperCase();
-  const formatBreadcrumb = (segment: string) =>
-    segment.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+  // const formatBreadcrumb = (segment: string) =>
+  //   segment.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
   if (location.pathname.includes("settings")) {
     return null;
