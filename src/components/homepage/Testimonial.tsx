@@ -83,6 +83,7 @@ function Testimonial() {
                   <StarIcon key={i} fill="gray" stroke-width={0} />
                 ))}
               </div>
+              
               <p className="text-base text-center">{testimonial.text}</p>
               <div className="flex gap-6 items-center">
                 <p className="text-xs"><span className="font-bold">{testimonial.subtext.split(' - ')[0]}</span> - {testimonial.subtext.split(' - ')[1]}</p>
