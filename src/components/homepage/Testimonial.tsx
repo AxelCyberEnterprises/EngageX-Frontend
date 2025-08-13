@@ -4,6 +4,7 @@ import TestimonialSVG2 from "./svgs/TestimonialSVG2";
 import TestimonialSVG3 from "./svgs/TestimonialSVG3";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+import { StarIcon } from "lucide-react";
 
 type Testimonial = {
   img?: string;
@@ -17,31 +18,25 @@ type Testimonial = {
 };
 
 function Testimonial() {
-  let testimonials: Testimonial[] = [
+  let testimonials = [
     {
       svg: <TestimonialSVG />,
-      img: "/assets/testimonialImg1.jpeg",
-      text:
-        "“Practicing my pitch here gave me the confidence to win over investors.  I highly recommend!”",
-      subtext: "- Startup Founder",
+      text: "“The coolest thing I've seen in a while!”",
+      subtext: "- Katherine M. - VP of Entertainment & Fan Experience",
       color: "#C1C2B4",
       text_color: "",
     },
     {
       svg: <TestimonialSVG2 />,
-      img: "/assets/testimonialImg2.jpeg",
-      text:
-        "“EngageX™ helped me own my narrative. Now, every interview, every post, every connection reflects who I truly am both on and off the field.”",
-      subtext: "- Pro Athlete & Brand Builder",
+      text: "“EngageX offers leaders like myself a transformative approach to inspiring teams, driving innovation, and turning strategic communication into measurable results.”",
+      subtext: "- Ben Tubuo-Dir - and Small Business Officer",
       color: "#6F7C8E",
       text_color: "",
     },
     {
       svg: <TestimonialSVG3 />,
-      img: "/assets/testimonialImg3.jpeg",
-      text:
-        "“With EngageX™, I don't just pitch, I connect! It's transformed the way I communicate value, build trust, and close deals.”",
-      subtext: "- Top Sales Strategist",
+      text: "“There's no downside to it, it makes you more presentable, helps you avoid embarrassment, and that's a great idea. Honestly, it should be mandatory.”",
+      subtext: "- Aaron Williams - former 14-season NBA veteran",
       color: "#EFF6FC",
       text_color: "",
     },
@@ -78,39 +73,20 @@ function Testimonial() {
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="flex gap-8 lg:flex-nowrap flex-wrap lg:pr-8">
+        <div className="grid sm:grid-cols-3 grid-cols-1 gap-8 lg:pr-8">
           {testimonials.map((testimonial, idx) => (
             <div
               key={idx}
-              className={`flex-shrink-0 w-full lg:w-[30rem] h-[25rem] relative bg-[${testimonial.color}] overflow-clip rounded-2xl`}
+              className={`flex-shrink-0 w-full h-[15rem] flex flex-col justify-between py-10 items-center relative overflow-clip border`}
             >
-              {/* {testimonial.svg} */}
-              <img
-                src={testimonial.img}
-                className="absolute top-0 right-0 h-full w-full object-cover"
-                alt=""
-              />
-              <div className="flex h-full justify-end items-end">
-                <div
-                  className={clsx(
-                    "space-y-6 relative z-10 p-6 py-8 items-end justify-baseline",
-                    testimonial.img
-                      ? "bg-gradient-to-b from-black/0 to-black from-0% to-50% text-white"
-                      : `bg-[${testimonial.color}]`
-                  )}
-                >
-                  <p className="big">{testimonial.text}</p>
-                  <div className="flex gap-6 items-center">
-                    {testimonial.avatar && (
-                      <img
-                        src={testimonial.avatar}
-                        className="h-8 w-8"
-                        alt="profile"
-                      />
-                    )}
-                    <p className="small">{testimonial.subtext}</p>
-                  </div>
-                </div>
+              <div className="flex justify-center">
+                {[...Array(5)].map((_, i) => (
+                  <StarIcon key={i} fill="gray" stroke-width={0} />
+                ))}
+              </div>
+              <p className="text-base text-center">{testimonial.text}</p>
+              <div className="flex gap-6 items-center">
+                <p className="text-xs"><span className="font-bold">{testimonial.subtext.split(' - ')[0]}</span> - {testimonial.subtext.split(' - ')[1]}</p>
               </div>
             </div>
           ))}

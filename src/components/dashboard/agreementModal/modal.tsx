@@ -26,7 +26,7 @@ import { Globe } from "lucide-react";
 import { tokenManager } from "@/lib/utils";
 
 function engageXImage() {
-  return <img src={engageXModalLogo} alt="EngageX™ Logo" className="w-28" />;
+  return <img src={engageXModalLogo} alt="EngageX® Logo" className="w-28" />;
 }
 
 export default function MultiStepAgreement({
@@ -332,7 +332,7 @@ function StepTwo({
     <div className="pr-2">
       <article className="text-[#101828] overflow-y-scroll max-md:pr-2 md:h-[55vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[50vh] flex flex-col gap-2 font-medium text-sm font-[montserrat]">
         {engageXImage()}
-        <p className="font-semibold">Welcome to EngageX™!</p>
+        <p className="font-semibold">Welcome to EngageX®!</p>
         <p>
           By using our platform, you acknowledge that you have read, understood,
           and agreed to this User-Level Agreement (ULA), which governs your
@@ -351,14 +351,14 @@ function StepTwo({
 
             <p className="my-4">1. Introduction</p>
             <p className="leading-7">
-              Welcome to EngageX™. Your privacy is important to us. This Privacy
+              Welcome to EngageX®. Your privacy is important to us. This Privacy
               Policy explains how we collect, use, and protect your personal
               information when you use our AI-powered public speaking and
               presentation training platform.
             </p>
 
             <p className="my-4">2. Information We Collect</p>
-            <p>When using EngageX™, we may collect:</p>
+            <p>When using EngageX®, we may collect:</p>
             <ul className="list-disc leading-7">
               <li>
                 <strong>Personal Information:</strong> Name, email address, and
@@ -387,7 +387,7 @@ function StepTwo({
             <p className="my-4">4. Data Storage & Security</p>
             <ul className="list-disc leading-7">
               <li>
-                EngageX™ does not permanently store your session recordings.
+                EngageX® does not permanently store your session recordings.
               </li>
               <li>
                 All session recordings are deleted after 24 hours unless
@@ -400,7 +400,7 @@ function StepTwo({
 
             <p className="my-4">5. Sharing & Third-Party Access</p>
             <p>
-              EngageX™ does not sell or share personal data with third parties
+              EngageX® does not sell or share personal data with third parties
               except:
             </p>
             <ul className="list-disc leading-7">
@@ -418,7 +418,7 @@ function StepTwo({
                 your stored personal data or its deletion.
               </li>
               <li>
-                <strong>Session Recordings:</strong> Once downloaded, EngageX™
+                <strong>Session Recordings:</strong> Once downloaded, EngageX®
                 is not responsible for security breaches or misuse.
               </li>
             </ul>
@@ -426,7 +426,7 @@ function StepTwo({
             <p className="my-4">7. Updates to Privacy Policy</p>
             <p className="leading-7">
               We may update this Privacy Policy from time to time. Continued use
-              of EngageX™ signifies acceptance of any revisions.
+              of EngageX® signifies acceptance of any revisions.
             </p>
 
             <p className="my-4">8. Contact Us</p>
@@ -443,7 +443,7 @@ function StepTwo({
         <div className="font-medium font-[montserrat]">
           <p>By checking "I Agree", you confirm:</p>
           <ul className="leading-7">
-            <li>✔ You understand and accept EngageX™'s policies.</li>
+            <li>✔ You understand and accept EngageX®'s policies.</li>
             <li>✔ You acknowledge session data is deleted after 24 hours.</li>
             <li>✔ You take full responsibility for downloaded recordings.</li>
           </ul>
