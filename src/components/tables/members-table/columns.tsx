@@ -1,142 +1,83 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { ColumnDef } from "@tanstack/react-table";
-import { Member } from "./data";
-import { useRef, useState } from "react";
-import { useClickOutside } from "@/hooks/useClickoutside";
-import IssueCreditsModal from "@/components/modals/modalVariants/IssueCreditModal";
+import { Checkbox } from "@/components/ui/checkbox";
+import type { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 
-export const columns: ColumnDef<Member, any>[] = [
-  {
-    accessorKey: "member",
-    header: () => (
-      <div className="flex items-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Member
-      </div>
-    ),
-    cell: ({ row }) => {
-      const member = row.original;
-      return (
-        <div className="flex items-center gap-3">
-          <img
-            src={member.avatar}
-            alt={member.name}
-            className="w-10 h-10 rounded-full object-cover"
-          />
-          <span className="font-medium text-gray-900">{member.name}</span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "role",
-    header: () => (
-      <div className="flex items-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Role
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="mb-auto text-gray-700">{row.getValue("role")}</div>
-    ),
-  },
-  {
-    accessorKey: "lastLogin",
-    header: () => (
-      <div className="flex items-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Last Login
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="text-gray-700">{row.getValue("lastLogin")}</div>
-    ),
-  },
-  {
-    accessorKey: "creditsUsed",
-    header: () => (
-      <div className="flex items-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Credits used
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="text-gray-700 font-medium">{row.getValue("creditsUsed")}</div>
-    ),
-  },
-  {
-    accessorKey: "action",
-    header: () => (
-      <div className="flex items-center justify-center gap-[8px] text-[#252A39] py-4 cursor-pointer">
-        Actions
-      </div>
-    ),
-    cell: () => {
-      const [isOpen, setIsOpen] = useState(false);
-      const popupRef = useRef<HTMLDivElement | null>(null);
-      const buttonRef = useRef<HTMLButtonElement | null>(null);
-      const [showCreditModal, setShowCreditModal] = useState(false);
-      useClickOutside(popupRef, buttonRef, () => { setIsOpen(false) });
-      const handleMenuClick = (event: React.MouseEvent, action: string) => {
-        event.stopPropagation();
-        console.log(`Action performed: ${action}`);
-        setIsOpen(false);
+export interface IMembers {
+    id: string;
+    name: string;
+    role: string;
+    last_login: string;
+    credit_used: number;
+    assigned_goals: string[];
+}
 
-        if (action === "Assign Credit") {
-          setShowCreditModal(true);
-        }
-      };
-
-      return (
-        <div className="flex justify-center relative">
-          <button
-            ref={buttonRef}
-            className="rounded-lg transition-colors bg-transparent rotate-90"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsOpen(!isOpen);
-            }}
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 12C11.1046 12 12 11.1046 12 10C12 8.89543 11.1046 8 10 8C8.89543 8 8 8.89543 8 10C8 11.1046 8.89543 12 10 12Z" fill="#6B7280" />
-              <path d="M10 5C11.1046 5 12 4.10457 12 3C12 1.89543 11.1046 1 10 1C8.89543 1 8 1.89543 8 3C8 4.10457 8.89543 5 10 5Z" fill="#6B7280" />
-              <path d="M10 19C11.1046 19 12 18.1046 12 17C12 15.8954 11.1046 15 10 15C8.89543 15 8 15.8954 8 17C8 18.1046 8.89543 19 10 19Z" fill="#6B7280" />
-            </svg>
-          </button>
-          {isOpen && (
-            <div ref={popupRef} className="absolute top-full right-0 w-40 bg-white z-[999] shadow-lg rounded-lg">
-              <ul className="py-1">
-                <li
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "View Progress")}
-                >
-                  View Progress
-                </li>
-                <li
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Edit Roles")}
-                >
-                  Edit Roles
-                </li>
-                <li
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Assign Credit")}
-                >
-                  Assign Credit
-                </li>
-                <li
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Reset Password")}
-                >
-                  Reset Password
-                </li>
-              </ul>
-            </div>
-          )}
-          {showCreditModal && (
-            <IssueCreditsModal
-            show={showCreditModal}
-            onClose={() => setShowCreditModal(false)}
+export const membersColumns: ColumnDef<IMembers>[] = [
+    {
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox
+                checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Select all"
+                className="p-0 bg-white border-[1.5px]"
             />
-          )}
-        </div>
-      );
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+                className="p-0 bg-white border-[1.5px]"
+            />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+        size: 50,
     },
-  }
+    {
+        accessorKey: "name",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
+        accessorKey: "role",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Role" />,
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
+        accessorKey: "last_login",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Last Login" />,
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
+        accessorKey: "credit_used",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Credit Used" />,
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
+        accessorKey: "assigned_goals",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Assigned Goals" />,
+        cell: ({ row }) => {
+            const goals = row.getValue("assigned_goals") as string[];
+
+            return (
+                <div className="flex items-center gap-2">
+                    {goals.map((goal, index) => (
+                        <div
+                            key={goal + index}
+                            className="px-2 py-[3px] rounded-full border border-light-silver bg-[#F8F9FC]"
+                        >
+                            <span>{goal}</span>
+                        </div>
+                    ))}
+                </div>
+            );
+        },
+        enableSorting: false,
+        enableHiding: false,
+    },
 ];

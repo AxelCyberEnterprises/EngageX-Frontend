@@ -5,6 +5,7 @@ import AccessGate from "@/pages/auth/AccessGate";
 import CancellationPolicy from "@/pages/CancellationPolicy";
 import Contact from "@/pages/Contact";
 import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
+import Members from "@/pages/Dashboard/Admin/organization/Members";
 import CoachingRoom from "@/pages/Dashboard/User/CoachingRoom";
 import HelpPage from "@/pages/Dashboard/User/help";
 import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
@@ -131,6 +132,9 @@ function AdminDashboardRoutes() {
             <Route index element={<AdminDashboardHome />} />
             <Route path="session-history" element={<AdminSessionHistory />} />
             <Route path="session-history/:id" element={<AdminSessionReport />} />
+            <Route path="organization">
+                <Route path="members" element={<Members />}></Route>
+            </Route>
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />

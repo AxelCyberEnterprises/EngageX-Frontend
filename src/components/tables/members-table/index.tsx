@@ -1,33 +1,46 @@
-import { BaseTable } from "../base-table";
-import { columns } from "./columns";
-import { Member } from "./data";
+import { useDataTable } from "@/hooks/use-data-table";
+import { useEffect, useState } from "react";
+import { DataTable } from "../data-table";
+import { IMembers, membersColumns } from "./columns";
+import { LoaderCircle } from "lucide-react";
 
-interface MembersTableProps {
-  data: Member[];
-  pageSize?: number;
-  hidePagination?: boolean;
-  loadingMembers?: boolean;
-}
+const MembersTable = () => {
+    const [membersData, setMembersData] = useState<IMembers[] | null>(null);
+    const [loading, setLoading] = useState(true);
 
-export const MembersTable = ({ 
-  data, 
-  pageSize = 5,
-  hidePagination,
-  loadingMembers
-}: MembersTableProps) => {
-  return (
-    <BaseTable
-      columns={columns}
-      data={data}
-      pageSize={pageSize}
-      tableHeaderClassName="bg-[#F7F9FC]"
-      tableHeaderItemClassName="text-gray-600 font-medium text-sm "
-      tableContainerClassName="border-[#D0D5DD]"
-      tableCellClassName="align-middle"
-      tableRowClassName="[&>*]:!border-[#D0D5DD]"
-      hidePagination={hidePagination}
-      isLoading={loadingMembers}
-      session={false}
-    />
-  );
+    useEffect(() => {
+        let isMounted = true;
+        import("./data.json").then((mod) => {
+            if (isMounted) {
+                setMembersData(
+                    mod.default.map((item) => ({
+                        ...item,
+                    })),
+                );
+                setLoading(false);
+            }
+        });
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    const { table } = useDataTable({
+        data: membersData || [],
+        columns: membersColumns,
+        // pageCount: 10,
+        // getRowId: (originalRow) => originalRow.id,
+        // shallow: false,
+        // clearOnDefault: true,
+    });
+
+    if (loading) return <LoaderCircle className="m-4 animate-spin" />;
+    return (
+        <>
+            <DataTable table={table}></DataTable>
+        </>
+    );
 };
+
+export default MembersTable;
