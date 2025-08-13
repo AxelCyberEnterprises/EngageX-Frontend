@@ -64,67 +64,60 @@ const AccessibleVerticalsModal: React.FC<AccessibleVerticalsModalProps> = ({ sho
   ];
 
   return (
-    <Modal show={show} onClose={handleModalClose} className="w-full max-w-md mx-4 p-6">
-      <div className="w-full">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Accessible Verticals</h2>
-          <button
-            onClick={handleModalClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-500" />
-          </button>
-        </div>
+      <Modal show={show} onClose={handleModalClose} className="w-full max-w-md mx-4 p-6">
+          <div className="w-full">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-[24px] font-medium text-gray-900">Accessible Verticals</h2>
+                  <button onClick={handleModalClose} className="p-1 bg-white">
+                      <X className="w-6 h-6 text-black" />
+                  </button>
+              </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* Verticals Checkboxes */}
-            <div className="space-y-4">
-              {verticalOptions.map((option) => (
-                <FormField
-                  key={option.key}
-                  control={form.control}
-                  name={option.key as keyof AccessibleVerticalsFormValues}
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          className="data-[state=checked]:bg-[#64BA9F] data-[state=checked]:border-[#64BA9F]"
-                        />
-                      </FormControl>
-                      <FormLabel className="text-sm font-medium text-gray-900 cursor-pointer">
-                        {option.label}
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-              ))}
-            </div>
+              <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      {/* Verticals Checkboxes */}
+                      <div className="space-y-4">
+                      {verticalOptions.map((option) => (
+                          <FormField
+                          key={option.key}
+                          control={form.control}
+                          name={option.key as keyof AccessibleVerticalsFormValues}
+                          render={({ field }) => (
+                              <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                                  <FormControl>
+                                      <Checkbox
+                                          checked={field.value}
+                                          onCheckedChange={field.onChange}
+                                          className="bg-[#fff] w-[23px] h-[22px] data-[state=checked]:bg-[#221e8ada] data-[state=checked]:border-[#FFF]"
+                                      />
+                                  </FormControl>
+                                  <FormLabel className="text-sm font-medium text-gray-900 cursor-pointer">
+                                      {option.label}
+                                  </FormLabel>
+                                  </FormItem>
+                              )}
+                          />
+                      ))}
+                      </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-3 pt-6">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleModalClose}
-                className="flex-1 py-3 border-gray-300 text-gray-700 hover:bg-gray-50"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="flex-1 py-3 bg-[#64BA9F] hover:bg-[#5aa88f] text-white"
-              >
-                Save Verticals
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </div>
-    </Modal>
+                      <div className="flex gap-3 pt-6 justify-end">
+                          <Button
+                              type="button"
+                              variant="outline"
+                              onClick={handleModalClose}
+                              className="py-3 px-6 border-gray-300 text-gray-700 hover:bg-gray-50"
+                          >
+                              Cancel
+                          </Button>
+                          <Button type="submit" className="py-3 px-6 bg-[#64BA9F] hover:bg-[#5aa88f] text-white">
+                              Save Verticals
+                          </Button>
+                      </div>
+                  </form>
+              </Form>
+          </div>
+      </Modal>
   );
 };
 

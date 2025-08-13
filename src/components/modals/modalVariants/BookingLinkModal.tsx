@@ -45,12 +45,9 @@ const AddBookingLinkModal: React.FC<AddBookingLinkModalProps> = ({ show, onClose
       <div className="w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Add Booking Link</h2>
-          <button
-            onClick={handleModalClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-500" />
+          <h2 className="text-[24px] font-medium text-gray-900">Add Booking Link</h2>
+          <button onClick={handleModalClose} className="p-1 bg-white">
+            <X className="w-6 h-6 text-black" />
           </button>
         </div>
 
@@ -68,7 +65,7 @@ const AddBookingLinkModal: React.FC<AddBookingLinkModalProps> = ({ show, onClose
                   <FormControl>
                     <Input
                       placeholder="Add link"
-                      className="rounded-lg py-3 px-4 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
+                      className="rounded-lg py-3 px-4 border-gray-300 text-[#6B7186]"
                       {...field}
                     />
                   </FormControl>
@@ -78,18 +75,18 @@ const AddBookingLinkModal: React.FC<AddBookingLinkModalProps> = ({ show, onClose
             />
 
             {/* Action Buttons */}
-            <div className="flex gap-3 pt-4">
+            <div className="flex gap-3 pt-4 justify-end">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleModalClose}
-                className="flex-1 py-3 border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="py-3 border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1 py-3 bg-[#64BA9F] hover:bg-[#5aa88f] text-white"
+                className="py-3 bg-[#64BA9F] hover:bg-[#5aa88f] text-white"
               >
                 Save Link
               </Button>

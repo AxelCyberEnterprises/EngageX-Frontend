@@ -43,18 +43,17 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ show, onClose, de
       <div className="w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Edit Question</h2>
+          <h2 className="text-[24px] font-medium text-gray-900">Edit Question</h2>
           <button
             onClick={handleClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-1 bg-white"
           >
-            <X className="w-5 h-5 text-gray-500" />
+          <X className="w-6 h-6 text-black" />
           </button>
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Question Text */}
             <FormField
               control={form.control}
               name="questionText"
@@ -67,7 +66,7 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ show, onClose, de
                     <Input
                       type="text"
                       placeholder="Enter question..."
-                      className="rounded-lg py-3 px-4 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
+                      className=" text-[#6B7186]  py-3 px-4 border-gray-300"
                       {...field}
                     />
                   </FormControl>

@@ -3,6 +3,7 @@ import { Search, Filter, Plus } from 'lucide-react';
 import { OrganizationTableData } from '@/components/tables/organization-table/data';
 import { OrganizationsTable } from '@/components/tables/organization-table';
 import AddOrganizationModal from '@/components/modals/modalVariants/AddOrganizationModal';
+import { Celtics, LakersLogo } from '@/assets/images/pngs';
 
 const OrganizationsDashboard = () => {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -14,7 +15,7 @@ const OrganizationsDashboard = () => {
     {
       id: "1",
       name: "Lakers",
-      logo: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=150&h=150&fit=crop",
+      logo: LakersLogo,
       industryType: "Sport Organization",
       members: 80,
       trainingStatus: "Active",
@@ -22,7 +23,7 @@ const OrganizationsDashboard = () => {
     {
       id: "2",
       name: "Warriors",
-      logo: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=150&h=150&fit=crop",
+      logo: LakersLogo,
       industryType: "Sport Organization",
       members: 50,
       trainingStatus: "Active",
@@ -30,7 +31,7 @@ const OrganizationsDashboard = () => {
     {
       id: "3",
       name: "Celtics",
-      logo: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=150&h=150&fit=crop",
+      logo: Celtics,
       industryType: "Sport Organization",
       members: 35,
       trainingStatus: "Active",
@@ -133,7 +134,7 @@ const OrganizationsDashboard = () => {
             />
           </div>
           
-          <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+          <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium transition-colors bg-[#fff]">
             <Filter className="w-4 h-4" />
             <span className="hidden md:inline">Filter</span>
           </button>
