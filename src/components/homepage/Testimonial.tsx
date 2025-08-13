@@ -76,15 +76,15 @@ function Testimonial() {
           {testimonials.map((testimonial, idx) => (
             <div
               key={idx}
-              className={`flex-shrink-0 w-full h-[15rem] flex flex-col justify-between py-10 items-center relative overflow-clip border`}
+              className={`flex-shrink-0 w-full sm:h-[15rem] h-fit flex flex-col sm:gap-0 gap-8 justify-between py-10 items-center relative overflow-clip border`}
             >
               <div className="flex justify-center">
                 {[...Array(5)].map((_, i) => (
                   <StarIcon key={i} fill="gray" stroke-width={0} />
                 ))}
               </div>
-              
-              <p className="text-base text-center">{testimonial.text}</p>
+
+              <p className="text-base text-center px-4">{testimonial.text}</p>
               <div className="flex gap-6 items-center">
                 <p className="text-xs"><span className="font-bold">{testimonial.subtext.split(' - ')[0]}</span> - {testimonial.subtext.split(' - ')[1]}</p>
               </div>
