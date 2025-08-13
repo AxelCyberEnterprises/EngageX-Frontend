@@ -64,6 +64,7 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
 
     const handleMemberSelect = (memberId: string, memberName: string) => {
         form.setValue("member", memberId);
+        console.log('memberName',memberName);
         setIsDropdownOpen(false);
     };
 
@@ -114,7 +115,7 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
                         <FormField
                             control={form.control}
                             name="member"
-                            render={({ field }) => (
+                            render={() => (
                                 <FormItem>
                                     <FormLabel className="text-sm font-medium text-gray-700">Member</FormLabel>
                                     <FormControl>

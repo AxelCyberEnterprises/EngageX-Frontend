@@ -40,7 +40,7 @@ const AccessibleVerticalsModal: React.FC<AccessibleVerticalsModalProps> = ({ sho
   const onSubmit: SubmitHandler<AccessibleVerticalsFormValues> = (data) => {
     // Filter out only the checked verticals for cleaner logging
     const selectedVerticals = Object.entries(data)
-      .filter(([key, value]) => value === true)
+      .filter(([, value]) => value === true)
       .map(([key]) => key);
     
     console.log('Selected Accessible Verticals:', selectedVerticals);

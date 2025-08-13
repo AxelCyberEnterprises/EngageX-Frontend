@@ -51,7 +51,7 @@ export function BaseTable<TData, TValue>({
     data,
     count,
     pagination,
-    setPagination,
+    // setPagination,
     showToolBar,
     tableHeaderClassName,
     tableHeaderItemClassName,
