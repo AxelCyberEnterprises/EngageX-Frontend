@@ -2,7 +2,6 @@ import { JSX } from "react";
 import TestimonialSVG from "./svgs/TestimonialSVG";
 import TestimonialSVG2 from "./svgs/TestimonialSVG2";
 import TestimonialSVG3 from "./svgs/TestimonialSVG3";
-import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { StarIcon } from "lucide-react";
 
