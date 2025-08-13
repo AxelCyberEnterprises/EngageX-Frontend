@@ -9,11 +9,11 @@ function Hero() {
           <p className="text-dark-orange">Provide tailored pitch to users</p>
           <div className="space-y-8">
             <h2 className="font-montreal leading-snug">
-              Transform your speaking skills with EngageX™
+              Transform your speaking skills with EngageX®
             </h2>
             <p className="big text-[#62717A]">
               Step into the future of public speaking, persuasive storytelling,
-              pitching, and presentations with EngageX™, a training platform
+              pitching, and presentations with EngageX®, a training platform
               designed to enhance your confidence, delivery, and audience
               engagement using cutting edge technology combined with AI and
               award-winning coaches.

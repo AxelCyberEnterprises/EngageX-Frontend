@@ -8,7 +8,7 @@ function SecurityAndCompliance() {
                 <div className="space-y-16 text-[#475467]">
                     <div className="space-y-5">
                         <p className="big">
-                            At EngageX™, your privacy and security are our top priorities. We've put strong measures in
+                            At EngageX®, your privacy and security are our top priorities. We've put strong measures in
                             place to keep your data safe and your experience secure. Here's a simple overview of what we
                             do to protect you:
                         </p>

@@ -136,7 +136,7 @@ const Chat: React.FC = () => {
             </p>
             <section className="text-[#4c5c75] text-sm mt-8 font-[montserrat] max-w-[41.5rem] flex max-sm:flex-col gap-2">
               <div className="border flex items-center border-[#a5b8c3] rounded-md p-2 py-6">
-                <p>When was EngageX™ created and why was it created</p>
+                <p>When was EngageX® created and why was it created</p>
               </div>
               <div className="border flex items-center border-[#a5b8c3] rounded-md p-2 py-6">
                 <p>

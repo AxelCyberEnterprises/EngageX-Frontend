@@ -341,7 +341,7 @@ function Benefits() {
             </h6> */}
             <p className="text-dark-electric-blue">
               Practice in immersive, lifelike environments with dynamic 3D
-              animation reactionary videos and a variety of virtual rooms to
+              animation reactionary avatars and a variety of virtual rooms to
               choose from
             </p>
           </div>
@@ -369,9 +369,7 @@ function Benefits() {
               Session improvement functionality
             </h6> */}
             <p className="text-dark-electric-blue">
-              Download audio and video recordings along with personalized
-              comprehensive performance feedback reports for continuous
-              improvement
+              We deliver tailored enterprise solutions that help corporations, professional organizations, leagues, and HBCUs master communication strategy in a safe, supportive space.
             </p>
           </div>
         </div>

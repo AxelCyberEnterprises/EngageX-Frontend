@@ -25,7 +25,7 @@ function HowItWorks() {
             Success
           </h4>
           <p className="text-dark-electric-blue leading-normal">
-            A simple way to use EngageX™
+            A simple way to use EngageX®
           </p>
         </div>
       </div>

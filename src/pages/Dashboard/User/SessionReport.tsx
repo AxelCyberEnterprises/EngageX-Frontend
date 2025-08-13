@@ -400,7 +400,7 @@ const PitchSessionReport: React.FC = () => {
 
                         <p className="text-independence mb-3">
                             This comprehensive report summarizes the session you just completed. The report covers the
-                            goals you set for yourself and the industry standards defined by EngageX™. Please click on
+                            goals you set for yourself and the industry standards defined by EngageX®. Please click on
                             the speak with a coach button at the top to book a live review session with a certified
                             coach.
                         </p>

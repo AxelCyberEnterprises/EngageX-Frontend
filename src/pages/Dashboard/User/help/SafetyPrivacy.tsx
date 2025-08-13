@@ -31,13 +31,13 @@ const SafetyPrivacy: React.FC = () => {
         <div>
           <p className=" text-xl font-[Neue Montreal]">Safety & Privacy</p>
           <p className="  text-[rgba(71,77,99,1)] text-sm">
-            EngageX™ safety and privacy terms
+            EngageX® safety and privacy terms
           </p>
         </div>
       </section>
       <section className="px-7 py-5 max-sm:pt-10 leading-6">
         <article className="font-[montserrat]">
-          <p className="font-semibold text-xl">Welcome to EngageX™!</p>
+          <p className="font-semibold text-xl">Welcome to EngageX®!</p>
           <main className="font-medium">
             <p className="my-2.5">
               By using our platform, you acknowledge that you have read,
@@ -53,7 +53,7 @@ const SafetyPrivacy: React.FC = () => {
               <li className="my-12">
                 <span className="mb-2">Introduction</span>
                 <p className="my-2">
-                  Welcome to EngageX™! By using our platform, you acknowledge
+                  Welcome to EngageX®! By using our platform, you acknowledge
                   that you have read, understood, and agreed to this User-Level
                   Agreement (ULA), which governs your access and use of our
                   AI-powered public speaking and presentation practice
@@ -69,7 +69,7 @@ const SafetyPrivacy: React.FC = () => {
                 <span className="mb-2">Acceptable Use Policy</span>
 
                 <p className="my-2">
-                  EngageX™ is designed for public speaking, presentation
+                  EngageX® is designed for public speaking, presentation
                   practice, and AI-generated feedback. You agree to:
                 </p>
                 <ul className="leading-8 list-disc">
@@ -96,7 +96,7 @@ const SafetyPrivacy: React.FC = () => {
                 <span className="mb-2">AI-Generated Feedback Disclaimer</span>
 
                 <p className="my-2">
-                  EngageX™ utilizes AI-powered systems to analyze your speech
+                  EngageX® utilizes AI-powered systems to analyze your speech
                   and provide feedback
                 </p>
                 <ul className="leading-8 list-disc">
@@ -119,7 +119,7 @@ const SafetyPrivacy: React.FC = () => {
                 </ul>
 
                 <p className="my-2">
-                  EngageX™ is not responsible for any decisions made based on AI
+                  EngageX® is not responsible for any decisions made based on AI
                   feedback
                 </p>
               </li>
@@ -131,7 +131,7 @@ const SafetyPrivacy: React.FC = () => {
 
                 <ul className="leading-8 list-disc">
                   <li>
-                    EngageX™ does not share personal information, session
+                    EngageX® does not share personal information, session
                     recordings, or analytics with third parties, except where
                     required by law
                   </li>
@@ -146,7 +146,7 @@ const SafetyPrivacy: React.FC = () => {
                 </ul>
 
                 <p className="my-2">
-                  Once a session recording is downloaded by you, EngageX™ is not
+                  Once a session recording is downloaded by you, EngageX® is not
                   liable for its confidentiality, security, or misuse
                 </p>
               </li>
@@ -157,7 +157,7 @@ const SafetyPrivacy: React.FC = () => {
                 </span>
 
                 <p className="my-2">
-                  EngageX™ offers session recording & download features for your
+                  EngageX® offers session recording & download features for your
                   convenience.
                 </p>
                 <ul className="leading-8 list-disc">
@@ -166,11 +166,11 @@ const SafetyPrivacy: React.FC = () => {
                     with a coach of your choosing for feedback
                   </li>
                   <li>
-                    Limited Storage: EngageX™ stores session recordings for 24
+                    Limited Storage: EngageX® stores session recordings for 24
                     hours only before permanent deletion
                   </li>
                   <li>
-                    User Responsibility: Once downloaded, EngageX™ is not
+                    User Responsibility: Once downloaded, EngageX® is not
                     responsible for data security, loss, or compromise
                   </li>
                 </ul>
@@ -184,9 +184,9 @@ const SafetyPrivacy: React.FC = () => {
                 <span className="mb-2">Legal & Liability Protection</span>
 
                 <p className="my-2">
-                  EngageX™ is provided "as is" without warranties of any kind
+                  EngageX® is provided "as is" without warranties of any kind
                 </p>
-                <p className="my-2">EngageX™ is not liable for any:</p>
+                <p className="my-2">EngageX® is not liable for any:</p>
                 <ul className="leading-8 ml-2 list-disc">
                   <li>Misinterpretation of AI feedback</li>
                   <li>Data loss due to expired session storage</li>
@@ -194,7 +194,7 @@ const SafetyPrivacy: React.FC = () => {
                   <li>Performance outcomes based on our platform's analysis</li>
                 </ul>
                 <p className="my-2">
-                  By using EngageX™, you waive the right to frivolous lawsuits
+                  By using EngageX®, you waive the right to frivolous lawsuits
                   or claims seeking damages beyond platform usage fees
                 </p>
               </li>
