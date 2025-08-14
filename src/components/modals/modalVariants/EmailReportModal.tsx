@@ -34,7 +34,7 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose }) =>
   });
 
   const onSubmit: SubmitHandler<EmailReportFormValues> = (data) => {
-    console.log('Email Report sent to:', emailTags);
+    console.log('Email Report sent to:', emailTags, data);
     form.reset();
     setEmailTags([]);
     setCurrentEmail('');
@@ -108,7 +108,7 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose }) =>
             <FormField
               control={form.control}
               name="emails"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-[#252A39] font-inter">
                     Email

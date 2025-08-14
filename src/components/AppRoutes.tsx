@@ -40,7 +40,7 @@ import ForgotPassword from "../pages/auth/forgotPassword";
 import LoginPage from "../pages/auth/login";
 import ResetPassword from "../pages/auth/resetPassword";
 import Tutorial from "../pages/auth/tutorial";
-import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
+// import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
 import AdminDashboardHome from "../pages/Dashboard/Admin/Index";
 import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
 import UserAnalytics from "../pages/Dashboard/User/Analytics";
