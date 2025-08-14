@@ -4,7 +4,7 @@ import coaching from '../../../assets/images/svgs/coaching.svg';
 import archive from '../../../assets/images/svgs/archive.svg';
 import lakers from '../../../assets/images/pngs/lakers.png';
 import { Member } from '@/components/tables/members-table/data';
-import { MembersTable } from '@/components/tables/members-table';
+import MembersTable from '@/components/tables/members-table';
 import { Goal } from '@/components/tables/active-goals-table/data';
 import { GoalsTable } from '@/components/tables/active-goals-table';
 import { PlusIcon, Search } from 'lucide-react';
