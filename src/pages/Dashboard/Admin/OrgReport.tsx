@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
-import { OrganizationReportMember } from '@/components/tables/report-table/data';
-import { OrganizationReportTable } from '@/components/tables/report-table';
+import { OrganizationReportMember } from '@/components/tables/org-report-table/data';
+import { OrganizationReportTable } from '@/components/tables/org-report-table';
 import { EmailReportModal } from '@/components/modals/modalVariants/EmailReportModal';
 
 

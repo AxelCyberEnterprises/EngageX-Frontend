@@ -1,0 +1,141 @@
+import { useState } from 'react';
+import { Search } from 'lucide-react';
+import { GenerateReportMember } from '@/components/tables/generate-report-table/data';
+import { GenerateReportTable } from '@/components/tables/generate-report-table';
+
+const GenerateReport = () => {
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const dummyReportData: GenerateReportMember[] = [
+        {
+            id: "1",
+            firstName: "John",
+            lastName: "Doe",
+            role: "Manager",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "johndoe@acme.com",
+        },
+        {
+            id: "2",
+            firstName: "Jane",
+            lastName: "Doe",
+            role: "Admin",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "janedoe@acme.com",
+        },
+        {
+            id: "3",
+            firstName: "Christopher",
+            lastName: "Emmanuel",
+            role: "User",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "christopheremmanuel@acme.com",
+        },
+        {
+            id: "4",
+            firstName: "Nk",
+            lastName: "Harrison",
+            role: "User",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "nkharrison@acme.com",
+        },
+        {
+            id: "5",
+            firstName: "Jane",
+            lastName: "Smith",
+            role: "Manager",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "janesmith@acme.com",
+        },
+        {
+            id: "6",
+            firstName: "Adams",
+            lastName: "Smith",
+            role: "Admin",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "adamssmith@acme.com",
+        },
+        {
+            id: "7",
+            firstName: "John",
+            lastName: "Doe",
+            role: "Manager",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "johndoe@acme.com",
+        },
+        {
+            id: "8",
+            firstName: "Christopher",
+            lastName: "Emmanuel",
+            role: "User",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "christopheremmanuel@acme.com",
+        },
+        {
+            id: "9",
+            firstName: "Jane",
+            lastName: "Smith",
+            role: "Manager",
+            assignedGoals: ["Rookie", "Presentation"],
+            email: "janesmith@acme.com",
+        },
+    ];
+
+    // Filter data based on search term
+    const filteredData = dummyReportData.filter(member =>
+        member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const handleGenerateReport = () => {
+        // Handle generate report functionality
+        console.log('Generating report...');
+    };
+
+    return (
+        <div className="p-6 bg-white min-h-screen">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-6 border-b border-[#EAECF0]">
+                <h1 className="font-medium text-2xl text-[#101828]">
+                    Generate Report
+                </h1>
+                
+                <div className="flex items-center gap-3">
+                    <button 
+                        onClick={handleGenerateReport}
+                        className="flex items-center gap-2 px-4 py-2 bg-[#10B981] text-white rounded-lg hover:bg-[#059669] transition-colors font-medium text-sm"
+                    >
+                        Generate Report
+                    </button>
+                </div>
+            </div>
+
+            {/* Search */}
+            <div className="mt-6 mb-6">
+                <div className="relative max-w-md">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#667085]" />
+                    <input
+                        type="text"
+                        placeholder="Search by name or email..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-9 pr-4 py-2 border border-[#D0D5DD] rounded-lg focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] outline-none w-[60%] text-sm"
+                    />
+                </div>
+            </div>
+
+            {/* Report Table */}
+            <div>
+                <GenerateReportTable
+                    data={filteredData}
+                    pageSize={10}
+                    hidePagination={false}
+                    isLoading={false}
+                />
+            </div>
+        </div>
+    );
+};
+
+export { GenerateReport };

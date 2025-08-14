@@ -67,6 +67,7 @@ import { Overview } from "@/pages/Dashboard/Admin/Overview";
 import NewLayout from "./layouts/NewLayout";
 import { OrganizationsDashboard } from "@/pages/Dashboard/Admin/OrgDashboard";
 import { OrganizationReport } from "@/pages/Dashboard/Admin/OrgReport";
+import { GenerateReport } from "@/pages/Dashboard/Admin/GenerateReport";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -131,7 +132,7 @@ function AdminDashboardRoutes() {
     return (
         <Routes>
             <Route index element={<AdminDashboardHome />} />
-            <Route path="session-history" element={<OrganizationReport />} />
+            <Route path="session-history" element={<GenerateReport />} />
             <Route path="session-history/:id" element={<AdminSessionReport />} />
             <Route path="organization">
                 <Route path="members" element={<Members />}></Route>
