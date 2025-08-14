@@ -42,7 +42,7 @@ export const getSortingStateParser = <TData>(
                 return null;
             }
         },
-        serialize: (value) => JSON.stringify(value),
+        serialize: (value: any) => JSON.stringify(value),
         eq: (a, b) =>
             a.length === b.length &&
             a.every(

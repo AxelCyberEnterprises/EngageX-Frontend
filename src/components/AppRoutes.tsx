@@ -40,7 +40,7 @@ import ForgotPassword from "../pages/auth/forgotPassword";
 import LoginPage from "../pages/auth/login";
 import ResetPassword from "../pages/auth/resetPassword";
 import Tutorial from "../pages/auth/tutorial";
-import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
+// import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
 import AdminDashboardHome from "../pages/Dashboard/Admin/Index";
 import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
 import UserAnalytics from "../pages/Dashboard/User/Analytics";
@@ -63,6 +63,11 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Toaster } from "./ui/sonner";
 import VideoPopup from "./VideoPopup";
+import { Overview } from "@/pages/Dashboard/Admin/Overview";
+import NewLayout from "./layouts/NewLayout";
+import { OrganizationsDashboard } from "@/pages/Dashboard/Admin/OrgDashboard";
+import { OrganizationReport } from "@/pages/Dashboard/Admin/OrgReport";
+import { GenerateReport } from "@/pages/Dashboard/Admin/GenerateReport";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -118,7 +123,6 @@ function UserDashboardRoutes() {
                 <Route path="safety" element={<SafetyPrivacy />} />
                 <Route path="message" element={<Chat />} />
             </Route>
-
             <Route path="*" element={<Navigate replace to="/dashboard/user" />} />
         </Routes>
     );
@@ -128,13 +132,25 @@ function AdminDashboardRoutes() {
     return (
         <Routes>
             <Route index element={<AdminDashboardHome />} />
-            <Route path="session-history" element={<AdminSessionHistory />} />
+            <Route path="session-history" element={<GenerateReport />} />
             <Route path="session-history/:id" element={<AdminSessionReport />} />
             <Route path="organization">
                 <Route path="members" element={<Members />}></Route>
             </Route>
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
+        </Routes>
+    );
+}
+function NewDashboardRoutes() {
+    return (
+        <Routes>
+            <Route path="overview" element={<Overview />} />
+            <Route path="dashboard" element={<OrganizationsDashboard />} />
+            <Route path="members" element={<Members />} />
+            <Route path="report" element={<OrganizationReport />} />
+            <Route path="generate-report" element={<GenerateReport />} />
             <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
         </Routes>
     );
@@ -193,6 +209,14 @@ function MainRoutes() {
                         <DashboardLayout>
                             <AdminDashboardRoutes />
                         </DashboardLayout>
+                    }
+                />
+                <Route
+                    path="dashboard/admin/organization/*"
+                    element={
+                        <NewLayout>
+                            <NewDashboardRoutes />
+                        </NewLayout>
                     }
                 />
                 <Route

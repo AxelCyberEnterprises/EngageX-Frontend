@@ -35,10 +35,13 @@ interface BaseTableProps<TData, TValue> {
     tableHeaderClassName?: string;
     tableHeaderItemClassName?: string;
     tableContainerClassName?: string;
+    tableRowClassName?: string;
+    tableCellClassName?: string;
     pageSize?: number;
     hidePagination?: boolean;
     isLoading?: boolean;
     emptyState?: React.ReactNode;
+    session?: boolean;
 }
 
 export function BaseTable<TData, TValue>({
@@ -48,14 +51,17 @@ export function BaseTable<TData, TValue>({
     data,
     count,
     pagination,
-    setPagination,
+    // setPagination,
     showToolBar,
     tableHeaderClassName,
     tableHeaderItemClassName,
     tableContainerClassName,
+    tableCellClassName,
+    tableRowClassName,
     hidePagination,
     emptyState,
-    pageSize
+    pageSize,
+    session = true,
 }: BaseTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -65,13 +71,16 @@ export function BaseTable<TData, TValue>({
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
+    const [paginationState, setPaginationState] = useState<PaginationState>(
+        pagination ?? { pageIndex: 0, pageSize: pageSize || 20 },
+    );
     const table = useReactTable({
         data,
         columns,
         state: {
             columnFilters,
             columnVisibility,
-            pagination,
+            pagination: paginationState,
             rowSelection,
             sorting,
         },
@@ -81,7 +90,7 @@ export function BaseTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
-        onPaginationChange: setPagination,
+        onPaginationChange: setPaginationState,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
         manualPagination: true,
@@ -157,7 +166,7 @@ export function BaseTable<TData, TValue>({
                                     key={row.id}
                                     onClick={() => {
                                         const rowData = row.original as { id?: string };
-                                        if (rowData.id) {
+                                        if (rowData.id && session) {
                                             dispatch(setSessionId(rowData.id));
                                             navigate(
                                                 `/dashboard/${user.is_admin ? "admin" : "user"}/session-history/${rowData.id}`,
@@ -165,10 +174,10 @@ export function BaseTable<TData, TValue>({
                                         }
                                     }}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className="hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray"
+                                    className={cn("hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray", tableRowClassName)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id} className="text-dark-charcoal p-4 align-baseline">
+                                        <TableCell key={cell.id} className={cn("text-dark-charcoal p-4 align-baseline", tableCellClassName)}>
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
