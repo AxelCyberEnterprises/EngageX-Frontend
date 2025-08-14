@@ -148,7 +148,9 @@ function NewDashboardRoutes() {
         <Routes>
             <Route path="overview" element={<Overview />} />
             <Route path="dashboard" element={<OrganizationsDashboard />} />
+            <Route path="members" element={<Members />} />
             <Route path="report" element={<OrganizationReport />} />
+            <Route path="generate-report" element={<GenerateReport />} />
             <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
         </Routes>
     );

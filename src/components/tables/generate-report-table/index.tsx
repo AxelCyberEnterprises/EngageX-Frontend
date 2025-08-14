@@ -21,9 +21,9 @@ export const GenerateReportTable = ({
             data={data}
             pageSize={pageSize}
             tableHeaderClassName="bg-[#F9FAFB] border-b border-[#EAECF0]"
-            tableHeaderItemClassName="text-[#667085] font-medium text-xs uppercase tracking-wide"
+            tableHeaderItemClassName="text-[#667085] font-medium !text-xs uppercase tracking-wide"
             tableContainerClassName="border border-[#EAECF0] rounded-xl shadow-sm"
-            tableCellClassName="py-4 border-b border-[#EAECF0] last:border-b-0"
+            tableCellClassName="py-3 align-middle border-b border-[#EAECF0] last:border-b-0"
             tableRowClassName="hover:bg-[#F9FAFB]/50 data-[state=selected]:bg gray-700"
             hidePagination={hidePagination}
             isLoading={isLoading}

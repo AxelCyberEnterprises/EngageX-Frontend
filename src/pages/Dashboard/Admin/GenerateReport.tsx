@@ -94,12 +94,12 @@ const GenerateReport = () => {
     };
 
     return (
-        <div className="p-6 bg-white min-h-screen">
+        <div className="px-6 bg-white min-h-screen">
             {/* Header */}
-            <div className="flex items-center justify-between pb-6 border-b border-[#EAECF0]">
-                <h1 className="font-medium text-2xl text-[#101828]">
+            <div className="flex items-center justify-between py-4 border-b border-[#EAECF0]">
+                <h3 className="font-medium md:text-[32px] text-xl text-[#101828]">
                     Generate Report
-                </h1>
+                </h3>
                 
                 <div className="flex items-center gap-3">
                     <button 
@@ -120,7 +120,7 @@ const GenerateReport = () => {
                         placeholder="Search by name or email..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-9 pr-4 py-2 border border-[#D0D5DD] rounded-lg focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] outline-none w-[60%] text-sm"
+                        className="pl-9 pr-4 py-2 border border-[#D0D5DD] rounded-sm outline-none w-[60%] text-xs font-light"
                     />
                 </div>
             </div>

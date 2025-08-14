@@ -30,14 +30,14 @@ export const columns: ColumnDef<GenerateReportMember, any>[] = [
     {
         accessorKey: "firstName",
         header: () => (
-            <div className="flex items-center text-[#667085] text-sm font-medium py-3">
+            <div className="flex items-center text-[#667085] text-xs font-medium py-2">
                 First Name
             </div>
         ),
         cell: ({ row }) => {
             const member = row.original;
             return (
-                <div className="text-[#101828] font-medium text-sm py-4">
+                <div className="text-[#101828] font-medium text-xs">
                     {member.firstName}
                 </div>
             );
@@ -46,14 +46,14 @@ export const columns: ColumnDef<GenerateReportMember, any>[] = [
     {
         accessorKey: "lastName",
         header: () => (
-            <div className="flex items-center text-[#667085] text-sm font-medium py-3">
+            <div className="flex items-center text-[#667085] text-xs font-medium py-2">
                 Last Name
             </div>
         ),
         cell: ({ row }) => {
             const member = row.original;
             return (
-                <div className="text-[#101828] font-medium text-sm py-4">
+                <div className="text-[#101828] font-medium text-xs">
                     {member.lastName}
                 </div>
             );
@@ -62,14 +62,14 @@ export const columns: ColumnDef<GenerateReportMember, any>[] = [
     {
         accessorKey: "role",
         header: () => (
-            <div className="flex items-center text-[#667085] text-sm font-medium py-3">
+            <div className="flex items-center text-[#667085] text-xs font-medium py-2">
                 Role
             </div>
         ),
         cell: ({ row }) => {
             const member = row.original;
             return (
-                <div className="text-[#101828] font-medium text-sm py-4">
+                <div className="text-[#101828] font-medium text-xs">
                     {member.role}
                 </div>
             );
@@ -78,14 +78,14 @@ export const columns: ColumnDef<GenerateReportMember, any>[] = [
     {
         accessorKey: "assignedGoals",
         header: () => (
-            <div className="flex items-center text-[#667085] text-sm font-medium py-3">
+            <div className="flex items-center text-[#667085] text-xs font-medium py-2">
                 Assigned Goals
             </div>
         ),
         cell: ({ row }) => {
             const member = row.original;
             return (
-                <div className="flex gap-2 py-4">
+                <div className="flex gap-2">
                     {member.assignedGoals.map((goal, index) => (
                         <span
                             key={index}
@@ -101,14 +101,14 @@ export const columns: ColumnDef<GenerateReportMember, any>[] = [
     {
         accessorKey: "email",
         header: () => (
-            <div className="flex items-center text-[#667085] text-sm font-medium py-3">
+            <div className="flex items-center text-[#667085] text-xs font-medium py-2">
                 Email
             </div>
         ),
         cell: ({ row }) => {
             const member = row.original;
             return (
-                <div className="text-[#101828] font-medium text-sm py-4">
+                <div className="text-[#101828] font-medium text-xs">
                     {member.email}
                 </div>
             );

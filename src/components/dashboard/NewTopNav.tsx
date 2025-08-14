@@ -33,7 +33,7 @@ const NewTopNav: React.FC = () => {
     <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-10 mx-4 md:border-b-1 border-bright-gray">
       <div className="flex items-center gap-2">
         {/* <SidebarTrigger className="-ml-1 hidden md:flex p-5 bg-branding-secondary hover:bg-branding-secondary/90 hover:text-white" /> */}
-        <img src={home2} alt="home icon" className="w-6" />
+        <img src={home2} alt="home icon" className="w-4" />
         <Breadcrumb>
           <BreadcrumbList>
             {/* <BreadcrumbItem>
@@ -61,7 +61,7 @@ const NewTopNav: React.FC = () => {
                 </div>
               );
             })} */}
-            <span className="text-[#9095A8] font-[300] ml-2 text-lg">Home</span>
+            <span className="text-[#9095A8] font-[300] ml-1 text-sm cursor-pointer">Home</span>
             
           </BreadcrumbList>
         </Breadcrumb>
