@@ -15,7 +15,6 @@ export const QuestionBankTable = ({
     pageSize = 10,
     hidePagination = false,
     isLoading = false,
-    onRowsSelected
 }: QuestionBankTableProps) => {
     return (
         <BaseTable

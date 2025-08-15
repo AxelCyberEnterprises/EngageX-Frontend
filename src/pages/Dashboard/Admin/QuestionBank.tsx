@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Download, Upload, X, Trash2 } from 'lucide-react';
 import { EditIcon } from '@/assets/images/svgs/edit-icon';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -65,12 +65,14 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
     onDelete(item.id);
   };
 
+  const ref = useRef<HTMLDivElement>(null);
+  drag(drop(ref));
+
   return (
     <div
-      ref={(node) => drag(drop(node))}
-      className={`flex items-center border-b border-[#EAECF0] last:border-b-0 hover:bg-[#F9FAFB]/50 transition-colors ${
-        isSelected ? 'bg-[#E0F2FE]' : ''
-      } ${isDragging ? 'opacity-50' : ''}`}
+      ref={ref}
+      className={`flex items-center border-b border-[#EAECF0] last:border-b-0 hover:bg-[#F9FAFB]/50 transition-colors ${isSelected ? 'bg-[#E0F2FE]' : ''
+        } ${isDragging ? 'opacity-50' : ''}`}
     >
       {/* Checkbox */}
       <div className="w-12 flex justify-center py-4">
@@ -132,7 +134,7 @@ const QuestionBank = () => {
       order: 1,
     },
     {
-      id: "2", 
+      id: "2",
       question: "Describe a time when you successfully helped someone overcome performance anxiety.",
       order: 2,
     },
@@ -250,101 +252,100 @@ const QuestionBank = () => {
   const sortedQuestions = [...questions].sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
-      <DndProvider backend={HTML5Backend}>
-          <div className="p-6 bg-white min-h-screen">
-              {/* Header */}
-              <div className="flex items-center justify-between pb-6 border-b border-[#EAECF0]">
-                  <div>
-                      <h1 className="font-medium text-2xl text-[#101828] mb-1">Question Bank</h1>
-                      <p className="text-[#667085] text-sm">Customize and manage training questions across verticals</p>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                      {!showSelectionBar && (
-                          <>
-                              <button
-                                  onClick={handleExportCSV}
-                                  className="bg-[#fff] flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-[#344054] font-medium hover:bg-[#F9FAFB] transition-colors text-sm"
-                              >
-                                  <Download className="w-4 h-4" />
-                                  Export CSV
-                              </button>
-
-                              <button
-                                  onClick={handleImportCSV}
-                                  className="bg-[#fff] flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-[#344054] font-medium hover:bg-[#F9FAFB] transition-colors text-sm"
-                              >
-                                  <Upload className="w-4 h-4" />
-                                  Import CSV
-                              </button>
-                          </>
-                      )}
-
-                      <button
-                          onClick={handleNewQuestion}
-                          className="flex items-center gap-2 px-4 py-2 bg-[#10B981] text-white rounded-lg hover:bg-[#059669] transition-colors font-medium text-sm"
-                      >
-                          New Question
-                      </button>
-                  </div>
-              </div>
-
-              {/* Tabs */}
-              <div className="flex gap-6 mt-6 border-b border-[#EAECF0]">
-                  {tabs.map((tab) => (
-                      <button
-                          key={tab}
-                          onClick={() => setActiveTab(tab)}
-                          className={`bg-[#fff] pb-3 px-1 text-sm font-medium transition-colors relative border-b-2 rounded-none ${
-                              activeTab === tab
-                                  ? "text-[#10B981] border-[#10B981]" // light green text + border
-                                  : "text-[#101828] border-transparent hover:text-[#101828]"
-                          }`}
-                      >
-                          {tab}
-                      </button>
-                  ))}
-              </div>
-
-              {/* Selection Bar */}
-              {showSelectionBar && (
-                  <div className="flex items-center justify-between bg-[#F0F9FF] border border-[#0EA5E9] rounded-lg px-4 py-3 mt-6">
-                      <div className="flex items-center gap-4">
-                          <span className="text-[#0284C7] font-medium text-sm">{selectedRowIds.size} Selected</span>
-                          <button onClick={handleSelectAll} className="bg-[#fff] text-[#64BA9F] text-sm hover:underline">
-                              {selectedRowIds.size === questions.length ? "Deselect all" : "Select all questions"}
-                          </button>
-                          <button
-                              onClick={handleDeleteSelected}
-                              className="bg-[#fff] flex items-center gap-1 text-red-600 text-sm hover:underline"
-                          >
-                              <span className="text-red-600">🗑</span>
-                              Delete
-                          </button>
-                      </div>
-                      <button onClick={handleCloseSelectionBar} className="bg-[#fff] p-1 hover:bg-white/50 rounded">
-                          <X className="w-4 h-4 text-[#0284C7]" />
-                      </button>
-                  </div>
-              )}
-
-              {/* Question Table */}
-              <div className="mt-6 border border-[#EAECF0] rounded-xl shadow-sm overflow-hidden">
-                  {sortedQuestions.map((question, index) => (
-                      <DraggableQuestionRow
-                          key={question.id}
-                          item={question}
-                          index={index}
-                          isSelected={selectedRowIds.has(question.id)}
-                          onSelect={handleSelectRow}
-                          onEdit={handleEditQuestion}
-                          onDelete={handleDeleteQuestion}
-                          moveItem={moveItem}
-                      />
-                  ))}
-              </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="p-6 bg-white min-h-screen">
+        {/* Header */}
+        <div className="flex items-center justify-between pb-6 border-b border-[#EAECF0]">
+          <div>
+            <h1 className="font-medium text-2xl text-[#101828] mb-1">Question Bank</h1>
+            <p className="text-[#667085] text-sm">Customize and manage training questions across verticals</p>
           </div>
-      </DndProvider>
+
+          <div className="flex items-center gap-3">
+            {!showSelectionBar && (
+              <>
+                <button
+                  onClick={handleExportCSV}
+                  className="bg-[#fff] flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-[#344054] font-medium hover:bg-[#F9FAFB] transition-colors text-sm"
+                >
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </button>
+
+                <button
+                  onClick={handleImportCSV}
+                  className="bg-[#fff] flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-[#344054] font-medium hover:bg-[#F9FAFB] transition-colors text-sm"
+                >
+                  <Upload className="w-4 h-4" />
+                  Import CSV
+                </button>
+              </>
+            )}
+
+            <button
+              onClick={handleNewQuestion}
+              className="flex items-center gap-2 px-4 py-2 bg-[#10B981] text-white rounded-lg hover:bg-[#059669] transition-colors font-medium text-sm"
+            >
+              New Question
+            </button>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-6 mt-6 border-b border-[#EAECF0]">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`bg-[#fff] pb-3 px-1 text-sm font-medium transition-colors relative border-b-2 rounded-none ${activeTab === tab
+                  ? "text-[#10B981] border-[#10B981]" // light green text + border
+                  : "text-[#101828] border-transparent hover:text-[#101828]"
+                }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Selection Bar */}
+        {showSelectionBar && (
+          <div className="flex items-center justify-between bg-[#F0F9FF] border border-[#0EA5E9] rounded-lg px-4 py-3 mt-6">
+            <div className="flex items-center gap-4">
+              <span className="text-[#0284C7] font-medium text-sm">{selectedRowIds.size} Selected</span>
+              <button onClick={handleSelectAll} className="bg-[#fff] text-[#64BA9F] text-sm hover:underline">
+                {selectedRowIds.size === questions.length ? "Deselect all" : "Select all questions"}
+              </button>
+              <button
+                onClick={handleDeleteSelected}
+                className="bg-[#fff] flex items-center gap-1 text-red-600 text-sm hover:underline"
+              >
+                <span className="text-red-600">🗑</span>
+                Delete
+              </button>
+            </div>
+            <button onClick={handleCloseSelectionBar} className="bg-[#fff] p-1 hover:bg-white/50 rounded">
+              <X className="w-4 h-4 text-[#0284C7]" />
+            </button>
+          </div>
+        )}
+
+        {/* Question Table */}
+        <div className="mt-6 border border-[#EAECF0] rounded-xl shadow-sm overflow-hidden">
+          {sortedQuestions.map((question, index) => (
+            <DraggableQuestionRow
+              key={question.id}
+              item={question}
+              index={index}
+              isSelected={selectedRowIds.has(question.id)}
+              onSelect={handleSelectRow}
+              onEdit={handleEditQuestion}
+              onDelete={handleDeleteQuestion}
+              moveItem={moveItem}
+            />
+          ))}
+        </div>
+      </div>
+    </DndProvider>
   );
 };
 
