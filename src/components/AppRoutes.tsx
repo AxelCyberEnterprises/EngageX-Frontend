@@ -40,7 +40,7 @@ import ForgotPassword from "../pages/auth/forgotPassword";
 import LoginPage from "../pages/auth/login";
 import ResetPassword from "../pages/auth/resetPassword";
 import Tutorial from "../pages/auth/tutorial";
-// import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
+import AdminSessionHistory from "../pages/Dashboard/Admin/AdminSessionHistory";
 import AdminDashboardHome from "../pages/Dashboard/Admin/Index";
 import AdminSessionReport from "../pages/Dashboard/Admin/SessionReport";
 import UserAnalytics from "../pages/Dashboard/User/Analytics";
@@ -132,7 +132,7 @@ function AdminDashboardRoutes() {
     return (
         <Routes>
             <Route index element={<AdminDashboardHome />} />
-            <Route path="session-history" element={<GenerateReport />} />
+            <Route path="session-history" element={<AdminSessionHistory />} />
             <Route path="session-history/:id" element={<AdminSessionReport />} />
             <Route path="organization">
                 <Route path="members" element={<Members />}></Route>
