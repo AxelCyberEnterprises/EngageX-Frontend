@@ -2,7 +2,7 @@ import ControlledFieldWrapper from "@/components/controlled-fields/field-wrapper
 import QuickTips from "@/components/dashboard/QuickTips";
 import StartEnterpriseSession from "@/components/dialogs/dialog-contents/start-session/StartEnterpriseSession";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
@@ -138,29 +138,25 @@ const RookieRoomForm = () => {
                     <ControlledFieldWrapper
                         control={form.control}
                         name="enterprise_settings.sport_type"
+                        label="Sports industry"
+                        className="[&_[data-slot='form-label']]:font-normal [&_[data-slot='form-label']]:text-lg"
                         render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className="font-normal text-lg">Sports industry</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger className="h-11 md:w-1/2 rounded-lg focus-visible:ring-0 shadow-none text-foreground data-[placeholder]:text-auro-metal-saurus [&_svg:not([class*='text-'])]:text-[#667085]">
-                                            <SelectValue placeholder="Select the sport you play" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent className="border-none">
-                                        {sportsOptions.map(({ name, value }, index) => (
-                                            <SelectItem
-                                                key={value + index}
-                                                value={value}
-                                                className="h-11 [&_svg:not([class*='text-'])]:text-[#64BA9F]"
-                                            >
-                                                {name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger className="h-11 md:w-1/2 rounded-lg focus-visible:ring-0 shadow-none text-foreground data-[placeholder]:text-auro-metal-saurus [&_svg:not([class*='text-'])]:text-[#667085]">
+                                    <SelectValue placeholder="Select the sport you play" />
+                                </SelectTrigger>
+                                <SelectContent className="border-none">
+                                    {sportsOptions.map(({ name, value }, index) => (
+                                        <SelectItem
+                                            key={value + index}
+                                            value={value}
+                                            className="h-11 [&_svg:not([class*='text-'])]:text-[#64BA9F]"
+                                        >
+                                            {name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         )}
                     />
                     <GoalsSection {...{ form }} />
