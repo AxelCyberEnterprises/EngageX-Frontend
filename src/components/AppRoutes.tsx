@@ -5,7 +5,12 @@ import AccessGate from "@/pages/auth/AccessGate";
 import CancellationPolicy from "@/pages/CancellationPolicy";
 import Contact from "@/pages/Contact";
 import AdminSettings from "@/pages/Dashboard/Admin/AdminSettings";
-import Members from "@/pages/Dashboard/Admin/organization/Members";
+import { GenerateReport } from "@/pages/Dashboard/Admin/GenerateReport";
+import Members from "@/pages/Dashboard/Admin/organization/members";
+import SetTrainingGoals from "@/pages/Dashboard/Admin/organization/members/SetTrainingGoals";
+import { OrganizationsDashboard } from "@/pages/Dashboard/Admin/OrgDashboard";
+import { OrganizationReport } from "@/pages/Dashboard/Admin/OrgReport";
+import { Overview } from "@/pages/Dashboard/Admin/Overview";
 import CoachingRoom from "@/pages/Dashboard/User/CoachingRoom";
 import HelpPage from "@/pages/Dashboard/User/help";
 import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
@@ -63,11 +68,6 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Toaster } from "./ui/sonner";
 import VideoPopup from "./VideoPopup";
-import { Overview } from "@/pages/Dashboard/Admin/Overview";
-import NewLayout from "./layouts/NewLayout";
-import { OrganizationsDashboard } from "@/pages/Dashboard/Admin/OrgDashboard";
-import { OrganizationReport } from "@/pages/Dashboard/Admin/OrgReport";
-import { GenerateReport } from "@/pages/Dashboard/Admin/GenerateReport";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -135,22 +135,17 @@ function AdminDashboardRoutes() {
             <Route path="session-history" element={<AdminSessionHistory />} />
             <Route path="session-history/:id" element={<AdminSessionReport />} />
             <Route path="organization">
-                <Route path="members" element={<Members />}></Route>
+                <Route path="members">
+                    <Route index element={<Members />} />
+                    <Route path="set-training-goal" element={<SetTrainingGoals />} />
+                </Route>
+                <Route path="overview" element={<Overview />} />
+                <Route path="dashboard" element={<OrganizationsDashboard />} />
+                <Route path="report" element={<OrganizationReport />} />
+                <Route path="generate-report" element={<GenerateReport />} />
             </Route>
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<AdminSettings />} />
-            <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
-        </Routes>
-    );
-}
-function NewDashboardRoutes() {
-    return (
-        <Routes>
-            <Route path="overview" element={<Overview />} />
-            <Route path="dashboard" element={<OrganizationsDashboard />} />
-            <Route path="members" element={<Members />} />
-            <Route path="report" element={<OrganizationReport />} />
-            <Route path="generate-report" element={<GenerateReport />} />
             <Route path="*" element={<Navigate replace to="/dashboard/admin" />} />
         </Routes>
     );
@@ -209,14 +204,6 @@ function MainRoutes() {
                         <DashboardLayout>
                             <AdminDashboardRoutes />
                         </DashboardLayout>
-                    }
-                />
-                <Route
-                    path="dashboard/admin/organization/*"
-                    element={
-                        <NewLayout>
-                            <NewDashboardRoutes />
-                        </NewLayout>
                     }
                 />
                 <Route
