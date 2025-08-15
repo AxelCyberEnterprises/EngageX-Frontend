@@ -27,7 +27,7 @@ const DynamicDialog = () => {
                     classMap?.modal,
                 )}
             >
-                <DialogHeader className="sr-only">
+                <DialogHeader className={cn(classMap?.header)}>
                     <DialogTitle>{title}</DialogTitle>
                     <DialogDescription>{description}</DialogDescription>
                 </DialogHeader>
