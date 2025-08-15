@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickoutside";
 import { EditQuestionModal } from "@/components/modals/modalVariants/EditQuestionalModal";
 import AddBookingLinkModal from "@/components/modals/modalVariants/BookingLinkModal";
+import { useNavigate } from "react-router-dom";
 
 export const columns: ColumnDef<OrganizationTableData, any>[] = [
     {
@@ -14,8 +15,9 @@ export const columns: ColumnDef<OrganizationTableData, any>[] = [
         ),
         cell: ({ row }) => {
             const organization = row.original;
+            const navigate = useNavigate();
             return (
-                <div className="flex items-center gap-3">
+                <div onClick={() => navigate(`/dashboard/admin/organization/overview?id=${organization.id}`)} className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
                         <img src={organization.logo} alt={organization.name} className="w-full h-full object-cover" />
                     </div>

@@ -418,7 +418,7 @@ const SideNav: React.FC = () => {
                                     />
                                 </svg>
                             ),
-                            path: "/dashboard/admin/organization/overview",
+                            path: "/dashboard/admin/organization/dashboard",
                         },
                         {
                             name: "Members",
@@ -492,7 +492,7 @@ const SideNav: React.FC = () => {
                                     />
                                 </svg>
                             ),
-                            path: "",
+                            path: "/dashboard/admin/organization/question-bank",
                         },
                         {
                             name: "Training Goals",
