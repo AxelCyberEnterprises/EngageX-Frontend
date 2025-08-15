@@ -5,7 +5,7 @@
         "role": "Manager",
         "last_login": "4 hours ago",
         "credit_used": 64,
-        "assigned_goals": ["Training"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "19c63da7-a719-4aff-816e-6872dc6b2984",
@@ -13,7 +13,7 @@
         "role": "Admin",
         "last_login": "17 days ago",
         "credit_used": 49,
-        "assigned_goals": ["Sales Target", "Compliance"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "b47407c2-c439-4587-bd54-64971eb6532d",
@@ -21,7 +21,7 @@
         "role": "User",
         "last_login": "6 hours ago",
         "credit_used": 94,
-        "assigned_goals": ["Product Launch"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "292d7ce0-2179-461d-9bc9-f3b16b6dc5a7",
@@ -29,7 +29,7 @@
         "role": "Supervisor",
         "last_login": "1 days ago",
         "credit_used": 44,
-        "assigned_goals": ["Product Launch", "Rookie"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "3b620993-a320-4e21-88c9-8c6158bf726f",
@@ -37,7 +37,7 @@
         "role": "Manager",
         "last_login": "11 weeks ago",
         "credit_used": 11,
-        "assigned_goals": ["Compliance"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "1de7c116-10f2-4ee8-94c2-b89f1a0329f2",
@@ -45,7 +45,7 @@
         "role": "Trainer",
         "last_login": "23 weeks ago",
         "credit_used": 57,
-        "assigned_goals": ["Customer Outreach"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "e8ef9c54-9463-4aaf-93be-c222a885c98d",
@@ -53,7 +53,7 @@
         "role": "Supervisor",
         "last_login": "2 weeks ago",
         "credit_used": 45,
-        "assigned_goals": ["Product Launch"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "0d639fe2-8563-41b5-bf56-b595a3bed06e",
@@ -61,7 +61,7 @@
         "role": "Supervisor",
         "last_login": "28 days ago",
         "credit_used": 38,
-        "assigned_goals": ["Sales Target"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "9c6c31d6-3535-49f0-8978-4723116e1525",
@@ -69,7 +69,7 @@
         "role": "Manager",
         "last_login": "17 minutes ago",
         "credit_used": 44,
-        "assigned_goals": ["Customer Outreach"]
+        "assigned_goals": ["Rookie", "Presentation"]
     },
     {
         "id": "e74af14a-cab7-495c-8d60-616a100d10a4",
@@ -77,6 +77,6 @@
         "role": "Supervisor",
         "last_login": "5 hours ago",
         "credit_used": 22,
-        "assigned_goals": ["Compliance"]
+        "assigned_goals": ["Rookie", "Presentation"]
     }
 ]
