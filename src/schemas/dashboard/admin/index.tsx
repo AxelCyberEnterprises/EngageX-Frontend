@@ -1,3 +1,4 @@
+import { MediaSchema } from "@/schemas/media-schema";
 import { z } from "zod";
 
 export const ManualEntrySchema = z.object({
@@ -16,4 +17,12 @@ export const ManualEntrySchema = z.object({
             }),
         )
         .min(1, "At least one member is required"),
+});
+
+export const UploadCSVSchema = z.object({
+    csv: MediaSchema.optional(),
+});
+
+export const UploadExcelSchema = z.object({
+    excel: MediaSchema.optional(),
 });

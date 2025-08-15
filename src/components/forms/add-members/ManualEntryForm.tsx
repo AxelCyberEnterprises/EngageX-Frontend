@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Upload, X } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
-import ControlledFieldWrapper from "../controlled-fields/field-wrapper";
-import { Separator } from "../ui/separator";
+import ControlledFieldWrapper from "../../controlled-fields/field-wrapper";
+import { Separator } from "../../ui/separator";
 
 type FormType = z.infer<typeof ManualEntrySchema>;
 
@@ -36,7 +36,7 @@ const ManualEntryForm = () => {
     return (
         <Form {...form}>
             <form className="flex flex-col gap-6" onSubmit={form.handleSubmit((data) => console.log(data))}>
-                <div className="flex flex-col gap-4 max-h-100 overflow-auto hide-scrollbar">
+                <div className="flex flex-col gap-4 max-h-100 overflow-auto hide-scrollbar rounded-[10px]">
                     {fields.map((field, index) => (
                         <div key={field.id} className="space-y-4">
                             <div className="bg-[#F8F9FC] rounded-[10px] border border-bright-gray p-4">

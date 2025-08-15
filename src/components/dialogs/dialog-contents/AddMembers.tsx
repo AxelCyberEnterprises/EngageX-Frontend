@@ -1,4 +1,6 @@
-import ManualEntryForm from "@/components/forms/ManualEntryForm";
+import ManualEntryForm from "@/components/forms/add-members/ManualEntryForm";
+import UploadCSVForm from "@/components/forms/add-members/UploadCSVForm";
+import UploadExcelForm from "@/components/forms/add-members/UploadExcelForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const TABINFO = [
@@ -24,7 +26,7 @@ const AddMembers = () => {
                     <TabsTrigger
                         key={tabId}
                         value={tabId}
-                        className="h-11 px-6 py-2.5 bg-transparent hover:bg-background text-independence transition-colors"
+                        className="font-normal h-11 px-6 py-2.5 bg-transparent hover:bg-background data-[state=active]:shadow-none text-independence transition-colors"
                     >
                         {title}
                     </TabsTrigger>
@@ -34,8 +36,12 @@ const AddMembers = () => {
             <TabsContent value="manual-entry">
                 <ManualEntryForm />
             </TabsContent>
-            <TabsContent value="upload-csv">Change your password here.</TabsContent>
-            <TabsContent value="excel-spreadsheet">Change your password here.</TabsContent>
+            <TabsContent value="upload-csv">
+                <UploadCSVForm />
+            </TabsContent>
+            <TabsContent value="excel-spreadsheet">
+                <UploadExcelForm />
+            </TabsContent>
         </Tabs>
     );
 };
