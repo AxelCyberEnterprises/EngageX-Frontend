@@ -11,6 +11,7 @@ import SetTrainingGoals from "@/pages/Dashboard/Admin/organization/members/SetTr
 import { OrganizationsDashboard } from "@/pages/Dashboard/Admin/OrgDashboard";
 import { OrganizationReport } from "@/pages/Dashboard/Admin/OrgReport";
 import { Overview } from "@/pages/Dashboard/Admin/Overview";
+import QuestionBank from "@/pages/Dashboard/Admin/QuestionBank";
 import CoachingRoom from "@/pages/Dashboard/User/CoachingRoom";
 import HelpPage from "@/pages/Dashboard/User/help";
 import Chat from "@/pages/Dashboard/User/help/ChatbotPage";
@@ -143,6 +144,7 @@ function AdminDashboardRoutes() {
                 <Route path="dashboard" element={<OrganizationsDashboard />} />
                 <Route path="report" element={<OrganizationReport />} />
                 <Route path="generate-report" element={<GenerateReport />} />
+                <Route path="question-bank" element={<QuestionBank />} />
             </Route>
             <Route path="analytics" element={<UserAnalytics />} />
             <Route path="settings" element={<AdminSettings />} />

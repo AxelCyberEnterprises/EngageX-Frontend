@@ -495,29 +495,6 @@ const SideNav: React.FC = () => {
                             path: "/dashboard/admin/organization/question-bank",
                         },
                         {
-                            name: "Training Goals",
-                            icon: (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    className="me-4 shrink-0"
-                                    viewBox="0 0 20 20"
-                                    color="#bdbdbd"
-                                    fill="none"
-                                >
-                                    <path
-                                        d="M3.33398 17.5003H16.6673M4.72232 10.9894C4.367 11.3456 4.16741 11.8281 4.16732 12.3311V15.0003H6.85315C7.35648 15.0003 7.83898 14.8003 8.19482 14.4436L16.1115 6.52278C16.4667 6.16661 16.6661 5.68413 16.6661 5.18111C16.6661 4.6781 16.4667 4.19562 16.1115 3.83945L15.3298 3.05611C15.1535 2.87974 14.9442 2.73984 14.7138 2.64442C14.4834 2.549 14.2365 2.49992 13.9871 2.5C13.7378 2.50008 13.4909 2.54931 13.2605 2.64487C13.0302 2.74044 12.821 2.88046 12.6448 3.05695L4.72232 10.9894Z"
-                                        stroke="currentColor"
-                                        stroke-width="1.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    />
-                                </svg>
-                            ),
-                            path: "",
-                        },
-                        {
                             name: "Progress",
                             icon: (
                                 <svg
@@ -645,29 +622,6 @@ const SideNav: React.FC = () => {
                                         stroke="currentColor"
                                         stroke-width="1.5"
                                         stroke-linecap="round"
-                                    />
-                                </svg>
-                            ),
-                            path: "",
-                        },
-                        {
-                            name: "Training Goals",
-                            icon: (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    className="me-4 shrink-0"
-                                    viewBox="0 0 20 20"
-                                    color="#bdbdbd"
-                                    fill="none"
-                                >
-                                    <path
-                                        d="M3.33398 17.5003H16.6673M4.72232 10.9894C4.367 11.3456 4.16741 11.8281 4.16732 12.3311V15.0003H6.85315C7.35648 15.0003 7.83898 14.8003 8.19482 14.4436L16.1115 6.52278C16.4667 6.16661 16.6661 5.68413 16.6661 5.18111C16.6661 4.6781 16.4667 4.19562 16.1115 3.83945L15.3298 3.05611C15.1535 2.87974 14.9442 2.73984 14.7138 2.64442C14.4834 2.549 14.2365 2.49992 13.9871 2.5C13.7378 2.50008 13.4909 2.54931 13.2605 2.64487C13.0302 2.74044 12.821 2.88046 12.6448 3.05695L4.72232 10.9894Z"
-                                        stroke="currentColor"
-                                        stroke-width="1.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
                                     />
                                 </svg>
                             ),

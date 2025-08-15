@@ -3,7 +3,6 @@ import MembersTable from "@/components/tables/members-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
-import { Download } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -15,10 +14,6 @@ const Members = () => {
             <div className="flex items-center justify-between">
                 <h6>Members</h6>
                 <div className="flex items-center gap-2">
-                    <Button variant="outline" className="text-primary-blue">
-                        <Download />
-                        Export
-                    </Button>
                     <Link
                         to="./set-training-goal"
                         className={cn(buttonVariants({ variant: "outline" }), "text-primary-blue border-primary-blue")}

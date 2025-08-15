@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Download, Upload, X, Trash2 } from 'lucide-react';
+import { X, Trash2 } from 'lucide-react';
 import { EditIcon } from '@/assets/images/svgs/edit-icon';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -262,25 +262,6 @@ const QuestionBank = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {!showSelectionBar && (
-              <>
-                <button
-                  onClick={handleExportCSV}
-                  className="bg-[#fff] flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-[#344054] font-medium hover:bg-[#F9FAFB] transition-colors text-sm"
-                >
-                  <Download className="w-4 h-4" />
-                  Export CSV
-                </button>
-
-                <button
-                  onClick={handleImportCSV}
-                  className="bg-[#fff] flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-[#344054] font-medium hover:bg-[#F9FAFB] transition-colors text-sm"
-                >
-                  <Upload className="w-4 h-4" />
-                  Import CSV
-                </button>
-              </>
-            )}
 
             <button
               onClick={handleNewQuestion}
