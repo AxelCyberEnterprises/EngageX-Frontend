@@ -917,7 +917,7 @@ const SideNav: React.FC = () => {
                                 <p>{link.name}</p>
                             </Link>
                         ) : link.type === "collapsible" ? (
-                            <SidebarMenu>
+                            <SidebarMenu key={index}>
                                 <Collapsible asChild defaultOpen={true} className="group/collapsible">
                                     <SidebarMenuItem>
                                         <CollapsibleTrigger asChild>
