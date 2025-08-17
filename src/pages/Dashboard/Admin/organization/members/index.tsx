@@ -31,7 +31,7 @@ const Members = () => {
                                 strokeLinecap="round"
                             />
                         </svg>
-                        Set Training Goal
+                        <span className="hidden md:inline">Set Training Goal</span>
                     </Link>
                     <Button
                         className="bg-[#64BA9F] hover:bg-[#64BA9F]/90"
@@ -44,7 +44,16 @@ const Members = () => {
                             )
                         }
                     >
-                        Add member
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M12 5V19M5 12H19"
+                                stroke="white"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                        <span className="hidden md:inline">Add member</span>
                     </Button>
                 </div>
             </div>

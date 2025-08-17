@@ -1,7 +1,7 @@
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
 import Office from "@/assets/images/svgs/hugeicons-office.svg";
 import { useLogin } from "@/hooks/auth";
-import { setAuthPageImage, setSigninFlow } from "@/store/slices/authSlice";
+import { setAuthPageImage, setSigninFlow, setUserEmail } from "@/store/slices/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -36,6 +36,7 @@ const EmailAndPasswordForm: React.FC = () => {
     const { mutate: login, isPending, error } = useLogin();
 
     const onSubmit: SubmitHandler<emailAndPasswordValues> = async (data) => {
+        dispatch(setUserEmail(data.email));
         login(data);
     };
     const location = useLocation();

@@ -105,16 +105,35 @@ export interface LoginResponse {
 }
 
 export function useLogin() {
-    const queryClient = useQueryClient();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     return useMutation({
         mutationKey: ["login"],
         mutationFn: async (data: { password: string; email: string }) => {
             return await apiPost<LoginResponse>("/users/auth/login/", data);
         },
-        onSuccess: async (data) => {
+        onSuccess: async () => {
+            dispatch(setSigninFlow("otp-2fa"));
+            toast(<SuccessToast description="OTP has been sent to your email. Please verify to complete login." />);
+        },
+        onError: (error) => {
+            console.error(error);
+            toast(<ErrorToast description="An error occurred while logging in. Please try again." />);
+        },
+    });
+}
+
+export function useVerifyOTP() {
+    const queryClient = useQueryClient();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationKey: ["verifyOTP"],
+        mutationFn: async (data: { email: string; otp_code: string }) => {
+            return await apiPost<LoginResponse>("/users/auth/verify-otp/", data);
+        },
+        onSuccess: (data) => {
             const admin = data.data.is_admin;
 
             dispatch(login(data));
@@ -125,7 +144,9 @@ export function useLogin() {
             navigate(admin ? "/dashboard/admin" : "/dashboard/user");
         },
         onError: (error) => {
-            console.error(error);
+            console.error("SSO code request failed:", error);
+
+            toast(<ErrorToast description={error.message} />);
         },
     });
 }
@@ -140,12 +161,10 @@ export function useRequestLogin() {
         },
         onSuccess: () => {
             dispatch(setSigninFlow("otp"));
-
             toast(<SuccessToast description="If your email is registered, you will receive a one time pin." />);
         },
         onError: (error) => {
             console.error("SSO code request failed:", error);
-
             toast(<ErrorToast description="An error occurred while creating sso code, please try again." />);
         },
     });

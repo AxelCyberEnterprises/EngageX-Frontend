@@ -37,8 +37,9 @@ interface AuthState {
     questions: Question[];
     topicQuestion: string;
     signupFlow: string;
-    signinFlow: "emailAndPassword" | "organization" | "otp";
+    signinFlow: "emailAndPassword" | "organization" | "otp" | "otp-2fa";
     companyEmail: string;
+    userEmail: string;
     routeFromLogin: boolean;
     signupData: SignupData | null;
     user: AuthUser | null;
@@ -84,6 +85,7 @@ const initialState: AuthState = {
     signupFlow: "signup",
     signinFlow: "emailAndPassword",
     companyEmail: "",
+    userEmail: "",
     routeFromLogin: false,
     signupData: null, // Stores signup details
     user: storedUser ? (JSON.parse(storedUser) as AuthUser) : null,
@@ -122,6 +124,9 @@ const authSlice = createSlice({
         },
         setCompanyEmail: (state, action: PayloadAction<string>) => {
             state.companyEmail = action.payload;
+        },
+        setUserEmail: (state, action: PayloadAction<string>) => {
+            state.userEmail = action.payload;
         },
         setContactStatus: (state, action: PayloadAction<string>) => {
             state.contactStatus = action.payload;
@@ -220,6 +225,7 @@ export const {
     setSignupFlow,
     setSigninFlow,
     setCompanyEmail,
+    setUserEmail,
     setAuthPageImage,
     setOtpSent,
     setContactStatus,
