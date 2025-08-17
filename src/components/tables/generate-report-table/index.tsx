@@ -7,13 +7,15 @@ interface GenerateReportTableProps {
     pageSize?: number;
     hidePagination?: boolean;
     isLoading?: boolean;
+    setSelectedRows?: (rows: GenerateReportMember[]) => void;
 }
 
-export const GenerateReportTable = ({ 
-    data, 
+export const GenerateReportTable = ({
+    data,
     pageSize = 10,
     hidePagination = false,
-    isLoading = false
+    isLoading = false,
+    setSelectedRows
 }: GenerateReportTableProps) => {
     return (
         <BaseTable
@@ -28,6 +30,7 @@ export const GenerateReportTable = ({
             hidePagination={hidePagination}
             isLoading={isLoading}
             session={false}
+            onRowSelectionChange={setSelectedRows}
         />
     );
 };

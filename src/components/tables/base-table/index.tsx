@@ -17,7 +17,7 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BaseTablePagination from "./BaseTablePagination";
@@ -42,6 +42,7 @@ interface BaseTableProps<TData, TValue> {
     isLoading?: boolean;
     emptyState?: React.ReactNode;
     session?: boolean;
+    onRowSelectionChange?: (rows: TData[]) => void;
 }
 
 export function BaseTable<TData, TValue>({
@@ -62,6 +63,7 @@ export function BaseTable<TData, TValue>({
     emptyState,
     pageSize,
     session = true,
+    onRowSelectionChange
 }: BaseTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -95,6 +97,11 @@ export function BaseTable<TData, TValue>({
         onSortingChange: setSorting,
         manualPagination: true,
     });
+
+    useEffect(() => {
+        const selected = table.getSelectedRowModel().rows.map(r => r.original as TData);
+        onRowSelectionChange?.(selected);
+    }, [rowSelection, table]);
 
     const defaultEmptyState = (
         <TableRow>
