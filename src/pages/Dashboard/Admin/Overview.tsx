@@ -83,7 +83,7 @@ const Overview = () => {
 
   return (
     <div className="px-6 pb-8 bg-white min-h-screen">
-      <h3 className='py-4 md:pl-6 pl-3 border-b border-[#ECEEF4] font-medium md:text-[32px] text-xl'>Organizations view details</h3>
+      <h3 className='py-4 md:pl-6 pl-3 border-b border-[#ECEEF4] font-medium md:text-3xl text-xl'>Organizations view details</h3>
       {/* Header */}
       <div className="flex items-center justify-between py-3">
         {/* <Search className='md:hidden flex'/> */}
@@ -182,7 +182,7 @@ const Overview = () => {
       <div>
         <div className='flex justify-between items-center py-6 mt-4'>
           <h6 className='font-medium'>Members</h6>
-          <Link to="/dashboard/admin/organization/members" className='border border-[#E4E7EC] bg-transparent py-3 px-4 text-[20px] rounded-sm text-[#252A39] font-[300]'>View all</Link>
+          <Link to="/dashboard/admin/organization/members" className='border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]'>View all</Link>
         </div>
         <MembersOverviewTable
           data={dummyMembersData}
@@ -194,7 +194,7 @@ const Overview = () => {
       <div>
         <div className='flex justify-between items-center py-6 mt-4'>
           <h6 className='font-medium'>Active Goals</h6>
-          <Link to='' className='border border-[#E4E7EC] bg-transparent py-3 px-4 text-[20px] rounded-sm text-[#252A39] font-[300]'>View all</Link>
+          <Link to='' className='border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]'>View all</Link>
         </div>
         <GoalsTable
           data={dummyGoalsData}

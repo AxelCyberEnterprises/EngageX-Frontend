@@ -59,8 +59,8 @@ export const columns: ColumnDef<Goal, any>[] = [
       ),
       cell: () => (
         <div className="flex gap-2 justify-center">
-          <EditIcon  className="cursor-pointer" stroke-width={1.5}/>
-          <Trash2Icon className="cursor-pointer text-red-500" stroke-width={1.5}/>
+          <EditIcon  className="cursor-pointer w-6" stroke-width={1.5}/>
+          <Trash2Icon className="cursor-pointer text-red-500 w-6" stroke-width={1.5}/>
         </div>
       ),
     }

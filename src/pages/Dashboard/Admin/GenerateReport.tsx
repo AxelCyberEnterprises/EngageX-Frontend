@@ -97,7 +97,7 @@ const GenerateReport = () => {
         <div className="px-6 pb-8 bg-white min-h-screen">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-[#EAECF0]">
-                <h3 className="font-medium md:text-[32px] text-xl text-[#101828] py-4 md:pl-6 pl-3 ">
+                <h3 className="font-medium md:text-3xl text-lg sm:text-xl text-[#101828] py-4 md:pl-6 pl-3 ">
                     Progress Report
                 </h3>
                 

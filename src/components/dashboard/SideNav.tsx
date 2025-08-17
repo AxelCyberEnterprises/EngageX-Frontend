@@ -1,6 +1,6 @@
 // SideNav component refactored for best practices
 import logo from "@/assets/images/svgs/logo.svg";
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 // import { Input } from "../ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -24,6 +24,7 @@ import {
     SidebarMenuSubItem,
     useSidebar,
 } from "../ui/sidebar";
+import { useClickOutside } from "@/hooks/useClickoutside";
 
 type NavLink = {
     type: "default" | "collapsible";
@@ -41,6 +42,8 @@ const SideNav: React.FC = () => {
     const dispatch = useDispatch();
     const { state: sidebarState } = useSidebar();
     const [showAlternateSidebar, setShowAlternateSidebar] = useState(false);
+    const sidebarRef = useRef<HTMLDivElement | null>(null);
+    useClickOutside(sidebarRef, sidebarRef, () => setShowAlternateSidebar(false));
 
     // Add the toggle function
     const toggleSidebarView = () => {
@@ -1746,14 +1749,14 @@ const SideNav: React.FC = () => {
             {!showAlternateSidebar ? (
                 <Sidebar
                     className={cn("side__nav relative mobile_color bg-branding-secondary text-white py-5", {
-                        "px-0 w-16": sidebarState === "collapsed",
+                        "px-0 w-0": sidebarState === "collapsed",
                         "px-4": sidebarState === "expanded",
                     })}
                 >
                     <img
                         src={SidebarBackBtn}
                         alt="sidebar back button"
-                        className="absolute top-8 -right-[15px] cursor-pointer z-10"
+                        className="absolute top-8 -right-4.5 cursor-pointer z-10 h-10"
                         onClick={toggleSidebarView}
                     />
                     <SidebarHeader className={cn("py-7 bg-branding-secondary lg:py-3", {
@@ -1883,24 +1886,69 @@ const SideNav: React.FC = () => {
                     </SidebarFooter>
                 </Sidebar>
             ) : (
-                <div className="flex h-full">
-                    {/* Dark left strip with icons */}
-                    <div className="w-20 bg-branding-secondary flex flex-col justify-between h-screen items-center py-4 space-y-4">
-                        <img
-                            src={SidebarBackBtn}
-                            alt="sidebar back button"
-                            className="absolute top-8 left-16 h-9 w-auto cursor-pointer z-10"
-                            onClick={toggleSidebarView}
-                        />
+                <>
+                    <Sidebar ref={(el) => {
+                        if (el) {
+                            el.style.setProperty("border-right-width", "0px", "important");
+                            el.style.setProperty("border-right-style", "none", "important");
+                        }
+                    }} className={cn("no-border-right w-85 md:relative top-0 left-0 z-50 fixed flex h-full", {
+                        "w-0": sidebarState === "collapsed",
+                        "!flex-row": sidebarState === "expanded",
+                    })}>
+                        <div className="flex flex-row">
+                            {/* Dark left strip with icons */}
+                            <div className="w-20 bg-branding-secondary flex flex-col justify-between h-screen items-center py-4 space-y-4">
+                                <img
+                                    src={SidebarBackBtn}
+                                    alt="sidebar back button"
+                                    className="absolute top-8 left-16 h-9 w-auto cursor-pointer z-10"
+                                    onClick={toggleSidebarView}
+                                />
 
-                        <div className="flex flex-col w-full items-center justify-center mt-[12px]">
-                            <img src={CollapsedLogo} alt="collapsed Logo" className="w-[60%]" />
+                                <div className="flex flex-col w-full items-center justify-center mt-[12px]">
+                                    <img src={CollapsedLogo} alt="collapsed Logo" className="w-[60%]" />
 
-                            <Search className="text-[#BDBDBD] mt-[36px]" stroke-width={1} />
+                                    <Search className="text-[#BDBDBD] mt-[36px]" stroke-width={1} />
 
-                            <div className="flex flex-col w-full items-center space-y-4">
-                                <div className="space-y-6 mt-[59px]">
-                                    {adminLCollapsedinks.map((link, index) => (
+                                    <div className="flex flex-col w-full items-center space-y-4">
+                                        <div className="space-y-6 mt-[59px]">
+                                            {adminLCollapsedinks.map((link, index) => (
+                                                <Link
+                                                    to={link.path!}
+                                                    key={index}
+                                                    className={`flex items-center justify-center w-12 h-12 rounded-full me-0 transition-colors duration-200 ${location.pathname === link.path ? "bg-branding-secondary" : ""
+                                                        }`}
+                                                >
+                                                    {React.isValidElement(link.icon) &&
+                                                        React.cloneElement(
+                                                            link.icon as React.ReactElement<{ className?: string; children?: React.ReactNode }>,
+                                                            {
+                                                                className: "me-0 shrink-0 text-[#64BA9F]",
+                                                                children: React.Children.map(
+                                                                    (link.icon as React.ReactElement<{ children?: React.ReactNode }>).props.children,
+                                                                    (child) => {
+                                                                        if (React.isValidElement(child) && child.type === "path") {
+                                                                            return React.cloneElement(
+                                                                                child as React.ReactElement<{ strokeWidth?: number }>,
+                                                                                { strokeWidth: 1 }
+                                                                            );
+                                                                        }
+                                                                        return child;
+                                                                    }
+                                                                ),
+                                                            }
+                                                        )}
+
+
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-6">
+                                    {adminCollapsedBottomLinks.map((link, index) => (
                                         <Link
                                             to={link.path!}
                                             key={index}
@@ -1932,140 +1980,110 @@ const SideNav: React.FC = () => {
                                     ))}
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="space-y-6">
-                            {adminCollapsedBottomLinks.map((link, index) => (
-                                <Link
-                                    to={link.path!}
-                                    key={index}
-                                    className={`flex items-center justify-center w-12 h-12 rounded-full me-0 transition-colors duration-200 ${location.pathname === link.path ? "bg-branding-secondary" : ""
-                                        }`}
-                                >
-                                    {React.isValidElement(link.icon) &&
-                                        React.cloneElement(
-                                            link.icon as React.ReactElement<{ className?: string; children?: React.ReactNode }>,
-                                            {
-                                                className: "me-0 shrink-0 text-[#64BA9F]",
-                                                children: React.Children.map(
-                                                    (link.icon as React.ReactElement<{ children?: React.ReactNode }>).props.children,
-                                                    (child) => {
-                                                        if (React.isValidElement(child) && child.type === "path") {
-                                                            return React.cloneElement(
-                                                                child as React.ReactElement<{ strokeWidth?: number }>,
-                                                                { strokeWidth: 1 }
-                                                            );
-                                                        }
-                                                        return child;
-                                                    }
-                                                ),
-                                            }
-                                        )}
+                            {/* Light right panel with organization content */}
+                            <div className="flex-1 bg-white z-20 border border-[#E4E7EC] pt-2.5 w-65">
+                                {/* Search header */}
+                                <div className="py-3.5">
+                                    <div className="relative mx-auto w-[86%]">
+                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#474D63] w-5" stroke-width={1} />
+                                        <input
+                                            type="text"
+                                            placeholder="Search organization..."
+                                            className="w-full mx-auto pl-11 tracking-wide pr-4 py-2 border border-[#E4E7EC] rounded-[6px] focus:outline-none text-[#474D63] placeholder:text-[#474D63] placeholder:font-light font-light"
+                                        />
+                                    </div>
+                                </div>
 
+                                {/* Organizations content */}
+                                <div className="p-4">
+                                    <Link to="/dashboard/admin/organization/dashboard">
+                                        <h3 className="text-gray-500 text-sm font-medium mb-3.5 tracking-wide">ALL ORGANIZATIONS</h3> </Link>
 
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Light right panel with organization content */}
-                    <div className="flex-1 bg-white z-20 border border-[#E4E7EC] pt-2.5 w-65">
-                        {/* Search header */}
-                        <div className="py-3.5">
-                            <div className="relative mx-auto w-[86%]">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#474D63] w-5" stroke-width={1} />
-                                <input
-                                    type="text"
-                                    placeholder="Search organization..."
-                                    className="w-full mx-auto pl-11 tracking-wide pr-4 py-2 border border-[#E4E7EC] rounded-[6px] focus:outline-none text-[#474D63] placeholder:text-[#474D63] placeholder:font-light font-light"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Organizations content */}
-                        <div className="p-4">
-                            <Link to="/dashboard/admin/organization/dashboard">
-                                <h3 className="text-gray-500 text-sm font-medium mb-3.5 tracking-wide">ALL ORGANIZATIONS</h3> </Link>
-
-                            {lastSegment === "admin" &&
-                                adminLinks.map((link, index) => {
-                                    return link.type === "collapsible" && link.items ? (
-                                        <SidebarMenu key={index} className="max-h-[82dvh] overflow-y-auto scrollbar-hide">
-                                            <Collapsible asChild defaultOpen={true} className="group/collapsible">
-                                                <SidebarMenuItem>
-                                                    <CollapsibleContent className="flex flex-col gap-2 px-2">
-                                                        {link.items.map(({ name, navs }) => (
-                                                            <Collapsible
-                                                                key={name}
-                                                                asChild
-                                                                className="group/collapsible-collapsible"
-                                                            >
-                                                                <SidebarMenuItem className="flex flex-col gap-2">
-                                                                    <CollapsibleTrigger asChild>
-                                                                        <div
-                                                                            className={`
+                                    {lastSegment === "admin" &&
+                                        adminLinks.map((link, index) => {
+                                            return link.type === "collapsible" && link.items ? (
+                                                <SidebarMenu key={index} className="max-h-[82dvh] overflow-y-auto scrollbar-hide">
+                                                    <Collapsible asChild defaultOpen={true} className="group/collapsible">
+                                                        <SidebarMenuItem>
+                                                            <CollapsibleContent className="flex flex-col gap-2 px-2">
+                                                                {link.items.map(({ name, navs }) => (
+                                                                    <Collapsible
+                                                                        key={name}
+                                                                        asChild
+                                                                        className="group/collapsible-collapsible"
+                                                                    >
+                                                                        <SidebarMenuItem className="flex flex-col gap-2">
+                                                                            <CollapsibleTrigger asChild>
+                                                                                <div
+                                                                                    className={`
       link flex mobile_links items-center w-full mb-0.5 cursor-pointer justify-between py-3.5 px-4 rounded-lg
       group-data-[state=open]/collapsible-collapsible:bg-[#ECEEF4] group-data-[state=open]/collapsible-collapsible:text-[#64BA9F]
       group-data-[state=closed]/collapsible-collapsible:bg-transparent group-data-[state=closed]/collapsible-collapsible:text-[#474D63]
       hover:bg-[#ECEEF4] hover:text-[#64BA9F]
     `}
-                                                                        >
-                                                                            <span className="">{name}</span>
-                                                                            <ChevronRight
-                                                                                className="size-4 ml-auto transition-transform duration-200 group-data-[state=open]/collapsible-collapsible:rotate-90"
-                                                                            />
-                                                                        </div>
-                                                                    </CollapsibleTrigger>
+                                                                                >
+                                                                                    <span className="">{name}</span>
+                                                                                    <ChevronRight
+                                                                                        className="size-4 ml-auto transition-transform duration-200 group-data-[state=open]/collapsible-collapsible:rotate-90"
+                                                                                    />
+                                                                                </div>
+                                                                            </CollapsibleTrigger>
 
-                                                                    <CollapsibleContent className="">
-                                                                        <SidebarMenuSub className="border-[#474D63]">
-                                                                            {navs.map(({ icon, name, path }) => (
-                                                                                <SidebarMenuSubItem key={name}>
-                                                                                    <Link
-                                                                                        to={path}
-                                                                                        className={`
+                                                                            <CollapsibleContent className="">
+                                                                                <SidebarMenuSub className="border-[#474D63]">
+                                                                                    {navs.map(({ icon, name, path }) => (
+                                                                                        <SidebarMenuSubItem key={name}>
+                                                                                            <Link
+                                                                                                to={path}
+                                                                                                className={`
                                 link flex mobile_links items-center w-full py-2 px-2 mb-0.5
                                 text-[#474D63] hover:text-[#64BA9F] hover:bg-transparent cursor-pointer
                                 ${location.pathname === path ? 'text-[#64BA9F]' : 'text-[#474D63]'}
                               `}
-                                                                                    >
-                                                                                        {React.isValidElement(icon) &&
-                                                                                            React.cloneElement(
-                                                                                                icon as React.ReactElement<{ className?: string; children?: React.ReactNode }>,
-                                                                                                {
-                                                                                                    className: "me-0 shrink-0 mr-2 text-current",
-                                                                                                    children: React.Children.map(
-                                                                                                        (icon as React.ReactElement<{ children?: React.ReactNode }>).props.children,
-                                                                                                        (child) => {
-                                                                                                            if (React.isValidElement(child) && child.type === "path") {
-                                                                                                                return React.cloneElement(
-                                                                                                                    child as React.ReactElement<{ strokeWidth?: number }>,
-                                                                                                                    { strokeWidth: 1.5 }
-                                                                                                                );
-                                                                                                            }
-                                                                                                            return child;
+                                                                                            >
+                                                                                                {React.isValidElement(icon) &&
+                                                                                                    React.cloneElement(
+                                                                                                        icon as React.ReactElement<{ className?: string; children?: React.ReactNode }>,
+                                                                                                        {
+                                                                                                            className: "me-0 shrink-0 mr-2 text-current",
+                                                                                                            children: React.Children.map(
+                                                                                                                (icon as React.ReactElement<{ children?: React.ReactNode }>).props.children,
+                                                                                                                (child) => {
+                                                                                                                    if (React.isValidElement(child) && child.type === "path") {
+                                                                                                                        return React.cloneElement(
+                                                                                                                            child as React.ReactElement<{ strokeWidth?: number }>,
+                                                                                                                            { strokeWidth: 1.5 }
+                                                                                                                        );
+                                                                                                                    }
+                                                                                                                    return child;
+                                                                                                                }
+                                                                                                            ),
                                                                                                         }
-                                                                                                    ),
-                                                                                                }
-                                                                                            )}
-                                                                                        <p>{name}</p>
-                                                                                    </Link>
-                                                                                </SidebarMenuSubItem>
-                                                                            ))}
-                                                                        </SidebarMenuSub>
-                                                                    </CollapsibleContent>
-                                                                </SidebarMenuItem>
-                                                            </Collapsible>
-                                                        ))}
-                                                    </CollapsibleContent>
-                                                </SidebarMenuItem>
-                                            </Collapsible>
-                                        </SidebarMenu>
-                                    ) : null;
-                                })}
+                                                                                                    )}
+                                                                                                <p>{name}</p>
+                                                                                            </Link>
+                                                                                        </SidebarMenuSubItem>
+                                                                                    ))}
+                                                                                </SidebarMenuSub>
+                                                                            </CollapsibleContent>
+                                                                        </SidebarMenuItem>
+                                                                    </Collapsible>
+                                                                ))}
+                                                            </CollapsibleContent>
+                                                        </SidebarMenuItem>
+                                                    </Collapsible>
+                                                </SidebarMenu>
+                                            ) : null;
+                                        })}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>)}
+
+                    </Sidebar>
+                </>
+
+            )}
         </>
 
     );

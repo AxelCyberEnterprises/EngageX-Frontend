@@ -113,7 +113,7 @@ const OrganizationsDashboard = () => {
     <div className="p-6 bg-white min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between pb-6 border-b border-[#ECEEF4]">
-        <h1 className="font-medium text-xl md:text-[21px] text-[#333333] pl-3 md:pl-1">
+        <h1 className="font-medium text-xl md:text-xl text-[#333333] pl-3 md:pl-1">
           Organizations Dashboard
         </h1>
         
