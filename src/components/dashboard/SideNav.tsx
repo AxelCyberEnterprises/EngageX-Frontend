@@ -1093,6 +1093,17 @@ const SideNav: React.FC = () => {
             ),
             path: "/dashboard/admin",
         },
+        // {
+        //     type: "default",
+        //     name: "User Management",
+        //     icon: (
+        //         <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        //             <path d="M14 9C15.0609 9 16.0783 8.57857 16.8284 7.82843C17.5786 7.07828 18 6.06087 18 5C18 3.93913 17.5786 2.92172 16.8284 2.17157C16.0783 1.42143 15.0609 1 14 1M16 12C17.3261 12 18.5979 12.5268 19.5355 13.4645C20.4732 14.4021 21 15.6739 21 17C21 17.5304 20.7893 18.0391 20.4142 18.4142C20.0391 18.7893 19.5304 19 19 19H17.5M12 5C12 6.06087 11.5786 7.07828 10.8284 7.82843C10.0783 8.57857 9.06087 9 8 9C6.93913 9 5.92172 8.57857 5.17157 7.82843C4.42143 7.07828 4 6.06087 4 5C4 3.93913 4.42143 2.92172 5.17157 2.17157C5.92172 1.42143 6.93913 1 8 1C9.06087 1 10.0783 1.42143 10.8284 2.17157C11.5786 2.92172 12 3.93913 12 5ZM10 12H6C4.67392 12 3.40215 12.5268 2.46447 13.4645C1.52678 14.4021 1 15.6739 1 17C1 17.5304 1.21071 18.0391 1.58579 18.4142C1.96086 18.7893 2.46957 19 3 19H13C13.5304 19 14.0391 18.7893 14.4142 18.4142C14.7893 18.0391 15 17.5304 15 17C15 15.6739 14.4732 14.4021 13.5355 13.4645C12.5979 12.5268 11.3261 12 10 12Z" stroke="currentColor" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round" />
+        //         </svg>
+
+        //     ),
+        //     path: "/dashboard/admin/settings",
+        // },
         {
             type: "default",
             name: "Session History",
@@ -1123,67 +1134,37 @@ const SideNav: React.FC = () => {
             ),
             path: "/dashboard/admin/session-history",
         },
-        {
-            type: "default",
-            name: "Session History",
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="me-5 shrink-0"
-                    width="24"
-                    height="24"
-                    color="#bdbdbd"
-                    fill="none"
-                >
-                    <path
-                        d="M4 12.9955L4 14.5404C4 17.7871 4 19.4104 4.88607 20.5099C5.06508 20.732 5.26731 20.9344 5.48933 21.1135C6.58831 22 8.21082 22 11.4558 22C12.1614 22 12.5141 22 12.8372 21.8859C12.9044 21.8622 12.9702 21.8349 13.0345 21.8042C13.3436 21.6563 13.593 21.4067 14.0919 20.9076L18.8284 16.1686C19.4065 15.5903 19.6955 15.3011 19.8478 14.9334C20 14.5656 20 14.1567 20 13.3388V9.99394C20 6.2208 20 4.33423 18.8284 3.16206C17.8971 2.23022 16.5144 2.03917 14.0919 2M13 21.4997V20.9995C13 18.1696 13 16.7547 13.8787 15.8756C14.7574 14.9965 16.1716 14.9965 19 14.9965H19.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                    <path
-                        d="M8 9.77273C9.76731 9.77273 11.2 8.30748 11.2 6.5C11.2 4.69252 9.76731 3.22727 8 3.22727M8 9.77273C6.23269 9.77273 4.8 8.30748 4.8 6.5C4.8 4.69252 6.23269 3.22727 8 3.22727M8 9.77273V11M8 3.22727V2M5.0913 4.71488L4.00045 4.04545M12 8.95455L10.9092 8.28512M10.9087 4.71488L11.9996 4.04545M4 8.95455L5.09085 8.28512"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                    />
-                </svg>
-            ),
-            path: "/dashboard/admin/session-history",
-        },
-        {
-            type: "default",
-            name: "Session History",
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="me-5 shrink-0"
-                    width="24"
-                    height="24"
-                    color="#BDBDBD"
-                    fill="none"
-                >
-                    <path
-                        d="M7 18V16M12 18V15M17 18V13M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                    <path
-                        d="M5.99219 11.4863C8.14729 11.5581 13.0341 11.2328 15.8137 6.82132M13.9923 6.28835L15.8678 5.98649C16.0964 5.95738 16.432 6.13785 16.5145 6.35298L17.0104 7.99142"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </svg>
-            ),
-            path: "/dashboard/user/session-history",
-        },
+        // {
+        //     type: "default",
+        //     name: "Analytics",
+        //     icon: (
+        //         <svg
+        //             xmlns="http://www.w3.org/2000/svg"
+        //             viewBox="0 0 24 24"
+        //             className="me-5 shrink-0"
+        //             width="24"
+        //             height="24"
+        //             color="#BDBDBD"
+        //             fill="none"
+        //         >
+        //             <path
+        //                 d="M7 18V16M12 18V15M17 18V13M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
+        //                 stroke="currentColor"
+        //                 strokeWidth="1.5"
+        //                 strokeLinecap="round"
+        //                 strokeLinejoin="round"
+        //             />
+        //             <path
+        //                 d="M5.99219 11.4863C8.14729 11.5581 13.0341 11.2328 15.8137 6.82132M13.9923 6.28835L15.8678 5.98649C16.0964 5.95738 16.432 6.13785 16.5145 6.35298L17.0104 7.99142"
+        //                 stroke="currentColor"
+        //                 strokeWidth="1.5"
+        //                 strokeLinecap="round"
+        //                 strokeLinejoin="round"
+        //             />
+        //         </svg>
+        //     ),
+        //     path: "/dashboard/admin/analytics",
+        // },
         {
             type: "collapsible",
             name: "Organization",
@@ -1203,6 +1184,7 @@ const SideNav: React.FC = () => {
                     />
                 </svg>
             ),
+            path: "/dashboard/admin/organization/dashboard",
             items: [
                 {
                     name: "Acme Inc.",
