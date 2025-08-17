@@ -528,7 +528,7 @@ const SideNav: React.FC = () => {
                                     />
                                 </svg>
                             ),
-                            path: "",
+                            path: "/dashboard/admin/organization/generate-report",
                         },
                     ],
                 },
@@ -1315,7 +1315,7 @@ const SideNav: React.FC = () => {
                                     />
                                 </svg>
                             ),
-                            path: "",
+                            path: "/dashboard/admin/organization/generate-report",
                         },
                     ],
                 },
@@ -1350,7 +1350,7 @@ const SideNav: React.FC = () => {
                                     />
                                 </svg>
                             ),
-                            path: "",
+                            path: "/dashboard/admin/organization/dashboard",
                         },
                         {
                             name: "Members",
@@ -1397,7 +1397,7 @@ const SideNav: React.FC = () => {
                                     </defs>
                                 </svg>
                             ),
-                            path: "",
+                            path: "/dashboard/admin/organization/members",
                         },
                         {
                             name: "Question Bank",
@@ -1424,7 +1424,7 @@ const SideNav: React.FC = () => {
                                     />
                                 </svg>
                             ),
-                            path: "",
+                            path: "/dashboard/admin/organization/question-bank",
                         },
                         {
                             name: "Progress Reports",
@@ -1448,7 +1448,7 @@ const SideNav: React.FC = () => {
                                     />
                                 </svg>
                             ),
-                            path: "",
+                            path: "/dashboard/admin/organization/generate-report",
                         },
                     ],
                 },
@@ -2043,7 +2043,7 @@ const SideNav: React.FC = () => {
                                                                                                             ),
                                                                                                         }
                                                                                                     )}
-                                                                                                <p>{name}</p>
+                                                                                                <p className="whitespace-nowrap">{name}</p>
                                                                                             </Link>
                                                                                         </SidebarMenuSubItem>
                                                                                     ))}

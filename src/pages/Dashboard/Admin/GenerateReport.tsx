@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { GenerateReportMember } from '@/components/tables/generate-report-table/data';
 import { GenerateReportTable } from '@/components/tables/generate-report-table';
+import { Link } from 'react-router-dom';
 
 const GenerateReport = () => {
     const [searchTerm, setSearchTerm] = useState('');
-
+    const [selectedRows, setSelectedRows] = useState<GenerateReportMember[]>([]);
     const dummyReportData: GenerateReportMember[] = [
         {
             id: "1",
@@ -100,14 +101,24 @@ const GenerateReport = () => {
                 <h3 className="font-medium md:text-3xl text-lg sm:text-xl text-[#101828] py-4 md:pl-6 pl-3 ">
                     Progress Report
                 </h3>
-                
+
                 <div className="flex items-center gap-3">
-                    <button 
-                        onClick={handleGenerateReport}
-                        className="flex items-center gap-2 px-4 py-2 bg-[#10B981] text-white rounded-lg hover:bg-[#059669] transition-colors font-medium text-sm"
-                    >
-                        Generate Report
-                    </button>
+                    {selectedRows.length > 0 ? (
+                        <Link
+                            to="/dashboard/admin/organization/report"
+                            onClick={handleGenerateReport}
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#10B981] text-white hover:bg-[#059669] transition-colors font-medium text-sm"
+                        >
+                            Generate Report
+                        </Link>
+                    ) : (
+                        <div
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed font-medium text-sm"
+                        >
+                            Generate Report
+                        </div>
+                    )}
+
                 </div>
             </div>
 
@@ -132,6 +143,7 @@ const GenerateReport = () => {
                     pageSize={10}
                     hidePagination={false}
                     isLoading={false}
+                    setSelectedRows={setSelectedRows}
                 />
             </div>
         </div>
