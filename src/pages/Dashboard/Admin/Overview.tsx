@@ -10,8 +10,15 @@ import { GoalsTable } from '@/components/tables/active-goals-table';
 import { PlusIcon, Search } from 'lucide-react';
 import AccessibleVerticalsModal from '@/components/modals/modalVariants/AccessibleVerticalsModal';
 import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { openDialog } from "@/store/slices/dynamicDialogSlice";
+import { useDispatch } from "react-redux";
+import AddMembers from "@/components/dialogs/dialog-contents/AddMembers";
+import IssueCreditsModal from '@/components/modals/modalVariants/IssueCreditModal';
 
 const Overview = () => {
+  const dispatch = useDispatch();
+    const [showCreditModal, setShowCreditModal] = useState(false);
   const [showVerticalsModal, setShowVerticalsModal] = useState(false);
 
   const dummyMembersData: Member[] = [
@@ -76,7 +83,7 @@ const Overview = () => {
 
   return (
     <div className="px-6 pb-8 bg-white min-h-screen">
-      <h3 className='py-4 md:pl-6 pl-3 border-b border-[#ECEEF4] font-medium md:text-[32px] text-xl'>Organizations view details</h3>
+      <h3 className='py-4 md:pl-6 pl-3 border-b border-[#ECEEF4] font-medium md:text-3xl text-xl'>Organizations view details</h3>
       {/* Header */}
       <div className="flex items-center justify-between py-3">
         {/* <Search className='md:hidden flex'/> */}
@@ -90,16 +97,16 @@ const Overview = () => {
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:border-transparent outline-none w-64"
             />
           </div> */}
-          
+
         <div className="md:flex items-center gap-3 hidden">
           <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border-2 border-[#000000]">
             <img src={lakers} alt="lakers image" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-2xl font-medium text-[#333333]">Acme Inc.</h1>
         </div>
-            
+
         <div className="flex items-center gap-3">
-        <div className="flex md:hidden relative">
+          <div className="flex md:hidden relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
@@ -109,18 +116,32 @@ const Overview = () => {
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:border-transparent outline-none w-64"
             />
           </div>
-          <button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent font-normal flex items-center gap-2" onClick={() => setShowVerticalsModal(true)}>
+          <Button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent hover:bg-transparent hover:scale-105 transition-all duration-200 font-normal flex items-center gap-2" onClick={() => setShowCreditModal(true)}>
+            <PlusIcon className='h-4' />
+            <span className='md:flex hidden'>Add Organization credits</span>
+          </Button>
+          <Button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent hover:bg-transparent hover:scale-105 transition-all duration-200 font-normal flex items-center gap-2" onClick={() => setShowVerticalsModal(true)}>
             <img src={archive} alt="verticals icon" className="w-4" />
             <span className='md:flex hidden'>Accessible verticals</span>
-          </button>
-          <button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent font-normal flex items-center gap-2">
+          </Button>
+          <Button className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent hover:bg-transparent hover:scale-105 transition-all duration-200 font-normal flex items-center gap-2">
             <img src={coaching} alt="coaching icon" className="w-4" />
             <span className='md:flex hidden'>1 on 1 Coaching</span>
-          </button>
-          <button className="px-4 py-3 bg-[#64BA9F] text-white rounded-md flex items-center gap-2">
-            <PlusIcon className='text-white flex md:hidden h-4.5'/>
-            <span className='md:flex hidden'>Add member</span>
-          </button>
+          </Button>
+          <Button
+            className="bg-[#64BA9F] hover:bg-[#64BA9F]/90"
+            onClick={() =>
+              dispatch(
+                openDialog({
+                  key: "add-members",
+                  children: <AddMembers />,
+                }),
+              )
+            }
+          >
+            <PlusIcon className='text-white flex md:hidden h-4.5' />
+            Add member
+          </Button>
         </div>
       </div>
 
@@ -161,7 +182,7 @@ const Overview = () => {
       <div>
         <div className='flex justify-between items-center py-6 mt-4'>
           <h6 className='font-medium'>Members</h6>
-          <Link to="/dashboard/admin/organization/members" className='border border-[#E4E7EC] bg-transparent py-3 px-4 text-[20px] rounded-sm text-[#252A39] font-[300]'>View all</Link>
+          <Link to="/dashboard/admin/organization/members" className='border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]'>View all</Link>
         </div>
         <MembersOverviewTable
           data={dummyMembersData}
@@ -173,7 +194,7 @@ const Overview = () => {
       <div>
         <div className='flex justify-between items-center py-6 mt-4'>
           <h6 className='font-medium'>Active Goals</h6>
-          <Link to='' className='border border-[#E4E7EC] bg-transparent py-3 px-4 text-[20px] rounded-sm text-[#252A39] font-[300]'>View all</Link>
+          <Link to='' className='border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]'>View all</Link>
         </div>
         <GoalsTable
           data={dummyGoalsData}
@@ -183,9 +204,14 @@ const Overview = () => {
         />
       </div>
 
-      <AccessibleVerticalsModal 
-        show={showVerticalsModal} 
-        onClose={() => setShowVerticalsModal(false)} 
+      <AccessibleVerticalsModal
+        show={showVerticalsModal}
+        onClose={() => setShowVerticalsModal(false)}
+      />
+
+      <IssueCreditsModal
+        show={showCreditModal}
+        onClose={() => setShowCreditModal(false)}
       />
     </div>
   );

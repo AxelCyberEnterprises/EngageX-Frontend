@@ -4,6 +4,7 @@ import { OrganizationTableData } from '@/components/tables/organization-table/da
 import { OrganizationsTable } from '@/components/tables/organization-table';
 import AddOrganizationModal from '@/components/modals/modalVariants/AddOrganizationModal';
 import { Celtics, LakersLogo } from '@/assets/images/pngs';
+import { Button } from '@/components/ui/button';
 
 const OrganizationsDashboard = () => {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -112,7 +113,7 @@ const OrganizationsDashboard = () => {
     <div className="p-6 bg-white min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between pb-6 border-b border-[#ECEEF4]">
-        <h1 className="font-medium text-xl md:text-2xl text-[#333333] pl-3 md:pl-6">
+        <h1 className="font-medium text-xl md:text-xl text-[#333333] pl-3 md:pl-1">
           Organizations Dashboard
         </h1>
         
@@ -124,28 +125,28 @@ const OrganizationsDashboard = () => {
           
           {/* Search - Desktop */}
           <div className="hidden md:flex relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#262B3A]" stroke-width={1}/>
             <input
               type="text"
               placeholder="Search Users"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:border-transparent outline-none w-64"
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:border-transparent outline-none w-64 font-light text-[#262B3A] placeholder:text-[#262B3A]"
             />
           </div>
           
-          <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium transition-colors bg-[#fff]">
+          <Button className="hover:bg-transparent flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium transition-colors bg-[#fff]">
             <Filter className="w-4 h-4" />
             <span className="hidden md:inline">Filter</span>
-          </button>
+          </Button>
           
-          <button 
+          <Button 
             onClick={() => setShowAddModal(true)}
             className="flex items-center gap-2 px-4 py-2 bg-[#64BA9F] text-white rounded-md hover:bg-[#5aa88f] transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span className="hidden md:inline">Add organization</span>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -158,7 +159,7 @@ const OrganizationsDashboard = () => {
             className={`px-4 py-2 rounded-md font-medium transition-colors ${
               activeFilter === filter
                 ? 'bg-black text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-transparent text-gray-700 hover:bg-gray-200 shadow-[0px_1px_2px_1px_#0000001F]'
             }`}
           >
             {filter}

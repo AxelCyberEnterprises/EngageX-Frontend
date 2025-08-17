@@ -3,7 +3,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Member } from "./data";
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickoutside";
-import IssueCreditsModal from "@/components/modals/modalVariants/IssueCreditModal";
 
 export const columns: ColumnDef<Member, any>[] = [
   {
@@ -71,16 +70,11 @@ export const columns: ColumnDef<Member, any>[] = [
       const [isOpen, setIsOpen] = useState(false);
       const popupRef = useRef<HTMLDivElement | null>(null);
       const buttonRef = useRef<HTMLButtonElement | null>(null);
-      const [showCreditModal, setShowCreditModal] = useState(false);
       useClickOutside(popupRef, buttonRef, () => { setIsOpen(false) });
       const handleMenuClick = (event: React.MouseEvent, action: string) => {
         event.stopPropagation();
         console.log(`Action performed: ${action}`);
         setIsOpen(false);
-
-        if (action === "Assign Credit") {
-          setShowCreditModal(true);
-        }
       };
 
       return (
@@ -114,26 +108,8 @@ export const columns: ColumnDef<Member, any>[] = [
                 >
                   Edit Roles
                 </li>
-                <li
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Assign Credit")}
-                >
-                  Assign Credit
-                </li>
-                <li
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Reset Password")}
-                >
-                  Reset Password
-                </li>
               </ul>
             </div>
-          )}
-          {showCreditModal && (
-            <IssueCreditsModal
-            show={showCreditModal}
-            onClose={() => setShowCreditModal(false)}
-            />
           )}
         </div>
       );
