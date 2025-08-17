@@ -26,7 +26,7 @@ const AdminDashboardHome: React.FC = () => {
 
     const timeCompareValue = () => {
         switch (filter) {
-            default: 
+            default:
                 return "yesterday";
             case "last_week":
                 return "last Week";
@@ -34,7 +34,7 @@ const AdminDashboardHome: React.FC = () => {
                 return "last Month";
             case "last_year":
                 return "Last Year";
-         
+
         }
     }
 
@@ -134,27 +134,28 @@ const AdminDashboardHome: React.FC = () => {
     };
 
     const cardData = useMemo(() => {
-        return data?.session_breakdown.flatMap((item, index) => {
-            if (index === 0) {
-                return {
+        return data?.session_breakdown?.flatMap((item, index) => {
+            const obj = index === 0
+                ? {
                     icon: getIcon("Total New Sessions", index),
                     title: "Total New Sessions",
                     value: item.total_new_session?.toString() || "0",
                     direction: item.percentage_difference >= 0 ? "up" : "down",
                     percent: item.percentage_difference,
-                };
-            } else {
-                return {
+                }
+                : {
                     icon: getIcon(item.session_type, index),
                     title: item.session_type || "Unknown Session",
                     value: item.current_count?.toString() || "0",
                     direction: item.percentage_difference >= 0 ? "up" : "down",
                     percent: item.percentage_difference,
                 };
-            }
-        }) || [];
+
+            return [obj];
+        }) ?? [];
     }, [data]);
-    
+
+
 
     // const cardsData = [
     //     {
@@ -247,16 +248,17 @@ const AdminDashboardHome: React.FC = () => {
     //     { month: 6, Pitch: 214, Presentation: 140, Keynote: 100 },
     // ];
 
-    
+
 
     const lineChartData = useMemo(() => {
-    return (
-        data?.sessions_over_time.flatMap((item) => ({
+        return data?.sessions_over_time?.flatMap((item) => [{
             month: new Date(item.day).getDay() + 1,
             [item.session_type]: item.count ?? 0,
-        })) || []
-    );
-}, [data]);
+        }]) || [];
+    }, [data]);
+
+
+
 
     console.log("lineChartData", lineChartData);
 
@@ -304,7 +306,7 @@ const AdminDashboardHome: React.FC = () => {
             <div className="py-4 px-2 justify-between hidden md:flex">
                 <p>Here's an overview of your dashboard</p>
                 <div className="flex items-center">
-                    <select value={filter} onChange={(e)=>setFilter(e.target.value)} className="me-4 px-3 py-2 rounded-[8px]">
+                    <select value={filter} onChange={(e) => setFilter(e.target.value)} className="me-4 px-3 py-2 rounded-[8px]">
                         <option value="today">Today</option>
                         <option value="last_week">Last Week</option>
                         <option value="last_month">Last Month</option>
@@ -357,7 +359,7 @@ const AdminDashboardHome: React.FC = () => {
                                 </div>
                                 <p className="gunmetal">
                                     {card.direction === "up" ? "more than" : "less than"}
-                                   {' '} {timeCompareValue()}
+                                    {' '} {timeCompareValue()}
                                 </p>
                             </div>
                         </div>
