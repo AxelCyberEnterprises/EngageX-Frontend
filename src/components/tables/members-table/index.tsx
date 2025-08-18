@@ -2,34 +2,29 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useDataTable } from "@/hooks/use-data-table";
 import { LoaderCircle, X } from "lucide-react";
-import { useEffect, useState } from "react";
 import { DataTable } from "../data-table";
 import { IMembers, membersColumns } from "./columns";
+import { useFetchEnterpriseUsers } from "@/hooks/organization/useFetchEnterpriseUsers";
 
 const MembersTable = () => {
-    const [membersData, setMembersData] = useState<IMembers[] | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        let isMounted = true;
-        import("./data.json").then((mod) => {
-            if (isMounted) {
-                setMembersData(
-                    mod.default.map((item) => ({
-                        ...item,
-                    })),
-                );
-                setLoading(false);
-            }
-        });
-
-        return () => {
-            isMounted = false;
-        };
-    }, []);
+    const searchParams = new URLSearchParams(location.search);
+    const orgId = Number(searchParams.get("id"));
+    const { data, isLoading } = useFetchEnterpriseUsers(1, orgId);
+    const members: IMembers[] = data?.results.map((user) => ({
+        id: user.id.toString(),
+        name: `${user.user.first_name} ${user.user.last_name}`,
+        role: user.is_admin ? "Admin" : user.user_type === "general" ? "Basketballer" : "Rookie",
+        last_login: new Date(user.created_at).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        }),
+        credit_used: 0,
+        assigned_goals: [user.user_type]
+    })) ?? [];
 
     const { table } = useDataTable({
-        data: membersData || [],
+        data: members || [],
         columns: membersColumns,
         // pageCount: 10,
         // getRowId: (originalRow) => originalRow.id,
@@ -38,7 +33,7 @@ const MembersTable = () => {
     });
     const selectedCount = table.getFilteredSelectedRowModel().rows.length;
 
-    if (loading) return <LoaderCircle className="animate-spin" />;
+    if (isLoading) return <LoaderCircle className="animate-spin" />;
     return (
         <>
             <DataTable table={table} className="gap-4">

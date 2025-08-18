@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Modal from "..";
 import { useClickOutside } from "@/hooks/useClickoutside";
+import { useAddEnterpriseCredits } from "@/hooks/organization/useAddEnterpriseCredits";
+import { useFetchEnterpriseUsers } from "@/hooks/organization/useFetchEnterpriseUsers";
 
 const issueCreditsSchema = z.object({
     numberOfCredit: z
@@ -22,14 +24,29 @@ type IssueCreditsFormValues = z.infer<typeof issueCreditsSchema>;
 interface IssueCreditsModalProps {
     show: boolean;
     onClose: () => void;
+    orgId: number;
 }
 
-const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) => {
+const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose, orgId }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const dropdownButtonRef = useRef<HTMLButtonElement | null>(null);
 
     useClickOutside(dropdownRef, dropdownButtonRef, () => setIsDropdownOpen(false));
+
+    const { data } = useFetchEnterpriseUsers(1, orgId);
+    const members = data?.results.map((user) => ({
+        id: user.id.toString(),
+        name: `${user.user.first_name} ${user.user.last_name}`,
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.user.first_name + " " + user.user.last_name)}&background=cccccc&color=ffffff`,
+        role: user.is_admin ? "Admin" : user.user_type === "general" ? "Basketballer" : "Rookie",
+        lastLogin: new Date(user.created_at).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        }),
+        creditsUsed: 0,
+    })) ?? [];
 
     const form = useForm<IssueCreditsFormValues>({
         resolver: zodResolver(issueCreditsSchema),
@@ -39,32 +56,28 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
         },
     });
 
-    // Dummy members data - in real app, this would come from props or API
-    const members = [
-        { id: "1", name: "James Edward" },
-        { id: "2", name: "Michelle Walters" },
-        { id: "3", name: "Malik Bronson" },
-        { id: "4", name: "DeShawn Rivers" },
-        { id: "5", name: 'Andre "Buckets" Wallace' },
-    ];
+    const addCreditsMutation = useAddEnterpriseCredits(orgId);
 
-    const onSubmit: SubmitHandler<IssueCreditsFormValues> = (data) => {
-        const selectedMember = members.find((member) => member.id === data.member);
+    const onSubmit: SubmitHandler<IssueCreditsFormValues> = async (data) => {
+        const selectedMember = members.find((m) => m.id === data.member);
+        if (!selectedMember) return;
 
-        console.log("Issue Credits Data:", {
-            numberOfCredit: Number(data.numberOfCredit),
-            member: selectedMember,
-            memberId: data.member,
-        });
+        try {
+            await addCreditsMutation.mutateAsync({
+                amount: Number(data.numberOfCredit),
+                reason: `Credits issued to ${selectedMember.name}`,
+            });
 
-        // Reset form and close modal
-        form.reset();
-        onClose();
+            form.reset();
+            setIsDropdownOpen(false);
+            onClose();
+        } catch (error) {
+            console.error("Failed to issue credits:", error);
+        }
     };
 
-    const handleMemberSelect = (memberId: string, memberName: string) => {
+    const handleMemberSelect = (memberId: string) => {
         form.setValue("member", memberId);
-        console.log('memberName',memberName);
         setIsDropdownOpen(false);
     };
 
@@ -79,7 +92,6 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
     return (
         <Modal show={show} onClose={handleModalClose} className="w-full max-w-md mx-4 p-6">
             <div className="w-full">
-                {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-[24px] font-medium text-gray-900">Issue Credits</h2>
                     <button onClick={handleModalClose} className="p-1 bg-white">
@@ -89,15 +101,12 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        {/* Number of Credit */}
                         <FormField
                             control={form.control}
                             name="numberOfCredit"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-sm font-medium text-gray-700">
-                                        Number of Credit
-                                    </FormLabel>
+                                    <FormLabel className="text-sm font-medium text-gray-700">Number of Credit</FormLabel>
                                     <FormControl>
                                         <Input
                                             type="number"
@@ -111,7 +120,6 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
                             )}
                         />
 
-                        {/* Member Dropdown */}
                         <FormField
                             control={form.control}
                             name="member"
@@ -141,7 +149,7 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
                                                         <button
                                                             key={member.id}
                                                             type="button"
-                                                            onClick={() => handleMemberSelect(member.id, member.name)}
+                                                            onClick={() => handleMemberSelect(member.id)}
                                                             className="bg-[#fff] block w-full px-3 py-2 text-sm text-gray-700 text-left hover:bg-[#F3F4F6] first:rounded-t-lg last:rounded-b-lg transition-colors"
                                                         >
                                                             {member.name}
@@ -156,7 +164,6 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
                             )}
                         />
 
-                        {/* Action Buttons */}
                         <div className="flex gap-3 pt-4 justify-end">
                             <Button
                                 type="button"
@@ -166,8 +173,8 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose }) 
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" className="py-3 bg-[#64BA9F] hover:bg-[#5aa88f] text-white">
-                                Issue Credit
+                            <Button type="submit" className="py-3 bg-[#64BA9F] hover:bg-[#5aa88f] text-white" disabled={addCreditsMutation.isPending}>
+                                {addCreditsMutation.isPending ? "Issuing..." : "Issue Credit"}
                             </Button>
                         </div>
                     </form>

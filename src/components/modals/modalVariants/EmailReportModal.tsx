@@ -7,6 +7,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 //import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Modal from '..';
+import { Input } from '@/components/ui/input';
+import { useEmailProgressReport } from '@/hooks/organization/useEmailProgressReport';
 
 const emailReportSchema = z.object({
   emails: z.array(z.string().email('Invalid email address')).min(1, 'At least one email is required'),
@@ -18,9 +20,12 @@ type EmailReportFormValues = z.infer<typeof emailReportSchema>;
 interface EmailReportModalProps {
   show: boolean;
   onClose: () => void;
+  orgID: number;
+  organizationName: string;
 }
 
-const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose }) => {
+const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgID, organizationName }) => {
+  const emailReport = useEmailProgressReport(orgID);
   const [emailTags, setEmailTags] = useState<string[]>([]);
   const [currentEmail, setCurrentEmail] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,6 +40,23 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose }) =>
 
   const onSubmit: SubmitHandler<EmailReportFormValues> = (data) => {
     console.log('Email Report sent to:', emailTags, data);
+    emailReport.mutate(
+      {
+        name: organizationName,
+        domain: data?.emails,
+        enterprise_type: 'general',
+        is_active: true,
+        require_domain_match: false,
+      },
+      {
+        onSuccess: (data) => {
+          console.log('Email sent successfully:', data);
+        },
+        onError: (error) => {
+          console.error('Failed to send email:', error);
+        },
+      }
+    );
     form.reset();
     setEmailTags([]);
     setCurrentEmail('');
@@ -114,7 +136,7 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose }) =>
                     Email
                   </FormLabel>
                   <FormControl>
-                    <div className="min-h-[48px] w-ful px-3 py-2 border rounded-lg flex flex-wrap items-center gap-2 focus-[#E4E7EC] focus-[#E4E7EC]">
+                    <div className="min-h-[40px] w-full px-3 py-2 border rounded-md flex flex-wrap items-center gap-2 focus-[#E4E7EC] focus-[#E4E7EC]">
                       {emailTags.map((email, index) => (
                         <div
                           key={index}
@@ -130,7 +152,7 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose }) =>
                           </button>
                         </div>
                       ))}
-                      <input
+                      <Input
                         ref={inputRef}
                         type="text"
                         value={currentEmail}
@@ -138,7 +160,7 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose }) =>
                         onKeyDown={handleKeyDown}
                         onBlur={handleInputBlur}
                         placeholder={emailTags.length === 0 ? "Enter email" : ""}
-                        className="border-none flex-1 min-w-[120px] outline-none bg-transparent text-gray-700 placeholder-gray-400"
+                        className="flex-1 min-w-[120px] bg-transparent text-gray-700 placeholder-gray-400 border-none shadow-none focus-visible:ring-0 focus:shadow-none active:shadow-none !focus-visible:shadow-none !focus-visible:border-none"
                       />
                     </div>
                   </FormControl>
@@ -160,11 +182,10 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose }) =>
               <Button
                 type="submit"
                 disabled={!hasEmails}
-                className={`py-3 text-white transition-colors ${
-                  hasEmails 
-                    ? 'bg-[#64BA9F] hover:bg-[#5aa88f]' 
-                    : 'bg-gray-400 cursor-not-allowed'
-                }`}
+                className={`py-3 text-white transition-colors ${hasEmails
+                  ? 'bg-[#64BA9F] hover:bg-[#5aa88f]'
+                  : 'bg-gray-400 cursor-not-allowed'
+                  }`}
               >
                 Send Email
               </Button>

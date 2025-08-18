@@ -1,14 +1,26 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
 import { OrganizationReportMember } from '@/components/tables/org-report-table/data';
 import { OrganizationReportTable } from '@/components/tables/org-report-table';
 import { EmailReportModal } from '@/components/modals/modalVariants/EmailReportModal';
+import { useLocation } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas-pro';
+import { useFetchSingleOrganization } from '@/hooks/organization';
 
 
 const OrganizationReport = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showEmailModal, setShowEmailModal] = useState(false);
-
+    const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+    const pdfRef = useRef<HTMLDivElement>(null);
+    const location = useLocation();
+    const selectedIds: string[] = useMemo(() => {
+        const params = new URLSearchParams(location.search);
+        const idsParam = params.get('ids');
+        return idsParam ? idsParam.split(',') : [];
+    }, [location.search]);
+    const { data: organization } = useFetchSingleOrganization(Number(selectedIds[0]));
     // Dummy data for organization report members
     const dummyReportData: OrganizationReportMember[] = [
         {
@@ -93,13 +105,48 @@ const OrganizationReport = () => {
         },
     ];
 
-    // Filter data based on search term
-    const filteredData = dummyReportData.filter(member =>
+    const filteredByIds = dummyReportData.filter(member => selectedIds.includes(member.id));
+
+    const filteredData = filteredByIds.filter(member =>
         member.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const handleDownloadReport = useCallback(async () => {
+        const element = pdfRef.current;
+        if (!element) {
+            return;
+        }
+        try {
+            setIsGeneratingPDF(true);
+            const canvas = await html2canvas(element, {
+                scale: 1.5,
+                useCORS: true,
+                allowTaint: true,
+                logging: false,
+            });
+
+            const imgData = canvas.toDataURL("image/png");
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const pdf = new jsPDF({
+                orientation: imgWidth > imgHeight ? "landscape" : "portrait",
+                unit: "px",
+                format: [imgWidth, imgHeight],
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`Progress-Report-${selectedIds}.pdf`);
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        } finally {
+            setIsGeneratingPDF(false);
+        }
+    }, [selectedIds]);
+
     return (
-        <div className="p-6 bg-white min-h-screen">
+        <div ref={pdfRef} className="p-6 bg-white min-h-screen">
             {/* Header */}
             <div className="flex items-center justify-between pb-6 border-b border-[#EAECF0]">
                 <h1 className="font-medium text-2xl text-[#101828]">Organization Report</h1>
@@ -113,12 +160,14 @@ const OrganizationReport = () => {
                             placeholder="Search Member"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-9 pr-4 py-2 border border-[#D0D5DD] rounded-lg focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] outline-none w-64 text-sm"
+                            className="pl-9 pr-4 py-2 border border-[#D0D5DD] rounded-lg outline-none w-64 text-sm"
                         />
                     </div>
 
                     <button
+                        onClick={handleDownloadReport}
                         className="bg-[#fff] flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-[#344054] font-medium hover:bg-[#F9FAFB] transition-colors text-sm"
+                        disabled={isGeneratingPDF}
                     >
                         Download Report
                     </button>
@@ -136,7 +185,7 @@ const OrganizationReport = () => {
             <div className="mt-6">
                 <OrganizationReportTable data={filteredData} pageSize={10} hidePagination={false} isLoading={false} />
             </div>
-            {showEmailModal && <EmailReportModal show={showEmailModal} onClose={() => setShowEmailModal(false)} />}
+            {showEmailModal && <EmailReportModal show={showEmailModal} onClose={() => setShowEmailModal(false)} orgID={Number(selectedIds[0])} organizationName={organization?.name ?? 'Acme Inc'} />}
         </div>
     );
 };
