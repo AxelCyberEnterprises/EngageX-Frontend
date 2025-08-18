@@ -94,6 +94,11 @@ const GenerateReport = () => {
         console.log('Generating report...');
     };
 
+    const generateReportUrl = () => {
+        const ids = selectedRows.map(row => row.id).join(',');
+        return `/dashboard/admin/organization/report?ids=${ids}`;
+    };
+
     return (
         <div className="px-6 pb-8 bg-white min-h-screen">
             {/* Header */}
@@ -105,7 +110,7 @@ const GenerateReport = () => {
                 <div className="flex items-center gap-3">
                     {selectedRows.length > 0 ? (
                         <Link
-                            to="/dashboard/admin/organization/report"
+                            to={generateReportUrl()}
                             onClick={handleGenerateReport}
                             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#10B981] text-white hover:bg-[#059669] transition-colors font-medium text-sm"
                         >

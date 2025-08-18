@@ -51,8 +51,11 @@ const TopNav: React.FC = () => {
                         </BreadcrumbItem>
 
                         {pathnames.slice(2).map((segment, index) => {
-                            const routeTo = `/${pathnames.slice(0, index + 3).join("/")}`;
+                            let routeTo = `/${pathnames.slice(0, index + 3).join("/")}`;
                             const isLast = index === pathnames.slice(2).length - 1;
+                            if (segment.toLowerCase() === "organization") {
+                                routeTo = "/dashboard/admin/organization/dashboard";
+                            }
 
                             return (
                                 <div key={routeTo} className="flex items-center">

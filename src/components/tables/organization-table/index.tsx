@@ -1,6 +1,8 @@
+import { TableCell, TableRow } from "@/components/ui/table";
 import { BaseTable } from "../base-table";
 import { columns } from "./columns";
 import { OrganizationTableData } from "./data";
+import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 
 interface OrganizationsTableProps {
   data: OrganizationTableData[];
@@ -9,8 +11,8 @@ interface OrganizationsTableProps {
   loadingOrganizations?: boolean;
 }
 
-export const OrganizationsTable = ({ 
-  data, 
+export const OrganizationsTable = ({
+  data,
   pageSize = 10,
   hidePagination = false,
   loadingOrganizations = false
@@ -28,6 +30,18 @@ export const OrganizationsTable = ({
       hidePagination={hidePagination}
       isLoading={loadingOrganizations}
       session={false}
+      emptyState={
+        <TableRow>
+          <TableCell
+            colSpan={columns.length}
+            className="justify-center items-center w-full mx-auto py-[10%] flex-col gap-4 text-center"
+          >
+            <img src={emptyStateImage} className="w-28 mx-auto" alt="empty state logo" />
+            <p className="text-lg font-medium">No Organization Found</p>
+            <p className="text-muted-foreground font-normal text-sm">Create a new organization to get started</p>
+          </TableCell>
+        </TableRow>
+      }
     />
   );
 };
