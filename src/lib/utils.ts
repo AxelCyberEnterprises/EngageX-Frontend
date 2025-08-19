@@ -36,7 +36,21 @@ export const tokenManager = {
         if (!token) {
             throw new Error("Invalid token provided");
         }
-        Cookies.set(TOKEN_CONFIG.accessTokenKey, token, TOKEN_CONFIG.cookieOptions);
+        // Respect "Remember for 30 days" if the user opted in during login
+        const rememberMe = (() => {
+            try {
+                return localStorage.getItem("rememberMe") === "1";
+            } catch {
+                return false;
+            }
+        })();
+
+        const cookieOptions: Cookies.CookieAttributes = {
+            ...TOKEN_CONFIG.cookieOptions,
+            expires: rememberMe ? 30 : TOKEN_CONFIG.cookieOptions?.expires ?? 1,
+        };
+
+        Cookies.set(TOKEN_CONFIG.accessTokenKey, token, cookieOptions);
     },
 
     getToken: () => Cookies.get(TOKEN_CONFIG.accessTokenKey),
