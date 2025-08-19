@@ -2,9 +2,22 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import { Menu } from "lucide-react";
+import { tokenManager } from "@/lib/utils";
+import { useMemo } from "react";
 
 function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
+  const token = tokenManager.getToken();
+  const dashboardPath = useMemo(() => {
+    try {
+      const stored = localStorage.getItem("user");
+      if (stored) {
+        const user = JSON.parse(stored);
+        return user?.is_admin ? "/dashboard/admin" : "/dashboard/user";
+      }
+    } catch {}
+    return "/dashboard/user";
+  }, []);
   const location = useLocation();
 
   return (
@@ -43,29 +56,49 @@ function Navbar() {
             ))}
           </ul>
           <div className="space-y-4 flex flex-col items-center">
-            <Link to="/auth/login">
-              <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border border-green-sheen">
-                <p>Login</p>
-              </button>
-            </Link>
-            <Link to="/auth/signup">
-              <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border bg-green-sheen">
-                <p>Get started</p>
-              </button>
-            </Link>
+            {token ? (
+              <Link to={dashboardPath}>
+                <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border border-green-sheen">
+                  <p>Go to dashboard</p>
+                </button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/auth/login">
+                  <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border border-green-sheen">
+                    <p>Login</p>
+                  </button>
+                </Link>
+                <Link to="/auth/signup">
+                  <button className="h-[3rem] w-[10rem] text-center lg:hidden space-x-4 rounded-lg border bg-green-sheen">
+                    <p>Get started</p>
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div className="flex gap-4">
-          <Link to="/auth/login">
-            <button className="h-[3rem] px-6 space-x-4 hidden lg:flex border rounded-lg border-green-sheen">
-              <p>Login</p>
-            </button>
-          </Link>
-          <Link to="/auth/signup">
-            <button className="h-[3rem] px-6 space-x-4 hidden lg:flex rounded-lg text-black bg-white">
-              <p>Get started</p>
-            </button>
-          </Link>
+          {token ? (
+            <Link to={dashboardPath}>
+              <button className="h-[3rem] px-6 space-x-4 hidden lg:flex border rounded-lg border-green-sheen">
+                <p>Go to dashboard</p>
+              </button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/auth/login">
+                <button className="h-[3rem] px-6 space-x-4 hidden lg:flex border rounded-lg border-green-sheen">
+                  <p>Login</p>
+                </button>
+              </Link>
+              <Link to="/auth/signup">
+                <button className="h-[3rem] px-6 space-x-4 hidden lg:flex rounded-lg text-black bg-white">
+                  <p>Get started</p>
+                </button>
+              </Link>
+            </>
+          )}
         </div>
         <button className="p-4 border lg:hidden rounded-lg border-[#64BA9F]">
           <Menu className="h-4" onClick={() => setShowMenu((prev) => !prev)} />

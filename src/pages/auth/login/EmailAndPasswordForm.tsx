@@ -9,7 +9,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { z } from "zod";
-import { welcomeMessage } from "../../../components/layouts/userAuth";
+import { BackToWebsite, welcomeMessage } from "../../../components/layouts/userAuth";
 import { Button } from "../../../components/ui/button";
 import { Checkbox } from "../../../components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../../../components/ui/form";
@@ -24,6 +24,13 @@ type emailAndPasswordValues = z.infer<typeof emailAndPasswordSchema>;
 
 const EmailAndPasswordForm: React.FC = () => {
     const [showPassword, setShowPassword] = React.useState(false);
+    const [rememberMe, setRememberMe] = React.useState<boolean>(() => {
+        try {
+            return localStorage.getItem("rememberMe") === "1";
+        } catch {
+            return false;
+        }
+    });
 
     const form = useForm<emailAndPasswordValues>({
         resolver: zodResolver(emailAndPasswordSchema),
@@ -49,6 +56,7 @@ const EmailAndPasswordForm: React.FC = () => {
 
     return (
         <div className="login-container font-[Inter] sm:w-10/12 px-1 sm:mx-auto flex flex-col justify-center h-[100dvh] md:overflow-y-hidden max-md:pl-0 max-lg:pl-5">
+            <BackToWebsite />
             {welcomeMessage()}
             <Form {...form}>
                 <form
@@ -118,6 +126,14 @@ const EmailAndPasswordForm: React.FC = () => {
                             className="border-2 p-2 border-gray-300 rounded-md checked:bg-transparent bg-transparent data-[state=checked]:bg-transparent data-[state=checked]:text-black"
                             name="remember"
                             id="remember"
+                            checked={rememberMe}
+                            onCheckedChange={(checked) => {
+                                const value = Boolean(checked);
+                                setRememberMe(value);
+                                try {
+                                    localStorage.setItem("rememberMe", value ? "1" : "0");
+                                } catch {}
+                            }}
                         />
                         Remember for 30 days
                     </label>
