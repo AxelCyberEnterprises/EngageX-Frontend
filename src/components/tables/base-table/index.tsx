@@ -76,6 +76,11 @@ export function BaseTable<TData, TValue>({
     const [paginationState, setPaginationState] = useState<PaginationState>(
         pagination ?? { pageIndex: 0, pageSize: pageSize || 20 },
     );
+
+    const currentPageSize = paginationState.pageSize;
+    const totalItems = count ?? data.length;
+    const calculatedPageCount = Math.max(1, Math.ceil(totalItems / currentPageSize));
+
     const table = useReactTable({
         data,
         columns,
@@ -86,7 +91,7 @@ export function BaseTable<TData, TValue>({
             rowSelection,
             sorting,
         },
-        pageCount: Math.ceil(count ? count / (pagination?.pageSize || 20) : 0),
+        pageCount: calculatedPageCount,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -207,7 +212,7 @@ export function BaseTable<TData, TValue>({
                             <Skeleton className="h-8 w-20" />
                         </div>
                     ) : (
-                        <BaseTablePagination table={table} />
+                        <BaseTablePagination table={table} totalCount={count} />
                     )}
                 </div>
             )}
