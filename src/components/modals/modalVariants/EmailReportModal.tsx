@@ -43,7 +43,7 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgI
     emailReport.mutate(
       {
         name: organizationName,
-        domain: data?.emails,
+        recipients: data?.emails,
         enterprise_type: 'general',
         is_active: true,
         require_domain_match: false,

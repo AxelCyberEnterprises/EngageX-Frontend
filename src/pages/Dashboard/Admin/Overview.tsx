@@ -122,9 +122,8 @@ const Overview = () => {
 
       {/* Goals Table */}
       <div>
-        <div className='flex justify-between items-center py-6 mt-4'>
+        <div className='flex justify-between items-center py-6 mt-7'>
           <h6 className='font-medium'>Active Goals</h6>
-          <Link to='' className='border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]'>View all</Link>
         </div>
         {isLoading ? <Skeleton className="w-full h-48" /> : <GoalsTable orgId={orgId} pageSize={5} hidePagination={true} />}
       </div>

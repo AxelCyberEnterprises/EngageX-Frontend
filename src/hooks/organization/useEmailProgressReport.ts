@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 
 interface EmailProgressReportPayload {
   name: string;
-  domain: string[];
+  recipients: string[];
   enterprise_type?: 'sport' | 'general';
   is_active?: boolean;
   require_domain_match?: boolean;
@@ -14,7 +14,7 @@ interface EmailProgressReportPayload {
 interface EnterpriseResponse {
   id: number;
   name: string;
-  domain: string[];
+  recipients: string[];
   enterprise_type?: 'sport' | 'general';
   logo?: string | null;
   is_active: boolean;
