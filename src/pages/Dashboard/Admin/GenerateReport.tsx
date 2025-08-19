@@ -7,101 +7,23 @@ import { Link } from 'react-router-dom';
 const GenerateReport = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedRows, setSelectedRows] = useState<GenerateReportMember[]>([]);
-    const dummyReportData: GenerateReportMember[] = [
-        {
-            id: "1",
-            firstName: "John",
-            lastName: "Doe",
-            role: "Manager",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "johndoe@acme.com",
-        },
-        {
-            id: "2",
-            firstName: "Jane",
-            lastName: "Doe",
-            role: "Admin",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "janedoe@acme.com",
-        },
-        {
-            id: "3",
-            firstName: "Christopher",
-            lastName: "Emmanuel",
-            role: "User",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "christopheremmanuel@acme.com",
-        },
-        {
-            id: "4",
-            firstName: "Nk",
-            lastName: "Harrison",
-            role: "User",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "nkharrison@acme.com",
-        },
-        {
-            id: "5",
-            firstName: "Jane",
-            lastName: "Smith",
-            role: "Manager",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "janesmith@acme.com",
-        },
-        {
-            id: "6",
-            firstName: "Adams",
-            lastName: "Smith",
-            role: "Admin",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "adamssmith@acme.com",
-        },
-        {
-            id: "7",
-            firstName: "John",
-            lastName: "Doe",
-            role: "Manager",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "johndoe@acme.com",
-        },
-        {
-            id: "8",
-            firstName: "Christopher",
-            lastName: "Emmanuel",
-            role: "User",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "christopheremmanuel@acme.com",
-        },
-        {
-            id: "9",
-            firstName: "Jane",
-            lastName: "Smith",
-            role: "Manager",
-            assignedGoals: ["Rookie", "Presentation"],
-            email: "janesmith@acme.com",
-        },
-    ];
+    const searchParams = new URLSearchParams(location.search);
+    const orgId = Number(searchParams.get("id"));
 
     // Filter data based on search term
-    const filteredData = dummyReportData.filter(member =>
-        member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const handleGenerateReport = () => {
-        // Handle generate report functionality
-        console.log('Generating report...');
-    };
+    // const filteredData = dummyReportData.filter(member =>
+    //     member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     member.email.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
 
     const generateReportUrl = () => {
         const ids = selectedRows.map(row => row.id).join(',');
-        return `/dashboard/admin/organization/report?ids=${ids}`;
+        return `/dashboard/admin/organization/report?id=${orgId}&ids=${ids}`;
     };
 
     return (
         <div className="px-6 pb-8 bg-white min-h-screen">
-            {/* Header */}
             <div className="flex items-center justify-between border-b border-[#EAECF0]">
                 <h3 className="font-medium md:text-3xl text-lg sm:text-xl text-[#101828] py-4 md:pl-6 pl-3 ">
                     Progress Report
@@ -111,7 +33,6 @@ const GenerateReport = () => {
                     {selectedRows.length > 0 ? (
                         <Link
                             to={generateReportUrl()}
-                            onClick={handleGenerateReport}
                             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#10B981] text-white hover:bg-[#059669] transition-colors font-medium text-sm"
                         >
                             Generate Report
@@ -127,7 +48,6 @@ const GenerateReport = () => {
                 </div>
             </div>
 
-            {/* Search */}
             <div className="mt-6 mb-6">
                 <div className="relative max-w-md">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#667085]" />
@@ -141,16 +61,10 @@ const GenerateReport = () => {
                 </div>
             </div>
 
-            {/* Report Table */}
-            <div>
-                <GenerateReportTable
-                    data={filteredData}
-                    pageSize={10}
-                    hidePagination={false}
-                    isLoading={false}
-                    setSelectedRows={setSelectedRows}
-                />
-            </div>
+            <GenerateReportTable
+                orgId={orgId}
+                setSelectedRows={setSelectedRows}
+            />
         </div>
     );
 };

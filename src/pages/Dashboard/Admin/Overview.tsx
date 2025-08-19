@@ -14,10 +14,12 @@ import IssueCreditsModal from '@/components/modals/modalVariants/IssueCreditModa
 import { useFetchSingleOrganization } from '@/hooks/organization/useFetchSingleOrganization';
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchOrganizationStats } from '@/hooks/organization/useFetchOrganizationStats';
+import AddBookingLinkModal from '@/components/modals/modalVariants/BookingLinkModal';
 
 const Overview = () => {
   const dispatch = useDispatch();
   const [showCreditModal, setShowCreditModal] = useState(false);
+  const [showBookingModal, setShowBookingModal] = useState(false);
   const [showVerticalsModal, setShowVerticalsModal] = useState(false);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -28,7 +30,6 @@ const Overview = () => {
     organization?.logo ??
     `https://ui-avatars.com/api/?name=${encodeURIComponent(organization?.name ?? "No Name")}&background=cccccc&color=ffffff`;
 
-  const coachingLink = organization?.one_on_one_coaching_link || "#";
 
   const statsMock = stats
     ? [
@@ -70,10 +71,10 @@ const Overview = () => {
             <img src={archive} alt="verticals icon" className="w-4" />
             <span className='md:flex hidden'>Accessible verticals</span>
           </Button>
-          <Link to={coachingLink} target="_blank" className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent hover:bg-transparent hover:scale-105 transition-all duration-200 font-normal flex items-center gap-2">
+          <Button onClick={() => setShowBookingModal(true)} className="px-4 py-3 border border-[#252A39] rounded-md text-[#252A39] bg-transparent hover:bg-transparent hover:scale-105 transition-all duration-200 font-normal flex items-center gap-2">
             <img src={coaching} alt="coaching icon" className="w-4" />
             <span className='md:flex hidden'>1 on 1 Coaching</span>
-          </Link>
+          </Button>
           <Button
             className="bg-[#64BA9F] hover:bg-[#64BA9F]/90"
             onClick={() =>
@@ -121,9 +122,8 @@ const Overview = () => {
 
       {/* Goals Table */}
       <div>
-        <div className='flex justify-between items-center py-6 mt-4'>
+        <div className='flex justify-between items-center py-6 mt-7'>
           <h6 className='font-medium'>Active Goals</h6>
-          <Link to='' className='border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]'>View all</Link>
         </div>
         {isLoading ? <Skeleton className="w-full h-48" /> : <GoalsTable orgId={orgId} pageSize={5} hidePagination={true} />}
       </div>
@@ -139,6 +139,10 @@ const Overview = () => {
         show={showCreditModal}
         onClose={() => setShowCreditModal(false)}
         orgId={orgId}
+      />
+      <AddBookingLinkModal
+        show={showBookingModal}
+        onClose={() => setShowBookingModal(false)}
       />
     </div>
   );

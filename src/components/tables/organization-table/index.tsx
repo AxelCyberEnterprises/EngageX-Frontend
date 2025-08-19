@@ -1,6 +1,6 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { BaseTable } from "../base-table";
-import { columns } from "./columns";
+import { createColumns } from "./columns";
 import { OrganizationTableData } from "./data";
 import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 
@@ -9,14 +9,18 @@ interface OrganizationsTableProps {
   pageSize?: number;
   hidePagination?: boolean;
   loadingOrganizations?: boolean;
+  onStatusChange?: (organizationId: string, newStatus: 'Active' | 'Blacklisted') => void;
 }
 
 export const OrganizationsTable = ({
   data,
   pageSize = 10,
   hidePagination = false,
-  loadingOrganizations = false
+  loadingOrganizations = false,
+  onStatusChange
 }: OrganizationsTableProps) => {
+  const columns = createColumns({ onStatusChange });
+
   return (
     <BaseTable
       columns={columns}
