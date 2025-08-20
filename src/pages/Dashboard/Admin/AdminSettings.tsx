@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Branding from "@/components/Branding";
 import AccountSecurity from "@/components/dashboard/AccountSecurity";
 import Credits from "@/components/dashboard/Credits";
 import NotificationSettings from "@/components/dashboard/Notification";
@@ -17,7 +16,7 @@ const AdminSettings: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const sectionFromUrl = searchParams.get("section");
     const notificationCount = 4;
-    const sectionItems = ["Profile", "Notifications & Reminders", "Account & Security", "Credits", "Branding"];
+    const sectionItems = ["Profile", "Notifications & Reminders", "Account & Security", "Credits"];
 
     useEffect(() => {
         if (sectionFromUrl) {
@@ -112,7 +111,7 @@ const AdminSettings: React.FC = () => {
                     {activeIndex === 1 && <NotificationSettings />}
                     {activeIndex === 2 && <AccountSecurity />}
                     {activeIndex === 3 && <Credits />}
-                    {activeIndex === 4 && <Branding />}
+                    {/* Branding section removed from admin settings */}
                 </section>
             </div>
         </>

@@ -24,7 +24,7 @@ function Navbar() {
     <div className="h-[5rem]">
       <div className="flex justify-between bg-gunmetal h-[5rem] fixed z-30 w-full px-10 overflow-clip lg:px-20 text-white font-montserrat items-center">
         <Link to="/">
-          <img src="/assets/logo.png" alt="brand logo" className="h-8" />
+          <img src="/assets/logoaltwhitev2.png" alt="brand logo" className="h-8" />
         </Link>
         <div
           className={clsx(

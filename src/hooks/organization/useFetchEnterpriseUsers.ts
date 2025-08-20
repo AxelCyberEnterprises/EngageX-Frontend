@@ -33,9 +33,10 @@ export interface EnterpriseUsersResponse {
   results: EnterpriseUser[];
 }
 
-export function useFetchEnterpriseUsers(page: number = 1, id: number) {
+export function useFetchEnterpriseUsers(page: number = 1, id?: number) {
+  const isValidId = typeof id === "number" && Number.isFinite(id);
   return useQuery<EnterpriseUsersResponse>({
-    queryKey: ["enterprise-users", page, id],
+    queryKey: ["enterprise-users", page, id ?? null],
     queryFn: async () => {
       const response = await apiGet<EnterpriseUsersResponse>(
         `/enterprise/enterprise-users/?page=${page}&enterprise_id=${id}`,
@@ -43,6 +44,7 @@ export function useFetchEnterpriseUsers(page: number = 1, id: number) {
       );
       return response;
     },
+    enabled: isValidId,
     staleTime: 1000 * 60 * 5,
     retry: 1,
   });
