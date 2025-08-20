@@ -1,5 +1,5 @@
 // SideNav component refactored for best practices
-import logo from "@/assets/images/svgs/logo.svg";
+const logo = "/assets/logoaltwhitev2.png";
 import React, { MouseEvent, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -11,7 +11,7 @@ import { ChevronRight, Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
 import SidebarBackBtn from '../../assets/images/svgs/back-sidebar.svg';
-import CollapsedLogo from '../../assets/images/svgs/collapsed-logo.svg';
+const CollapsedLogo = "/assets/logoaltwhitev2.png";
 import {
     Sidebar,
     SidebarContent,
@@ -478,6 +478,24 @@ const SideNav: React.FC = () => {
                         path: `/dashboard/admin/organization/members?id=${org.id}`,
                     },
                     {
+                        name: "Branding",
+                        icon: (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                className="me-4 shrink-0"
+                                viewBox="0 0 20 20"
+                                color="#bdbdbd"
+                                fill="none"
+                            >
+                                <path d="M3 7H17V17H3V7Z" stroke="currentColor" strokeWidth="1.5"/>
+                                <path d="M6 3H14V7H6V3Z" stroke="currentColor" strokeWidth="1.5"/>
+                            </svg>
+                        ),
+                        path: `/dashboard/admin/organization/branding?id=${org.id}`,
+                    },
+                    {
                         name: "Question Bank",
                         icon: (
                             <svg
@@ -730,6 +748,24 @@ const SideNav: React.FC = () => {
                             </svg>
                         ),
                         path: `/dashboard/admin/organization/members?id=${org.id}`,
+                    },
+                    {
+                        name: "Branding",
+                        icon: (
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                className="me-4 shrink-0"
+                                viewBox="0 0 20 20"
+                                color="#bdbdbd"
+                                fill="none"
+                            >
+                                <path d="M3 7H17V17H3V7Z" stroke="currentColor" strokeWidth="1.5"/>
+                                <path d="M6 3H14V7H6V3Z" stroke="currentColor" strokeWidth="1.5"/>
+                            </svg>
+                        ),
+                        path: `/dashboard/admin/organization/branding?id=${org.id}`,
                     },
                     {
                         name: "Question Bank",

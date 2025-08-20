@@ -1,4 +1,4 @@
-import Logo from "@/assets/images/svgs/logo.svg";
+const Logo = "/assets/logoaltwhitev2.png";
 import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import { useEffect, useState } from "react";
 import { defaultTheme, ThemeContext } from "./hook";

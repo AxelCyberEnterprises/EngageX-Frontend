@@ -5,23 +5,38 @@ import { LoaderCircle, X } from "lucide-react";
 import { DataTable } from "../data-table";
 import { IMembers, membersColumns } from "./columns";
 import { useFetchEnterpriseUsers } from "@/hooks/organization/useFetchEnterpriseUsers";
+import { useLocation } from "react-router-dom";
+import { useMemo, useEffect } from "react";
 
 const MembersTable = () => {
-    const searchParams = new URLSearchParams(location.search);
-    const orgId = Number(searchParams.get("id"));
+    const routerLocation = useLocation();
+    const searchParams = new URLSearchParams(routerLocation.search);
+    const orgIdParam = searchParams.get("id");
+    const orgId = orgIdParam ? Number(orgIdParam) : undefined;
     const { data, isLoading } = useFetchEnterpriseUsers(1, orgId);
-    const members: IMembers[] = data?.results.map((user) => ({
-        id: user.id.toString(),
-        name: `${user.user.first_name} ${user.user.last_name}`,
-        role: user.is_admin ? "Admin" : user.user_type === "general" ? "Basketballer" : "Rookie",
-        last_login: new Date(user.created_at).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-        }),
-        credit_used: 0,
-        assigned_goals: [user.user_type]
-    })) ?? [];
+
+    useEffect(() => {
+        if (orgId) {
+            // Log the raw API response for debugging
+            console.log("[MembersTable] Enterprise users response:", { orgId, data });
+        }
+    }, [orgId, data]);
+    const members: IMembers[] = useMemo(() => {
+        return (
+            data?.results.map((user) => ({
+                id: user.id.toString(),
+                name: `${user.user.first_name} ${user.user.last_name}`,
+                role: user.is_admin ? "Admin" : user.user_type === "general" ? "Basketballer" : "Rookie",
+                last_login: new Date(user.created_at).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                }),
+                credit_used: 0,
+                assigned_goals: [user.user_type]
+            })) ?? []
+        );
+    }, [data?.results]);
 
     const { table } = useDataTable({
         data: members || [],
@@ -32,6 +47,10 @@ const MembersTable = () => {
         // clearOnDefault: true,
     });
     const selectedCount = table.getFilteredSelectedRowModel().rows.length;
+
+    if (!orgId) {
+        return <div className="text-sm text-muted-foreground">No organization selected.</div>;
+    }
 
     if (isLoading) return <LoaderCircle className="animate-spin" />;
     return (
@@ -77,7 +96,7 @@ const MembersTable = () => {
                                     </svg>
                                     Edit
                                 </Button>
-                                <Button
+                                {/* <Button
                                     variant="outline"
                                     className="text-primary"
                                 >
@@ -102,7 +121,7 @@ const MembersTable = () => {
                                         />
                                     </svg>
                                     Assign Credits
-                                </Button>
+                                </Button> */}
                                 <Button
                                     variant="outline"
                                     className="text-crimson-red hover:text-crimson-red"
