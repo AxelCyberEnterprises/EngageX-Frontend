@@ -4,7 +4,7 @@ import { Theme } from "./types";
 export const defaultTheme: Theme = {
     primaryColor: "#262b3a",
     secondaryColor: "#10161e",
-    logoUrl: "/src/assets/images/svgs/logo.svg",
+            logoUrl: "/assets/logoaltwhitev2.png",
     faviconUrl: "/favicon.svg",
 };
 

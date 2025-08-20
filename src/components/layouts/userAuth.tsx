@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import engageLogo from "../../assets/images/engage-x-logo.png";
+const engageLogo = "/assets/logoaltwhitev2.png";
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
