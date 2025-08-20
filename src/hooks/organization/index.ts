@@ -8,3 +8,4 @@ export * from "./useFetchOrganizationStats";
 export * from "./useUpdateEnterpriseVerticals";
 export * from "./useEnterpriseQuestions";
 export * from "./useEmailProgressReport";
+export * from "./useBookCoachingSession";

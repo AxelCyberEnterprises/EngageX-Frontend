@@ -14,7 +14,9 @@ import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 import { Button } from "@/components/ui/button";
 import DeleteModal from "@/components/modals/modalVariants/DeleteModal";
 import { EditQuestionModal } from "@/components/modals/modalVariants/EditQuestionalModal";
-
+import { useCreateEnterpriseQuestion } from "@/hooks";
+import { CreateEnterpriseQuestionData } from "@/hooks/organization/useCreateEnterpriseQuestion";
+import { CreateQuestionFormData, CreateQuestionModal } from "@/components/modals/modalVariants/CreateQuestionsModal";
 
 const ItemTypes = {
     QUESTION_ITEM: "question_item",
@@ -177,7 +179,6 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
     );
 };
 
-// Loading skeleton component
 const QuestionRowSkeleton: React.FC = () => (
     <div className="flex flex-col sm:flex-row items-start sm:items-center border border-[#EAECF0] rounded-xl mb-4 p-4">
         <div className="flex w-full sm:hidden">
@@ -225,14 +226,25 @@ const QuestionBank: React.FC = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [editingQuestion, setEditingQuestion] = useState<EnterpriseQuestion | null>(null);
     const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null);
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const createQuestionMutation = useCreateEnterpriseQuestion(enterpriseId);
     // API hooks
-    const { data: questionsResponse, isLoading, error, refetch } = useFetchEnterpriseQuestions(enterpriseId, currentPage);
+    const getVerticalFromTab = (tab: string) => {
+        const tabToVerticalMap: Record<string, string> = {
+            "Media Training": "media_training",
+            "Coaching": "coach",
+            "General Manager": "general_manager"
+        };
+        return tabToVerticalMap[tab];
+    };
+    const { data: questionsResponse, isLoading, error, refetch } = useFetchEnterpriseQuestions(
+        enterpriseId,
+        currentPage,
+        getVerticalFromTab(activeTab)
+    );
     const updateQuestionMutation = usePatchEnterpriseQuestion(enterpriseId);
     const deleteQuestionMutation = useDeleteEnterpriseQuestion(enterpriseId);
 
-    console.log(questionsResponse?.results);
-
-    // Update local questions when API data changes
     useEffect(() => {
         if (questionsResponse?.results) {
             const questionsWithOrder: EnterpriseQuestion[] = questionsResponse.results.map((q, index) => ({
@@ -249,28 +261,47 @@ const QuestionBank: React.FC = () => {
         setSelectedRowIds(new Set()); // Clear selections when switching tabs
     }, [activeTab]);
 
-    // Filter questions by active tab (vertical)
-    const filteredQuestions = localQuestions.filter((q) => {
-        const tabToVerticalMap: Record<string, string> = {
-            "Media Training": "media_training",
-            "Coaching": "coach",
-            "General Manager": "general_manager"
-        };
-        return q.vertical === tabToVerticalMap[activeTab] || q.vertical_display === activeTab;
-    });
-
     const tabs = ["Media Training", "Coaching", "General Manager"];
     const showSelectionBar = selectedRowIds.size > 0;
 
     const handleNewQuestion = () => {
-        console.log("Creating new question...");
+        setShowCreateModal(true);
+    };
+
+    // Add this new function:
+    const handleCreateQuestion = async (formData: CreateQuestionFormData) => {
+        const getVerticalFromTab = (tab: string) => {
+            const tabToVerticalMap: Record<string, string> = {
+                "Media Training": "media_training",
+                "Coaching": "coach",
+                "General Manager": "gm"
+            };
+            return tabToVerticalMap[tab];
+        };
+
+        const newQuestionData: CreateEnterpriseQuestionData = {
+            enterprise: enterpriseId,
+            vertical: getVerticalFromTab(activeTab),
+            question_text: formData.questionText,
+            sport_type: formData.sportType || null,
+            is_active: true,
+        };
+
+        try {
+            await createQuestionMutation.mutateAsync(newQuestionData);
+            setShowCreateModal(false);
+            // The cache will be updated automatically via onSuccess in the hook
+        } catch (error) {
+            console.error("Error creating question:", error);
+            // Handle error - show toast notification, etc.
+        }
     };
 
     const handleSelectAll = () => {
-        if (selectedRowIds.size === filteredQuestions.length) {
+        if (selectedRowIds.size === localQuestions.length) {
             setSelectedRowIds(new Set());
         } else {
-            const allIds = new Set(filteredQuestions.map((q) => q.id));
+            const allIds = new Set(localQuestions.map((q) => q.id));
             setSelectedRowIds(allIds);
         }
     };
@@ -357,7 +388,7 @@ const QuestionBank: React.FC = () => {
     };
 
     const moveItem = async (fromIndex: number, toIndex: number) => {
-        const newQuestions = [...filteredQuestions];
+        const newQuestions = [...localQuestions];
         const [movedItem] = newQuestions.splice(fromIndex, 1);
         newQuestions.splice(toIndex, 0, movedItem);
 
@@ -387,7 +418,7 @@ const QuestionBank: React.FC = () => {
     };
 
     // Sort questions by order
-    const sortedQuestions = [...filteredQuestions].sort((a, b) => (a.order || 0) - (b.order || 0));
+    const sortedQuestions = [...localQuestions].sort((a, b) => (a.order || 0) - (b.order || 0));
 
     if (isLoading) {
         return (
@@ -432,16 +463,24 @@ const QuestionBank: React.FC = () => {
     }
 
     // Calculate pagination values for current tab's filtered questions
-    const filteredQuestionsCount = filteredQuestions.length;
-    const pageSize = 10; // Assuming a page size, adjust as needed
-    const pageCount = Math.ceil(filteredQuestionsCount / pageSize);
-    const startItem = filteredQuestionsCount > 0 ? (currentPage - 1) * pageSize + 1 : 0;
-    const endItem = Math.min(currentPage * pageSize, filteredQuestionsCount);
+    const totalCount = questionsResponse?.count || 0;
+    const pageSize = 10; // Adjust based on your API's page size
+    const pageCount = Math.ceil(totalCount / pageSize);
+    const currentPageItemCount = questionsResponse?.results?.length || 0;
+    const startItem = totalCount > 0 ? (currentPage - 1) * pageSize + 1 : 0;
+    const endItem = (currentPage - 1) * pageSize + currentPageItemCount;
 
     console.log("Editing question:", editingQuestion?.question_text);
 
     return (
         <>
+            <CreateQuestionModal
+                show={showCreateModal}
+                onClose={() => setShowCreateModal(false)}
+                onSubmit={handleCreateQuestion}
+                isLoading={createQuestionMutation.isPending}
+                activeTab={activeTab}
+            />
             <DeleteModal
                 show={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}
@@ -504,7 +543,7 @@ const QuestionBank: React.FC = () => {
                                     onClick={handleSelectAll}
                                     className="bg-[#fff] text-[#64BA9F] text-sm hover:underline"
                                 >
-                                    {selectedRowIds.size === filteredQuestions.length ? "Deselect all" : "Select all questions"}
+                                    {selectedRowIds.size === localQuestions.length ? "Deselect all" : "Select all questions"}
                                 </button>
                                 <button
                                     onClick={() => handleOpenDeleteModal()}
@@ -555,31 +594,30 @@ const QuestionBank: React.FC = () => {
                     </div>
 
                     {/* Pagination */}
-                    {filteredQuestionsCount > 0 && (
+                    {totalCount > 0 && (
                         <div className="flex flex-col sm:flex-row justify-between mt-6 gap-4">
                             <div className="text-sm text-[#667085] text-center sm:text-left">
-                                Showing {startItem}-{endItem} of {questionsResponse?.count} questions in {activeTab}
+                                Showing {startItem}-{endItem} of {totalCount} questions in {activeTab}
                             </div>
                             <div className="flex items-center justify-center gap-2">
-                                {currentPage > 1 && (
-                                    <Button
-                                        onClick={() => setCurrentPage(prev => prev - 1)}
-                                        className="px-3 py-1 text-sm text-[#667085] hover:text-[#10B981] bg-transparent hover:bg-transparent"
-                                    >
-                                        Previous
-                                    </Button>
-                                )}
+                                <Button
+                                    onClick={() => setCurrentPage(prev => prev - 1)}
+                                    disabled={currentPage === 1}
+                                    className="px-3 py-1 text-sm text-[#667085] hover:text-[#10B981] bg-transparent hover:bg-transparent shadow-none"
+                                >
+                                    Previous
+                                </Button>
                                 <span className="text-base text-[#667085] rounded-full border border-[#EAECF0] grid place-content-center w-10 h-10 bg-[#00000014]">
                                     {currentPage}
                                 </span>
-                                {currentPage < pageCount && (
-                                    <Button
-                                        onClick={() => setCurrentPage(prev => prev + 1)}
-                                        className="px-3 py-1 text-sm text-[#667085] hover:text-[#10B981] bg-transparent hover:bg-transparent"
-                                    >
-                                        Next
-                                    </Button>
-                                )}
+                                <Button
+                                    onClick={() => setCurrentPage(prev => prev + 1)}
+                                    disabled={currentPage >= pageCount}
+                                    className="px-3 py-1 text-sm text-[#667085] hover:text-[#10B981] bg-transparent hover:bg-transparent shadow-none"
+                                >
+                                    Next
+                                </Button>
+
                             </div>
                         </div>
                     )}

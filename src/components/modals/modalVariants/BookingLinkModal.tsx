@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Modal from '..';
+import { usePatchSingleOrganization } from '@/hooks/organization/useFetchSingleOrganization';
 
 const addBookingLinkSchema = z.object({
   bookingLink: z.string().min(1, 'Booking link is required').url('Please enter a valid URL'),
@@ -17,23 +18,40 @@ type AddBookingLinkFormValues = z.infer<typeof addBookingLinkSchema>;
 interface AddBookingLinkModalProps {
   show: boolean;
   onClose: () => void;
+  link: string;
 }
 
-const AddBookingLinkModal: React.FC<AddBookingLinkModalProps> = ({ show, onClose }) => {
+const AddBookingLinkModal: React.FC<AddBookingLinkModalProps> = ({ show, onClose, link }) => {
+  const searchParams = new URLSearchParams(location.search);
+  const enterpriseId = Number(searchParams.get("id"));
+
   const form = useForm<AddBookingLinkFormValues>({
     resolver: zodResolver(addBookingLinkSchema),
     defaultValues: {
-      bookingLink: '',
+      bookingLink: link,
     },
   });
 
-  const onSubmit: SubmitHandler<AddBookingLinkFormValues> = (data) => {
-    console.log('Booking Link Data:', data);
-    
-    // Reset form and close modal
-    form.reset();
-    onClose();
-  };
+const { mutate: patchOrganization, isPending } = usePatchSingleOrganization(enterpriseId);
+
+const onSubmit: SubmitHandler<AddBookingLinkFormValues> = (data) => {
+  patchOrganization(
+    { one_on_one_coaching_link: data.bookingLink },
+    {
+      onSuccess: () => {
+        form.reset();
+        onClose();
+      },
+      onError: (err) => {
+        console.error("Failed to update organization:", err.message);
+      },
+    }
+  );
+};
+
+useEffect(() => {
+  form.setValue('bookingLink', link);
+}, [link]);
 
   const handleModalClose = () => {
     form.reset();
@@ -88,7 +106,7 @@ const AddBookingLinkModal: React.FC<AddBookingLinkModalProps> = ({ show, onClose
                 type="submit"
                 className="py-3 bg-[#64BA9F] hover:bg-[#5aa88f] text-white"
               >
-                Save Link
+                {isPending ? "Saving..." : "Save Link"}
               </Button>
             </div>
           </form>
