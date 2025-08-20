@@ -1,26 +1,32 @@
 import { EditIcon } from "@/assets/images/svgs/edit-icon";
 import { Trash2, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import {
+    useFetchEnterpriseQuestions,
+    usePatchEnterpriseQuestion,
+    useDeleteEnterpriseQuestion,
+    EnterpriseQuestion
+} from "@/hooks"; // Adjust path as needed
+import { Skeleton } from "@/components/ui/skeleton";
+import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
+import { Button } from "@/components/ui/button";
+import DeleteModal from "@/components/modals/modalVariants/DeleteModal";
+import { EditQuestionModal } from "@/components/modals/modalVariants/EditQuestionalModal";
+
 
 const ItemTypes = {
     QUESTION_ITEM: "question_item",
 };
 
-interface QuestionBankItem {
-    id: string;
-    question: string;
-    order?: number;
-}
-
 interface DraggableQuestionRowProps {
-    item: QuestionBankItem;
+    item: EnterpriseQuestion;
     index: number;
     isSelected: boolean;
-    onSelect: (id: string, selected: boolean) => void;
-    onEdit: (id: string) => void;
-    onDelete: (id: string) => void;
+    onSelect: (id: number, selected: boolean) => void;
+    onEdit: (id: number) => void;
+    onDelete: (id: number) => void;
     moveItem: (fromIndex: number, toIndex: number) => void;
 }
 
@@ -43,7 +49,7 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
 
     const [, drop] = useDrop({
         accept: ItemTypes.QUESTION_ITEM,
-        hover: (dragItem: { index: number; id: string }) => {
+        hover: (dragItem: { index: number; id: number }) => {
             if (dragItem.index !== index) {
                 moveItem(dragItem.index, index);
                 dragItem.index = index;
@@ -71,101 +77,187 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
     return (
         <div
             ref={ref}
-            className={`flex items-center border-b border-[#EAECF0] last:border-b-0 hover:bg-[#F9FAFB]/50 transition-colors ${
-                isSelected ? "bg-[#E0F2FE]" : ""
-            } ${isDragging ? "opacity-50" : ""}`}
+            className={`flex flex-col sm:flex-row items-start sm:items-center border border-[#EAECF0] rounded-xl mb-4 cursor-pointer hover:bg-[#F9FAFB]/50 transition-colors ${isSelected ? "bg-[#E0F2FE]" : ""
+                } ${isDragging ? "opacity-50" : ""}`}
         >
-            {/* Checkbox */}
-            <div className="w-12 flex justify-center py-4">
-                <input
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={handleCheckboxChange}
-                    className="w-4 h-4 text-[#10B981] bg-gray-100 border-gray-300 rounded focus:ring-[#10B981] focus:ring-2"
-                />
-            </div>
+            {/* Mobile Layout */}
+            <div className="flex w-full sm:hidden p-4">
+                {/* Checkbox and Drag Handle */}
+                <div className="flex items-center gap-3 mr-4">
+                    <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={handleCheckboxChange}
+                        className="w-4 h-4 text-[#10B981] bg-gray-100 border-gray-300 rounded cursor-pointer"
+                    />
+                    <div className="cursor-move">
+                        <div className="grid grid-cols-2 gap-0.5 w-3 h-3">
+                            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
 
-            {/* Drag Handle */}
-            <div className="w-12 flex justify-center py-4 cursor-move">
-                <div className="grid grid-cols-2 gap-0.5 w-3 h-3">
-                    <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                    <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                    <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                    <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                    <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                    <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                {/* Question Content */}
+                <div className="flex-1">
+                    <div className="text-[#474D63] font-normal text-sm mb-3">{item.question_text}</div>
+
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleEdit}
+                            className="bg-[#fff] p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                            title="Edit question"
+                        >
+                            <EditIcon className="w-5 h-5 text-gray-500" />
+                        </button>
+                        <button
+                            onClick={handleDelete}
+                            className="bg-[#fff] p-2 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Delete question"
+                        >
+                            <Trash2 className="w-4 h-4 text-gray-500 hover:text-red-500" />
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* Question Text */}
-            <div className="flex-1 py-4 pr-4">
-                <div className="text-[#474D63] font-normal text-sm">{item.question}</div>
-            </div>
+            {/* Desktop Layout */}
+            <div className="hidden sm:flex w-full items-center">
+                {/* Checkbox */}
+                <div className="w-12 flex justify-center py-4">
+                    <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={handleCheckboxChange}
+                        className="w-4 h-4 text-[#10B981] bg-gray-100 border-gray-300 rounded cursor-pointer"
+                    />
+                </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-2 py-4 pr-4">
-                <button
-                    onClick={handleEdit}
-                    className="bg-[#fff] p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                    title="Edit question"
-                >
-                    <EditIcon className="w-6 h-6 text-gray-500" />
-                </button>
-                <button
-                    onClick={handleDelete}
-                    className="bg-[#fff] p-2 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete question"
-                >
-                    <Trash2 className="w-4 h-4 text-gray-500 hover:text-red-500" />
-                </button>
+                {/* Drag Handle */}
+                <div className="w-12 flex justify-center py-4 cursor-move">
+                    <div className="grid grid-cols-2 gap-0.5 w-3 h-3">
+                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                    </div>
+                </div>
+
+                {/* Question Text */}
+                <div className="flex-1 py-4 pr-4">
+                    <div className="text-[#474D63] font-normal text-sm">{item.question_text}</div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-2 py-4 pr-4">
+                    <button
+                        onClick={handleEdit}
+                        className="bg-[#fff] p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        title="Edit question"
+                    >
+                        <EditIcon className="w-6 h-6 text-gray-500" />
+                    </button>
+                    <button
+                        onClick={handleDelete}
+                        className="bg-[#fff] p-2 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Delete question"
+                    >
+                        <Trash2 className="w-4 h-4 text-gray-500 hover:text-red-500" />
+                    </button>
+                </div>
             </div>
         </div>
     );
 };
 
-const QuestionBank = () => {
-    const [activeTab, setActiveTab] = useState("Media Training");
-    const [selectedRowIds, setSelectedRowIds] = useState<Set<string>>(new Set());
-    const [questions, setQuestions] = useState<QuestionBankItem[]>([
-        {
-            id: "1",
-            question:
-                "Explain the ROI calculation for a marketing campaign with a $5,000 budget that generated $20,000 in sales.",
-            order: 1,
-        },
-        {
-            id: "2",
-            question: "Describe a time when you successfully helped someone overcome performance anxiety.",
-            order: 2,
-        },
-        {
-            id: "3",
-            question:
-                "Explain the ROI calculation for a marketing campaign with a $5,000 budget that generated $20,000 in sales.",
-            order: 3,
-        },
-        {
-            id: "4",
-            question: "What are the top 3 elements of an engaging video thumbnail?",
-            order: 4,
-        },
-        {
-            id: "5",
-            question:
-                "Explain the ROI calculation for a marketing campaign with a $5,000 budget that generated $20,000 in sales.",
-            order: 5,
-        },
-        {
-            id: "6",
-            question: "Describe a time when you successfully helped someone overcome performance anxiety.",
-            order: 6,
-        },
-        {
-            id: "7",
-            question: "What are the top 3 elements of an engaging video thumbnail?",
-            order: 7,
-        },
-    ]);
+// Loading skeleton component
+const QuestionRowSkeleton: React.FC = () => (
+    <div className="flex flex-col sm:flex-row items-start sm:items-center border border-[#EAECF0] rounded-xl mb-4 p-4">
+        <div className="flex w-full sm:hidden">
+            <div className="flex items-center gap-3 mr-4">
+                <Skeleton className="w-4 h-4 rounded" />
+                <Skeleton className="w-3 h-3" />
+            </div>
+            <div className="flex-1">
+                <Skeleton className="h-4 w-full mb-3" />
+                <Skeleton className="h-4 w-3/4 mb-3" />
+                <div className="flex gap-2">
+                    <Skeleton className="w-9 h-9 rounded-lg" />
+                    <Skeleton className="w-9 h-9 rounded-lg" />
+                </div>
+            </div>
+        </div>
+
+        <div className="hidden sm:flex w-full items-center">
+            <div className="w-12 flex justify-center py-4">
+                <Skeleton className="w-4 h-4 rounded" />
+            </div>
+            <div className="w-12 flex justify-center py-4">
+                <Skeleton className="w-3 h-3" />
+            </div>
+            <div className="flex-1 py-4 pr-4">
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-3/4" />
+            </div>
+            <div className="flex items-center gap-2 py-4 pr-4">
+                <Skeleton className="w-10 h-10 rounded-lg" />
+                <Skeleton className="w-10 h-10 rounded-lg" />
+            </div>
+        </div>
+    </div>
+);
+
+const QuestionBank: React.FC = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const enterpriseId = Number(searchParams.get("id"));
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [activeTab, setActiveTab] = useState<string>("Coaching");
+    const [selectedRowIds, setSelectedRowIds] = useState<Set<number>>(new Set());
+    const [localQuestions, setLocalQuestions] = useState<EnterpriseQuestion[]>([]);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editingQuestion, setEditingQuestion] = useState<EnterpriseQuestion | null>(null);
+    const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null);
+    // API hooks
+    const { data: questionsResponse, isLoading, error, refetch } = useFetchEnterpriseQuestions(enterpriseId, currentPage);
+    const updateQuestionMutation = usePatchEnterpriseQuestion(enterpriseId);
+    const deleteQuestionMutation = useDeleteEnterpriseQuestion(enterpriseId);
+
+    console.log(questionsResponse?.results);
+
+    // Update local questions when API data changes
+    useEffect(() => {
+        if (questionsResponse?.results) {
+            const questionsWithOrder: EnterpriseQuestion[] = questionsResponse.results.map((q, index) => ({
+                ...q,
+                order: q.order || index + 1
+            }));
+            setLocalQuestions(questionsWithOrder);
+        }
+    }, [questionsResponse]);
+
+    // Reset pagination when tab changes
+    useEffect(() => {
+        setCurrentPage(1);
+        setSelectedRowIds(new Set()); // Clear selections when switching tabs
+    }, [activeTab]);
+
+    // Filter questions by active tab (vertical)
+    const filteredQuestions = localQuestions.filter((q) => {
+        const tabToVerticalMap: Record<string, string> = {
+            "Media Training": "media_training",
+            "Coaching": "coach",
+            "General Manager": "general_manager"
+        };
+        return q.vertical === tabToVerticalMap[activeTab] || q.vertical_display === activeTab;
+    });
 
     const tabs = ["Media Training", "Coaching", "General Manager"];
     const showSelectionBar = selectedRowIds.size > 0;
@@ -175,17 +267,15 @@ const QuestionBank = () => {
     };
 
     const handleSelectAll = () => {
-        if (selectedRowIds.size === questions.length) {
-            // Deselect all
+        if (selectedRowIds.size === filteredQuestions.length) {
             setSelectedRowIds(new Set());
         } else {
-            // Select all
-            const allIds = new Set(questions.map((q) => q.id));
+            const allIds = new Set(filteredQuestions.map((q) => q.id));
             setSelectedRowIds(allIds);
         }
     };
 
-    const handleSelectRow = (id: string, selected: boolean) => {
+    const handleSelectRow = (id: number, selected: boolean) => {
         const newSelectedIds = new Set(selectedRowIds);
         if (selected) {
             newSelectedIds.add(id);
@@ -195,137 +285,308 @@ const QuestionBank = () => {
         setSelectedRowIds(newSelectedIds);
     };
 
-    const handleDeleteSelected = () => {
-        const filteredQuestions = questions.filter((q) => !selectedRowIds.has(q.id));
-        // Update order for remaining questions
-        const reorderedQuestions = filteredQuestions.map((q, index) => ({
-            ...q,
-            order: index + 1,
-        }));
-        setQuestions(reorderedQuestions);
-        setSelectedRowIds(new Set());
+    const handleDeleteSelected = async () => {
+        const deletePromises = Array.from(selectedRowIds).map(id =>
+            deleteQuestionMutation.mutateAsync(id)
+        );
+
+        try {
+            await Promise.all(deletePromises);
+            setSelectedRowIds(new Set());
+        } catch (error) {
+            console.error("Error deleting questions:", error);
+            // Handle error - show toast notification, etc.
+        }
     };
 
     const handleCloseSelectionBar = () => {
         setSelectedRowIds(new Set());
     };
 
-    const handleEditQuestion = (id: string) => {
-        console.log("Edit question:", id);
+    const handleEditQuestion = (id: number) => {
+        const questionToEdit = localQuestions.find((q) => q.id === id);
+        if (questionToEdit) {
+            setEditingQuestion(questionToEdit);
+            setShowEditModal(true);
+        }
     };
 
-    const handleDeleteQuestion = (id: string) => {
-        const filteredQuestions = questions.filter((q) => q.id !== id);
-        // Update order for remaining questions
-        const reorderedQuestions = filteredQuestions.map((q, index) => ({
-            ...q,
-            order: index + 1,
-        }));
-        setQuestions(reorderedQuestions);
-        // Remove from selection if it was selected
-        const newSelectedIds = new Set(selectedRowIds);
-        newSelectedIds.delete(id);
-        setSelectedRowIds(newSelectedIds);
+    const handleSaveEditQuestion = async (questionText: string) => {
+        if (!editingQuestion) return;
+
+        try {
+            await updateQuestionMutation.mutateAsync({
+                id: editingQuestion.id,
+                data: { question_text: questionText },
+            });
+            setShowEditModal(false);
+            setEditingQuestion(null);
+            refetch();
+        } catch (error) {
+            console.error("Error updating question:", error);
+        }
     };
 
-    const moveItem = (fromIndex: number, toIndex: number) => {
-        const newQuestions = [...questions];
+    const handleDeleteQuestion = async (id: number) => {
+        try {
+            await deleteQuestionMutation.mutateAsync(id);
+            setShowDeleteModal(false);
+            refetch();
+            const newSelectedIds = new Set(selectedRowIds);
+            newSelectedIds.delete(id);
+            setSelectedRowIds(newSelectedIds);
+        } catch (error) {
+            console.error("Error deleting question:", error);
+            // Handle error - show toast notification, etc.
+        }
+    };
+
+    const handleConfirmDelete = (id: number | null) => {
+        if (id) {
+            handleDeleteQuestion(id);
+        } else {
+            handleDeleteSelected();
+        }
+    };
+
+    const handleOpenDeleteModal = (id?: number | null) => {
+        if (id) {
+            setSelectedQuestionId(id);
+        }
+        setShowDeleteModal(true);
+    };
+
+    const moveItem = async (fromIndex: number, toIndex: number) => {
+        const newQuestions = [...filteredQuestions];
         const [movedItem] = newQuestions.splice(fromIndex, 1);
         newQuestions.splice(toIndex, 0, movedItem);
 
-        // Update order numbers based on new positions
+        // Update local state immediately for smooth UX
         const updatedQuestions = newQuestions.map((item, index) => ({
             ...item,
             order: index + 1,
         }));
 
-        setQuestions(updatedQuestions);
+        // Update the local state
+        const allQuestionsUpdated = localQuestions.map(q => {
+            const updated = updatedQuestions.find(uq => uq.id === q.id);
+            return updated || q;
+        });
+        setLocalQuestions(allQuestionsUpdated);
+
+        // Update the moved item's order in the API
+        try {
+            await updateQuestionMutation.mutateAsync({
+                id: movedItem.id,
+                data: { order: toIndex + 1 }
+            });
+        } catch (error) {
+            console.error("Error updating question order:", error);
+            // Optionally revert the local change or show error
+        }
     };
 
     // Sort questions by order
-    const sortedQuestions = [...questions].sort((a, b) => (a.order || 0) - (b.order || 0));
+    const sortedQuestions = [...filteredQuestions].sort((a, b) => (a.order || 0) - (b.order || 0));
 
-    return (
-        <DndProvider backend={HTML5Backend}>
-            <div className="p-6 bg-white min-h-screen">
-                {/* Header */}
-                <div className="flex items-center justify-between pb-6 border-b border-[#EAECF0]">
-                    <div>
-                        <h1 className="font-medium text-2xl text-[#101828] mb-1">Question Bank</h1>
-                        <p className="text-[#667085] text-sm">
-                            Customize and manage training questions across verticals
-                        </p>
+    if (isLoading) {
+        return (
+            <div className="p-4 sm:p-6 bg-white min-h-screen">
+                {/* Header Skeleton */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-[#EAECF0] gap-4">
+                    <div className="flex-1">
+                        <Skeleton className="h-8 w-48 mb-2" />
+                        <Skeleton className="h-4 w-80" />
                     </div>
-
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={handleNewQuestion}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#10B981] text-white rounded-lg hover:bg-[#059669] transition-colors font-medium text-sm"
-                        >
-                            New Question
-                        </button>
-                    </div>
+                    <Skeleton className="h-10 w-32" />
                 </div>
 
-                {/* Tabs */}
-                <div className="flex gap-6 mt-6 border-b border-[#EAECF0]">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            className={`bg-[#fff] pb-3 px-1 text-sm font-medium transition-colors relative border-b-2 rounded-none ${
-                                activeTab === tab
-                                    ? "text-[#10B981] border-[#10B981]" // light green text + border
-                                    : "text-[#101828] border-transparent hover:text-[#101828]"
-                            }`}
-                        >
-                            {tab}
-                        </button>
+                {/* Tabs Skeleton */}
+                <div className="flex gap-6 mt-6 border-b border-[#EAECF0] overflow-x-auto">
+                    {[1, 2, 3].map((i) => (
+                        <Skeleton key={i} className="h-6 w-24 mb-3 flex-shrink-0" />
                     ))}
                 </div>
 
-                {/* Selection Bar */}
-                {showSelectionBar && (
-                    <div className="flex items-center justify-between bg-[#F0F9FF] border border-[#0EA5E9] rounded-lg px-4 py-3 mt-6">
-                        <div className="flex items-center gap-4">
-                            <span className="text-[#0284C7] font-medium text-sm">{selectedRowIds.size} Selected</span>
-                            <button
-                                onClick={handleSelectAll}
-                                className="bg-[#fff] text-[#64BA9F] text-sm hover:underline"
-                            >
-                                {selectedRowIds.size === questions.length ? "Deselect all" : "Select all questions"}
-                            </button>
-                            <button
-                                onClick={handleDeleteSelected}
-                                className="bg-[#fff] flex items-center gap-1 text-red-600 text-sm hover:underline"
-                            >
-                                <span className="text-red-600">🗑</span>
-                                Delete
-                            </button>
-                        </div>
-                        <button onClick={handleCloseSelectionBar} className="bg-[#fff] p-1 hover:bg-white/50 rounded">
-                            <X className="w-4 h-4 text-[#0284C7]" />
-                        </button>
-                    </div>
-                )}
-
-                {/* Question Table */}
-                <div className="mt-6 border border-[#EAECF0] rounded-xl shadow-sm overflow-hidden">
-                    {sortedQuestions.map((question, index) => (
-                        <DraggableQuestionRow
-                            key={question.id}
-                            item={question}
-                            index={index}
-                            isSelected={selectedRowIds.has(question.id)}
-                            onSelect={handleSelectRow}
-                            onEdit={handleEditQuestion}
-                            onDelete={handleDeleteQuestion}
-                            moveItem={moveItem}
-                        />
+                {/* Question Rows Skeleton */}
+                <div className="mt-6">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                        <QuestionRowSkeleton key={i} />
                     ))}
                 </div>
             </div>
-        </DndProvider>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="p-4 sm:p-6 bg-white min-h-screen">
+                <div className="flex items-center justify-center h-64">
+                    <div className="text-red-600 text-center">
+                        <div className="text-lg font-medium mb-2">Error loading questions</div>
+                        <div className="text-sm">Please try again later</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Calculate pagination values for current tab's filtered questions
+    const filteredQuestionsCount = filteredQuestions.length;
+    const pageSize = 10; // Assuming a page size, adjust as needed
+    const pageCount = Math.ceil(filteredQuestionsCount / pageSize);
+    const startItem = filteredQuestionsCount > 0 ? (currentPage - 1) * pageSize + 1 : 0;
+    const endItem = Math.min(currentPage * pageSize, filteredQuestionsCount);
+
+    console.log("Editing question:", editingQuestion?.question_text);
+
+    return (
+        <>
+            <DeleteModal
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onDelete={() => handleConfirmDelete(selectedQuestionId)}
+                title="Delete Goal"
+                message="Are you sure you want to delete this training goal? This action cannot be undone."
+            />
+            <EditQuestionModal
+                show={showEditModal}
+                onClose={() => {
+                    setShowEditModal(false);
+                    setEditingQuestion(null);
+                }}
+                defaultValue={editingQuestion?.question_text}
+                onSubmit={handleSaveEditQuestion}
+            />
+            <DndProvider backend={HTML5Backend}>
+                <div className="p-4 sm:p-6 bg-white min-h-screen">
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-[#EAECF0] gap-4">
+                        <div className="flex-1">
+                            <h1 className="font-medium text-xl sm:text-2xl text-[#101828] mb-1">Question Bank</h1>
+                            <p className="text-[#667085] text-sm">
+                                Customize and manage training questions across verticals
+                            </p>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={handleNewQuestion}
+                                className="flex items-center gap-2 px-4 py-2 bg-[#10B981] text-white rounded-lg hover:bg-[#059669] transition-colors font-medium text-sm w-full sm:w-auto justify-center"
+                            >
+                                New Question
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Tabs */}
+                    <div className="flex gap-6 mt-6 border-b border-[#EAECF0] overflow-x-auto">
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`bg-[#fff] pb-3 px-1 text-sm font-medium transition-colors relative border-b-2 rounded-none whitespace-nowrap flex-shrink-0 ${activeTab === tab
+                                    ? "text-[#10B981] border-[#10B981]"
+                                    : "text-[#101828] border-transparent hover:text-[#101828]"
+                                    }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Selection Bar */}
+                    {showSelectionBar && (
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-[#F0F9FF] border border-[#0EA5E9] rounded-lg px-4 py-3 mt-6 gap-3">
+                            <div className="flex flex-wrap items-center gap-4">
+                                <span className="text-[#0284C7] font-medium text-sm">{selectedRowIds.size} Selected</span>
+                                <button
+                                    onClick={handleSelectAll}
+                                    className="bg-[#fff] text-[#64BA9F] text-sm hover:underline"
+                                >
+                                    {selectedRowIds.size === filteredQuestions.length ? "Deselect all" : "Select all questions"}
+                                </button>
+                                <button
+                                    onClick={() => handleOpenDeleteModal()}
+                                    className="bg-[#fff] flex items-center gap-1 text-red-600 text-sm hover:underline"
+                                    disabled={deleteQuestionMutation.isPending}
+                                >
+                                    <span className="text-red-600">🗑</span>
+                                    {deleteQuestionMutation.isPending ? "Deleting..." : "Delete"}
+                                </button>
+                            </div>
+                            <button onClick={handleCloseSelectionBar} className="bg-[#fff] p-1 hover:bg-white/50 rounded self-end sm:self-center">
+                                <X className="w-4 h-4 text-[#0284C7]" />
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Question Table */}
+                    <div className="mt-6 overflow-hidden">
+                        {sortedQuestions.length === 0 ? (
+                            <div className="p-8 text-center text-[#667085] flex flex-col items-center">
+                                <div
+                                    className="justify-center items-center w-full mx-auto py-[5%] flex-col gap-4 text-center"
+                                >
+                                    <img src={emptyStateImage} className="w-28 mx-auto" alt="empty state logo" />
+                                    <p className="text-lg font-medium">No questions found for {activeTab}. </p>
+                                    <p
+                                        onClick={handleNewQuestion}
+                                        className="text-[#10B981] ml-1 cursor-pointer mt-4"
+                                    >
+                                        Create your first question.
+                                    </p>
+                                </div>
+                            </div>
+                        ) : (
+                            sortedQuestions.map((question, index) => (
+                                <DraggableQuestionRow
+                                    key={question.id}
+                                    item={question}
+                                    index={index}
+                                    isSelected={selectedRowIds.has(question.id)}
+                                    onSelect={handleSelectRow}
+                                    onEdit={handleEditQuestion}
+                                    onDelete={() => handleOpenDeleteModal(question.id)}
+                                    moveItem={moveItem}
+                                />
+                            ))
+                        )}
+                    </div>
+
+                    {/* Pagination */}
+                    {filteredQuestionsCount > 0 && (
+                        <div className="flex flex-col sm:flex-row justify-between mt-6 gap-4">
+                            <div className="text-sm text-[#667085] text-center sm:text-left">
+                                Showing {startItem}-{endItem} of {questionsResponse?.count} questions in {activeTab}
+                            </div>
+                            <div className="flex items-center justify-center gap-2">
+                                {currentPage > 1 && (
+                                    <Button
+                                        onClick={() => setCurrentPage(prev => prev - 1)}
+                                        className="px-3 py-1 text-sm text-[#667085] hover:text-[#10B981] bg-transparent hover:bg-transparent"
+                                    >
+                                        Previous
+                                    </Button>
+                                )}
+                                <span className="text-base text-[#667085] rounded-full border border-[#EAECF0] grid place-content-center w-10 h-10 bg-[#00000014]">
+                                    {currentPage}
+                                </span>
+                                {currentPage < pageCount && (
+                                    <Button
+                                        onClick={() => setCurrentPage(prev => prev + 1)}
+                                        className="px-3 py-1 text-sm text-[#667085] hover:text-[#10B981] bg-transparent hover:bg-transparent"
+                                    >
+                                        Next
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </DndProvider>
+        </>
+
     );
 };
 

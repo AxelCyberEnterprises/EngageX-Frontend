@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { apiGet } from "@/lib/api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiGet, apiPatch, apiDelete } from "@/lib/api";
 
 export interface TrainingGoal {
   id: number;
@@ -35,5 +35,48 @@ export function useFetchTrainingGoals(enterpriseId: number, page: number = 1) {
     },
     staleTime: 1000 * 60 * 5,
     retry: 1,
+  });
+}
+
+
+export function usePatchTrainingGoal(enterpriseId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: Partial<TrainingGoal> }) =>
+      apiPatch<TrainingGoal>(
+        `/enterprise/enterprises/${enterpriseId}/training-goals/${id}/`,
+        data,
+        "default"
+      ),
+    onSuccess: (updatedGoal) => {
+      // Update cache
+      queryClient.setQueryData<TrainingGoalsResponse>(["training-goals", enterpriseId], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          results: old.results.map((goal) => (goal.id === updatedGoal.id ? updatedGoal : goal)),
+        };
+      });
+    },
+  });
+}
+
+// DELETE hook
+export function useDeleteTrainingGoal(enterpriseId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) =>
+      apiDelete(`/enterprise/enterprises/${enterpriseId}/training-goals/${id}/`, "default"),
+    onSuccess: (_, id) => {
+      queryClient.setQueryData<TrainingGoalsResponse>(["training-goals", enterpriseId], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          results: old.results.filter((goal) => goal.id !== id),
+        };
+      });
+    },
   });
 }

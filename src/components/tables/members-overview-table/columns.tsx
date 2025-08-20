@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Member } from "./data";
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickoutside";
+import { useNavigate } from "react-router-dom";
 
 export const columns: ColumnDef<Member, any>[] = [
   {
@@ -70,11 +71,12 @@ export const columns: ColumnDef<Member, any>[] = [
       const [isOpen, setIsOpen] = useState(false);
       const popupRef = useRef<HTMLDivElement | null>(null);
       const buttonRef = useRef<HTMLButtonElement | null>(null);
+      const navigate = useNavigate();
       useClickOutside(popupRef, buttonRef, () => { setIsOpen(false) });
-      const handleMenuClick = (event: React.MouseEvent, action: string) => {
-        event.stopPropagation();
-        console.log(`Action performed: ${action}`);
-        setIsOpen(false);
+      const handleMenuClick = (action: string) => {
+        if (action === "View Progress") {
+          navigate("/dashboard/admin/progress-tracking");
+        }
       };
 
       return (
@@ -98,15 +100,9 @@ export const columns: ColumnDef<Member, any>[] = [
               <ul className="py-1">
                 <li
                   className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "View Progress")}
+                  onClick={() => handleMenuClick("View Progress")}
                 >
                   View Progress
-                </li>
-                <li
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  onClick={(e) => handleMenuClick(e, "Edit Roles")}
-                >
-                  Edit Roles
                 </li>
               </ul>
             </div>

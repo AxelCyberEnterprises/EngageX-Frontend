@@ -10,13 +10,6 @@ const GenerateReport = () => {
     const searchParams = new URLSearchParams(location.search);
     const orgId = Number(searchParams.get("id"));
 
-    // Filter data based on search term
-    // const filteredData = dummyReportData.filter(member =>
-    //     member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     member.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     member.email.toLowerCase().includes(searchTerm.toLowerCase())
-    // );
-
     const generateReportUrl = () => {
         const ids = selectedRows.map(row => row.id).join(',');
         return `/dashboard/admin/organization/report?id=${orgId}&ids=${ids}`;
@@ -64,6 +57,7 @@ const GenerateReport = () => {
             <GenerateReportTable
                 orgId={orgId}
                 setSelectedRows={setSelectedRows}
+                searchTerm={searchTerm}
             />
         </div>
     );

@@ -11,7 +11,7 @@ export function useUpdateEnterpriseVerticals(enterpriseId: number) {
   return useMutation({
     mutationKey: ["update-enterprise-verticals", enterpriseId],
     mutationFn: async (data: UpdateVerticalsPayload) => {
-      return await apiPut(`/enterprise/enterprises/${enterpriseId}/update_verticals/`, data);
+      return await apiPut(`/enterprise/enterprises/${enterpriseId}/verticals/`, data);
     },
     onSuccess: (updatedEnterprise) => {
       queryClient.invalidateQueries({ queryKey: ["single-organization", enterpriseId] });

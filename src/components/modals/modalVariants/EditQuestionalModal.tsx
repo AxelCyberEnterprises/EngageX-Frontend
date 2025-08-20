@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,9 +18,10 @@ interface EditQuestionModalProps {
   show: boolean;
   onClose: () => void;
   defaultValue?: string;
+  onSubmit: (questionText: string) => void;
 }
 
-const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ show, onClose, defaultValue }) => {
+const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ show, onClose, defaultValue, onSubmit }) => {
   const form = useForm<EditQuestionValues>({
     resolver: zodResolver(editQuestionSchema),
     defaultValues: {
@@ -28,15 +29,20 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ show, onClose, de
     },
   });
 
-  const onSubmit: SubmitHandler<EditQuestionValues> = (data) => {
-    console.log("Edited Question Text:", data.questionText);
-    onClose();
-  };
+const handleSubmit: SubmitHandler<EditQuestionValues> = (data) => {
+        onSubmit(data.questionText);
+    };
 
   const handleClose = () => {
     form.reset();
     onClose();
   };
+
+  useEffect(() => {
+    form.setValue("questionText", defaultValue || "");
+  }, [defaultValue]);
+
+  console.log('question text to edit', defaultValue)
 
   return (
     <Modal show={show} onClose={handleClose} className="w-full max-w-lg p-6">
@@ -53,7 +59,7 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ show, onClose, de
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="questionText"
@@ -66,7 +72,7 @@ const EditQuestionModal: React.FC<EditQuestionModalProps> = ({ show, onClose, de
                     <Input
                       type="text"
                       placeholder="Enter question..."
-                      className=" text-[#6B7186]  py-3 px-4 border-gray-300"
+                      className=" text-[#6B7186]  py-3 px-4 border-gray-300 focus-ring-0 focus-visible:ring-0"
                       {...field}
                     />
                   </FormControl>

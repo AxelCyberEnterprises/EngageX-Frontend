@@ -22,22 +22,25 @@ interface AccessibleVerticalsModalProps {
   show: boolean;
   onClose: () => void;
   verticals: Vertical[] | undefined;
+  accessibleVerticals: any[] | undefined;
   orgId: number;
 }
 
-const AccessibleVerticalsModal: React.FC<AccessibleVerticalsModalProps> = ({ 
-  show, 
-  onClose, 
-  verticals = [], 
-  orgId 
+const AccessibleVerticalsModal: React.FC<AccessibleVerticalsModalProps> = ({
+  show,
+  onClose,
+  verticals = [],
+  accessibleVerticals = [],
+  orgId
 }) => {
   const accessibleVerticalsSchema = createAccessibleVerticalsSchema(verticals);
   type AccessibleVerticalsFormValues = z.infer<typeof accessibleVerticalsSchema>;
 
-  const getDefaultValues = () => {
+  const getDefaultValues = (): AccessibleVerticalsFormValues => {
     const defaults: Record<string, boolean> = {};
-    verticals.forEach((vertical: any) => {
-      defaults[vertical.value] = vertical?.default ?? false;
+    verticals.forEach((vertical) => {
+      const isAccessible = accessibleVerticals?.includes(vertical.value) ?? false;
+      defaults[vertical.value] = isAccessible;
     });
     return defaults as AccessibleVerticalsFormValues;
   };
@@ -53,10 +56,6 @@ const AccessibleVerticalsModal: React.FC<AccessibleVerticalsModalProps> = ({
     const selectedVerticals = Object.entries(data)
       .filter(([, value]) => value === true)
       .map(([key]) => key);
-
-    console.log('Selected verticals:', selectedVerticals);
-    console.log('Form data:', data);
-    console.log('Available verticals:', verticals);
 
     mutate(
       { accessible_verticals: selectedVerticals },

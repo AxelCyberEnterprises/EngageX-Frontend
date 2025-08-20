@@ -24,7 +24,7 @@ interface EmailReportModalProps {
   organizationName: string;
 }
 
-const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgID, organizationName }) => {
+const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgID }) => {
   const emailReport = useEmailProgressReport(orgID);
   const [emailTags, setEmailTags] = useState<string[]>([]);
   const [currentEmail, setCurrentEmail] = useState('');
@@ -42,11 +42,7 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgI
     console.log('Email Report sent to:', emailTags, data);
     emailReport.mutate(
       {
-        name: organizationName,
         recipients: data?.emails,
-        enterprise_type: 'general',
-        is_active: true,
-        require_domain_match: false,
       },
       {
         onSuccess: (data) => {
