@@ -3,11 +3,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { OrganizationTableData } from "./data";
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickoutside";
-import { EditQuestionModal } from "@/components/modals/modalVariants/EditQuestionalModal";
-import AddBookingLinkModal from "@/components/modals/modalVariants/BookingLinkModal";
 import { useNavigate } from "react-router-dom";
 
-export const columns: ColumnDef<OrganizationTableData, any>[] = [
+interface ColumnProps {
+    onStatusChange?: (organizationId: string, newStatus: 'Active' | 'Blacklisted') => void;
+}
+
+export const createColumns = ({ onStatusChange }: ColumnProps = {}): ColumnDef<OrganizationTableData, any>[] => [
     {
         accessorKey: "name",
         header: () => (
@@ -66,23 +68,33 @@ export const columns: ColumnDef<OrganizationTableData, any>[] = [
             const [isOpen, setIsOpen] = useState(false);
             const popupRef = useRef<HTMLDivElement | null>(null);
             const buttonRef = useRef<HTMLButtonElement | null>(null);
-            const [showEditModal, setShowEditModal] = useState(false);
-            const [showBookingModal, setShowBookingModal] = useState(false);
+            const navigate = useNavigate();
             useClickOutside(popupRef, buttonRef, () => {
                 setIsOpen(false);
             });
 
             const handleMenuClick = (event: React.MouseEvent, action: string) => {
                 event.stopPropagation();
-                console.log(`Action performed: ${action}`);
+                const organizationId = row.original.id;
+                
+                switch (action) {
+                    case "Blacklist":
+                        onStatusChange?.(organizationId, "Blacklisted");
+                        break;
+                    case "Activate":
+                        onStatusChange?.(organizationId, "Active");
+                        break;
+                    case "View Details":
+                        navigate(`/dashboard/admin/organization/overview?id=${organizationId}`);
+                        break;
+                    case "Manage Members":
+                        navigate(`/dashboard/admin/organization/members?id=${organizationId}`);
+                        break;
+                    default:
+                        console.log(`Action performed: ${action}`);
+                }
+                
                 setIsOpen(false);
-
-                if (action === "Edit Organization") {
-                    setShowEditModal(true);
-                }
-                if (action === "Manage Members") {
-                    setShowBookingModal(true);
-                }
             };
 
             return (
@@ -124,21 +136,9 @@ export const columns: ColumnDef<OrganizationTableData, any>[] = [
                                 </li>
                                 <li
                                     className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                                    onClick={(e) => handleMenuClick(e, "Edit Organization")}
-                                >
-                                    Edit Organization
-                                </li>
-                                <li
-                                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
                                     onClick={(e) => handleMenuClick(e, "Manage Members")}
                                 >
                                     Manage Members
-                                </li>
-                                <li
-                                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                                    onClick={(e) => handleMenuClick(e, "Assign Credits")}
-                                >
-                                    Assign Credits
                                 </li>
                                 {row.original.trainingStatus === "Active" ? (
                                     <li
@@ -157,12 +157,6 @@ export const columns: ColumnDef<OrganizationTableData, any>[] = [
                                 )}
                             </ul>
                         </div>
-                    )}
-                    {showEditModal && (
-                        <EditQuestionModal show={showEditModal} onClose={() => setShowEditModal(false)} />
-                    )}
-                    {showBookingModal && (
-                        <AddBookingLinkModal show={showBookingModal} onClose={() => setShowBookingModal(false)} />
                     )}
                 </div>
             );

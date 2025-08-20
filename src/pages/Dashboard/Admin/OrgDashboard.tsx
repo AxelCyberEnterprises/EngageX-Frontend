@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Search, Filter, Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Plus } from 'lucide-react';
 import { OrganizationTableData } from '@/components/tables/organization-table/data';
 import { OrganizationsTable } from '@/components/tables/organization-table';
 import AddOrganizationModal from '@/components/modals/modalVariants/AddOrganizationModal';
@@ -14,22 +14,56 @@ const OrganizationsDashboard = () => {
 
   const { data, isLoading } = useOrganizationList();
 
-  // Transform API response into table-friendly data
-  const organizations: OrganizationTableData[] =
-    data?.results.map((org) => ({
-      id: org.id.toString(),
-      name: org.name,
-      logo:
-        org.logo ??
-        `https://ui-avatars.com/api/?name=${encodeURIComponent(org.name)}&background=cccccc&color=ffffff`,
+  const [organizations, setOrganizations] = useState<OrganizationTableData[]>([]);
 
-      industryType:
-        org.enterprise_type === "sport"
-          ? "Sport Organization"
-          : "Non-Sport Organization",
-      members: org.available_verticals.length ?? 0,
-      trainingStatus: org.is_active ? "Active" : "Blacklisted",
-    })) ?? [];
+  useEffect(() => {
+    if (data?.results) {
+      const transformedOrgs: OrganizationTableData[] = data.results.map((org) => ({
+        id: org.id.toString(),
+        name: org.name,
+        logo:
+          org.logo ??
+          `https://ui-avatars.com/api/?name=${encodeURIComponent(org.name)}&background=cccccc&color=ffffff`,
+        industryType:
+          org.enterprise_type === "sport"
+            ? "Sport Organization"
+            : "Non-Sport Organization",
+        members: org.available_verticals.length ?? 0,
+        trainingStatus: org.is_active ? "Active" : "Blacklisted",
+      }));
+      setOrganizations(transformedOrgs);
+    }
+  }, [data]);
+
+  // Handle status change
+  const handleStatusChange = async (organizationId: string, newStatus: 'Active' | 'Blacklisted') => {
+    try {
+      // Update local state immediately for better UX
+      setOrganizations(prev => 
+        prev.map(org => 
+          org.id === organizationId 
+            ? { ...org, trainingStatus: newStatus }
+            : org
+        )
+      );
+
+      // TODO: Make API call to update status on backend
+      // Example:
+      // await updateOrganizationStatus(organizationId, newStatus === 'Active');
+      
+      console.log(`Updated organization ${organizationId} status to ${newStatus}`);
+    } catch (error) {
+      // Revert the change if API call fails
+      setOrganizations(prev => 
+        prev.map(org => 
+          org.id === organizationId 
+            ? { ...org, trainingStatus: newStatus === 'Active' ? 'Blacklisted' : 'Active' }
+            : org
+        )
+      );
+      console.error('Failed to update organization status:', error);
+    }
+  };
 
   // Filtered organizations
   const filteredData = organizations.filter((org) => {
@@ -63,20 +97,15 @@ const OrganizationsDashboard = () => {
 
           {/* Search - Desktop */}
           <div className="hidden md:flex relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#262B3A]" stroke-width={1} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#262B3A]" strokeWidth={1} />
             <input
               type="text"
-              placeholder="Search Users"
+              placeholder="Search Organization"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md outline-none w-64 font-light text-[#262B3A] placeholder:text-[#262B3A]"
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md outline-none w-54 font-light text-[#262B3A] placeholder:text-[#262B3A]"
             />
           </div>
-
-          <Button className="hover:bg-transparent flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium transition-colors bg-[#fff]">
-            <Filter className="w-4 h-4" />
-            <span className="hidden md:inline">Filter</span>
-          </Button>
 
           <Button
             onClick={() => setShowAddModal(true)}
@@ -111,6 +140,7 @@ const OrganizationsDashboard = () => {
           pageSize={10}
           hidePagination={false}
           loadingOrganizations={isLoading}
+          onStatusChange={handleStatusChange}
         />
       </div>
 

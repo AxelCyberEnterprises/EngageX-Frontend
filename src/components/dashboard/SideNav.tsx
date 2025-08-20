@@ -294,7 +294,7 @@ const SideNav: React.FC = () => {
                     />
                 </svg>
             ),
-            path: "/dashboard/user/generate-report-tracking",
+            path: "/dashboard/user/progress-tracking",
         },
         {
             type: "default",
@@ -1103,12 +1103,12 @@ const SideNav: React.FC = () => {
                         "px-4": sidebarState === "expanded",
                     })}
                 >
-                    <img
+                    {lastSegment === "admin" && <img
                         src={SidebarBackBtn}
                         alt="sidebar back button"
                         className="absolute top-8 -right-4.5 cursor-pointer z-10 h-10"
                         onClick={toggleSidebarView}
-                    />
+                    />}
                     <SidebarHeader className={cn("py-7 bg-branding-secondary lg:py-3", {
                         "px-4": sidebarState === "expanded",
                         "px-2": sidebarState === "collapsed",
