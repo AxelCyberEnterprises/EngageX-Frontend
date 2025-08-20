@@ -35,7 +35,7 @@ const Overview = () => {
     ? [
       { label: "Total Members", value: stats.total_members },
       { label: "Total Credits Left", value: stats.credits_left },
-      { label: "1 on 1 Coaching activated", value: stats.one_on_one_coaching_activated ? 'Available' : 'Unavailable' },
+      { label: "1 on 1 Coaching activated", value: stats.one_on_one_coaching_activated },
       { label: "Goals Completion", value: `${stats.goals_completion_percent}%` },
     ]
     : [];
@@ -115,7 +115,7 @@ const Overview = () => {
       <div>
         <div className='flex justify-between items-center py-6 mt-4'>
           <h6 className='font-medium'>Members</h6>
-          <Link to="/dashboard/admin/organization/members" className='border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]'>View all</Link>
+          <Link to={`/dashboard/admin/organization/members?id=${orgId}`} className='border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]'>View all</Link>
         </div>
         {isLoading ? <Skeleton className="w-full h-48" /> : <MembersOverviewTable orgId={orgId} pageSize={5} hidePagination={true} />}
       </div>
@@ -144,6 +144,7 @@ const Overview = () => {
       <AddBookingLinkModal
         show={showBookingModal}
         onClose={() => setShowBookingModal(false)}
+        link={organization?.one_on_one_coaching_link || ''}
       />
     </div>
   );

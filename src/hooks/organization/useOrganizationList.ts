@@ -1,4 +1,4 @@
-import { apiGet, apiPatch } from "@/lib/api";
+import { apiGet, apiPatch, apiPost } from "@/lib/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface Vertical {
@@ -74,6 +74,37 @@ export function usePatchOrganization() {
             results: oldData.results.map((org) =>
               org.id === updatedOrg.id ? updatedOrg : org
             ),
+          };
+        }
+      );
+    },
+  });
+}
+
+export async function createOrganization(data: Partial<Organization>) {
+  const response = await apiPost<Organization>(
+    `/enterprise/enterprises/`,
+    data,
+    "default"
+  );
+  return response;
+}
+
+// POST hook
+export function useCreateOrganization() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: Partial<Organization>) => createOrganization(data),
+    onSuccess: (newOrg) => {
+      queryClient.setQueryData<OrganizationListResponse>(
+        ["organization-list"],
+        (oldData) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            results: [newOrg, ...oldData.results],
+            count: oldData.count + 1,
           };
         }
       );

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiGet, apiPatch, apiDelete } from "@/lib/api";
+import { apiGet, apiPatch, apiDelete, apiPost } from "@/lib/api";
 
 export interface EnterpriseQuestion {
   id: number;
@@ -24,12 +24,21 @@ export interface EnterpriseQuestionsResponse {
   results: EnterpriseQuestion[];
 }
 
-export function useFetchEnterpriseQuestions(enterpriseId: number, page: number = 1) {
+export interface CreateEnterpriseQuestionData {
+  enterprise: number;
+  vertical: string;
+  sport_type?: string | null;
+  question_text: string;
+  audio_url?: string | null;
+  is_active?: boolean;
+}
+
+export function useFetchEnterpriseQuestions(enterpriseId: number, page: number = 1, vertical: string = "coach") {
   return useQuery<EnterpriseQuestionsResponse>({
-    queryKey: ["enterprise-questions", enterpriseId, page],
+    queryKey: ["enterprise-questions", enterpriseId, page, vertical],
     queryFn: async () => {
       const response = await apiGet<EnterpriseQuestionsResponse>(
-        `/enterprise/enterprise-questions/?page=${page}`,
+        `/enterprise/enterprise-questions/?page=${page}&vertical=${vertical}`,
         "default"
       );
       return response;
@@ -76,6 +85,25 @@ export function useDeleteEnterpriseQuestion(enterpriseId: number) {
           ...old,
           results: old.results.filter((question) => question.id !== id),
         };
+      });
+    },
+  });
+}
+
+export function useCreateEnterpriseQuestion(enterpriseId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateEnterpriseQuestionData) =>
+      apiPost<EnterpriseQuestion>(
+        `/enterprise/enterprise-questions/`,
+        data,
+        "default"
+      ),
+    onSuccess: () => {
+      // Invalidate all related queries to refetch data
+      queryClient.invalidateQueries({
+        queryKey: ["enterprise-questions", enterpriseId]
       });
     },
   });
