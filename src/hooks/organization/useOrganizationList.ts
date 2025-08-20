@@ -28,7 +28,7 @@ export interface OrganizationListResponse {
   results: Organization[];
 }
 
-export function useOrganizationList(search?: string) {
+export function useOrganizationList(search?: string, shouldFetch: boolean = true) {
   return useQuery({
     queryKey: ["organization-list", search],
     queryFn: async () => {
@@ -40,6 +40,7 @@ export function useOrganizationList(search?: string) {
     },
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    enabled: shouldFetch, 
   });
 }
 
