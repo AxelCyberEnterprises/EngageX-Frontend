@@ -45,7 +45,7 @@ const handleSubmit: SubmitHandler<EditQuestionValues> = (data) => {
   console.log('question text to edit', defaultValue)
 
   return (
-    <Modal show={show} onClose={handleClose} className="w-full max-w-lg p-6">
+    <Modal show={show} onClose={handleClose} className="sm:w-full w-[90%] max-w-lg p-6">
       <div className="w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

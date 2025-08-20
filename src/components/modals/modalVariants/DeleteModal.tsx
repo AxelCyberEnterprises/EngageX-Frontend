@@ -19,7 +19,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   message = "Are you sure you want to delete this item? This action cannot be undone.",
 }) => {
   return (
-    <Modal show={show} onClose={onClose} className="w-full max-w-md mx-4 p-6">
+    <Modal show={show} onClose={onClose} className="sm:w-full w-[90%] max-w-md mx-4 p-6">
       <div className="w-full">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-[24px] font-medium text-gray-900">{title}</h2>

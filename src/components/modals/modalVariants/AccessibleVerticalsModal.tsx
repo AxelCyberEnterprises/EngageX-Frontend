@@ -83,7 +83,7 @@ const AccessibleVerticalsModal: React.FC<AccessibleVerticalsModalProps> = ({
   }, [verticals, form]);
 
   return (
-    <Modal show={show} onClose={handleModalClose} className="w-full max-w-md mx-4 p-6">
+    <Modal show={show} onClose={handleModalClose} className="sm:w-full w-[90%] max-w-md mx-4 p-6">
       <div className="w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

@@ -90,7 +90,7 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose, or
     const selectedMember = members.find((member) => member.id === form.watch("member"));
 
     return (
-        <Modal show={show} onClose={handleModalClose} className="w-full max-w-md mx-4 p-6">
+        <Modal show={show} onClose={handleModalClose} className="sm:w-full w-[90%] max-w-md mx-4 p-6">
             <div className="w-full">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-[24px] font-medium text-gray-900">Issue Credits</h2>

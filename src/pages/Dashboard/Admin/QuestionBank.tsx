@@ -103,21 +103,21 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
                 </div>
 
                 {/* Question Content */}
-                <div className="flex-1">
+                <div className="flex gap-4">
                     <div className="text-[#474D63] font-normal text-sm mb-3">{item.question_text}</div>
 
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2">
                         <button
                             onClick={handleEdit}
-                            className="bg-[#fff] p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                            className="bg-[#fff] hover:bg-gray-100 rounded-lg transition-colors"
                             title="Edit question"
                         >
-                            <EditIcon className="w-5 h-5 text-gray-500" />
+                            <EditIcon className="w-6 h-6 text-gray-500" />
                         </button>
                         <button
                             onClick={handleDelete}
-                            className="bg-[#fff] p-2 hover:bg-red-50 rounded-lg transition-colors"
+                            className="bg-[#fff] hover:bg-red-50 rounded-lg transition-colors"
                             title="Delete question"
                         >
                             <Trash2 className="w-4 h-4 text-gray-500 hover:text-red-500" />
