@@ -1,5 +1,5 @@
 import { BaseTable } from "../base-table";
-import { columns } from "./columns";
+import { useGoalColumns } from "./columns";
 import { useFetchTrainingGoals } from "@/hooks/organization/useFetchTrainingGoals";
 import { Goal } from "./data";
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -16,8 +16,8 @@ export const GoalsTable = ({
   hidePagination,
   orgId
 }: GoalsTableProps) => {
-
-  const { data, isLoading } = useFetchTrainingGoals(orgId);
+  const { data, isLoading, refetch } = useFetchTrainingGoals(orgId);
+  const columns = useGoalColumns(orgId, refetch);
   const goals: Goal[] = data?.results.map(goal => ({
     id: goal.id.toString(),
     roomType: goal.room_display || goal.room,

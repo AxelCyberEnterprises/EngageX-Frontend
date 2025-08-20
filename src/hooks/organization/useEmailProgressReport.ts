@@ -2,7 +2,6 @@ import { apiPost } from '@/lib/api';
 import { useMutation } from '@tanstack/react-query';
 
 interface EmailProgressReportPayload {
-  name: string;
   recipients: string[];
   enterprise_type?: 'sport' | 'general';
   is_active?: boolean;

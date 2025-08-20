@@ -1,3 +1,5 @@
+import { TableCell, TableRow } from "@/components/ui/table";
+import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 import { BaseTable } from "../base-table";
 import { columns } from "./columns";
 import { GenerateReportMember } from "./data";
@@ -6,13 +8,15 @@ import { useFetchEnterpriseReport } from "@/hooks";
 interface GenerateReportTableProps {
   orgId: number;
   setSelectedRows?: (rows: GenerateReportMember[]) => void;
+  searchTerm?: string;
 }
 
 export const GenerateReportTable = ({
   orgId,
-  setSelectedRows
+  setSelectedRows,
+  searchTerm
 }: GenerateReportTableProps) => {
-  const { data: response, isLoading } = useFetchEnterpriseReport(orgId);
+  const { data: response, isLoading } = useFetchEnterpriseReport(orgId, undefined, searchTerm);
 
   const data: GenerateReportMember[] =
     response?.users?.map((user) => ({
@@ -40,6 +44,18 @@ export const GenerateReportTable = ({
       isLoading={isLoading}
       session={false}
       onRowSelectionChange={setSelectedRows}
+      emptyState={
+        <TableRow>
+          <TableCell
+            colSpan={columns.length}
+            className="justify-center items-center w-full mx-auto py-[10%] flex-col gap-4 text-center"
+          >
+            <img src={emptyStateImage} className="w-28 mx-auto" alt="empty state logo" />
+            <p className="text-lg font-medium">No Progress Report Found</p>
+            {/* <p className="text-muted-foreground font-normal text-sm">Create a new goal to get started</p> */}
+          </TableCell>
+        </TableRow>
+      }
     />
   );
 };

@@ -132,6 +132,7 @@ const Overview = () => {
         show={showVerticalsModal}
         onClose={() => setShowVerticalsModal(false)}
         verticals={organization?.available_verticals}
+        accessibleVerticals={organization?.accessible_verticals}
         orgId={orgId}
       />
 

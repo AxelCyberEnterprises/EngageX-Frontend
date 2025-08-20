@@ -47,7 +47,8 @@ export type EnterpriseReportResponse = {
 // -----------------------------
 export function useFetchEnterpriseReport(
   enterprise_id: number,
-  enterprise_user_ids?: number[]
+  enterprise_user_ids?: number[],
+  searchTerm?: string
 ) {
   const userIdsParam =
     enterprise_user_ids && enterprise_user_ids.length > 0
@@ -59,10 +60,11 @@ export function useFetchEnterpriseReport(
       "enterprise-report",
       enterprise_id,
       enterprise_user_ids?.sort().join(",") || "all",
+      searchTerm
     ],
     queryFn: async () => {
       return apiGet<EnterpriseReportResponse>(
-        `/enterprise/enterprise-users/progress-data/?enterprise_id=${enterprise_id}${userIdsParam}`,
+        `/enterprise/enterprise-users/progress-data/?search=${searchTerm}&enterprise_id=${enterprise_id}${userIdsParam}`,
         "default"
       );
     },
