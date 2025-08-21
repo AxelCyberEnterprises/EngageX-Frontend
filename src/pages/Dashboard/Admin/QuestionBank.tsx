@@ -219,7 +219,7 @@ const QuestionBank: React.FC = () => {
     const searchParams = new URLSearchParams(location.search);
     const enterpriseId = Number(searchParams.get("id"));
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [activeTab, setActiveTab] = useState<string>("Coaching");
+    const [activeTab, setActiveTab] = useState<string>("Coach");
     const [selectedRowIds, setSelectedRowIds] = useState<Set<number>>(new Set());
     const [localQuestions, setLocalQuestions] = useState<EnterpriseQuestion[]>([]);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -232,8 +232,8 @@ const QuestionBank: React.FC = () => {
     const getVerticalFromTab = (tab: string) => {
         const tabToVerticalMap: Record<string, string> = {
             "Media Training": "media_training",
-            "Coaching": "coach",
-            "General Manager": "general_manager"
+            "Coach": "coach",
+            "General Manager": "gm"
         };
         return tabToVerticalMap[tab];
     };
@@ -261,7 +261,7 @@ const QuestionBank: React.FC = () => {
         setSelectedRowIds(new Set()); // Clear selections when switching tabs
     }, [activeTab]);
 
-    const tabs = ["Media Training", "Coaching", "General Manager"];
+    const tabs = ["Media Training", "Coach", "General Manager"];
     const showSelectionBar = selectedRowIds.size > 0;
 
     const handleNewQuestion = () => {
@@ -273,7 +273,7 @@ const QuestionBank: React.FC = () => {
         const getVerticalFromTab = (tab: string) => {
             const tabToVerticalMap: Record<string, string> = {
                 "Media Training": "media_training",
-                "Coaching": "coach",
+                "Coach": "coach",
                 "General Manager": "gm"
             };
             return tabToVerticalMap[tab];
@@ -599,7 +599,7 @@ const QuestionBank: React.FC = () => {
                             <div className="text-sm text-[#667085] text-center sm:text-left">
                                 Showing {startItem}-{endItem} of {totalCount} questions in {activeTab}
                             </div>
-                            <div className="flex items-center justify-center gap-2">
+                            <div className="flex items-center justify-center gap-2 pr-[10%]">
                                 <Button
                                     onClick={() => setCurrentPage(prev => prev - 1)}
                                     disabled={currentPage === 1}

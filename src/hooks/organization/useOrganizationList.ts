@@ -11,6 +11,7 @@ export interface Organization {
   name: string;
   domain: string;
   enterprise_type: string;
+  sport_type: string;
   logo: string | null;
   is_active: boolean;
   require_domain_match: boolean;
@@ -30,7 +31,7 @@ export interface OrganizationListResponse {
 
 export function useOrganizationList(search?: string, shouldFetch: boolean = true) {
   return useQuery({
-    queryKey: ["organization-list", search],
+    queryKey: ["organization-list", {search}],
     queryFn: async () => {
       const url = search
         ? `/enterprise/enterprises/?search=${encodeURIComponent(search)}`
