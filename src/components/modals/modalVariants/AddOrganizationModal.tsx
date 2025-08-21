@@ -15,6 +15,9 @@ const addOrganizationSchema = z.object({
   industryType: z.enum(['Sport Organization', 'Non-Sport Organization'], {
     required_error: 'Please select an industry type',
   }),
+  sportType: z.enum(['NFL', 'NBA', 'WNBA', 'MLB'], {
+    required_error: 'Please select a sports type',
+  }),
   oneOnOneCoachingLink: z.string().min(1, 'One-on-one coaching link is required'),
 });
 
@@ -23,26 +26,34 @@ type AddOrganizationFormValues = z.infer<typeof addOrganizationSchema>;
 interface AddOrganizationModalProps {
   show: boolean;
   onClose: () => void;
+  onAddOrganizationSuccess: () => void;
 }
 
-const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClose }) => {
+const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClose, onAddOrganizationSuccess }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const dropdownButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useClickOutside(dropdownRef, dropdownButtonRef, () => setIsDropdownOpen(false));
 
+  const [isSportDropdownOpen, setIsSportDropdownOpen] = useState(false);
+  const sportDropdownRef = useRef<HTMLDivElement | null>(null);
+  const sportDropdownButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useClickOutside(sportDropdownRef, sportDropdownButtonRef, () => setIsSportDropdownOpen(false));
+
   const form = useForm<AddOrganizationFormValues>({
     resolver: zodResolver(addOrganizationSchema),
     defaultValues: {
       organizationName: '',
       industryType: undefined,
+      sportType: undefined,
       oneOnOneCoachingLink: '',
     },
   });
 
   const selectedIndustry = form.watch('industryType');
-
+  const selectedSport = form.watch('sportType');
 
   const createOrg = useCreateOrganization();
 
@@ -53,20 +64,30 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
         domain: `${data.organizationName.toLowerCase().replace(/\s+/g, "")}.com`, // temp domain
         enterprise_type:
           data.industryType === "Sport Organization" ? "sport" : "non-sport",
+        sport_type:
+          data.sportType === "NFL" ? "nfl" : data.sportType === "NBA" ? "nba" : data.sportType === "WNBA" ? "wnba" : "mlb",
       },
       {
         onSuccess: () => {
           form.reset();
           onClose();
+          onAddOrganizationSuccess();
         },
       }
     );
   };
   const industryOptions = ['Sport Organization', 'Non-Sport Organization'];
 
+  const sportOptions = ['NFL', 'NBA', 'WNBA', 'MLB'];
+
   const handleIndustrySelect = (value: 'Sport Organization' | 'Non-Sport Organization') => {
     form.setValue('industryType', value);
     setIsDropdownOpen(false);
+  };
+
+  const handleSportSelect = (value: 'NFL' | 'NBA' | 'WNBA' | 'MLB') => {
+    form.setValue('sportType', value);
+    setIsSportDropdownOpen(false);
   };
 
   const handleCopyLink = () => {
@@ -105,7 +126,7 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="rounded-lg py-3 px-4 border-gray-300 text-[#6B7186]"
+                      className="focus:ring-0 focus-visible:ring-0 rounded-lg py-3 px-4 border-gray-300 text-[#252A39] text-sm"
                       {...field}
                     />
                   </FormControl>
@@ -131,8 +152,8 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         className="w-full px-4 py-3 text-left bg-white border border-gray-300 rounded-lg flex items-center justify-between"
                       >
-                        <span className={field.value ? 'text-gray-900' : 'text-gray-500'}>
-                          {field.value || 'Sport Organization'}
+                        <span className={field.value ? 'text-gray-900 text-sm' : 'text-gray-500 text-sm'}>
+                          {field.value || 'Add Organization Type'}
                         </span>
                         <ChevronDown className="w-4 h-4 text-gray-400" />
                       </button>
@@ -153,10 +174,68 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
                                     option as 'Sport Organization' | 'Non-Sport Organization'
                                   )
                                 }
-                                className={`block w-full w-full px-4 py-3 text-left font-inter text-sm bg-[#fff] ${isSelected
+                                className={`block w-full px-4 py-3 text-left font-inter text-sm bg-[#fff] ${isSelected
                                     ? 'bg-[#E9E9EC] text-[#6B7186]'
                                     : 'text-gray-500 hover:bg-[#E4E4E7'
                                   } ${idx === 0 ? 'rounded-t-lg' : ''} ${idx === industryOptions.length - 1 ? 'rounded-b-lg' : ''
+                                  } transition-colors`}
+                              >
+                                {option}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Sports Type */}
+            <FormField
+              control={form.control}
+              name="sportType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-gray-700 font-inter">
+                    Sport Type
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <button
+                        ref={sportDropdownButtonRef}
+                        type="button"
+                        onClick={() => setIsSportDropdownOpen(!isSportDropdownOpen)}
+                        className="w-full px-4 py-3 text-left bg-white border border-gray-300 rounded-lg flex items-center justify-between"
+                      >
+                        <span className={field.value ? 'text-gray-900 text-sm' : 'text-gray-500 text-sm'}>
+                          {field.value || 'Add Sports Type'}
+                        </span>
+                        <ChevronDown className="w-4 h-4 text-gray-400" />
+                      </button>
+
+                      {isSportDropdownOpen && (
+                        <div
+                          ref={sportDropdownRef}
+                          className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden"
+                        >
+                          {sportOptions.map((option, idx) => {
+                            const isSelected = selectedSport === option;
+                            return (
+                              <button
+                                key={option}
+                                type="button"
+                                onClick={() =>
+                                  handleSportSelect(
+                                    option as 'NFL' | 'NBA' | 'WNBA' | 'MLB'
+                                  )
+                                }
+                                className={`block w-full px-4 py-3 text-left font-inter text-sm bg-[#fff] ${isSelected
+                                    ? 'bg-[#E9E9EC] text-[#6B7186]'
+                                    : 'text-gray-500 hover:bg-[#E4E4E7'
+                                  } ${idx === 0 ? 'rounded-t-lg' : ''} ${idx === sportOptions.length - 1 ? 'rounded-b-lg' : ''
                                   } transition-colors`}
                               >
                                 {option}
@@ -184,7 +263,7 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
                   <FormControl>
                     <div className="relative">
                       <Input
-                        className="rounded-lg py-3 px-4 pr-12 text-[#6B7186] border-gray-300"
+                        className="focus:ring-0 focus-visible:ring-0 rounded-lg py-3 px-4 pr-12 text-gray-900 border-gray-300"
                         {...field}
                       />
                       <button

@@ -5,6 +5,7 @@ import { OrganizationsTable } from '@/components/tables/organization-table';
 import AddOrganizationModal from '@/components/modals/modalVariants/AddOrganizationModal';
 import { Button } from '@/components/ui/button';
 import { useOrganizationList, usePatchOrganization } from '@/hooks/organization';
+import { useQueryClient } from '@tanstack/react-query';
 
 const OrganizationsDashboard = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -17,6 +18,7 @@ const OrganizationsDashboard = () => {
     return () => clearTimeout(handler);
   }, [searchTerm]);
   const { data, isLoading } = useOrganizationList(debouncedSearch);
+  const queryClient = useQueryClient();
   const patchOrg = usePatchOrganization();
   const [organizations, setOrganizations] = useState<OrganizationTableData[]>([]);
 
@@ -138,12 +140,15 @@ const OrganizationsDashboard = () => {
           pageSize={10}
           hidePagination={false}
           loadingOrganizations={isLoading}
-          onStatusChange={()=>handleStatusChange}
+          onStatusChange={() => handleStatusChange}
         />
       </div>
       <AddOrganizationModal
         show={showAddModal}
         onClose={() => setShowAddModal(false)}
+        onAddOrganizationSuccess={() => {
+          queryClient.invalidateQueries({ queryKey: ["organization-list"] });
+        }}
       />
     </div>
   );
