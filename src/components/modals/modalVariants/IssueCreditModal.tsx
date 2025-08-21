@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -7,14 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Modal from "..";
 import { useAddEnterpriseCredits } from "@/hooks/organization/useAddEnterpriseCredits";
-import { useFetchEnterpriseUsers } from "@/hooks/organization/useFetchEnterpriseUsers";
 
 const issueCreditsSchema = z.object({
     numberOfCredit: z
         .string()
         .min(1, "Number of credits is required")
         .refine((val) => !isNaN(Number(val)) && Number(val) > 0, "Please enter a valid number greater than 0"),
-    member: z.string().min(1, "Please select a member"),
 });
 
 type IssueCreditsFormValues = z.infer<typeof issueCreditsSchema>;
@@ -26,48 +25,30 @@ interface IssueCreditsModalProps {
 }
 
 const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose, orgId }) => {
-
-    const { data } = useFetchEnterpriseUsers(1, orgId);
-    const members = data?.results.map((user) => ({
-        id: user.id.toString(),
-        name: `${user.user.first_name} ${user.user.last_name}`,
-        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.user.first_name + " " + user.user.last_name)}&background=cccccc&color=ffffff`,
-        role: user.is_admin ? "Admin" : user.user_type === "general" ? "Basketballer" : "Rookie",
-        lastLogin: new Date(user.created_at).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-        }),
-        creditsUsed: 0,
-    })) ?? [];
-
     const form = useForm<IssueCreditsFormValues>({
         resolver: zodResolver(issueCreditsSchema),
         defaultValues: {
-            numberOfCredit: "",
-            member: "",
+            numberOfCredit: ""
         },
     });
 
     const addCreditsMutation = useAddEnterpriseCredits(orgId);
 
-    const onSubmit: SubmitHandler<IssueCreditsFormValues> = async (data) => {
-        const selectedMember = members.find((m) => m.id === data.member);
-        if (!selectedMember) return;
-
-        try {
-            await addCreditsMutation.mutateAsync({
+    const onSubmit: SubmitHandler<IssueCreditsFormValues> = (data) => {
+        console.log("Form submitted with data:", data);
+        addCreditsMutation.mutate(
+            {
                 amount: Number(data.numberOfCredit),
-                reason: `Credits issued to ${selectedMember.name}`,
-            });
-
-            form.reset();
-            onClose();
-        } catch (error) {
-            console.error("Failed to issue credits:", error);
-        }
+                reason: `Credits issued to organization`,
+            },
+            {
+                onSuccess: () => {
+                    form.reset();
+                    onClose();
+                },
+            }
+        )
     };
-
 
     const handleModalClose = () => {
         form.reset();
@@ -75,7 +56,7 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose, or
     };
 
     return (
-        <Modal show={show} onClose={handleModalClose} className="w-full max-w-md mx-4 p-6">
+        <Modal show={show} onClose={handleModalClose} className="sm:w-full w-[90%] max-w-md mx-4 p-6">
             <div className="w-full">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-[24px] font-medium text-gray-900">Issue Credits</h2>

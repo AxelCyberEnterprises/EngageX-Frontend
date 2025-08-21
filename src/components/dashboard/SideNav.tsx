@@ -43,6 +43,7 @@ const SideNav: React.FC = () => {
     const { state: sidebarState } = useSidebar();
     const [showAlternateSidebar, setShowAlternateSidebar] = useState(false);
     const sidebarRef = useRef<HTMLDivElement | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
     useClickOutside(sidebarRef, sidebarRef, () => setShowAlternateSidebar(false));
 
     const toggleSidebarView = () => {
@@ -54,7 +55,7 @@ const SideNav: React.FC = () => {
     const isEnterpriseUser = profile?.is_enterprise_user;
     const enterpriseUserType = profile?.user_type;
 
-    const { data } = useOrganizationList();
+    const { data } = useOrganizationList(searchTerm, lastSegment === "admin");
 
     const CoachingIcon = (
         <svg
@@ -489,8 +490,8 @@ const SideNav: React.FC = () => {
                                 color="#bdbdbd"
                                 fill="none"
                             >
-                                <path d="M3 7H17V17H3V7Z" stroke="currentColor" strokeWidth="1.5"/>
-                                <path d="M6 3H14V7H6V3Z" stroke="currentColor" strokeWidth="1.5"/>
+                                <path d="M3 7H17V17H3V7Z" stroke="currentColor" strokeWidth="1.5" />
+                                <path d="M6 3H14V7H6V3Z" stroke="currentColor" strokeWidth="1.5" />
                             </svg>
                         ),
                         path: `/dashboard/admin/organization/branding?id=${org.id}`,
@@ -761,8 +762,8 @@ const SideNav: React.FC = () => {
                                 color="#bdbdbd"
                                 fill="none"
                             >
-                                <path d="M3 7H17V17H3V7Z" stroke="currentColor" strokeWidth="1.5"/>
-                                <path d="M6 3H14V7H6V3Z" stroke="currentColor" strokeWidth="1.5"/>
+                                <path d="M3 7H17V17H3V7Z" stroke="currentColor" strokeWidth="1.5" />
+                                <path d="M6 3H14V7H6V3Z" stroke="currentColor" strokeWidth="1.5" />
                             </svg>
                         ),
                         path: `/dashboard/admin/organization/branding?id=${org.id}`,
@@ -1340,6 +1341,8 @@ const SideNav: React.FC = () => {
                                         <input
                                             type="text"
                                             placeholder="Search organization..."
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
                                             className="w-full mx-auto pl-11 tracking-wide pr-4 py-2 border border-[#E4E7EC] rounded-[6px] focus:outline-none text-[#474D63] placeholder:text-[#474D63] placeholder:font-light font-light"
                                         />
                                     </div>

@@ -1,5 +1,5 @@
-import { apiGet } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
+import { apiGet, apiPatch, apiPost } from "@/lib/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface Vertical {
   value: string;
@@ -28,17 +28,86 @@ export interface OrganizationListResponse {
   results: Organization[];
 }
 
-export function useOrganizationList() {
-  return useQuery<OrganizationListResponse>({
-    queryKey: ["organization-list"],
+export function useOrganizationList(search?: string, shouldFetch: boolean = true) {
+  return useQuery({
+    queryKey: ["organization-list", search],
     queryFn: async () => {
-      const response = await apiGet<OrganizationListResponse>(
-        "/enterprise/enterprises/",
-        "default"
-      );
+      const url = search
+        ? `/enterprise/enterprises/?search=${encodeURIComponent(search)}`
+        : "/enterprise/enterprises/";
+      const response = await apiGet<OrganizationListResponse>(url, "default");
       return response;
     },
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    enabled: shouldFetch, 
+  });
+}
+
+// PATCH function
+export async function patchOrganization(
+  id: number,
+  data: Partial<Organization>
+) {
+  const response = await apiPatch<Organization>(
+    `/enterprise/enterprises/${id}/`,
+    data,
+    "default"
+  );
+  return response;
+}
+
+// PATCH hook
+export function usePatchOrganization() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: Partial<Organization> }) =>
+      patchOrganization(id, data),
+    onSuccess: (updatedOrg) => {
+      queryClient.setQueryData<OrganizationListResponse>(
+        ["organization-list"],
+        (oldData) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            results: oldData.results.map((org) =>
+              org.id === updatedOrg.id ? updatedOrg : org
+            ),
+          };
+        }
+      );
+    },
+  });
+}
+
+export async function createOrganization(data: Partial<Organization>) {
+  const response = await apiPost<Organization>(
+    `/enterprise/enterprises/`,
+    data,
+    "default"
+  );
+  return response;
+}
+
+// POST hook
+export function useCreateOrganization() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: Partial<Organization>) => createOrganization(data),
+    onSuccess: (newOrg) => {
+      queryClient.setQueryData<OrganizationListResponse>(
+        ["organization-list"],
+        (oldData) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            results: [newOrg, ...oldData.results],
+            count: oldData.count + 1,
+          };
+        }
+      );
+    },
   });
 }

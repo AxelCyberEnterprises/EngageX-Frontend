@@ -28,12 +28,6 @@ const OrganizationReport = () => {
     }, [location.search]);
     const { data: organization } = useFetchSingleOrganization(orgId);
 
-    // const filteredByIds = dummyReportData.filter(member => selectedIds.includes(member.id));
-
-    // const filteredData = filteredByIds.filter(member =>
-    //     member.name.toLowerCase().includes(searchTerm.toLowerCase())
-    // );
-
     const handleDownloadReport = useCallback(async () => {
         const element = pdfRef.current;
         if (!element) {
@@ -105,7 +99,9 @@ const OrganizationReport = () => {
             {/* Report Table */}
             <div className="mt-6">
                 <OrganizationReportTable orgId={orgId}
-                    userIds={selectedIds} />
+                    userIds={selectedIds} 
+                    searchTerm={searchTerm}
+                />
             </div>
             {showEmailModal && <EmailReportModal show={showEmailModal} onClose={() => setShowEmailModal(false)} orgID={orgId} organizationName={organization?.name ?? 'Acme Inc'} />}
         </div>

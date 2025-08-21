@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Modal from '..';
 import { useClickOutside } from '@/hooks/useClickoutside';
+import { useCreateOrganization } from '@/hooks';
 
 const addOrganizationSchema = z.object({
   organizationName: z.string().min(1, 'Organization name is required'),
@@ -42,12 +43,25 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
 
   const selectedIndustry = form.watch('industryType');
 
-  const onSubmit: SubmitHandler<AddOrganizationFormValues> = (data) => {
-    console.log('Organization Data:', data);
-    form.reset();
-    onClose();
-  };
 
+  const createOrg = useCreateOrganization();
+
+  const onSubmit: SubmitHandler<AddOrganizationFormValues> = (data) => {
+    createOrg.mutate(
+      {
+        name: data.organizationName,
+        domain: `${data.organizationName.toLowerCase().replace(/\s+/g, "")}.com`, // temp domain
+        enterprise_type:
+          data.industryType === "Sport Organization" ? "sport" : "non-sport",
+      },
+      {
+        onSuccess: () => {
+          form.reset();
+          onClose();
+        },
+      }
+    );
+  };
   const industryOptions = ['Sport Organization', 'Non-Sport Organization'];
 
   const handleIndustrySelect = (value: 'Sport Organization' | 'Non-Sport Organization') => {
@@ -69,7 +83,7 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
   };
 
   return (
-    <Modal show={show} onClose={handleModalClose} className="w-full max-w-md mx-4 p-6">
+    <Modal show={show} onClose={handleModalClose} className="sm:w-full w-[90%] max-w-md mx-4 p-6">
       <div className="w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -139,13 +153,11 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
                                     option as 'Sport Organization' | 'Non-Sport Organization'
                                   )
                                 }
-                                className={`block w-full w-full px-4 py-3 text-left font-inter text-sm bg-[#fff] ${
-                                  isSelected
+                                className={`block w-full w-full px-4 py-3 text-left font-inter text-sm bg-[#fff] ${isSelected
                                     ? 'bg-[#E9E9EC] text-[#6B7186]'
                                     : 'text-gray-500 hover:bg-[#E4E4E7'
-                                } ${idx === 0 ? 'rounded-t-lg' : ''} ${
-                                  idx === industryOptions.length - 1 ? 'rounded-b-lg' : ''
-                                } transition-colors`}
+                                  } ${idx === 0 ? 'rounded-t-lg' : ''} ${idx === industryOptions.length - 1 ? 'rounded-b-lg' : ''
+                                  } transition-colors`}
                               >
                                 {option}
                               </button>
