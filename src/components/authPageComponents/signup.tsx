@@ -129,7 +129,8 @@ const Signup: React.FC = () => {
     }, [location.pathname]);
 
     return (
-        <div className="signup-container sm:w-10/12 overflow-y-auto px-1 scrollbar-hide lg:mt-5 sm:mx-auto md:flex flex flex-col lg:block  max-md:justify-start justify-center h-[100dvh] mb-10 pb-7  max-md:pl-0 max-lg:pl-5">
+        <div className="signup-container pt-16 sm:w-10/12 overflow-y-auto px-1 scrollbar-hide lg:mt-5 sm:mx-auto md:flex flex flex-col lg:block  max-md:justify-start justify-center h-[100dvh] mb-10 pb-7  max-md:pl-0 max-lg:pl-5">
+            
             <div className="stick lg:mt-0 mt-3 top-5">{BackToWebsite()}</div>
             {welcomeMessage()}
             <Form {...form}>
