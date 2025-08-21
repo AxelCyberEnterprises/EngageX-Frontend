@@ -33,14 +33,21 @@ export interface CreateEnterpriseQuestionData {
   is_active?: boolean;
 }
 
-export function useFetchEnterpriseQuestions(enterpriseId: number, page: number = 1, vertical: string = "coach") {
+export function useFetchEnterpriseQuestions(
+  enterpriseId: number,
+  page: number = 1,
+  vertical: string = "coach",
+  sportType: string | null = null
+) {
   return useQuery<EnterpriseQuestionsResponse>({
-    queryKey: ["enterprise-questions", enterpriseId, page, vertical],
+    queryKey: ["enterprise-questions", enterpriseId, page, vertical, sportType],
     queryFn: async () => {
-      const response = await apiGet<EnterpriseQuestionsResponse>(
-        `/enterprise/enterprise-questions/?page=${page}&vertical=${vertical}`,
-        "default"
-      );
+      let url = `/enterprise/enterprise-questions/?page=${page}&vertical=${vertical}`;
+      if (sportType) {
+        url += `&sport_type=${encodeURIComponent(sportType)}`;
+      }
+
+      const response = await apiGet<EnterpriseQuestionsResponse>(url, "default");
       return response;
     },
     staleTime: 1000 * 60 * 5,

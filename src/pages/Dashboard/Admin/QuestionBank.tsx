@@ -7,7 +7,8 @@ import {
     useFetchEnterpriseQuestions,
     usePatchEnterpriseQuestion,
     useDeleteEnterpriseQuestion,
-    EnterpriseQuestion
+    EnterpriseQuestion,
+    useFetchSingleOrganization
 } from "@/hooks"; // Adjust path as needed
 import { Skeleton } from "@/components/ui/skeleton";
 import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
@@ -92,7 +93,7 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
                         onChange={handleCheckboxChange}
                         className="w-4 h-4 text-[#10B981] bg-gray-100 border-gray-300 rounded cursor-pointer"
                     />
-                    <div className="cursor-move">
+                    {/* <div className="cursor-move">
                         <div className="grid grid-cols-2 gap-0.5 w-3 h-3">
                             <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                             <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
@@ -101,7 +102,7 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
                             <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                             <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Question Content */}
@@ -141,7 +142,7 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
                 </div>
 
                 {/* Drag Handle */}
-                <div className="w-12 flex justify-center py-4 cursor-move">
+                {/* <div className="w-12 flex justify-center py-4 cursor-move">
                     <div className="grid grid-cols-2 gap-0.5 w-3 h-3">
                         <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                         <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
@@ -150,7 +151,7 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
                         <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                         <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Question Text */}
                 <div className="flex-1 py-4 pr-4">
@@ -229,6 +230,9 @@ const QuestionBank: React.FC = () => {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const createQuestionMutation = useCreateEnterpriseQuestion(enterpriseId);
     // API hooks
+    const updateQuestionMutation = usePatchEnterpriseQuestion(enterpriseId);
+    const deleteQuestionMutation = useDeleteEnterpriseQuestion(enterpriseId);
+    const { data: organization } = useFetchSingleOrganization(enterpriseId);    
     const getVerticalFromTab = (tab: string) => {
         const tabToVerticalMap: Record<string, string> = {
             "Media Training": "media_training",
@@ -237,13 +241,14 @@ const QuestionBank: React.FC = () => {
         };
         return tabToVerticalMap[tab];
     };
+    console.log(organization);
     const { data: questionsResponse, isLoading, error, refetch } = useFetchEnterpriseQuestions(
         enterpriseId,
         currentPage,
-        getVerticalFromTab(activeTab)
+        getVerticalFromTab(activeTab),
+        organization?.sport_type && organization?.sport_type
     );
-    const updateQuestionMutation = usePatchEnterpriseQuestion(enterpriseId);
-    const deleteQuestionMutation = useDeleteEnterpriseQuestion(enterpriseId);
+
 
     useEffect(() => {
         if (questionsResponse?.results) {
