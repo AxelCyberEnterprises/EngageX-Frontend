@@ -15,11 +15,19 @@ const addOrganizationSchema = z.object({
   industryType: z.enum(['Sport Organization', 'Non-Sport Organization'], {
     required_error: 'Please select an industry type',
   }),
-  sportType: z.enum(['NFL', 'NBA', 'WNBA', 'MLB'], {
-    required_error: 'Please select a sports type',
-  }),
+  sportType: z
+    .enum(['NFL', 'NBA', 'WNBA', 'MLB'])
+    .optional()
+    .refine(({ val, ctx }: any) => {
+      const industry = ctx.parent.industryType;
+      if (industry === 'Sport Organization' && !val) {
+        return false;
+      }
+      return true;
+    }, { message: 'Please select a sports type' }),
   oneOnOneCoachingLink: z.string().min(1, 'One-on-one coaching link is required'),
 });
+
 
 type AddOrganizationFormValues = z.infer<typeof addOrganizationSchema>;
 
@@ -82,8 +90,12 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
 
   const handleIndustrySelect = (value: 'Sport Organization' | 'Non-Sport Organization') => {
     form.setValue('industryType', value);
+    if (value === 'Non-Sport Organization') {
+      form.setValue('sportType', undefined); // clear sport type
+    }
     setIsDropdownOpen(false);
   };
+
 
   const handleSportSelect = (value: 'NFL' | 'NBA' | 'WNBA' | 'MLB') => {
     form.setValue('sportType', value);
@@ -175,8 +187,8 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
                                   )
                                 }
                                 className={`block w-full px-4 py-3 text-left font-inter text-sm bg-[#fff] ${isSelected
-                                    ? 'bg-[#E9E9EC] text-[#6B7186]'
-                                    : 'text-gray-500 hover:bg-[#E4E4E7'
+                                  ? 'bg-[#E9E9EC] text-[#6B7186]'
+                                  : 'text-gray-500 hover:bg-[#E4E4E7'
                                   } ${idx === 0 ? 'rounded-t-lg' : ''} ${idx === industryOptions.length - 1 ? 'rounded-b-lg' : ''
                                   } transition-colors`}
                               >
@@ -194,62 +206,63 @@ const AddOrganizationModal: React.FC<AddOrganizationModalProps> = ({ show, onClo
             />
 
             {/* Sports Type */}
-            <FormField
-              control={form.control}
-              name="sportType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700 font-inter">
-                    Sport Type
-                  </FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <button
-                        ref={sportDropdownButtonRef}
-                        type="button"
-                        onClick={() => setIsSportDropdownOpen(!isSportDropdownOpen)}
-                        className="w-full px-4 py-3 text-left bg-white border border-gray-300 rounded-lg flex items-center justify-between"
-                      >
-                        <span className={field.value ? 'text-gray-900 text-sm' : 'text-gray-500 text-sm'}>
-                          {field.value || 'Add Sports Type'}
-                        </span>
-                        <ChevronDown className="w-4 h-4 text-gray-400" />
-                      </button>
-
-                      {isSportDropdownOpen && (
-                        <div
-                          ref={sportDropdownRef}
-                          className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden"
+            {selectedIndustry === 'Sport Organization' && (
+              <FormField
+                control={form.control}
+                name="sportType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700 font-inter">
+                      Sport Type
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <button
+                          ref={sportDropdownButtonRef}
+                          type="button"
+                          onClick={() => setIsSportDropdownOpen(!isSportDropdownOpen)}
+                          className="w-full px-4 py-3 text-left bg-white border border-gray-300 rounded-lg flex items-center justify-between"
                         >
-                          {sportOptions.map((option, idx) => {
-                            const isSelected = selectedSport === option;
-                            return (
-                              <button
-                                key={option}
-                                type="button"
-                                onClick={() =>
-                                  handleSportSelect(
-                                    option as 'NFL' | 'NBA' | 'WNBA' | 'MLB'
-                                  )
-                                }
-                                className={`block w-full px-4 py-3 text-left font-inter text-sm bg-[#fff] ${isSelected
+                          <span className={field.value ? 'text-gray-900 text-sm' : 'text-gray-500 text-sm'}>
+                            {field.value || 'Add Sports Type'}
+                          </span>
+                          <ChevronDown className="w-4 h-4 text-gray-400" />
+                        </button>
+
+                        {isSportDropdownOpen && (
+                          <div
+                            ref={sportDropdownRef}
+                            className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden"
+                          >
+                            {sportOptions.map((option, idx) => {
+                              const isSelected = selectedSport === option;
+                              return (
+                                <button
+                                  key={option}
+                                  type="button"
+                                  onClick={() =>
+                                    handleSportSelect(
+                                      option as 'NFL' | 'NBA' | 'WNBA' | 'MLB'
+                                    )
+                                  }
+                                  className={`block w-full px-4 py-3 text-left font-inter text-sm bg-[#fff] ${isSelected
                                     ? 'bg-[#E9E9EC] text-[#6B7186]'
                                     : 'text-gray-500 hover:bg-[#E4E4E7'
-                                  } ${idx === 0 ? 'rounded-t-lg' : ''} ${idx === sportOptions.length - 1 ? 'rounded-b-lg' : ''
-                                  } transition-colors`}
-                              >
-                                {option}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                                    } ${idx === 0 ? 'rounded-t-lg' : ''} ${idx === sportOptions.length - 1 ? 'rounded-b-lg' : ''
+                                    } transition-colors`}
+                                >
+                                  {option}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />)}
 
             {/* One-on-one Coaching Link */}
             <FormField

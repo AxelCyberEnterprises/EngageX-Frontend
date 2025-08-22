@@ -98,7 +98,7 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-70" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className={cn('w-full max-w-none p-0', popoverWidth)} align="start">
+        <PopoverContent className={cn('w-full max-w-none z-[999999] p-0', popoverWidth)} align="start">
           <Command className='border-none'>
             <div className="flex items-center border-b px-3">
               <CommandInput

@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Modal from '..';
 import { useUpdateEnterpriseVerticals } from '@/hooks/organization/useUpdateEnterpriseVerticals';
 import { Vertical } from '@/hooks/organization';
+import { toast } from 'sonner';
 
 const createAccessibleVerticalsSchema = (verticals: Vertical[]) => {
   const schemaObject: Record<string, z.ZodBoolean> = {};
@@ -61,11 +62,11 @@ const AccessibleVerticalsModal: React.FC<AccessibleVerticalsModalProps> = ({
       { accessible_verticals: selectedVerticals },
       {
         onSuccess: () => {
-          console.log('Accessible verticals updated successfully');
+          toast.info('Accessible verticals updated successfully');
           onClose();
         },
         onError: (error) => {
-          console.error('Failed to update verticals', error);
+          toast.error(`${error} Failed to update verticals`);
         },
       }
     );
