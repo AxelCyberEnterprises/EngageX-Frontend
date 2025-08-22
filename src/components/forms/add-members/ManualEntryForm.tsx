@@ -8,10 +8,21 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 import ControlledFieldWrapper from "../../controlled-fields/field-wrapper";
 import { Separator } from "../../ui/separator";
+import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
+import { toast } from "sonner";
+import { useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useCreateEnterpriseUser } from "@/hooks/organization/useCreateEnterpriseUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 type FormType = z.infer<typeof ManualEntrySchema>;
 
 const ManualEntryForm = () => {
+    const [searchParams] = useSearchParams();
+    const enterpriseId = searchParams.get("id") ?? "";
+    const queryClient = useQueryClient();
+    const { mutate: createUser, isPending } = useCreateEnterpriseUser();
     const form = useForm<FormType>({
         resolver: zodResolver(ManualEntrySchema),
         defaultValues: {
@@ -23,9 +34,49 @@ const ManualEntryForm = () => {
         name: "members",
     });
 
+
+    const handleSubmit = useCallback(
+    (values: FormType) => {
+      values.members.forEach((member) => {
+        createUser(
+          {
+            enterprise: +enterpriseId,
+            role: member.role,
+            team: member.team, 
+            email: member.email,
+            first_name: member.first_name,
+            last_name: member.last_name,
+          },
+          {
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ["enterprise-users", 1, +enterpriseId] });
+                toast(
+                    <SuccessToast
+                    heading="User created successfully"
+                    description={`${member.email} has been updated`}
+                    />
+                );
+            },
+            onError: (error) => {
+              console.error("Error updating user: ", error);
+              toast(
+                <ErrorToast
+                  heading="Error Creating User"
+                  description={`Failed to update ${member.email}`}
+                />
+              );
+            },
+          }
+        );
+      });
+    },
+    [createUser]
+  );
+
+
     return (
         <Form {...form}>
-            <form className="flex flex-col gap-6" onSubmit={form.handleSubmit((data) => console.log(data))}>
+            <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(handleSubmit)}>
                 <div className="flex flex-col gap-4 max-h-100 overflow-auto hide-scrollbar rounded-[10px]">
                     {fields.map((field, index) => (
                         <div key={field.id} className="space-y-4">
@@ -122,7 +173,7 @@ const ManualEntryForm = () => {
 
                 <div className="flex justify-between">
                     <Button
-                        type="button"
+                        type="submit"
                         variant="outline"
                         className="text-primary-blue"
                         onClick={() =>
@@ -132,7 +183,7 @@ const ManualEntryForm = () => {
                         <Plus />
                         New User
                     </Button>
-                    <Button type="submit" className="bg-[#64BA9F] hover:bg-[#64BA9F]/90">
+                    <Button type="submit" disabled={isPending} className="bg-[#64BA9F] hover:bg-[#64BA9F]/90">
                         <Upload />
                         Add Members
                     </Button>
