@@ -18,7 +18,7 @@ export interface EnterpriseUser {
   id: number;
   user: User;
   user_id: number;
-  enterprise: number;
+  enterprise: number | any;
   enterprise_name: string;
   user_type: "rookie" | "general";
   is_admin: boolean;
@@ -33,19 +33,29 @@ export interface EnterpriseUsersResponse {
   results: EnterpriseUser[];
 }
 
-export function useFetchEnterpriseUsers(page: number = 1, id?: number) {
-  const isValidId = typeof id === "number" && Number.isFinite(id);
+export function useFetchEnterpriseUsers(page?: number, id?: number) {
   return useQuery<EnterpriseUsersResponse>({
-    queryKey: ["enterprise-users", page, id ?? null],
+    queryKey: ["enterprise-users", page ?? null, id ?? null],
     queryFn: async () => {
-      const response = await apiGet<EnterpriseUsersResponse>(
-        `/enterprise/enterprise-users/?page=${page}&enterprise_id=${id}`,
-        "default"
-      );
-      return response;
+      let url = `/enterprise/enterprise-users/`;
+
+      const params: string[] = [];
+      if (page !== undefined && page !== null) {
+        params.push(`page=${page}`);
+      }
+      if (id !== undefined && id !== null) {
+        params.push(`enterprise_id=${id}`);
+      }
+
+      if (params.length > 0) {
+        url += `?${params.join("&")}`;
+      }
+
+      return apiGet<EnterpriseUsersResponse>(url, "default");
     },
-    enabled: isValidId,
+    enabled: true, // always enabled
     staleTime: 1000 * 60 * 5,
     retry: 1,
   });
 }
+
