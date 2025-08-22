@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ManualEntrySchema } from "@/schemas/dashboard/admin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Upload, X } from "lucide-react";
@@ -11,15 +10,6 @@ import ControlledFieldWrapper from "../../controlled-fields/field-wrapper";
 import { Separator } from "../../ui/separator";
 
 type FormType = z.infer<typeof ManualEntrySchema>;
-
-const roleOptions = [
-    { name: "Admin", value: "admin" },
-    { name: "Member", value: "member" },
-];
-const teamOptions = [
-    { name: "Team A", value: "team_a" },
-    { name: "Team B", value: "team_b" },
-];
 
 const ManualEntryForm = () => {
     const form = useForm<FormType>({
@@ -88,22 +78,12 @@ const ManualEntryForm = () => {
                                             label="Role"
                                             className="[&_[data-slot='form-label']]:text-primary-blue"
                                             render={({ field }) => (
-                                                <Select onValueChange={field.onChange}>
-                                                    <SelectTrigger className="h-10 rounded-lg focus-visible:ring-0 shadow-none text-foreground data-[placeholder]:text-gray-blue [&_svg:not([class*='text-'])]:text-auro-metal-saurus [&_svg]:opacity-100">
-                                                        <SelectValue placeholder="Select role" />
-                                                    </SelectTrigger>
-                                                    <SelectContent className="border-none">
-                                                        {roleOptions.map(({ name, value }, index) => (
-                                                            <SelectItem
-                                                                key={value + index}
-                                                                value={value}
-                                                                className="h-10"
-                                                            >
-                                                                {name}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
+                                                <Input
+                                                    {...field}
+                                                    placeholder="Enter role"
+                                                    type="text"
+                                                    className="h-10 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-gray-blue"
+                                                />
                                             )}
                                         />
                                         <ControlledFieldWrapper
@@ -112,22 +92,12 @@ const ManualEntryForm = () => {
                                             label="Team"
                                             className="[&_[data-slot='form-label']]:text-primary-blue"
                                             render={({ field }) => (
-                                                <Select onValueChange={field.onChange}>
-                                                    <SelectTrigger className="h-10 rounded-lg focus-visible:ring-0 shadow-none text-foreground data-[placeholder]:text-gray-blue [&_svg:not([class*='text-'])]:text-auro-metal-saurus [&_svg]:opacity-100">
-                                                        <SelectValue placeholder="Select team" />
-                                                    </SelectTrigger>
-                                                    <SelectContent className="border-none">
-                                                        {teamOptions.map(({ name, value }, index) => (
-                                                            <SelectItem
-                                                                key={value + index}
-                                                                value={value}
-                                                                className="h-10"
-                                                            >
-                                                                {name}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
+                                                <Input
+                                                    {...field}
+                                                    placeholder="Enter team"
+                                                    type="text"
+                                                    className="h-10 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-gray-blue"
+                                                />
                                             )}
                                         />
                                     </div>

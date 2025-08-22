@@ -1,6 +1,5 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useTheme } from "@/context/ThemeContext/hook";
-import { useFullUserProfile, useUpdateUserProfile } from "@/hooks/settings";
 import { cn } from "@/lib/utils";
 import { BrandingSchema } from "@/schemas/branding-schema";
 import { RootState, useAppDispatch } from "@/store";
@@ -24,6 +23,8 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, Dr
 import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import UploadMediaTrigger from "../widgets/UploadMediaTrigger";
+import { useUpdateEnterprise } from "@/hooks/organization/useUpdateEnterprise";
+import { useSearchParams } from "react-router-dom";
 
 type IBrandingFormProps = React.ComponentProps<"form">;
 export type FormType = z.infer<typeof BrandingSchema>;
@@ -55,8 +56,11 @@ const brandingColorsSections = [
 const BrandingForm = ({ className }: IBrandingFormProps) => {
     const { theme } = useTheme(); // Assuming useTheme is used for theming purposes, but not utilized in this component
 
-    const { data: fullProfile } = useFullUserProfile();
-    const { mutate: updateProfile, isPending } = useUpdateUserProfile(fullProfile?.results?.[0]?.id);
+    // const { data: fullProfile } = useFullUserProfile();
+    // const { mutate: updateProfile, isPending } = useUpdateUserProfile(fullProfile?.results?.[0]?.id);
+    const [searchParams] = useSearchParams();
+    const enterpriseId = searchParams.get("id") ?? "";
+    const { mutate: updateEnterprise, isPending } = useUpdateEnterprise(enterpriseId);
 
     const { previews } = useSelector((state: RootState) => state.branding);
     const dispatch = useAppDispatch();
@@ -115,7 +119,12 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                 formData.append("favicon", values.favicon[0]);
             }
 
-            updateProfile(formData, {
+            updateEnterprise(
+                {
+                    primary_color: primaryColor,
+                    secondary_color: secondaryColor,
+                }
+            , {
                 onSuccess: () => {
                     dispatch(setPreviews({ companyLogoPreview: "", faviconPreview: "" }));
                     toast(
@@ -136,7 +145,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                 },
             });
         },
-        [dispatch, updateProfile],
+        [dispatch, updateEnterprise],
     );
 
     useEffect(() => {

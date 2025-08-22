@@ -1,7 +1,6 @@
 import authPageImage1 from "@/assets/images/jpegs/authPage-image-1.jpeg";
-import Office from "@/assets/images/svgs/hugeicons-office.svg";
 import { useLogin } from "@/hooks/auth";
-import { setAuthPageImage, setSigninFlow, setUserEmail } from "@/store/slices/authSlice";
+import { setAuthPageImage, setUserEmail } from "@/store/slices/authSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -146,7 +145,7 @@ const EmailAndPasswordForm: React.FC = () => {
                     Forgot Password
                 </Link>
             </section>
-            <div className="relative w-full sm:w-3/4 mx-auto font-[Inter] text-center my-5 ">
+            {/* <div className="relative w-full sm:w-3/4 mx-auto font-[Inter] text-center my-5 ">
                 <div className="absolute top-1/2 transform -translate-y-1/2 w-full border-b border-gray-300 z-10"></div>
                 <span className="relative z-20 bg-white px-3 text-[#667085] text-sm">OR</span>
             </div>
@@ -157,7 +156,7 @@ const EmailAndPasswordForm: React.FC = () => {
             >
                 <img src={Office} alt="" className="size-5" />
                 <p>Login with your organization</p>
-            </button>
+            </button> */}
 
             <div className="w-full mt-4">
                 <p className="flex items-center text-sm text-muted-foreground gap-1 justify-center">

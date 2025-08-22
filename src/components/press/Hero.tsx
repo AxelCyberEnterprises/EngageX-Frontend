@@ -3,7 +3,7 @@ function Hero() {
         <section className="px-10">
             <div className="text-center pt-24 pb-20 w-max mx-auto items-center space-y-3">
                 <div className="flex gap-2 items-center">
-                    <img src="/assets/logodark.png" alt="brand logo" className="h-10 lg:h-13 lg:mt-2" />
+                    <img src="/assets/logoaltv2.png" alt="brand logo" className="h-10 lg:h-13 lg:mt-2" />
                     <h1>in the news</h1>
                 </div>
             </div>
