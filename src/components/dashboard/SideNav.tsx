@@ -1,7 +1,7 @@
 // SideNav component refactored for best practices
 const logo = "/assets/logoaltwhitev2.png";
-import React, { MouseEvent, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { cn } from "@/lib/utils";
@@ -25,7 +25,7 @@ import {
     useSidebar,
 } from "../ui/sidebar";
 import { useClickOutside } from "@/hooks/useClickoutside";
-import { useOrganizationList } from "@/hooks/organization";
+import { useFetchEnterpriseUsers, useOrganizationList } from "@/hooks/organization";
 import { Skeleton } from "../ui/skeleton";
 import { AccessRestrictedModal } from "../modals/modalVariants/AccessRestrictedModal";
 
@@ -41,6 +41,7 @@ type NavLink = {
 const SideNav: React.FC = () => {
     const { theme } = useTheme();
     const location = useLocation();
+    const navigate = useNavigate();
     const profile = useSelector((state: RootState) => state.profile.data);
     const dispatch = useDispatch();
     const { state: sidebarState } = useSidebar();
@@ -60,6 +61,42 @@ const SideNav: React.FC = () => {
     const enterpriseUserType = profile?.user_type;
 
     const { data, isLoading } = useOrganizationList(searchTerm, lastSegment === "admin");
+    const { data: enterpriseUsers } = useFetchEnterpriseUsers();
+
+    const accessibleVerticals = enterpriseUsers?.results?.[0]?.enterprise?.accessible_verticals ?? [];
+
+    const verticalToPathMap: Record<string, string> = {
+        coach: "the-coaching-room",
+        public_speaking: "public-speaking",
+        pitch: "pitch-practice",
+        presentation: "presentation-practice",
+    };
+
+    const isAccessiblePath = (path: string): boolean => {
+        if (!isEnterpriseUser) return true; 
+        const pathSegments = path.split("/").filter(Boolean);
+        const lastSegment = pathSegments[pathSegments.length - 1];
+        const matchedVertical = Object.entries(verticalToPathMap).find(
+            ([, slug]) => slug === lastSegment
+        )?.[0];
+
+        if (!matchedVertical) return true;
+
+        return accessibleVerticals.includes(matchedVertical);
+    };
+
+    const handleNavClick = (e: MouseEvent, path: string) => {
+        if (!isAccessiblePath(path)) {
+            e.preventDefault();
+            setShowModal(true);
+        }
+    };
+
+    useEffect(() => {
+        if (!isAccessiblePath(location.pathname)) {
+            setShowModal(true);
+        }
+    }, [location.pathname, accessibleVerticals]);
 
     const CoachingIcon = (
         <svg
@@ -1103,7 +1140,10 @@ const SideNav: React.FC = () => {
         <>
             <AccessRestrictedModal
                 show={showModal}
-                onClose={() => setShowModal(false)}
+                onClose={() => {
+                    navigate("/dashboard/user");
+                    setShowModal(false);
+                }}
             />
             {!showAlternateSidebar ? (
                 <Sidebar
@@ -1140,10 +1180,20 @@ const SideNav: React.FC = () => {
                     <SidebarContent className="top__links bg-branding-secondary lg:px-0 px-4 hide-scrollbar">
                         {lastSegment === "user" &&
                             userLinks.filter(Boolean).map((link, index) => (
+                                // <Link
+                                //     to={link?.path ?? ""}
+                                //     key={index}
+                                //     className={`link flex items-center  mobile_links w-full py-2 px-3 mb-0.5 ${location.pathname === link?.path ? "active" : ""
+                                //         }`}
+                                // >
+                                //     {link?.icon}
+                                //     <p>{link?.name}</p>
+                                // </Link>
                                 <Link
                                     to={link?.path ?? ""}
                                     key={index}
-                                    className={`link flex items-center  mobile_links w-full py-2 px-3 mb-0.5 ${location.pathname === link?.path ? "active" : ""
+                                    onClick={(e) => handleNavClick(e, link?.path ?? "")}
+                                    className={`link flex items-center w-full py-2 px-3 mb-0.5 ${location.pathname === link?.path ? "active" : ""
                                         }`}
                                 >
                                     {link?.icon}
