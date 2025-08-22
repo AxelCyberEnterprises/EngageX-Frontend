@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import Modal from '..';
 import { Input } from '@/components/ui/input';
 import { useEmailProgressReport } from '@/hooks/organization/useEmailProgressReport';
+import { toast } from 'sonner';
 
 const emailReportSchema = z.object({
   emails: z.array(z.string().email('Invalid email address')).min(1, 'At least one email is required'),
@@ -39,17 +40,16 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgI
   });
 
   const onSubmit: SubmitHandler<EmailReportFormValues> = (data) => {
-    console.log('Email Report sent to:', emailTags, data);
     emailReport.mutate(
       {
         recipients: data?.emails,
       },
       {
         onSuccess: (data) => {
-          console.log('Email sent successfully:', data);
+          toast.success('Email sent successfully:', data);
         },
         onError: (error) => {
-          console.error('Failed to send email:', error);
+          toast.error(`Failed to send email: ${error}`);
         },
       }
     );

@@ -42,8 +42,6 @@ const handleSubmit: SubmitHandler<EditQuestionValues> = (data) => {
     form.setValue("questionText", defaultValue || "");
   }, [defaultValue]);
 
-  console.log('question text to edit', defaultValue)
-
   return (
     <Modal show={show} onClose={handleClose} className="sm:w-full w-[90%] max-w-lg p-6">
       <div className="w-full">

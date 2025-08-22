@@ -14,7 +14,6 @@ import { useEffect } from "react";
 
 function SelectExistingSequence() {
   const sequences = useGetSequences();
-  console.log("sequences: ", sequences.data);
   const { existing_sequences, active_screen } = useSelector(
     (state: RootState) => state.performance_improvement
   );

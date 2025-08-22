@@ -11,7 +11,8 @@ import { ChevronRight, Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
 import SidebarBackBtn from '../../assets/images/svgs/back-sidebar.svg';
-const CollapsedLogo = "/assets/logoaltwhitev2.png";
+import CollapsedLogo from '../../assets/images/svgs/collapsed-logo.svg';
+
 import {
     Sidebar,
     SidebarContent,
@@ -26,6 +27,7 @@ import {
 import { useClickOutside } from "@/hooks/useClickoutside";
 import { useOrganizationList } from "@/hooks/organization";
 import { Skeleton } from "../ui/skeleton";
+import { AccessRestrictedModal } from "../modals/modalVariants/AccessRestrictedModal";
 
 type NavLink = {
     type: "default" | "collapsible";
@@ -44,6 +46,7 @@ const SideNav: React.FC = () => {
     const { state: sidebarState } = useSidebar();
     const [showAlternateSidebar, setShowAlternateSidebar] = useState(false);
     const sidebarRef = useRef<HTMLDivElement | null>(null);
+    const [showModal, setShowModal] = React.useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     useClickOutside(sidebarRef, sidebarRef, () => setShowAlternateSidebar(false));
 
@@ -1098,6 +1101,10 @@ const SideNav: React.FC = () => {
 
     return (
         <>
+            <AccessRestrictedModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+            />
             {!showAlternateSidebar ? (
                 <Sidebar
                     className={cn("side__nav relative mobile_color bg-branding-secondary text-white py-5", {

@@ -241,7 +241,7 @@ const QuestionBank: React.FC = () => {
         };
         return tabToVerticalMap[tab];
     };
-    console.log(organization);
+
     const { data: questionsResponse, isLoading, error, refetch } = useFetchEnterpriseQuestions(
         enterpriseId,
         currentPage,

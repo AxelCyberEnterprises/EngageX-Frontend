@@ -35,7 +35,6 @@ const IssueCreditsModal: React.FC<IssueCreditsModalProps> = ({ show, onClose, or
     const addCreditsMutation = useAddEnterpriseCredits(orgId);
 
     const onSubmit: SubmitHandler<IssueCreditsFormValues> = (data) => {
-        console.log("Form submitted with data:", data);
         addCreditsMutation.mutate(
             {
                 amount: Number(data.numberOfCredit),
