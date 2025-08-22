@@ -119,10 +119,13 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                 formData.append("favicon", values.favicon[0]);
             }
 
+            console.log("primary_color", formData.get("primary_color"))
+            console.log("secondary_color", formData.get("secondary_color"))
+
             updateEnterprise(
                 {
-                    primary_color: primaryColor,
-                    secondary_color: secondaryColor,
+                    primary_color: (formData.get("primary_color") as string) ?? "",
+                    secondary_color: (formData.get("secondary_color") as string) ?? "",
                 }
             , {
                 onSuccess: () => {
