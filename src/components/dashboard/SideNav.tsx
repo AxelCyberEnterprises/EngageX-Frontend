@@ -46,7 +46,7 @@ const SideNav: React.FC = () => {
     const { state: sidebarState } = useSidebar();
     const [showAlternateSidebar, setShowAlternateSidebar] = useState(false);
     const sidebarRef = useRef<HTMLDivElement | null>(null);
-    const [showModal, setShowModal] = React.useState(true);
+    const [showModal, setShowModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     useClickOutside(sidebarRef, sidebarRef, () => setShowAlternateSidebar(false));
 
