@@ -1,6 +1,6 @@
 import { apiGet, apiPatch, apiPost } from "@/lib/api";
 import { tokenManager } from "@/lib/utils";
-import { IEnterpriseUser } from "@/types/user";
+import { IEnterpriseUser, PaginatedResponse } from "@/types/user";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface UserProfile {
@@ -56,10 +56,13 @@ export function useFullUserProfile() {
 }
 
 export function useEnterpriseUsers() {
-    return useQuery({
-        queryKey: ["enterpriseUsers"],
-        queryFn: () => apiGet<IEnterpriseUser[]>("/enterprise/enterprise-users/"),
-    });
+  return useQuery<PaginatedResponse<IEnterpriseUser>>({
+    queryKey: ["enterpriseUsers"],
+    queryFn: () =>
+      apiGet<PaginatedResponse<IEnterpriseUser>>(
+        "/enterprise/enterprise-users/"
+      ),
+  });
 }
 
 export function useUpdateUserProfile(id: any) {
