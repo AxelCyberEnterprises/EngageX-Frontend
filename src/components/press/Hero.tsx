@@ -31,7 +31,7 @@ function Hero() {
                     <p className="text-[#667085] font-montserrat">
                         Our commitment to sustainability drives every layer of our AI pipeline:
                     </p>
-                    <ul className="text-[#667085] font-montserrat space-y-2 pl-6">
+                    <ul className="text-[#667085] font-montserrat space-y-2 max-sm:space-y-6 pl-6">
                         <li className="list-disc">
                             We prioritize refinement over reinvention, maximizing efficiency by improving what's already
                             world class.

@@ -41,20 +41,17 @@ export const trainingTypeOptions = [
     {
         name: "Media Training",
         value: "media_training",
-        description:
-            "Media training is an excellent tool that prepares major league sports professionals & athletes for public-facing media engagement.",
+      
     },
     {
         name: "Coach",
         value: "coach",
-        description:
-            "Rookie to Coach, Rookie to GM, Coach to Rookie training is designed to address all three aspects of improved communication skills whether you are preparing for new season, upcoming game, post game, draft or important event.",
+      
     },
     {
         name: "General Manager",
         value: "gm",
-        description:
-            "General Manager training prepares you for high-stakes communication scenarios including press conferences, player negotiations, trade discussions, and organizational leadership presentations that require strategic messaging and executive presence.",
+       
     },
 ];
 
