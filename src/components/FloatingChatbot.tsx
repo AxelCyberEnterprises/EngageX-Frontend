@@ -16,7 +16,7 @@ interface FaqItem {
 
 const faqs: FaqItem[] = [
     {
-        question: "What is the Session Improvement area in EngageX?",
+        question: "What is the Session Improvement area in EngageX®?",
         answer: "The Session Improvement area is your personal training zone designed to enhance your speaking performance using various improvement features. You begin by clicking Session Improvement in your dashboard, where you can access options to create or continue Performance Improvement Sequences.",
     },
     {

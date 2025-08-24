@@ -21,7 +21,7 @@ function Testimonial() {
     {
       svg: <TestimonialSVG />,
       text: "“The coolest thing I've seen in a while!”",
-      subtext: "- Katherine M. - VP of Entertainment & Fan Experience",
+      subtext: "- Katherine Miliken - VP of Entertainment & Fan Experience",
       color: "#C1C2B4",
       text_color: "",
     },
@@ -73,23 +73,34 @@ function Testimonial() {
 
       <div className="w-full overflow-x-auto">
         <div className="grid sm:grid-cols-3 grid-cols-1 gap-8 lg:pr-8">
-          {testimonials.map((testimonial, idx) => (
-            <div
-              key={idx}
-              className={`flex-shrink-0 w-full h-[15rem] flex flex-col justify-between py-10 items-center relative overflow-clip border`}
-            >
-              <div className="flex justify-center">
-                {[...Array(5)].map((_, i) => (
-                  <StarIcon key={i} fill="gray" stroke-width={0} />
-                ))}
-              </div>
-              
-              <p className="text-base text-center">{testimonial.text}</p>
-              <div className="flex gap-6 items-center">
-                <p className="text-xs"><span className="font-bold">{testimonial.subtext.split(' - ')[0]}</span> - {testimonial.subtext.split(' - ')[1]}</p>
-              </div>
-            </div>
-          ))}
+        {testimonials.map((testimonial, idx) => (
+  <div
+    key={idx}
+    className="flex-shrink-0 w-full md:h-[15rem] h-auto flex flex-col justify-between py-10 items-center relative md:overflow-clip overflow-visible border"
+  >
+    <div className="flex justify-center">
+      {[...Array(5)].map((_, i) => (
+        <StarIcon key={i} fill="gray" strokeWidth={0} />
+      ))}
+    </div>
+
+    <p className="text-base text-center px-4 text-pretty">
+      {testimonial.text}
+    </p>
+
+    {/* make this row stretch so the text can wrap */}
+    <div className="flex gap-2 items-center self-stretch px-4">
+      <p className="text-xs text-center mt-4 -mb-4 min-w-0 break-words whitespace-normal w-full">
+        <span className="font-bold">
+          {testimonial.subtext.split(' - ')[0]}
+        </span>
+        {" - "}
+        {testimonial.subtext.split(' - ')[1]}
+      </p>
+    </div>
+  </div>
+))}
+
         </div>
       </div>
 
