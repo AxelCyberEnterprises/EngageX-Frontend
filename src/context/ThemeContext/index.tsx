@@ -30,11 +30,13 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     // Update branding theme on mount
+    const secondaryColor = enterpriseUsers?.results[0]?.secondary_color;
+    const primaryColor = enterpriseUsers?.results[0]?.primary_color;
     useEffect(() => {
         if (profile) {
             setTheme({
-                primaryColor: profile.primary_color || defaultTheme.primaryColor,
-                secondaryColor: profile.secondary_color || defaultTheme.secondaryColor,
+                primaryColor: primaryColor || defaultTheme.primaryColor,
+                secondaryColor: secondaryColor || defaultTheme.secondaryColor,
                 logoUrl: profile.logo || Logo,
                 faviconUrl: profile.favicon || "/favicon.svg",
             });
@@ -49,8 +51,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     //     }
     // }, [theme.faviconUrl]);
 
-const secondaryColor = enterpriseUsers?.results[0]?.secondary_color;
-const primaryColor = enterpriseUsers?.results[0]?.primary_color;
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
             <style>
