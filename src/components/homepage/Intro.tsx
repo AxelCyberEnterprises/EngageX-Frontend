@@ -33,7 +33,7 @@ function Intro() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 mx-auto w-[80%] gap-[50px]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 mx-auto w-[80%] justify-items-center gap-[50px]">
           <div className="rounded-2xl py-10 w-[20rem] px-10 bg-gradient-to-b to-white from-alice-blue flex flex-col justify-center items-center text-center gap-y-9">
             <div className="p-4 rounded-xl bg-gunmetal w-max">
               <svg
