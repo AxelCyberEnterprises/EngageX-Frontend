@@ -76,7 +76,7 @@ function Benefits() {
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
                 Enterprise reports in English, Spanish, Mandarin.
               </p>
-              <p className="big h-[6rem] flex items-center">
+              <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
                 Strict privacy; models never train on your data.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
@@ -102,8 +102,8 @@ function Benefits() {
                 <div className="h-[6rem] flex items-center"><BenefitCancelSVG /></div>
                 <div className="h-[6rem] flex items-center"><BenefitCancelSVG /></div>
                 <div className="h-[6rem] flex items-center"><BenefitCancelSVG /></div>
-                <div className="h-[6rem] flex items-center"><BenefitCancelSVG /></div>
-                <div className="h-[6rem] flex items-center"><BenefitCancelSVG /></div>
+                <div className="h-[6rem] flex items-center"><BenefitCheckedSVG /></div>
+                <div className="h-[6rem] flex items-center"><BenefitCheckedSVG /></div>
               </div>
 
               {/* EngageX — all checks */}
