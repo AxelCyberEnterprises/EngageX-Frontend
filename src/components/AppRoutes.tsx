@@ -138,7 +138,7 @@ function AdminDashboardRoutes() {
             <Route path="session-history" element={<AdminSessionHistory />} />
             <Route path="session-history/:id" element={<AdminSessionReport />} />
             <Route path="organization">
-                <Route path="members">
+                <Route path={`members`}>
                     <Route index element={<Members />} />
                     <Route path="set-training-goal" element={<SetTrainingGoals />} />
                 </Route>

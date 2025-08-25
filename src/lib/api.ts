@@ -76,6 +76,68 @@ export const apiPost = async <T>(
     return res.data;
 };
 
+// Add this to your api.ts file - using fetch instead of axios
+export const apiPostFileFetch = async <T>(
+    url: string,
+    formData: FormData,
+    type: "default" | "secondary" = "default",
+): Promise<T> => {
+    const baseURL = type === "secondary" ? SECONDARY_API_BASE_URL : API_BASE_URL;
+    const fullUrl = `${baseURL}${url}`;
+    const accessToken = tokenManager.getToken();
+    
+    console.log('📤 Fetch File Upload Debug:');
+    console.log('Method: POST');
+    console.log('Full URL:', fullUrl);
+    console.log('FormData entries:');
+    for (const [key, value] of formData.entries()) {
+        console.log(`  ${key}:`, value);
+    }
+    console.log('Auth token present:', !!accessToken);
+
+    try {
+        const response = await fetch(fullUrl, {
+            method: 'POST',
+            headers: {
+                ...(accessToken && { Authorization: `Token ${accessToken}` }),
+                // Don't set Content-Type - let browser set it for FormData
+            },
+            body: formData,
+        });
+
+        console.log('✅ Fetch response status:', response.status);
+        console.log('✅ Fetch response ok:', response.ok);
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            console.log('❌ Error response data:', errorData);
+            
+            if (response.status === 401) {
+                const dispatch = store.dispatch;
+                dispatch(logout());
+            }
+            
+            const errorMessage = errorData.errorMessage || 
+                                convertArrayToString(errorData.message) || 
+                                errorData.error || 
+                                `Request failed with status ${response.status}`;
+            throw new Error(errorMessage);
+        }
+
+        const data = await response.json();
+        
+        if (data?.errorMessage) {
+            const errorMessage = data.errorMessage || convertArrayToString(data.message);
+            throw new Error(errorMessage);
+        }
+        
+        return data;
+    } catch (error) {
+        console.log('❌ Fetch failed:', error);
+        throw error;
+    }
+};
+
 export const apiDelete = async <T>(url: string, type: "default" | "secondary" = "default") => {
     const client = getAxiosInstance(type);
     const res = await client.delete<T>(url);
