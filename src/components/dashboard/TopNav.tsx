@@ -13,11 +13,16 @@ import { PRIMARY_COLOR } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { Play } from "lucide-react";
-import React from "react";
+import React, { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import FeatureWalkthrough from "../dialogs/dialog-contents/FeatureWalkthrough";
 import { Button } from "../ui/button";
+
+type Crumb = {
+    path: string;
+    query: string;
+};
 
 const TopNav: React.FC = () => {
     const {
@@ -27,12 +32,30 @@ const TopNav: React.FC = () => {
     const dispatch = useDispatch();
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
-    const pathnames = location.pathname.split("/").filter((path) => path);
-    const pathSegments = location.pathname.split("/").filter(Boolean);
-    const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
+
     const initials = `${profile?.first_name?.[0] ?? ""}${profile?.last_name?.[0] ?? ""}`.toUpperCase();
+
     const formatBreadcrumb = (segment: string) =>
         segment.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+
+    // Build breadcrumb objects
+    const breadcrumbs: Crumb[] = useMemo(() => {
+        const segments = location.pathname.split("/").filter(Boolean);
+        const searchParams = new URLSearchParams(location.search);
+
+        return segments.map((seg, _idx) => {
+            // Attach query if exists
+            let query = "";
+            if (searchParams.toString()) {
+                // Example logic: keep "id" param for first 2 segments
+                if (["dashboard", "member", "members"].includes(seg.toLowerCase())) {
+                    query = searchParams.toString();
+                }
+            }
+
+            return { path: seg, query };
+        });
+    }, [location.pathname, location.search]);
 
     if (location.pathname.includes("settings")) {
         return null;
@@ -44,17 +67,33 @@ const TopNav: React.FC = () => {
                 <SidebarTrigger className="-ml-1 hidden md:flex p-5 bg-branding-secondary hover:bg-branding-secondary/90 hover:text-white" />
                 <Breadcrumb>
                     <BreadcrumbList>
+                        {/* Dashboard always first */}
                         <BreadcrumbItem>
                             <BreadcrumbLink asChild>
-                                <Link to={`/dashboard/${lastSegment}`}>Dashboard</Link>
+                                <Link
+                                    to={`/dashboard/${breadcrumbs[1]?.path ?? ""}${
+                                        breadcrumbs[1]?.query ? `?${breadcrumbs[1].query}` : ""
+                                    }`}
+                                >
+                                    Dashboard
+                                </Link>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
 
-                        {pathnames.slice(2).map((segment, index) => {
-                            let routeTo = `/${pathnames.slice(0, index + 3).join("/")}`;
-                            const isLast = index === pathnames.slice(2).length - 1;
-                            if (segment.toLowerCase() === "organization") {
-                                routeTo = "/dashboard/admin/organization/dashboard";
+                        {breadcrumbs.slice(2).map((crumb, index) => {
+                            let routeTo = `/${breadcrumbs
+                                .slice(0, index + 3)
+                                .map((c) => c.path)
+                                .join("/")}`;
+
+                            if (crumb.query) {
+                                routeTo += `?${crumb.query}`;
+                            }
+
+                            const isLast = index === breadcrumbs.slice(2).length - 1;
+
+                            if (crumb.path.toLowerCase() === "organization") {
+                                routeTo = `/dashboard/admin/organization/overview${location.search}`;
                             }
 
                             return (
@@ -62,10 +101,10 @@ const TopNav: React.FC = () => {
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         {isLast ? (
-                                            <BreadcrumbPage>{formatBreadcrumb(segment)}</BreadcrumbPage>
+                                            <BreadcrumbPage>{formatBreadcrumb(crumb.path)}</BreadcrumbPage>
                                         ) : (
                                             <BreadcrumbLink asChild>
-                                                <Link to={routeTo}>{formatBreadcrumb(segment)}</Link>
+                                                <Link to={routeTo}>{formatBreadcrumb(crumb.path)}</Link>
                                             </BreadcrumbLink>
                                         )}
                                     </BreadcrumbItem>
@@ -75,6 +114,8 @@ const TopNav: React.FC = () => {
                     </BreadcrumbList>
                 </Breadcrumb>
             </div>
+
+            {/* Right section */}
             <div className="left__top__nav hidden lg:flex items-center">
                 <Button
                     onClick={() =>
@@ -98,7 +139,9 @@ const TopNav: React.FC = () => {
                 <div className="line h-4.5 mx-3 w-0.5 bg-gray"></div>
                 <div className="user__image">
                     <div
-                        className={`size-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 ${!profile?.profile_picture && "border border-[#D0D5DD] bg-[#D0D5DD]"}`}
+                        className={`size-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 ${
+                            !profile?.profile_picture && "border border-[#D0D5DD] bg-[#D0D5DD]"
+                        }`}
                     >
                         {profile?.profile_picture ? (
                             <img

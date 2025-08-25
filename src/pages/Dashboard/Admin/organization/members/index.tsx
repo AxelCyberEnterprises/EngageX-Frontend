@@ -4,10 +4,12 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const Members = () => {
     const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+    const enterpriseId = searchParams.get("id") ?? "";
 
     return (
         <section className="px-4 py-3 flex flex-col gap-y-6">
@@ -15,7 +17,7 @@ const Members = () => {
                 <h6>Members</h6>
                 <div className="flex items-center gap-2">
                     <Link
-                        to="./set-training-goal"
+                        to={`./set-training-goal?id=${enterpriseId}`}
                         className={cn(buttonVariants({ variant: "outline" }), "text-primary-blue border-primary-blue")}
                     >
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

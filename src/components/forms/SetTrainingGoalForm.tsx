@@ -12,6 +12,13 @@ import ControlledFieldWrapper from "../controlled-fields/field-wrapper";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { useCallback, useEffect } from "react";
+import { useSetTrainingGoal } from "@/hooks/organization/useSetTrainingGoal";
+import SuccessToast from "../ui/custom-toasts/success-toasts";
+import ErrorToast from "../ui/custom-toasts/error-toast";
+import { toast } from "sonner";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type FormType = z.infer<typeof SetTrainingGoalSchema>;
 
@@ -25,6 +32,11 @@ const roomOptions = [
 ];
 
 const SetTrainingGoalForm = () => {
+    const [searchParams] = useSearchParams();
+    const enterpriseId = searchParams.get("id") ?? "";
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+    
     const form = useForm<FormType>({
         resolver: zodResolver(SetTrainingGoalSchema),
         defaultValues: {
@@ -32,13 +44,53 @@ const SetTrainingGoalForm = () => {
         },
     });
 
-    const onSubmit = (data: FormType) => {
-        console.log(data);
-    };
+    useEffect(() => {
+        localStorage.setItem("enterprise", enterpriseId)
+    }, [enterpriseId])
+
+    const { mutate: setTrainingGoal, isPending } = useSetTrainingGoal({id: enterpriseId});
+
+    const handleSubmit = useCallback(
+    (values: FormType) => {
+
+        setTrainingGoal(
+          {
+            room: values.select_rooms,
+            target_sessions: values.number_of_sessions,
+            due_date: values.deadline.toDateString(),
+            enterprise: +enterpriseId
+          },
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries({
+                queryKey: ["enterprise-users", enterpriseId],
+              });
+              toast(
+                <SuccessToast
+                  heading="Training goal set successfully"
+                  description="Enterprise training goal has been set."
+                />
+              );
+              navigate(`/dashboard/admin/organization/members?id=${enterpriseId}`)
+            },
+            onError: (error) => {
+              console.error("Error uploading Excel: ", error);
+              toast(
+                <ErrorToast
+                  heading="Training goal couldn't be set"
+                  description="There was an issue processing setting enterprise training goal."
+                />
+              );
+            },
+          }
+        );
+    },
+    [setTrainingGoal, enterpriseId, queryClient]
+  );
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
                 <div className="grid gap-8 p-6 border border-bright-gray rounded-lg">
                     <ControlledFieldWrapper
                         control={form.control}
@@ -114,7 +166,7 @@ const SetTrainingGoalForm = () => {
                     />
                 </div>
                 <div className="flex justify-end">
-                    <Button type="submit" className="bg-green-sheen hover:bg-green-sheen/90">
+                    <Button type="submit" disabled={isPending} className="bg-green-sheen hover:bg-green-sheen/90">
                         Continue
                     </Button>
                 </div>

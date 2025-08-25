@@ -7,6 +7,7 @@ import { IMembers, membersColumns } from "./columns";
 import { useFetchEnterpriseUsers } from "@/hooks/organization/useFetchEnterpriseUsers";
 import { useLocation } from "react-router-dom";
 import { useMemo, useEffect } from "react";
+import { useFetchSingleOrganization } from "@/hooks";
 
 const MembersTable = () => {
     const routerLocation = useLocation();
@@ -14,6 +15,8 @@ const MembersTable = () => {
     const orgIdParam = searchParams.get("id");
     const orgId = orgIdParam ? Number(orgIdParam) : undefined;
     const { data, isLoading } = useFetchEnterpriseUsers(1, orgId);
+    const { data: organization, isLoading: _loading } = useFetchSingleOrganization(1);
+    console.log(organization)
 
     useEffect(() => {
         if (orgId) {

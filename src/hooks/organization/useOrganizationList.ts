@@ -18,6 +18,8 @@ export interface Organization {
   one_on_one_coaching_link: string | null;
   accessible_verticals: Vertical[];
   available_verticals: Vertical[];
+  primary_color: string | null;
+  secondary_color: string | null;
   created_at: string;
   updated_at: string;
 }

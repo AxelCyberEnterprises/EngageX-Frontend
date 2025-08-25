@@ -25,6 +25,7 @@ import { Input } from "../ui/input";
 import UploadMediaTrigger from "../widgets/UploadMediaTrigger";
 import { useUpdateEnterprise } from "@/hooks/organization/useUpdateEnterprise";
 import { useSearchParams } from "react-router-dom";
+import { useFetchSingleOrganization } from "@/hooks";
 
 type IBrandingFormProps = React.ComponentProps<"form">;
 export type FormType = z.infer<typeof BrandingSchema>;
@@ -61,6 +62,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
     const [searchParams] = useSearchParams();
     const enterpriseId = searchParams.get("id") ?? "";
     const { mutate: updateEnterprise, isPending } = useUpdateEnterprise(enterpriseId);
+    const { data: organization } = useFetchSingleOrganization(+enterpriseId);
 
     const { previews } = useSelector((state: RootState) => state.branding);
     const dispatch = useAppDispatch();
@@ -69,9 +71,19 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
         resolver: zodResolver(BrandingSchema),
         defaultValues: useMemo(
             () => ({ domain: "", primary_color: theme.primaryColor, secondary_color: theme.secondaryColor }),
-            [theme.primaryColor, theme.secondaryColor],
+            [organization],
         ),
     });
+
+    useEffect(() => {
+        if (organization) {
+            form.reset({
+                domain: "",
+                primary_color: organization.primary_color || theme.primaryColor,
+                secondary_color: organization.secondary_color || theme.secondaryColor,
+            });
+        }
+        }, [organization, form]);
     const companyLogo = useWatch({ control: form.control, name: "logo" });
     const favicon = useWatch({ control: form.control, name: "favicon" });
     const primaryColor = useWatch({ control: form.control, name: "primary_color" });

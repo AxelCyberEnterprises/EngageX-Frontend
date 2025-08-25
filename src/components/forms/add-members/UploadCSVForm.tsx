@@ -7,17 +7,75 @@ import { z } from "zod";
 import { Button } from "../../ui/button";
 import { Form } from "../../ui/form";
 import UploadMediaTrigger from "../../widgets/UploadMediaTrigger";
+import { useSearchParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useCreateEnterpriseUserBulk } from "@/hooks/organization/useCreateEnterpriseUserBulk";
+import { toast } from "sonner";
+import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
+import { useQueryClient } from "@tanstack/react-query";
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 
 type FormType = z.infer<typeof UploadCSVSchema>;
 
 const UploadCSVForm = () => {
+    const [searchParams] = useSearchParams();
+    const enterpriseId = searchParams.get("id") ?? "";
+    const [fileIsSelected, setFileIsSelected] = useState(false);
+    const queryClient = useQueryClient();
+    const { mutate: createEnterpriseUserBulk, isPending } = useCreateEnterpriseUserBulk();
     const form = useForm<FormType>({
         resolver: zodResolver(UploadCSVSchema),
     });
 
+    useEffect(() => {
+        if (form.getValues("csv")) {
+        setFileIsSelected(true);
+        } else {
+        setFileIsSelected(false);
+        }
+    }, [form.watch("csv")]);
+
+    const handleSubmit = useCallback(
+        (values: FormType) => {
+        if (!values.csv) return;
+
+        // Convert File -> Base64 before sending
+            createEnterpriseUserBulk(
+            {
+                enterprise_id: +enterpriseId,
+                file: values.csv[0],
+                send_invitation: true,
+            },
+            {
+                onSuccess: () => {
+                queryClient.invalidateQueries({
+                    queryKey: ["enterprise-users", enterpriseId],
+                });
+                toast(
+                    <SuccessToast
+                    heading="Upload successful"
+                    description="Users have been uploaded from the Excel file."
+                    />
+                );
+                },
+                onError: (error) => {
+                console.error("Error uploading Excel: ", error);
+                toast(
+                    <ErrorToast
+                    heading="Upload failed"
+                    description="There was an issue processing the Excel file."
+                    />
+                );
+                },
+            }
+            );
+        },
+        [createEnterpriseUserBulk, enterpriseId, queryClient]
+    );
+
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit((data) => console.log(data))}>
+            <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <UploadMediaTrigger
                     name="csv"
                     accept={{
@@ -35,12 +93,14 @@ const UploadCSVForm = () => {
                             <span>Drag and drop your CSV file here, or</span>
                             <span className="text-green-sheen cursor-pointer"> click to browse</span>
                         </p>
+                        {fileIsSelected && <p className="text-base">1 file selected</p>}
                     </div>
 
                     <Button
-                        type="button"
-                        disabled={false}
-                        isLoading={false}
+                        type="submit"
+                        onClick={(e) => e.stopPropagation()}
+                        disabled={!fileIsSelected || isPending}
+                        isLoading={isPending}
                         className={cn("font-normal bg-green-sheen hover:bg-green-sheen/90 transition-colors")}
                     >
                         <Upload />
