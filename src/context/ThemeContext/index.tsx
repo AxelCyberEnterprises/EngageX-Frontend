@@ -1,5 +1,5 @@
 const Logo = "/assets/logoaltwhitev2.png";
-import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
+import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import { useEffect, useState } from "react";
 import { defaultTheme, ThemeContext } from "./hook";
 import { Theme } from "./types";
@@ -9,7 +9,9 @@ const LOCAL_KEY = "branding";
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
-
+    const { data: enterpriseUsers } = useEnterpriseUsers();
+    console.log("enterpriseUsers", enterpriseUsers);
+    // console.log("enterpriseUsers", enterpriseUsers?.results[0]);
     const [theme, setThemeState] = useState<Theme>(() => {
         try {
             const cached = localStorage.getItem(LOCAL_KEY);
@@ -47,14 +49,16 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     //     }
     // }, [theme.faviconUrl]);
 
+const secondaryColor = enterpriseUsers?.results[0]?.secondary_color;
+const primaryColor = enterpriseUsers?.results[0]?.primary_color;
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
             <style>
                 {`
                     :root {
-                        --branding-primary: ${theme.primaryColor};
-                        --branding-secondary: ${theme.secondaryColor};
-                        --branding-secondary-foreground: ${theme.primaryColor};
+                        --branding-primary: ${primaryColor};
+                        --branding-secondary: ${secondaryColor};
+                        --branding-secondary-foreground: ${primaryColor};
                     }
                 `}
             </style>
