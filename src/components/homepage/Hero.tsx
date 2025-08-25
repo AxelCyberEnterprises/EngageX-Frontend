@@ -27,8 +27,7 @@ function Hero() {
           </p>
         </div>
         <h1 className="font-montreal text-center lg:text-left ">
-          Elevate your speaking skills with our immersive virtual practice
-          platform
+          Elevate your speaking skills with our emotionally resonant virtual practice platform.
         </h1>
         <p className="big text-dark-electric-blue font-light text-center lg:text-left">
           Prepare, persuade, perfect, and present with confidence in a realistic, AI-powered environment. 

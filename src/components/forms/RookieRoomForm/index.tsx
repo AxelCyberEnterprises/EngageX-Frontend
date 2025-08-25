@@ -26,11 +26,14 @@ import InputSpeakerNotesSection from "../form-sections/InputSpeakerNotesSection"
 import SessionNameSection from "../form-sections/SessionNameSection";
 import TimeAllocationSection from "../form-sections/TimeAllocationSection";
 import VirtualEnvironmentSection from "../form-sections/VirtualEnvironmentSection";
+// import { useEnterpriseUsers } from "@/hooks/settings";
 
 export type FormType = z.infer<typeof RookieRoomSchema>;
 
 const RookieRoomForm = () => {
     const dispatch = useAppDispatch();
+    // const { data } = useEnterpriseUsers();
+    // console.log("Enterprise users data:", { data });
 
     const form = useForm<FormType>({
         resolver: zodResolver(RookieRoomSchema),
@@ -141,7 +144,7 @@ const RookieRoomForm = () => {
                         label="Sports industry"
                         className="[&_[data-slot='form-label']]:font-normal [&_[data-slot='form-label']]:text-lg"
                         render={({ field }) => (
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={field.onChange} disabled defaultValue={field.value}>
                                 <SelectTrigger className="h-11 md:w-1/2 rounded-lg focus-visible:ring-0 shadow-none text-foreground data-[placeholder]:text-auro-metal-saurus [&_svg:not([class*='text-'])]:text-[#667085]">
                                     <SelectValue placeholder="Select the sport you play" />
                                 </SelectTrigger>
@@ -207,11 +210,9 @@ const RookieRoomForm = () => {
                             )}
                         />
                         <p className="text-sm text-[#070D17]">
-                            {
-                                trainingTypeOptions.find(
-                                    ({ value }) => value === form.watch("enterprise_settings.rookie_type"),
-                                )?.description
-                            }
+                            From Media to Rookie, Rookie to Coach, and Rookie to GM, the training is designed to address
+                            all three aspects of improved communication skills, whether you are preparing for a new
+                            season, an upcoming game, a post-game interview, the draft, or an important event.
                         </p>
                     </div>
                     <VirtualEnvironmentSection

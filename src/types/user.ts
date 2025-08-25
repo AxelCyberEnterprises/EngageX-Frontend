@@ -17,4 +17,7 @@ export interface IEnterpriseUser {
     is_admin: boolean;
     created_at: string;
     updated_at: string;
+    primary_color: string | null;
+    secondary_color: string | null;
+    
 }
