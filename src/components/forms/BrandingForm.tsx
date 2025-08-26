@@ -23,9 +23,16 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, Dr
 import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import UploadMediaTrigger from "../widgets/UploadMediaTrigger";
-import { useUpdateEnterprise } from "@/hooks/organization/useUpdateEnterprise";
+import { useUpdateBranding } from "@/hooks/organization/useUpdateBranding";
 import { useSearchParams } from "react-router-dom";
 import { useFetchSingleOrganization } from "@/hooks";
+
+type UpdateBrandingPayload = {
+    primary_color?: string;
+    secondary_color?: string;
+    logo?: File;
+    favicon?: File;
+};
 
 type IBrandingFormProps = React.ComponentProps<"form">;
 export type FormType = z.infer<typeof BrandingSchema>;
@@ -61,8 +68,10 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
     // const { mutate: updateProfile, isPending } = useUpdateUserProfile(fullProfile?.results?.[0]?.id);
     const [searchParams] = useSearchParams();
     const enterpriseId = searchParams.get("id") ?? "";
-    const { mutate: updateEnterprise, isPending } = useUpdateEnterprise(enterpriseId);
+    const { mutate: updateBranding, isPending } = useUpdateBranding(enterpriseId);
     const { data: organization } = useFetchSingleOrganization(+enterpriseId);
+
+    console.log("organization", organization);
 
     const { previews } = useSelector((state: RootState) => state.branding);
     const dispatch = useAppDispatch();
@@ -70,8 +79,12 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
     const form = useForm<FormType>({
         resolver: zodResolver(BrandingSchema),
         defaultValues: useMemo(
-            () => ({ domain: "", primary_color: theme.primaryColor, secondary_color: theme.secondaryColor }),
-            [organization],
+            () => ({
+                domain: "",
+                primary_color: organization?.primary_color || theme.primaryColor,
+                secondary_color: organization?.secondary_color || theme.secondaryColor,
+            }),
+            [organization, theme.primaryColor, theme.secondaryColor],
         ),
     });
 
@@ -82,8 +95,16 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                 primary_color: organization.primary_color || theme.primaryColor,
                 secondary_color: organization.secondary_color || theme.secondaryColor,
             });
+
+            // Set existing logo and favicon previews from organization data
+            dispatch(
+                setPreviews({
+                    companyLogoPreview: organization.logo || "",
+                    faviconPreview: organization.favicon || "",
+                }),
+            );
         }
-        }, [organization, form]);
+    }, [organization, form, theme.primaryColor, theme.secondaryColor, dispatch]);
     const companyLogo = useWatch({ control: form.control, name: "logo" });
     const favicon = useWatch({ control: form.control, name: "favicon" });
     const primaryColor = useWatch({ control: form.control, name: "primary_color" });
@@ -120,26 +141,19 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
 
     const handleSubmit = useCallback(
         (values: FormType) => {
-            const formData = new FormData();
-            formData.append("primary_color", values.primary_color!);
-            formData.append("secondary_color", values.secondary_color!);
+            const payload: UpdateBrandingPayload = {
+                primary_color: values.primary_color,
+                secondary_color: values.secondary_color,
+            };
 
             if (values.logo && values.logo[0]) {
-                formData.append("logo", values.logo[0]);
+                payload.logo = values.logo[0];
             }
             if (values.favicon && values.favicon[0]) {
-                formData.append("favicon", values.favicon[0]);
+                payload.favicon = values.favicon[0];
             }
 
-            console.log("primary_color", formData.get("primary_color"))
-            console.log("secondary_color", formData.get("secondary_color"))
-
-            updateEnterprise(
-                {
-                    primary_color: (formData.get("primary_color") as string) ?? "",
-                    secondary_color: (formData.get("secondary_color") as string) ?? "",
-                }
-            , {
+            updateBranding(payload, {
                 onSuccess: () => {
                     dispatch(setPreviews({ companyLogoPreview: "", faviconPreview: "" }));
                     toast(
@@ -160,7 +174,7 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                 },
             });
         },
-        [dispatch, updateEnterprise],
+        [dispatch, updateBranding],
     );
 
     useEffect(() => {
@@ -200,15 +214,21 @@ const BrandingForm = ({ className }: IBrandingFormProps) => {
                                 <span className="text-sm font-medium">{section.label}</span>
                                 <div className="flex flex-col items-center">
                                     <div className="md:h-25 h-35 w-full rounded-t-sm border-x border-t border-light-silver overflow-hidden">
-                                        {previews.companyLogoPreview && section.name === "logo" ? (
+                                        {(previews.companyLogoPreview && section.name === "logo") ||
+                                        (organization?.logo &&
+                                            section.name === "logo" &&
+                                            !previews.companyLogoPreview) ? (
                                             <img
-                                                src={previews.companyLogoPreview}
+                                                src={previews.companyLogoPreview || organization?.logo || ""}
                                                 alt=""
                                                 className="size-full object-contain"
                                             />
-                                        ) : previews.faviconPreview && section.name === "favicon" ? (
+                                        ) : (previews.faviconPreview && section.name === "favicon") ||
+                                          (organization?.favicon &&
+                                              section.name === "favicon" &&
+                                              !previews.faviconPreview) ? (
                                             <img
-                                                src={previews.faviconPreview}
+                                                src={previews.faviconPreview || organization?.favicon || ""}
                                                 alt=""
                                                 className="size-full object-contain"
                                             />

@@ -1,7 +1,8 @@
-export * from './useOrganizationList';
-export * from './useFetchEnterpriseUsers';
-export * from './useFetchSingleOrganization';
-export * from './useFetchTrainingGoals';
+export * from "./useOrganizationList";
+export { useDeleteOrganization } from "./useOrganizationList";
+export * from "./useFetchEnterpriseUsers";
+export * from "./useFetchSingleOrganization";
+export * from "./useFetchTrainingGoals";
 export * from "./useFetchEnterpriseUserProgress";
 export * from "./useAddEnterpriseCredits";
 export * from "./useFetchOrganizationStats";
@@ -9,3 +10,5 @@ export * from "./useUpdateEnterpriseVerticals";
 export * from "./useEnterpriseQuestions";
 export * from "./useEmailProgressReport";
 export * from "./useBookCoachingSession";
+export * from "./useUpdateBranding";
+export * from "./useDeleteEnterpriseUser";

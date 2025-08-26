@@ -4,12 +4,14 @@ import { OrganizationTableData } from "./data";
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickoutside";
 import { useNavigate } from "react-router-dom";
+import DeleteModal from "@/components/modals/modalVariants/DeleteModal";
+import { useDeleteOrganization } from "@/hooks/organization";
 
 interface ColumnProps {
-    onStatusChange?: (organizationId: string, newStatus: 'Active' | 'Blacklisted') => void;
+    onStatusChange?: (organizationId: string, newStatus: "Active" | "Blacklisted") => void;
 }
 
-export const createColumns = ({ onStatusChange }: ColumnProps = {}): ColumnDef<OrganizationTableData, any>[] => [
+export const createColumns = ({ onStatusChange }: ColumnProps = {}): ColumnDef<OrganizationTableData, unknown>[] => [
     {
         accessorKey: "name",
         header: () => (
@@ -19,7 +21,10 @@ export const createColumns = ({ onStatusChange }: ColumnProps = {}): ColumnDef<O
             const organization = row.original;
             const navigate = useNavigate();
             return (
-                <div onClick={() => navigate(`/dashboard/admin/organization/overview?id=${organization.id}`)} className="flex items-center gap-3">
+                <div
+                    onClick={() => navigate(`/dashboard/admin/organization/overview?id=${organization.id}`)}
+                    className="flex items-center gap-3"
+                >
                     <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
                         <img src={organization.logo} alt={organization.name} className="w-full h-full object-cover" />
                     </div>
@@ -72,11 +77,13 @@ export const createColumns = ({ onStatusChange }: ColumnProps = {}): ColumnDef<O
             useClickOutside(popupRef, buttonRef, () => {
                 setIsOpen(false);
             });
+            const deleteOrg = useDeleteOrganization();
+            const [showDelete, setShowDelete] = useState(false);
 
             const handleMenuClick = (event: React.MouseEvent, action: string) => {
                 event.stopPropagation();
                 const organizationId = row.original.id;
-                
+
                 switch (action) {
                     case "Blacklist":
                         onStatusChange?.(organizationId, "Blacklisted");
@@ -90,10 +97,13 @@ export const createColumns = ({ onStatusChange }: ColumnProps = {}): ColumnDef<O
                     case "Manage Members":
                         navigate(`/dashboard/admin/organization/members?id=${organizationId}`);
                         break;
+                    case "Delete":
+                        setShowDelete(true);
+                        break;
                     default:
                         console.log(`Action performed: ${action}`);
                 }
-                
+
                 setIsOpen(false);
             };
 
@@ -155,9 +165,28 @@ export const createColumns = ({ onStatusChange }: ColumnProps = {}): ColumnDef<O
                                         Activate
                                     </li>
                                 )}
+                                <li
+                                    className="px-4 py-2 text-red-600 hover:bg-red-50 cursor-pointer"
+                                    onClick={(e) => {
+                                        handleMenuClick(e, "Delete");
+                                    }}
+                                >
+                                    Delete
+                                </li>
                             </ul>
                         </div>
                     )}
+                    <DeleteModal
+                        show={showDelete}
+                        onClose={() => setShowDelete(false)}
+                        onDelete={() => {
+                            const organizationId = row.original.id;
+                            deleteOrg.mutate(Number(organizationId));
+                            setShowDelete(false);
+                        }}
+                        title="Delete Organization"
+                        message="Are you sure you want to delete this organization? This action cannot be undone."
+                    />
                 </div>
             );
         },

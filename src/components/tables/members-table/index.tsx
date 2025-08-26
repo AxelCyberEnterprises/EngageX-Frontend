@@ -6,8 +6,13 @@ import { DataTable } from "../data-table";
 import { IMembers, membersColumns } from "./columns";
 import { useFetchEnterpriseUsers } from "@/hooks/organization/useFetchEnterpriseUsers";
 import { useLocation } from "react-router-dom";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useFetchSingleOrganization } from "@/hooks";
+import { useDeleteMultipleEnterpriseUsers } from "@/hooks/organization";
+import DeleteModal from "@/components/modals/modalVariants/DeleteModal";
+import { toast } from "sonner";
+import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 
 const MembersTable = () => {
     const routerLocation = useLocation();
@@ -15,8 +20,10 @@ const MembersTable = () => {
     const orgIdParam = searchParams.get("id");
     const orgId = orgIdParam ? Number(orgIdParam) : undefined;
     const { data, isLoading } = useFetchEnterpriseUsers(1, orgId);
-    const { data: organization, isLoading: _loading } = useFetchSingleOrganization(1);
-    console.log(organization)
+    const { data: organization } = useFetchSingleOrganization(1);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const deleteUsers = useDeleteMultipleEnterpriseUsers();
+    console.log(organization);
 
     useEffect(() => {
         if (orgId) {
@@ -36,7 +43,7 @@ const MembersTable = () => {
                     year: "numeric",
                 }),
                 credit_used: 0,
-                assigned_goals: [user.user_type]
+                assigned_goals: [user.user_type],
             })) ?? []
         );
     }, [data?.results]);
@@ -50,6 +57,7 @@ const MembersTable = () => {
         // clearOnDefault: true,
     });
     const selectedCount = table.getFilteredSelectedRowModel().rows.length;
+    const selectedUserIds = table.getFilteredSelectedRowModel().rows.map((row) => Number(row.original.id));
 
     if (!orgId) {
         return <div className="text-sm text-muted-foreground">No organization selected.</div>;
@@ -78,7 +86,7 @@ const MembersTable = () => {
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button
+                                {/*<Button
                                     variant="outline"
                                     className="text-primary"
                                 >
@@ -98,7 +106,7 @@ const MembersTable = () => {
                                         />
                                     </svg>
                                     Edit
-                                </Button>
+                                </Button>*/}
                                 {/* <Button
                                     variant="outline"
                                     className="text-primary"
@@ -128,6 +136,8 @@ const MembersTable = () => {
                                 <Button
                                     variant="outline"
                                     className="text-crimson-red hover:text-crimson-red"
+                                    onClick={() => setShowDeleteModal(true)}
+                                    disabled={deleteUsers.isPending}
                                 >
                                     <svg
                                         width="20"
@@ -159,6 +169,36 @@ const MembersTable = () => {
                     </div>
                 )}
             </DataTable>
+
+            <DeleteModal
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onDelete={() => {
+                    deleteUsers.mutate(selectedUserIds, {
+                        onSuccess: () => {
+                            table.toggleAllRowsSelected(false);
+                            setShowDeleteModal(false);
+                            toast(
+                                <SuccessToast
+                                    heading="Users removed successfully"
+                                    description={`${selectedCount} user${selectedCount > 1 ? "s" : ""} have been removed from the organization.`}
+                                />,
+                            );
+                        },
+                        onError: (error) => {
+                            console.error("Error deleting users:", error);
+                            toast(
+                                <ErrorToast
+                                    heading="Error removing users"
+                                    description="An error occurred while removing the selected users. Please try again."
+                                />,
+                            );
+                        },
+                    });
+                }}
+                title="Remove Users"
+                message={`Are you sure you want to remove ${selectedCount} user${selectedCount > 1 ? "s" : ""} from this organization? This action cannot be undone.`}
+            />
         </>
     );
 };
