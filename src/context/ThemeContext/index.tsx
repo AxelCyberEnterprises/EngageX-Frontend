@@ -42,6 +42,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
             });
         }
     }, [profile]);
+    console.log(profile);
+    console.log(enterpriseUsers);
+
+    const preferredPrimaryColor = primaryColor || profile?.primary_color;
+    const preferredSecondaryColor = secondaryColor || profile?.secondary_color;
 
     // Update favicon when it changes
     // useEffect(() => {
@@ -56,9 +61,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
             <style>
                 {`
                     :root {
-                        --branding-primary: ${primaryColor};
-                        --branding-secondary: ${secondaryColor};
-                        --branding-secondary-foreground: ${primaryColor};
+                        --branding-primary: ${preferredPrimaryColor};
+                        --branding-secondary: ${preferredSecondaryColor};
+                        --branding-secondary-foreground: ${preferredSecondaryColor};
                     }
                 `}
             </style>
