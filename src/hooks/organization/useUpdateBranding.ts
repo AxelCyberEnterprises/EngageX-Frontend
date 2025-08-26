@@ -33,7 +33,7 @@ export function useUpdateBranding(id: string) {
             }
 
             const response = await apiPatchFileFetch<Organization>(
-                `/enterprise/enterprises/${id}/`,
+                `enterprise/enterprises/${id}/`,
                 formData,
                 "default",
             );
