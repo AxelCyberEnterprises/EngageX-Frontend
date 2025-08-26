@@ -18,7 +18,7 @@ export interface EnterpriseUser {
     id: number;
     user: User;
     user_id: number;
-    enterprise: number;
+    enterprise: Record<string, any>;
     enterprise_name: string;
     user_type: "rookie" | "general";
     is_admin: boolean;
