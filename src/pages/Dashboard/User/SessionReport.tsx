@@ -27,6 +27,7 @@ const PitchSessionReport: React.FC = () => {
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
+    console.log("profile", profile);
     const navigate = useNavigate();
     const {
         theme: { primaryColor },
@@ -292,6 +293,7 @@ const PitchSessionReport: React.FC = () => {
     const bookCoaching = useBookCoachingSession();
 
     const SpeakWithCoach = () => {
+        if(profile?.is_enterprise_user){
         bookCoaching.mutate(
           {
             id: bookingEnterprise?.id ? String(bookingEnterprise.id) : "",
@@ -319,8 +321,11 @@ const PitchSessionReport: React.FC = () => {
             },
           }
         );
-        setDialogOneOpen(false);
     }
+    setDialogOneOpen(false);
+
+}
+    
 
     return (
         <div>
@@ -381,7 +386,7 @@ const PitchSessionReport: React.FC = () => {
                                             </DialogDescription>
                                         </DialogHeader>
                                         <Link
-                                            to="https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching"
+                                            to={profile?.is_enterprise_user ? (bookingEnterprise as any)?.one_on_one_coaching_link : "https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching"}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="bg-branding-primary hover:bg-branding-primary/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"

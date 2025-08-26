@@ -10,8 +10,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const { data: enterpriseUsers } = useEnterpriseUsers();
-    console.log("enterpriseUsers", enterpriseUsers);
-    // console.log("enterpriseUsers", enterpriseUsers?.results[0]);
     const [theme, setThemeState] = useState<Theme>(() => {
         try {
             const cached = localStorage.getItem(LOCAL_KEY);
