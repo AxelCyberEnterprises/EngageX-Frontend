@@ -55,6 +55,7 @@ export function useFullUserProfile() {
     });
 }
 
+
 export function useEnterpriseUsers() {
   return useQuery<PaginatedResponse<IEnterpriseUser>>({
     queryKey: ["enterpriseUsers"],
@@ -62,6 +63,23 @@ export function useEnterpriseUsers() {
       apiGet<PaginatedResponse<IEnterpriseUser>>(
         "/enterprise/enterprise-users/"
       ),
+  });
+  
+}
+export interface Enterprise {
+  name: string;
+  enterprise_type: "sport" | "general";
+  sport_type?: "nfl" | "nba" | "wnba" | "mlb" | null;
+  primary_color: string|null; // hex format (#RRGGBB)
+  secondary_color: string; // hex format (#RRGGBB)
+  is_active: boolean;
+  one_on_one_coaching_link?: string ; // URI
+  accessible_verticals: string[]; // list of RoomEnum IDs (assuming string IDs)
+}
+export function useBookCoachingSession() {
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Enterprise }) =>
+      apiPost(`/enterprise/enterprises/${id}/book-coaching-session/`, data),
   });
 }
 

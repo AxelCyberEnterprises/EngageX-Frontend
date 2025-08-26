@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { useGetSessionReport, useRequestSessionVideo } from "@/hooks/sessions";
-import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
+import { useBookCoachingSession, useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import { PRIMARY_COLOR } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -32,7 +32,7 @@ const PitchSessionReport: React.FC = () => {
         theme: { primaryColor },
     } = useTheme();
     const { id } = useParams();
-
+    const { data: enterpriseUsers } = useEnterpriseUsers();
     const { data, isPending, refetch } = useGetSessionReport(id);
     const { mutate, isPending: requestingVideo, isSuccess: requestedSuccessfully } = useRequestSessionVideo(id);
     const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
@@ -286,6 +286,41 @@ const PitchSessionReport: React.FC = () => {
             newSessionNavigate = `../public-speaking`;
             break;
     }
+    console.log(enterpriseUsers?.results[0]?.enterprise)
+    const bookingEnterprise = enterpriseUsers?.results[0]?.enterprise
+
+    const bookCoaching = useBookCoachingSession();
+
+    const SpeakWithCoach = () => {
+        bookCoaching.mutate(
+          {
+            id: bookingEnterprise?.id ? String(bookingEnterprise.id) : "",
+            data: {
+              name: bookingEnterprise?.name ?? "",
+              enterprise_type: (bookingEnterprise?.enterprise_type === "general" || bookingEnterprise?.enterprise_type === "sport")
+                ? bookingEnterprise.enterprise_type
+                : "general",
+              sport_type: ["nfl", "nba", "wnba", "mlb"].includes(bookingEnterprise?.sport_type as "nfl" | "nba" | "wnba" | "mlb" | undefined ?? "")
+                ? bookingEnterprise?.sport_type as "nfl" | "nba" | "wnba" | "mlb" | null
+                : null,
+              primary_color: (bookingEnterprise as any)?.primary_color ?? "default-color", // Provide a default string value
+              secondary_color: (bookingEnterprise as any)?.secondary_color,
+              is_active: (bookingEnterprise as any)?.is_active,
+              one_on_one_coaching_link: (bookingEnterprise as any)?.one_on_one_coaching_link,
+              accessible_verticals: (bookingEnterprise as any)?.accessible_verticals,
+            },
+          },
+          {
+            onSuccess: (res) => {
+              console.log("Coaching session booked successfully", res);
+            },
+            onError: (err) => {
+              console.error("Booking failed", err);
+            },
+          }
+        );
+        setDialogOneOpen(false);
+    }
 
     return (
         <div>
@@ -350,7 +385,7 @@ const PitchSessionReport: React.FC = () => {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="bg-branding-primary hover:bg-branding-primary/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
-                                            onClick={() => setDialogOneOpen(false)}
+                                            onClick={() => SpeakWithCoach()}
                                         >
                                             Speak with A Coach
                                         </Link>
