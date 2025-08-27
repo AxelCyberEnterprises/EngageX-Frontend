@@ -7,12 +7,13 @@ import WNBARoom from "@/assets/images/jpegs/wnba-room.jpg";
 import BoardRoom1 from "@/assets/images/webps/boardroom-1.webp";
 import BoardRoom2 from "@/assets/images/webps/boardroom-2.webp";
 import ConferenceRoom from "@/assets/images/webps/conference-room.webp";
+import coachingImage from "@/assets/images/jpegs/coaching-image.jpg"
 import PitchStudio from "@/assets/images/webps/pitch-studio.webp";
 import RookieRoom from "@/assets/images/webps/rookie-room.webp";
 
 export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
 
-export const coachingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
+export const coachingVEOptions = [{ name: "Conference Room", value: "conference_room", src: coachingImage }];
 
 export const pitchPracticeVEOptions = [{ name: "Pitch Studio", value: "pitch_studio", src: PitchStudio }];
 

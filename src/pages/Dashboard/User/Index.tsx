@@ -19,6 +19,7 @@ import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
+import coachingImage from "@/assets/images/jpegs/coaching-image.jpg";
 
 interface DashboardData {
     latest_session_dict: {
@@ -181,9 +182,11 @@ const UserDashboardHome: React.FC = () => {
             {/* cards */}
             <div className="flex flex-wrap -mx-2 items-stretch">
                 {isEnterpriseUser && enterpriseUserType === "general" ? (
-                    <DashboardCard bgImage={speakingBg} className="block">
+                    <DashboardCard bgImage={coachingImage} className="block">
                         <Link to="/dashboard/user/the-coaching-room">
-                            <button type="button" className="p-3 w-full rounded-md">
+                            <button type="button"  className={cn("p-3 w-full rounded-md", {
+                                    "bg-branding-primary": primaryColor !== PRIMARY_COLOR,
+                                })}>
                                 Start Coaching
                             </button>
                         </Link>
