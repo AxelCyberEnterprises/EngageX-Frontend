@@ -148,7 +148,7 @@ const RookieRoomForm = () => {
                                 <SelectTrigger className="h-11 md:w-1/2 rounded-lg focus-visible:ring-0 shadow-none text-foreground data-[placeholder]:text-auro-metal-saurus [&_svg:not([class*='text-'])]:text-[#667085]">
                                     <SelectValue placeholder="Select the sport you play" />
                                 </SelectTrigger>
-                                <SelectContent className="border-none">
+                                <SelectContent className="border-none z-[9999]" position="popper" sideOffset={4}>
                                     {sportsOptions.map(({ name, value }, index) => (
                                         <SelectItem
                                             key={value + index}
