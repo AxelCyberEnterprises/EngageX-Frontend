@@ -276,7 +276,7 @@ const UserDashboardHome: React.FC = () => {
             {!isProfileLoading && enterpriseUserType !== "rookie" && (
                 <div
                 className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
-                style={{ backgroundImage: url(${improveBg}) }}
+                style={{ backgroundImage: 'url(' + improveBg + ')' }}
                 >
                     <h6 className="pb-3">Improve past session</h6>
                     <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
