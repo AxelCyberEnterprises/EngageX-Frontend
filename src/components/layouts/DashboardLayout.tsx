@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
                         <TopNav />
 
                         {/* Main Content Area with Outlet */}
-                        <div className="flex-1 overflow-y-auto scrollbar-hide">{children}</div>
+                        <div className="flex-1 overflow-y-auto overflow-x-visible scrollbar-hide">{children}</div>
                         <FloatingChatbot />
                     </SidebarInset>
                 </div>
