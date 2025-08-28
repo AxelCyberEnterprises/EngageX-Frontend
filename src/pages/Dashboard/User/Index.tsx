@@ -19,6 +19,7 @@ import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
 import improveBg from "../../../assets/images/pngs/improve-bg.png";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
+import coachingImage from "@/assets/images/jpegs/coaching-image.jpg";
 
 interface DashboardData {
     latest_session_dict: {
@@ -63,6 +64,9 @@ const UserDashboardHome: React.FC = () => {
     const {
         theme: { primaryColor },
     } = useTheme();
+
+    const isProfileLoading = profile == null;
+
 
     const cardsData = [
         {
@@ -168,10 +172,9 @@ const UserDashboardHome: React.FC = () => {
     }, [newChartData]);
 
     // --- JSX and rest of logic ---
-    if (isDashboardDataLoading) {
-        return <UserDashboardSkeleton />;
+    if (isDashboardDataLoading || isProfileLoading) {
+    return <UserDashboardSkeleton />;
     }
-
     return (
         <div className="user__dashboard__index p-4 md:px-8">
             {(score ?? 0) > 10 && (score ?? 0) <= 99 && (
@@ -181,9 +184,11 @@ const UserDashboardHome: React.FC = () => {
             {/* cards */}
             <div className="flex flex-wrap -mx-2 items-stretch">
                 {isEnterpriseUser && enterpriseUserType === "general" ? (
-                    <DashboardCard bgImage={speakingBg} className="block">
+                    <DashboardCard bgImage={coachingImage} className="block">
                         <Link to="/dashboard/user/the-coaching-room">
-                            <button type="button" className="p-3 w-full rounded-md">
+                            <button type="button"  className={cn("p-3 w-full rounded-md", {
+                                    "bg-branding-primary": primaryColor !== PRIMARY_COLOR,
+                                })}>
                                 Start Coaching
                             </button>
                         </Link>
@@ -268,20 +273,20 @@ const UserDashboardHome: React.FC = () => {
             </div>
 
             {/* improve past session  */}
-            {enterpriseUserType !== "rookie" && (
+            {!isProfileLoading && enterpriseUserType !== "rookie" && (
                 <div
-                    className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
-                    style={{ backgroundImage: `url(${improveBg})` }}
+                className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
+                style={{ backgroundImage: 'url(' + improveBg + ')' }}
                 >
                     <h6 className="pb-3">Improve past session</h6>
                     <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
-                        Select any of your previous sessions to continue practicing with the same setup, allowing you to
-                        focus directly on enhancing your skills in specific areas.
+                    Select any of your previous sessions to continue practicing with the same setup, allowing you to
+                    focus directly on enhancing your skills in specific areas.
                     </p>
                     <Link to="performance-improvement">
-                        <Button type="button" className="bg-branding-secondary hover:bg-branding-secondary/90 py-3">
-                            Improve Session
-                        </Button>
+                    <Button type="button" className="bg-branding-secondary hover:bg-branding-secondary/90 py-3">
+                    Improve Session
+                    </Button>
                     </Link>
                 </div>
             )}

@@ -2,8 +2,8 @@ import { createContext, useContext } from "react";
 import { Theme } from "./types";
 
 export const defaultTheme: Theme = {
-    primaryColor: "#262b3a",
-    secondaryColor: "#10161e",
+    primaryColor: "",
+    secondaryColor: "",
             logoUrl: "/assets/logoaltwhitev2.png",
     faviconUrl: "/favicon.svg",
 };
