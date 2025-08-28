@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, X } from "lucide-react";
+import { X } from "lucide-react";
 import Modal from "..";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useFetchSingleOrganization } from "@/hooks";
 
 const createQuestionSchema = z.object({
     questionText: z.string().min(1, "Question text is required"),
@@ -35,9 +36,9 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
     isLoading = false,
     activeTab,
 }) => {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownButtonRef = useRef<HTMLButtonElement>(null);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    // const dropdownRef = useRef<HTMLDivElement>(null);
     const form = useForm<CreateQuestionValues>({
         resolver: zodResolver(createQuestionSchema),
         defaultValues: {
@@ -53,23 +54,28 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
         });
     };
 
-    const handleMemberSelect = (id: string) => {
-        form.setValue("sportType", id === "none" ? "" : id);
-        setIsDropdownOpen(false);
-    };
+    // const handleMemberSelect = (id: string) => {
+    //     form.setValue("sportType", id === "none" ? "" : id);
+    //     setIsDropdownOpen(false);
+    // };
 
     const handleClose = () => {
         form.reset();
         onClose();
     };
 
-    const sportOptions = [
-        { id: "none", name: "None" },
-        { id: "nfl", name: "NFL" },
-        { id: "nba", name: "NBA" },
-        { id: "wnba", name: "WNBA" },
-        { id: "mlb", name: "MLB" },
-    ];
+    // const sportOptions = [
+    //     { id: "none", name: "None" },
+    //     { id: "nfl", name: "NFL" },
+    //     { id: "nba", name: "NBA" },
+    //     { id: "wnba", name: "WNBA" },
+    //     { id: "mlb", name: "MLB" },
+    // ];
+
+    const searchParams = new URLSearchParams(location.search);
+    const enterpriseId = Number(searchParams.get("id"));
+
+    const { data: organization } = useFetchSingleOrganization(enterpriseId);
 
     return (
         <Modal show={show} onClose={handleClose} className="sm:w-full w-[90%] max-w-lg p-6">
@@ -122,7 +128,7 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
                                             <button
                                                 ref={dropdownButtonRef}
                                                 type="button"
-                                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                                // onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                                 className="w-full px-4 py-[14px] text-left bg-white border border-[#D1D5DB] z-20 rounded-lg flex items-center justify-between text-sm"
                                                 disabled={isLoading}
                                             >
@@ -133,12 +139,11 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
                                                             : "text-[#6B7186]"
                                                     }
                                                 >
-                                                    {sportOptions.find((sport) => sport.id === (field.value || "none"))
-                                                        ?.name || "Select sport"}
+                                                    {organization ? organization.sport_type_display : "N/A"}
                                                 </span>
-                                                <ChevronDown className="w-4 h-4 text-gray-400" />
+                                                {/*<ChevronDown className="w-4 h-4 text-gray-400" />*/}
                                             </button>
-                                            <div className="relative">
+                                            {/*<div className="relative">
                                                 {isDropdownOpen && (
                                                     <div
                                                         ref={dropdownRef}
@@ -156,7 +161,7 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
                                                         ))}
                                                     </div>
                                                 )}
-                                            </div>
+                                            </div>*/}
                                         </div>
                                     </FormControl>
                                     <FormMessage />

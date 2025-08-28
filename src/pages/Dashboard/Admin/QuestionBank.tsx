@@ -8,7 +8,7 @@ import {
     usePatchEnterpriseQuestion,
     useDeleteEnterpriseQuestion,
     EnterpriseQuestion,
-    useFetchSingleOrganization
+    useFetchSingleOrganization,
 } from "@/hooks"; // Adjust path as needed
 import { Skeleton } from "@/components/ui/skeleton";
 import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
@@ -80,8 +80,9 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
     return (
         <div
             ref={ref}
-            className={`flex flex-col sm:flex-row items-start sm:items-center border border-[#EAECF0] rounded-xl mb-4 cursor-pointer hover:bg-[#F9FAFB]/50 transition-colors ${isSelected ? "bg-[#E0F2FE]" : ""
-                } ${isDragging ? "opacity-50" : ""}`}
+            className={`flex flex-col sm:flex-row items-start sm:items-center border border-[#EAECF0] rounded-xl mb-4 cursor-pointer hover:bg-[#F9FAFB]/50 transition-colors ${
+                isSelected ? "bg-[#E0F2FE]" : ""
+            } ${isDragging ? "opacity-50" : ""}`}
         >
             {/* Mobile Layout */}
             <div className="flex w-full sm:hidden p-4">
@@ -232,29 +233,34 @@ const QuestionBank: React.FC = () => {
     // API hooks
     const updateQuestionMutation = usePatchEnterpriseQuestion(enterpriseId);
     const deleteQuestionMutation = useDeleteEnterpriseQuestion(enterpriseId);
-    const { data: organization } = useFetchSingleOrganization(enterpriseId);    
+    const { data: organization } = useFetchSingleOrganization(enterpriseId);
+
     const getVerticalFromTab = (tab: string) => {
         const tabToVerticalMap: Record<string, string> = {
             "Media Training": "media_training",
-            "Coach": "coach",
-            "General Manager": "gm"
+            Coach: "coach",
+            "General Manager": "gm",
         };
         return tabToVerticalMap[tab];
     };
 
-    const { data: questionsResponse, isLoading, error, refetch } = useFetchEnterpriseQuestions(
+    const {
+        data: questionsResponse,
+        isLoading,
+        error,
+        refetch,
+    } = useFetchEnterpriseQuestions(
         enterpriseId,
         currentPage,
         getVerticalFromTab(activeTab),
-        organization?.sport_type && organization?.sport_type
+        organization?.sport_type && organization?.sport_type,
     );
-
 
     useEffect(() => {
         if (questionsResponse?.results) {
             const questionsWithOrder: EnterpriseQuestion[] = questionsResponse.results.map((q, index) => ({
                 ...q,
-                order: q.order || index + 1
+                order: q.order || index + 1,
             }));
             setLocalQuestions(questionsWithOrder);
         }
@@ -278,8 +284,8 @@ const QuestionBank: React.FC = () => {
         const getVerticalFromTab = (tab: string) => {
             const tabToVerticalMap: Record<string, string> = {
                 "Media Training": "media_training",
-                "Coach": "coach",
-                "General Manager": "gm"
+                Coach: "coach",
+                "General Manager": "gm",
             };
             return tabToVerticalMap[tab];
         };
@@ -322,9 +328,7 @@ const QuestionBank: React.FC = () => {
     };
 
     const handleDeleteSelected = async () => {
-        const deletePromises = Array.from(selectedRowIds).map(id =>
-            deleteQuestionMutation.mutateAsync(id)
-        );
+        const deletePromises = Array.from(selectedRowIds).map((id) => deleteQuestionMutation.mutateAsync(id));
 
         try {
             await Promise.all(deletePromises);
@@ -404,8 +408,8 @@ const QuestionBank: React.FC = () => {
         }));
 
         // Update the local state
-        const allQuestionsUpdated = localQuestions.map(q => {
-            const updated = updatedQuestions.find(uq => uq.id === q.id);
+        const allQuestionsUpdated = localQuestions.map((q) => {
+            const updated = updatedQuestions.find((uq) => uq.id === q.id);
             return updated || q;
         });
         setLocalQuestions(allQuestionsUpdated);
@@ -414,7 +418,7 @@ const QuestionBank: React.FC = () => {
         try {
             await updateQuestionMutation.mutateAsync({
                 id: movedItem.id,
-                data: { order: toIndex + 1 }
+                data: { order: toIndex + 1 },
             });
         } catch (error) {
             console.error("Error updating question order:", error);
@@ -529,10 +533,11 @@ const QuestionBank: React.FC = () => {
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`bg-[#fff] pb-3 px-1 text-sm font-medium transition-colors relative border-b-2 rounded-none whitespace-nowrap flex-shrink-0 ${activeTab === tab
-                                    ? "text-[#10B981] border-[#10B981]"
-                                    : "text-[#101828] border-transparent hover:text-[#101828]"
-                                    }`}
+                                className={`bg-[#fff] pb-3 px-1 text-sm font-medium transition-colors relative border-b-2 rounded-none whitespace-nowrap flex-shrink-0 ${
+                                    activeTab === tab
+                                        ? "text-[#10B981] border-[#10B981]"
+                                        : "text-[#101828] border-transparent hover:text-[#101828]"
+                                }`}
                             >
                                 {tab}
                             </button>
@@ -543,12 +548,16 @@ const QuestionBank: React.FC = () => {
                     {showSelectionBar && (
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-[#F0F9FF] border border-[#0EA5E9] rounded-lg px-4 py-3 mt-6 gap-3">
                             <div className="flex flex-wrap items-center gap-4">
-                                <span className="text-[#0284C7] font-medium text-sm">{selectedRowIds.size} Selected</span>
+                                <span className="text-[#0284C7] font-medium text-sm">
+                                    {selectedRowIds.size} Selected
+                                </span>
                                 <button
                                     onClick={handleSelectAll}
                                     className="bg-[#fff] text-[#64BA9F] text-sm hover:underline"
                                 >
-                                    {selectedRowIds.size === localQuestions.length ? "Deselect all" : "Select all questions"}
+                                    {selectedRowIds.size === localQuestions.length
+                                        ? "Deselect all"
+                                        : "Select all questions"}
                                 </button>
                                 <button
                                     onClick={() => handleOpenDeleteModal()}
@@ -559,7 +568,10 @@ const QuestionBank: React.FC = () => {
                                     {deleteQuestionMutation.isPending ? "Deleting..." : "Delete"}
                                 </button>
                             </div>
-                            <button onClick={handleCloseSelectionBar} className="bg-[#fff] p-1 hover:bg-white/50 rounded self-end sm:self-center">
+                            <button
+                                onClick={handleCloseSelectionBar}
+                                className="bg-[#fff] p-1 hover:bg-white/50 rounded self-end sm:self-center"
+                            >
                                 <X className="w-4 h-4 text-[#0284C7]" />
                             </button>
                         </div>
@@ -569,15 +581,10 @@ const QuestionBank: React.FC = () => {
                     <div className="mt-6 overflow-hidden">
                         {sortedQuestions.length === 0 ? (
                             <div className="p-8 text-center text-[#667085] flex flex-col items-center">
-                                <div
-                                    className="justify-center items-center w-full mx-auto py-[5%] flex-col gap-4 text-center"
-                                >
+                                <div className="justify-center items-center w-full mx-auto py-[5%] flex-col gap-4 text-center">
                                     <img src={emptyStateImage} className="w-28 mx-auto" alt="empty state logo" />
                                     <p className="text-lg font-medium">No questions found for {activeTab}. </p>
-                                    <p
-                                        onClick={handleNewQuestion}
-                                        className="text-[#10B981] ml-1 cursor-pointer mt-4"
-                                    >
+                                    <p onClick={handleNewQuestion} className="text-[#10B981] ml-1 cursor-pointer mt-4">
                                         Create your first question.
                                     </p>
                                 </div>
@@ -606,7 +613,7 @@ const QuestionBank: React.FC = () => {
                             </div>
                             <div className="flex items-center justify-center gap-2 pr-[10%]">
                                 <Button
-                                    onClick={() => setCurrentPage(prev => prev - 1)}
+                                    onClick={() => setCurrentPage((prev) => prev - 1)}
                                     disabled={currentPage === 1}
                                     className="px-3 py-1 text-sm text-[#667085] hover:text-[#10B981] bg-transparent hover:bg-transparent shadow-none"
                                 >
@@ -616,20 +623,18 @@ const QuestionBank: React.FC = () => {
                                     {currentPage}
                                 </span>
                                 <Button
-                                    onClick={() => setCurrentPage(prev => prev + 1)}
+                                    onClick={() => setCurrentPage((prev) => prev + 1)}
                                     disabled={currentPage >= pageCount}
                                     className="px-3 py-1 text-sm text-[#667085] hover:text-[#10B981] bg-transparent hover:bg-transparent shadow-none"
                                 >
                                     Next
                                 </Button>
-
                             </div>
                         </div>
                     )}
                 </div>
             </DndProvider>
         </>
-
     );
 };
 

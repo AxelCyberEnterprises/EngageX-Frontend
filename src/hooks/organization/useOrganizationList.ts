@@ -12,6 +12,7 @@ export interface Organization {
     domain: string;
     enterprise_type: string;
     sport_type: string | null;
+    sport_type_display: string | null;
     logo: string | null;
     favicon: string | null;
     is_active: boolean;

@@ -21,6 +21,8 @@ export interface EnterpriseUser {
     enterprise: Record<string, any>;
     enterprise_name: string;
     user_type: "rookie" | "general";
+    progress: Record<string, any>;
+    credits_used: number;
     is_admin: boolean;
     created_at: string;
     updated_at: string;
