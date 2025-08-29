@@ -18,6 +18,7 @@ import { EditQuestionModal } from "@/components/modals/modalVariants/EditQuestio
 import { useCreateEnterpriseQuestion } from "@/hooks";
 import { CreateEnterpriseQuestionData } from "@/hooks/organization/useCreateEnterpriseQuestion";
 import { CreateQuestionFormData, CreateQuestionModal } from "@/components/modals/modalVariants/CreateQuestionsModal";
+import { useEnterpriseUsers } from "@/hooks/settings";
 
 const ItemTypes = {
     QUESTION_ITEM: "question_item",
@@ -233,6 +234,9 @@ const QuestionBank: React.FC = () => {
     const updateQuestionMutation = usePatchEnterpriseQuestion(enterpriseId);
     const deleteQuestionMutation = useDeleteEnterpriseQuestion(enterpriseId);
     const { data: organization } = useFetchSingleOrganization(enterpriseId);    
+     const { data: enterpriseUsers } = useEnterpriseUsers();
+     const sportType = enterpriseUsers?.results[0]?.enterprise.sport_type
+
     const getVerticalFromTab = (tab: string) => {
         const tabToVerticalMap: Record<string, string> = {
             "Media Training": "media_training",
@@ -353,7 +357,7 @@ const QuestionBank: React.FC = () => {
         try {
             await updateQuestionMutation.mutateAsync({
                 id: editingQuestion.id,
-                data: { question_text: questionText },
+                data: { question_text: questionText, sport_type: sportType || null , vertical: getVerticalFromTab(activeTab) },
             });
             setShowEditModal(false);
             setEditingQuestion(null);

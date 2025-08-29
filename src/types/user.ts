@@ -28,6 +28,7 @@ export interface IEnterpriseUser {
     domain: string;
     enterprise_type: string;
     sport_type: string;
+    favicon: string | null;
   };
 
   progress: {

@@ -287,7 +287,6 @@ const PitchSessionReport: React.FC = () => {
             newSessionNavigate = `../public-speaking`;
             break;
     }
-    console.log(enterpriseUsers?.results[0]?.enterprise)
     const bookingEnterprise = enterpriseUsers?.results[0]?.enterprise
 
     const bookCoaching = useBookCoachingSession();
@@ -325,7 +324,7 @@ const PitchSessionReport: React.FC = () => {
     setDialogOneOpen(false);
 
 }
-    
+    const initials = `${profile?.first_name?.[0] ?? ""}${profile?.last_name?.[0] ?? ""}`.toUpperCase();
 
     return (
         <div>
@@ -421,11 +420,23 @@ const PitchSessionReport: React.FC = () => {
 
                             <div className="flex lg:me-5 mt-6 lg:mt-0">
                                 <div className="flex pe-5 me-5 border-r-2 border-bright-gray">
-                                    <img
-                                        src={profile?.profile_picture}
-                                        alt="avatar"
-                                        className="w-11 h-11 rounded-full object-cover"
-                                    />
+                                <div className="user__image">
+                    <div
+                        className={`size-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 ${
+                            !profile?.profile_picture && "border border-[#D0D5DD] bg-[#D0D5DD]"
+                        }`}
+                    >
+                        {profile?.profile_picture ? (
+                            <img
+                                src={profile?.profile_picture}
+                                alt={`user image`}
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <span className="font-medium text-sm leading-none text-[#10161e]">{initials}</span>
+                        )}
+                    </div>
+                </div>
                                     <div className="flex flex-col justify-between ps-2">
                                         <h6>{data.full_name}</h6>
                                         <p className="text-independence">{data.user_email}</p>

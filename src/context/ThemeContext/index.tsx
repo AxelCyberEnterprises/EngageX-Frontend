@@ -13,7 +13,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   const apiPrimaryColor = enterpriseUsers?.results?.[0]?.primary_color || profile?.primary_color;
   const apiSecondaryColor = enterpriseUsers?.results?.[0]?.secondary_color || profile?.secondary_color;
-
+  const apiEnterpriseFavicon = enterpriseUsers?.results?.[0]?.enterprise?.favicon;
   // Initialize theme: prefer API data (if ready), otherwise fallback to localStorage, then default
   const [theme, setThemeState] = useState<Theme>(() => {
     if (apiPrimaryColor || apiSecondaryColor || profile) {
@@ -46,7 +46,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       setTheme({
         primaryColor: apiPrimaryColor || defaultTheme.primaryColor,
         secondaryColor: apiSecondaryColor || defaultTheme.secondaryColor,
-        logoUrl: profile?.logo || Logo,
+        logoUrl: profile?.logo || apiEnterpriseFavicon || Logo,
         faviconUrl: profile?.favicon || "/favicon.svg",
       });
     }
