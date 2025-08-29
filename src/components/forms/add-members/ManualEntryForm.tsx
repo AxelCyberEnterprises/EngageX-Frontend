@@ -26,7 +26,7 @@ const ManualEntryForm = () => {
     const form = useForm<FormType>({
         resolver: zodResolver(ManualEntrySchema),
         defaultValues: {
-            members: [{ first_name: "", last_name: "", email: "", role: "admin", team: "team_a" }],
+            members: [{ first_name: "", last_name: "", email: "", role: "admin", team: "team_a", user_type: "rookie" }],
         },
     });
     const { fields, append, remove } = useFieldArray({
@@ -34,45 +34,55 @@ const ManualEntryForm = () => {
         name: "members",
     });
 
-
     const handleSubmit = useCallback(
-    (values: FormType) => {
-      values.members.forEach((member) => {
-        createUser(
-          {
-            enterprise: +enterpriseId,
-            role: member.role,
-            team: member.team, 
-            email: member.email,
-            first_name: member.first_name,
-            last_name: member.last_name,
-          },
-          {
-            onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: ["enterprise-users", 1, +enterpriseId] });
-                toast(
-                    <SuccessToast
-                    heading="User created successfully"
-                    description={`${member.email} has been updated`}
-                    />
-                );
-            },
-            onError: (error) => {
-              console.error("Error updating user: ", error);
-              toast(
-                <ErrorToast
-                  heading="Error Creating User"
-                  description={`Failed to update ${member.email}`}
-                />
-              );
-            },
-          }
-        );
-      });
-    },
-    [createUser]
-  );
+        (values: FormType) => {
+            values.members.forEach((member) => {
+                createUser(
+                    {
+                        enterprise: +enterpriseId,
+                        role: member.role,
+                        team: member.team,
+                        email: member.email,
+                        first_name: member.first_name,
+                        last_name: member.last_name,
+                        user_type: member.user_type,
+                    },
+                    {
+                        onSuccess: () => {
+                            queryClient.invalidateQueries({ queryKey: ["enterprise-users", 1, +enterpriseId] });
+                            toast(
+                                <SuccessToast
+                                    heading="User created successfully"
+                                    description={`${member.email} has been updated`}
+                                />,
+                            );
+                        },
+                        onError: (error) => {
+                            console.error("Error updating user: ", error);
 
+                            // Check if error is due to duplicate user
+                            const errorMessage = error.message || JSON.stringify(error);
+                            const isDuplicateUser =
+                                errorMessage.includes("duplicate key value violates unique constraint") &&
+                                errorMessage.includes("enterprise_enterpriseuser_user_id_key");
+
+                            toast(
+                                <ErrorToast
+                                    heading={isDuplicateUser ? "Member Already Exists" : "Error Creating User"}
+                                    description={
+                                        isDuplicateUser
+                                            ? `${member.email} is already a member of this organization`
+                                            : `Failed to update ${member.email}`
+                                    }
+                                />,
+                            );
+                        },
+                    },
+                );
+            });
+        },
+        [createUser],
+    );
 
     return (
         <Form {...form}>
@@ -151,6 +161,21 @@ const ManualEntryForm = () => {
                                                 />
                                             )}
                                         />
+                                        <ControlledFieldWrapper
+                                            control={form.control}
+                                            name={`members.${index}.user_type`}
+                                            label="User Type"
+                                            className="[&_[data-slot='form-label']]:text-primary-blue"
+                                            render={({ field }) => (
+                                                <select
+                                                    {...field}
+                                                    className="h-10 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-gray-blue"
+                                                >
+                                                    <option value="rookie">Rookie</option>
+                                                    <option value="general">General</option>
+                                                </select>
+                                            )}
+                                        />
                                     </div>
                                     {fields.length > 1 && (
                                         <Button
@@ -177,7 +202,14 @@ const ManualEntryForm = () => {
                         variant="outline"
                         className="text-primary-blue"
                         onClick={() =>
-                            append({ first_name: "", last_name: "", email: "", role: "member", team: "team_a" })
+                            append({
+                                first_name: "",
+                                last_name: "",
+                                email: "",
+                                role: "member",
+                                team: "team_a",
+                                user_type: "rookie",
+                            })
                         }
                     >
                         <Plus />

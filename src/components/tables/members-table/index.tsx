@@ -36,7 +36,7 @@ const MembersTable = () => {
             data?.results.map((user) => ({
                 id: user.id.toString(),
                 name: `${user.user.first_name} ${user.user.last_name}`,
-                role: user.is_admin ? "Admin" : user.user_type === "general" ? "Basketballer" : "Rookie",
+                role: user.is_admin ? "Admin" : user.user.role || "N/A",
                 last_login: user.progress.last_session_date
                     ? new Date(user.progress.last_session_date).toLocaleDateString("en-US", {
                           month: "long",
@@ -45,7 +45,7 @@ const MembersTable = () => {
                       })
                     : "N/A",
                 credit_used: user.credits_used,
-                assigned_goals: [user.user_type],
+                assigned_goals: user.progress?.assigned_goals?.map((goal: any) => goal.name) || [],
             })) ?? []
         );
     }, [data?.results]);
