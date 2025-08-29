@@ -183,7 +183,7 @@ const UserDashboardHome: React.FC = () => {
 
             {/* cards */}
             <div className="flex flex-wrap -mx-2 items-stretch">
-                {isEnterpriseUser && enterpriseUserType === "general_enterprise" ? (
+                {isEnterpriseUser && enterpriseUserType === "general" ? (
                     <DashboardCard bgImage={coachingImage} className="block">
                         <Link to="/dashboard/user/the-coaching-room">
                             <button type="button"  className={cn("p-3 w-full rounded-md", {
@@ -193,7 +193,7 @@ const UserDashboardHome: React.FC = () => {
                             </button>
                         </Link>
                     </DashboardCard>
-                ) : isEnterpriseUser && enterpriseUserType === "rookie_enterprise" ? (
+                ) : isEnterpriseUser && enterpriseUserType === "rookie" ? (
                     <DashboardCard bgImage={RookieBg} className="block">
                         <Link to="/dashboard/user/the-rookie-room">
                             <button
@@ -273,7 +273,7 @@ const UserDashboardHome: React.FC = () => {
             </div>
 
             {/* improve past session  */}
-            {!isProfileLoading && enterpriseUserType !== "rookie_enterprise" && (
+            {!isProfileLoading && enterpriseUserType !== "rookie" && (
                 <div
                 className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
                 style={{ backgroundImage: 'url(' + improveBg + ')' }}
