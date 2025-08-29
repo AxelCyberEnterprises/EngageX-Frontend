@@ -37,12 +37,14 @@ const MembersTable = () => {
                 id: user.id.toString(),
                 name: `${user.user.first_name} ${user.user.last_name}`,
                 role: user.is_admin ? "Admin" : user.user_type === "general" ? "Basketballer" : "Rookie",
-                last_login: new Date(user.created_at).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                }),
-                credit_used: 0,
+                last_login: user.progress.last_session_date
+                    ? new Date(user.progress.last_session_date).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                      })
+                    : "N/A",
+                credit_used: user.credits_used,
                 assigned_goals: [user.user_type],
             })) ?? []
         );
