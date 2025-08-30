@@ -6,59 +6,62 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 
 interface OrganizationReportTableProps {
-  orgId: number;
-  userIds?: number[];
-  searchTerm?: string;
+    orgId: number;
+    userIds?: number[];
+    searchTerm?: string;
 }
 
-export const OrganizationReportTable = ({
-  orgId,
-  userIds,
-  searchTerm
-}: OrganizationReportTableProps) => {
-  const { data: response, isLoading } = useFetchEnterpriseReport(orgId, userIds, searchTerm);
-  const data: OrganizationReportMember[] =
-    response?.users.map((user) => {
-      const fullName = [user.first_name, user.last_name]
-        .filter(Boolean)
-        .join(" ")
-        || user.email;
+export const OrganizationReportTable = ({ orgId, userIds, searchTerm }: OrganizationReportTableProps) => {
+    const { data: response, isLoading } = useFetchEnterpriseReport(orgId, userIds, searchTerm);
+    const data: OrganizationReportMember[] =
+        response?.users.map((user) => {
+            const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ") || user.email;
 
-      return {
-        id: String(user.user_id),
-        name: fullName,
-        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=random`,
-        totalSessionsCompleted: 0,
-        totalSessionsGoal: 0,
-        overallGoalCompletion: 0,
-      };
-    }) ?? [];
+            // Calculate total completed sessions and total target sessions
+            const totalCompleted = user.assigned_goals.reduce((sum, goal) => sum + goal.completed, 0);
+            const totalTarget = user.assigned_goals.reduce((sum, goal) => sum + goal.target, 0);
 
-  return (
-    <BaseTable
-      columns={columns}
-      data={data}
-      pageSize={10}
-      tableHeaderClassName="bg-[#F9FAFB] border-b border-[#EAECF0]"
-      tableHeaderItemClassName="text-[#667085] font-medium text-xs uppercase tracking-wide"
-      tableContainerClassName="border border-[#EAECF0] rounded-xl shadow-sm"
-      tableCellClassName="py-3 border-b border-[#EAECF0] last:border-b-0 align-middle"
-      tableRowClassName="hover:bg-[#F9FAFB]/50"
-      hidePagination={false}
-      isLoading={isLoading}
-      session={false}
-      emptyState={
-        <TableRow>
-          <TableCell
-            colSpan={columns.length}
-            className="justify-center items-center w-full mx-auto py-[10%] flex-col gap-4 text-center"
-          >
-            <img src={emptyStateImage} className="w-28 mx-auto" alt="empty state logo" />
-            <p className="text-lg font-medium">No Report Generated</p>
-            {/* <p className="text-muted-foreground font-normal text-sm">Create a new goal to get started</p> */}
-          </TableCell>
-        </TableRow>
-      }
-    />
-  );
+            // Calculate average progress across all assigned goals
+            const averageProgress =
+                user.assigned_goals.length > 0
+                    ? user.assigned_goals.reduce((sum, goal) => sum + goal.progress, 0) / user.assigned_goals.length
+                    : 0;
+
+            return {
+                id: String(user.user_id),
+                name: fullName,
+                avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=random`,
+                totalSessionsCompleted: totalCompleted,
+                totalSessionsGoal: totalTarget,
+                overallGoalCompletion: averageProgress,
+            };
+        }) ?? [];
+
+    return (
+        <BaseTable
+            columns={columns}
+            data={data}
+            pageSize={10}
+            tableHeaderClassName="bg-[#F9FAFB] border-b border-[#EAECF0]"
+            tableHeaderItemClassName="text-[#667085] font-medium text-xs uppercase tracking-wide"
+            tableContainerClassName="border border-[#EAECF0] rounded-xl shadow-sm"
+            tableCellClassName="py-3 border-b border-[#EAECF0] last:border-b-0 align-middle"
+            tableRowClassName="hover:bg-[#F9FAFB]/50"
+            hidePagination={false}
+            isLoading={isLoading}
+            session={false}
+            emptyState={
+                <TableRow>
+                    <TableCell
+                        colSpan={columns.length}
+                        className="justify-center items-center w-full mx-auto py-[10%] flex-col gap-4 text-center"
+                    >
+                        <img src={emptyStateImage} className="w-28 mx-auto" alt="empty state logo" />
+                        <p className="text-lg font-medium">No Report Generated</p>
+                        {/* <p className="text-muted-foreground font-normal text-sm">Create a new goal to get started</p> */}
+                    </TableCell>
+                </TableRow>
+            }
+        />
+    );
 };

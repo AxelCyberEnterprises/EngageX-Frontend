@@ -10,6 +10,7 @@ export const ManualEntrySchema = z.object({
                 email: z.string().email("Invalid email address"),
                 role: z.string().min(1, "Role name is required"),
                 team: z.string().min(1, "Team is required"),
+                user_type: z.enum(["rookie", "general"]),
             }),
         )
         .min(1, "At least one member is required"),
