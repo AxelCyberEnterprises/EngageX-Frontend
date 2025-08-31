@@ -47,34 +47,34 @@ function Benefits() {
             {/* Left column: features list */}
             <div className="w-1/3 py-4">
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Built for athletes, executives, entrepreneurs, sales and organizations.
+                Built for athletes, executives, entrepreneurs, sellers and professional organizations.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
                 Specialist solution for high‑stakes communication performance.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Tailored to goals, audience, and context.
+                Sessions are tailored to goals, audience, and context.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Hybrid: data analysis plus certified human coaches.
+                The platform offers a hybrid approach to data analysis combining certified human coach feedback.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Finds high‑impact moments and emotional audience connection.
+                Responds to high impact moments and emotional audience connection.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Compare sessions over time; benchmark progress.
+                Track sessions over time to benchmark progress.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Virtual rooms with reactionary audience avatars.
+                Virtual environments with reactionary audience avatars.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Presentation slide feedback to improve clarity, flow, impact.
+                Conducts Slide analysis feedback to improve clarity, flow, impact.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Custom questions, environments, and feedback metrics.
+                Offers custom questions and virtual enviroments that support feedback.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
-                Enterprise reports in English, Spanish, Mandarin.
+                Enterprise offers feedback and reports in English, Spanish, Mandarin.
               </p>
               <p className="big border-b border-b-white/10 h-[6rem] flex items-center">
                 Strict privacy; models never train on your data.
@@ -142,7 +142,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Built for athletes, executives, entrepreneurs, sales and organizations.
+            Built for athletes, executives, entrepreneurs, sellers and professional organizations.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
@@ -166,7 +166,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Tailored to goals, audience, and context.
+            Sessions are tailored to goals, audience, and context.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
@@ -178,7 +178,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Hybrid: data analysis plus certified human coaches.
+            The platform offers a hybrid approach to data analysis combining certified human coach feedback.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
@@ -190,7 +190,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Finds high‑impact moments and emotional audience connection.
+            Responds to high impact moments and emotional audience connection.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
@@ -202,7 +202,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Compare sessions over time; benchmark progress.
+            Track sessions over time to benchmark progress.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
@@ -214,7 +214,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Virtual rooms with reactionary audience avatars.
+            Virtual environments with reactionary audience avatars.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
@@ -226,7 +226,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Presentation slide feedback to improve clarity, flow, impact.
+            Conducts Slide analysis feedback to improve clarity, flow, impact.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
@@ -238,7 +238,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Custom questions, environments, and feedback metrics.
+            Offers custom questions and virtual enviroments that support feedback.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
@@ -250,7 +250,7 @@ function Benefits() {
 
         <div className="flex justify-between items-center">
           <p className="border-r w-[35%] pr-2 flex items-center h-[10rem] text-[#262B3A]">
-            Enterprise reports in English, Spanish, Mandarin.
+            Enterprise offers feedback and reports in English, Spanish, Mandarin.
           </p>
           <div className="pl-2 h-[10rem] border-r flex w-[40%] justify-center items-center">
             <BenefitCancelSVG />
