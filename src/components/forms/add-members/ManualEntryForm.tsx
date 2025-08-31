@@ -15,6 +15,7 @@ import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useCreateEnterpriseUser } from "@/hooks/organization/useCreateEnterpriseUser";
 import { useQueryClient } from "@tanstack/react-query";
+import { useFetchSingleOrganization } from "@/hooks/organization/useFetchSingleOrganization";
 
 type FormType = z.infer<typeof ManualEntrySchema>;
 
@@ -23,10 +24,16 @@ const ManualEntryForm = () => {
     const enterpriseId = searchParams.get("id") ?? "";
     const queryClient = useQueryClient();
     const { mutate: createUser, isPending } = useCreateEnterpriseUser();
+    const { data: organization } = useFetchSingleOrganization(+enterpriseId);
+
+    // Auto-determine user_type based on enterprise_type
+    const autoUserType = organization?.enterprise_type === "general" ? "general" : "rookie";
     const form = useForm<FormType>({
         resolver: zodResolver(ManualEntrySchema),
         defaultValues: {
-            members: [{ first_name: "", last_name: "", email: "", role: "admin", team: "team_a", user_type: "rookie" }],
+            members: [
+                { first_name: "", last_name: "", email: "", role: "admin", team: "team_a", user_type: autoUserType },
+            ],
         },
     });
     const { fields, append, remove } = useFieldArray({
@@ -45,7 +52,7 @@ const ManualEntryForm = () => {
                         email: member.email,
                         first_name: member.first_name,
                         last_name: member.last_name,
-                        user_type: member.user_type,
+                        user_type: autoUserType,
                     },
                     {
                         onSuccess: () => {
@@ -81,7 +88,7 @@ const ManualEntryForm = () => {
                 );
             });
         },
-        [createUser],
+        [createUser, autoUserType, enterpriseId, queryClient],
     );
 
     return (
@@ -92,7 +99,7 @@ const ManualEntryForm = () => {
                         <div key={field.id} className="space-y-4">
                             <div className="bg-[#F8F9FC] rounded-[10px] border border-bright-gray p-4">
                                 <div className="flex items-end gap-4">
-                                    <div className="grid grid-cols-5 gap-4 w-full">
+                                    <div className="grid grid-cols-4 gap-4 w-full">
                                         <ControlledFieldWrapper
                                             control={form.control}
                                             name={`members.${index}.first_name`}
@@ -161,21 +168,6 @@ const ManualEntryForm = () => {
                                                 />
                                             )}
                                         />
-                                        <ControlledFieldWrapper
-                                            control={form.control}
-                                            name={`members.${index}.user_type`}
-                                            label="User Type"
-                                            className="[&_[data-slot='form-label']]:text-primary-blue"
-                                            render={({ field }) => (
-                                                <select
-                                                    {...field}
-                                                    className="h-10 rounded-lg focus-visible:ring-0 shadow-none text-gunmetal placeholder:text-gray-blue"
-                                                >
-                                                    <option value="rookie">Rookie</option>
-                                                    <option value="general">General</option>
-                                                </select>
-                                            )}
-                                        />
                                     </div>
                                     {fields.length > 1 && (
                                         <Button
@@ -208,7 +200,7 @@ const ManualEntryForm = () => {
                                 email: "",
                                 role: "member",
                                 team: "team_a",
-                                user_type: "rookie",
+                                user_type: autoUserType,
                             })
                         }
                     >
