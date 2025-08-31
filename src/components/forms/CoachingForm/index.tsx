@@ -75,7 +75,7 @@ const CoachingForm = () => {
                                         primaryColor !== PRIMARY_COLOR,
                                 },
                             )}
-                            disabled
+                            // disabled
                             onClick={() =>
                                 dispatch(
                                     openDialog({

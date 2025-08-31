@@ -23,7 +23,7 @@ function Hero() {
             />
           </div>
           <p className="">
-            Over <span className="font-semibold">+2k</span> Careers Impacted
+            Over <span className="font-semibold">+5k</span> Careers Impacted
           </p>
         </div>
         <h1 className="font-montreal text-center lg:text-left ">

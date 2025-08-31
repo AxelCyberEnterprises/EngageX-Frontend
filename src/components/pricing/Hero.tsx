@@ -74,7 +74,7 @@ function Hero() {
               />
             </div>
             <p className="">
-              Over <span className="font-semibold">+2k</span> careers impacted
+              Over <span className="font-semibold">+5k</span> careers impacted
             </p>
           </div>
         </div>

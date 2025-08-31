@@ -20,7 +20,7 @@ const StartCoachingSession = ({ initiationType, setValue, handleSubmit }: IStart
     const dispatch = useAppDispatch();
 
     const videoSrc =
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/Coaching+Session+Intro.MP4";
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/coaching+room/Lisa+Enterprise+Training+Video+.MP4";
 
     const handleSessionSetupSubmit = useCallback(
         (values: FormType) => {

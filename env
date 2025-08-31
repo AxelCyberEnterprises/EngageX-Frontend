@@ -1,0 +1,2 @@
+VITE_API_URL="https://api.engagexai.io"
+VITE_SECONDARY_API_URL="https://api-stream.engagexai.io"
