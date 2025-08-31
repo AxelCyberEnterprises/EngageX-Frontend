@@ -42,7 +42,7 @@ export function useFetchEnterpriseQuestions(
     return useQuery<EnterpriseQuestionsResponse>({
         queryKey: ["enterprise-questions", enterpriseId, page, vertical, sportType],
         queryFn: async () => {
-            const url = `/enterprise/enterprise-questions/?page=${page}&vertical=${vertical}`;
+            const url = `/enterprise/enterprise-questions/?page=${page}&enterprise=${enterpriseId}&vertical=${vertical}`;
             // if (sportType) {
             //   url += `&sport_type=${encodeURIComponent(sportType)}`;
             // }
