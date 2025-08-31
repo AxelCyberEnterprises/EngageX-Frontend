@@ -1,5 +1,6 @@
 import GMNBARoom from "@/assets/images/jpegs/gm-nba-room.jpg";
 import GMNFLRoom from "@/assets/images/jpegs/gm-nfl-room.jpg";
+import GMMLBRoom from "@/assets/images/jpegs/gm-mlb-room.jpg";
 import GMWNBARoom from "@/assets/images/jpegs/gm-wnba-room.jpg";
 import NBARoom from "@/assets/images/jpegs/nba-room.jpg";
 import NFLRoom from "@/assets/images/jpegs/nfl-room.jpg";
@@ -36,7 +37,7 @@ export const rookieRoomGMVEOptions = {
     nba: [{ name: "GM NBA Room", value: "nba_room", src: GMNBARoom }],
     wnba: [{ name: "GM WNBA Room", value: "wnba_room", src: GMWNBARoom }],
     nfl: [{ name: "GM NFL Room", value: "nfl_room", src: GMNFLRoom }],
-    mlb: [{ name: "GM MLB Room", value: "mlb_room", src: GMNFLRoom }],
+    mlb: [{ name: "GM MLB Room", value: "mlb_room", src: GMMLBRoom }],
 };
 
 export const trainingTypeOptions = [

@@ -135,7 +135,7 @@ const RookieRoomForm = () => {
                 break;
             case "mlb":
                 videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+Football+Intro+.mp4";
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/MLB/MLB+Intro+video.mp4";
                 break;
         }
     } else if (rookieType === "gm") {
