@@ -10,6 +10,7 @@ import ConferenceRoom from "@/assets/images/webps/conference-room.webp";
 import coachingImage from "@/assets/images/jpegs/coaching-image.jpg"
 import PitchStudio from "@/assets/images/webps/pitch-studio.webp";
 import RookieRoom from "@/assets/images/webps/rookie-room.webp";
+import MLBRoom from "@/assets/images/jpegs/rookie-img-room.jpg"
 
 export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
 
@@ -28,7 +29,7 @@ export const rookieRoomCoachVEOptions = {
     nba: [{ name: "NBA Room", value: "nba_room", src: NBARoom }],
     wnba: [{ name: "WNBA Room", value: "wnba_room", src: WNBARoom }],
     nfl: [{ name: "NFL Room", value: "nfl_room", src: NFLRoom }],
-    mlb: [{ name: "MLB Room", value: "mlb_room", src: NFLRoom }],
+    mlb: [{ name: "MLB Room", value: "mlb_room", src: MLBRoom }],
 };
 
 export const rookieRoomGMVEOptions = {

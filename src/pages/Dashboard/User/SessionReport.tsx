@@ -27,7 +27,6 @@ const PitchSessionReport: React.FC = () => {
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
-    console.log("profile", profile);
     const navigate = useNavigate();
     const {
         theme: { primaryColor },
@@ -37,7 +36,7 @@ const PitchSessionReport: React.FC = () => {
     const { data, isPending, refetch } = useGetSessionReport(id);
     const { mutate, isPending: requestingVideo, isSuccess: requestedSuccessfully } = useRequestSessionVideo(id);
     const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
-
+    const companyName = enterpriseUsers?.results[0].enterprise_name;
     React.useEffect(() => {
         if (!id || !requestedSuccessfully) return;
         let interval: NodeJS.Timeout | undefined;
@@ -444,7 +443,7 @@ const PitchSessionReport: React.FC = () => {
                                 </div>
                                 <div className="flex flex-col justify-between">
                                     <h6>Company</h6>
-                                    <p className="text-independence">{data.company}</p>
+                                    <p className="text-independence">{companyName || data.company}</p>
                                 </div>
                             </div>
                         </div>

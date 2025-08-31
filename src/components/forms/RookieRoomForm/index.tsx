@@ -18,7 +18,7 @@ import { RookieRoomSchema } from "@/schemas/dashboard/user";
 import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import GoalsSection from "../form-sections/GoalsSection";
@@ -26,35 +26,61 @@ import InputSpeakerNotesSection from "../form-sections/InputSpeakerNotesSection"
 import SessionNameSection from "../form-sections/SessionNameSection";
 import TimeAllocationSection from "../form-sections/TimeAllocationSection";
 import VirtualEnvironmentSection from "../form-sections/VirtualEnvironmentSection";
-// import { useEnterpriseUsers } from "@/hooks/settings";
+import { useEnterpriseUsers } from "@/hooks/settings";
 
 export type FormType = z.infer<typeof RookieRoomSchema>;
 
 const RookieRoomForm = () => {
     const dispatch = useAppDispatch();
-    // const { data } = useEnterpriseUsers();
-    // console.log("Enterprise users data:", { data });
+    const { data: enterpriseUsers } = useEnterpriseUsers();
+     const companyName = enterpriseUsers?.results?.[0]?.enterprise?.sport_type?.toUpperCase() || "";
+  const sportTypeValue =
+    companyName === "NBA"
+      ? "nba"
+      : companyName === "WNBA"
+      ? "wnba"
+      : companyName === "NFL"
+      ? "nfl"
+      : companyName === "MLB"
+      ? "mlb"
+      : "";
 
-    const form = useForm<FormType>({
-        resolver: zodResolver(RookieRoomSchema),
-        defaultValues: useMemo(
-            () => ({
-                session_type: "enterprise",
-                virtual_environment: "conference_room",
-                allow_ai_questions: true,
-                goals: [{ id: 1, goal: "" }],
-                enterprise_settings: {
-                    enterprice_type: "rookie",
-                    rookie_type: "media_training",
-                    sport_type: "nba",
-                    speaker_notes: "",
-                },
-            }),
-            [],
-        ),
-    });
+  const form = useForm<FormType>({
+    resolver: zodResolver(RookieRoomSchema),
+    defaultValues: {
+      session_type: "enterprise",
+      virtual_environment: "conference_room",
+      allow_ai_questions: true,
+      goals: [{ id: 1, goal: "" }],
+      enterprise_settings: {
+        enterprice_type: "rookie",
+        rookie_type: "media_training",
+        sport_type: "",
+        speaker_notes: "",
+      },
+    },
+  });
+  useEffect(() => {
+    if (companyName) {
+      form.reset({
+        session_type: "enterprise",
+        virtual_environment: "conference_room",
+        allow_ai_questions: true,
+        goals: [{ id: 1, goal: "" }],
+        enterprise_settings: {
+          enterprice_type: "rookie",
+          rookie_type: "media_training",
+          sport_type: sportTypeValue,
+          speaker_notes: "",
+        },
+      });
+    }
+  }, [companyName, sportTypeValue, form]);
     const rookieType = useWatch({ control: form.control, name: "enterprise_settings.rookie_type" });
     const sportType = useWatch({ control: form.control, name: "enterprise_settings.sport_type" });
+
+    console.log(rookieType);
+    console.log("Rookie Room Form - Sport Type:", sportType);
 
     useEffect(() => {
         let newVE: FormType["virtual_environment"] = "conference_room";
@@ -88,6 +114,9 @@ const RookieRoomForm = () => {
             : rookieType === "gm"
               ? rookieRoomGMVEOptions[sportType as keyof typeof rookieRoomGMVEOptions]
               : rookieRoomVEOptions;
+
+    console.log(virtualEnvironmentOptions);
+
     let videoSrc: string | undefined;
 
     if (rookieType === "coach") {
@@ -146,16 +175,16 @@ const RookieRoomForm = () => {
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} disabled defaultValue={field.value}>
                                 <SelectTrigger className="h-11 md:w-1/2 rounded-lg focus-visible:ring-0 shadow-none text-foreground data-[placeholder]:text-auro-metal-saurus [&_svg:not([class*='text-'])]:text-[#667085]">
-                                    <SelectValue placeholder="Select the sport you play" />
+                                    <SelectValue placeholder={companyName} />
                                 </SelectTrigger>
                                 <SelectContent className="border-none z-[9999]" position="popper" sideOffset={4}>
-                                    {sportsOptions.map(({ name, value }, index) => (
+                                    {sportsOptions.map(({  value }, index) => (
                                         <SelectItem
                                             key={value + index}
                                             value={value}
                                             className="h-11 [&_svg:not([class*='text-'])]:text-[#64BA9F]"
                                         >
-                                            {name}
+                                            {companyName}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -166,63 +195,66 @@ const RookieRoomForm = () => {
                     <TimeAllocationSection />
                     <InputSpeakerNotesSection {...{ form }} />
                 </section>
-                <section className="lg:space-y-6 space-y-12 lg:max-w-100">
-                    <div className="border border-bright-gray p-4 rounded-2xl space-y-4">
-                        <ControlledFieldWrapper
-                            control={form.control}
-                            name="enterprise_settings.rookie_type"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <RadioGroup
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}
-                                            className="grid-cols-2 gap-0 rounded-md border border-bright-gray overflow-hidden"
-                                        >
-                                            {trainingTypeOptions.map(({ name, value }, index) => (
-                                                <FormItem
-                                                    key={value + index}
-                                                    className="nth-2:border-r first:border-b border-bright-gray first:col-span-2"
-                                                >
-                                                    <FormLabel className="cursor-pointer">
-                                                        <FormControl className="hidden">
-                                                            <RadioGroupItem value={value} />
-                                                        </FormControl>
-                                                        <div
-                                                            className={cn(
-                                                                "bg-[#F9FAFB] hover:bg-primary/90 hover:text-white grid place-content-center h-10 px-4 py-2 w-full font-normal transition-colors",
-                                                                {
-                                                                    "bg-primary text-white":
-                                                                        form.watch(
-                                                                            "enterprise_settings.rookie_type",
-                                                                        ) === value,
-                                                                },
-                                                            )}
-                                                        >
-                                                            {name}
-                                                        </div>
-                                                    </FormLabel>
-                                                </FormItem>
-                                            ))}
-                                        </RadioGroup>
-                                    </FormControl>
-                                </FormItem>
-                            )}
+                {companyName && (
+                    <section className="lg:space-y-6 space-y-12 lg:max-w-100">
+                        <div className="border border-bright-gray p-4 rounded-2xl space-y-4">
+                            <ControlledFieldWrapper
+                                control={form.control}
+                                name="enterprise_settings.rookie_type"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <RadioGroup
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                                className="grid-cols-2 gap-0 rounded-md border border-bright-gray overflow-hidden"
+                                            >
+                                                {trainingTypeOptions.map(({ name, value }, index) => (
+                                                    <FormItem
+                                                        key={value + index}
+                                                        className="nth-2:border-r first:border-b border-bright-gray first:col-span-2"
+                                                    >
+                                                        <FormLabel className="cursor-pointer">
+                                                            <FormControl className="hidden">
+                                                                <RadioGroupItem value={value} />
+                                                            </FormControl>
+                                                            <div
+                                                                className={cn(
+                                                                    "bg-[#F9FAFB] hover:bg-primary/90 hover:text-white grid place-content-center h-10 px-4 py-2 w-full font-normal transition-colors",
+                                                                    {
+                                                                        "bg-primary text-white":
+                                                                            form.watch(
+                                                                                "enterprise_settings.rookie_type",
+                                                                            ) === value,
+                                                                    },
+                                                                )}
+                                                            >
+                                                                {name}
+                                                            </div>
+                                                        </FormLabel>
+                                                    </FormItem>
+                                                ))}
+                                            </RadioGroup>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <p className="text-sm text-[#070D17]">
+                                From Media to Rookie, Rookie to Coach, and Rookie to GM, the training is designed to
+                                address all three aspects of improved communication skills, whether you are preparing
+                                for a new season, an upcoming game, a post-game interview, the draft, or an important
+                                event.
+                            </p>
+                        </div>
+                        <VirtualEnvironmentSection
+                            {...{ form }}
+                            className="..."
+                            options={virtualEnvironmentOptions || []}
+                            overlay={!(["coach", "gm"] as Array<typeof rookieType>).includes(rookieType!)}
                         />
-                        <p className="text-sm text-[#070D17]">
-                            From Media to Rookie, Rookie to Coach, and Rookie to GM, the training is designed to address
-                            all three aspects of improved communication skills, whether you are preparing for a new
-                            season, an upcoming game, a post-game interview, the draft, or an important event.
-                        </p>
-                    </div>
-                    <VirtualEnvironmentSection
-                        {...{ form }}
-                        className="[&_[data-slot='form-label']>div]:h-38 lg:[&_[data-slot='form-label']>div]:w-full md:[&_[data-slot='form-label']>div]:w-85 [&_[data-slot='form-label']>div]:w-full"
-                        options={virtualEnvironmentOptions}
-                        overlay={!(["coach", "gm"] as Array<typeof rookieType>).includes(rookieType!)}
-                    />
-                    <QuickTips tips={rookieRoomQuickTips} />
-                </section>
+                        <QuickTips tips={rookieRoomQuickTips} />
+                    </section>
+                )}
 
                 <div className="md:absolute bottom-0 inset-x-0 md:p-4 md:mt-0 mt-6 flex md:flex-row flex-col md:gap-y-0 gap-y-3 items-center justify-end md:border-t border-bright-gray bg-white">
                     <Button

@@ -43,7 +43,7 @@ const CoachingRoom: React.FC = () => {
     const [isSocketConnected, setIsSocketConnected] = useState(false);
     const { mutate: endSession, isPending } = useEndSession(sessionId, duration);
     const [videoUrl, setVideoUrl] = useState(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/thinking/1.mp4",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/coaching+room/Non-speaking+video.mp4",
     );
     const [isExpanded, setIsExpanded] = useState(false);
     const [elapsed, setElapsed] = useState(0);
@@ -51,7 +51,7 @@ const CoachingRoom: React.FC = () => {
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [questionImg, setQuestionImg] = useState<string>(
-        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png",
+        "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/coaching+room/coaching+question+card.png",
     );
     const location = useLocation();
     const [stopTime, setStopTime] = useState(false);
