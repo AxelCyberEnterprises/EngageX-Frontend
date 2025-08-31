@@ -20,34 +20,50 @@ const MembersTable = () => {
     const orgIdParam = searchParams.get("id");
     const orgId = orgIdParam ? Number(orgIdParam) : undefined;
     const { data, isLoading } = useFetchEnterpriseUsers(1, orgId);
-    const { data: organization } = useFetchSingleOrganization(1);
+    const { data: organization } = useFetchSingleOrganization(orgId || 0);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const deleteUsers = useDeleteMultipleEnterpriseUsers();
-    console.log(organization);
+    console.log("[MembersTable] Organization data:", organization);
+    console.log("[MembersTable] Enterprise users data:", data);
 
     useEffect(() => {
         if (orgId) {
             // Log the raw API response for debugging
-            console.log("[MembersTable] Enterprise users response:", { orgId, data });
+            console.log("[MembersTable] Enterprise users response:", { orgId, data, isLoading });
+            if (data?.results) {
+                console.log("[MembersTable] Sample user data:", data.results[0]);
+            }
         }
-    }, [orgId, data]);
+    }, [orgId, data, isLoading]);
     const members: IMembers[] = useMemo(() => {
-        return (
-            data?.results.map((user) => ({
+        if (!data?.results) return [];
+
+        return data.results.map((user) => {
+            console.log("[MembersTable] Processing user:", {
+                id: user.id,
+                name: `${user.user.first_name} ${user.user.last_name}`,
+                is_admin: user.is_admin,
+                user_role: user.user.role,
+                user_type: user.user_type,
+                credits_used: user.credits_used,
+                progress: user.progress,
+            });
+
+            return {
                 id: user.id.toString(),
                 name: `${user.user.first_name} ${user.user.last_name}`,
-                role: user.is_admin ? "Admin" : user.user.role || "N/A",
-                last_login: user.progress.last_session_date
+                role: user.is_admin ? "Admin" : user.user.role || user.user_type || "Member",
+                last_login: user.progress?.last_session_date
                     ? new Date(user.progress.last_session_date).toLocaleDateString("en-US", {
                           month: "long",
                           day: "numeric",
                           year: "numeric",
                       })
                     : "N/A",
-                credit_used: user.credits_used,
+                credit_used: user.credits_used || 0,
                 assigned_goals: user.progress?.assigned_goals?.map((goal: any) => goal.name) || [],
-            })) ?? []
-        );
+            };
+        });
     }, [data?.results]);
 
     const { table } = useDataTable({
@@ -66,6 +82,10 @@ const MembersTable = () => {
     }
 
     if (isLoading) return <LoaderCircle className="animate-spin" />;
+
+    if (!data) {
+        return <div className="text-sm text-muted-foreground">Failed to load members data.</div>;
+    }
     return (
         <>
             <DataTable table={table} className="gap-4">

@@ -13,19 +13,39 @@ interface MembersTableProps {
 
 export const MembersOverviewTable = ({ pageSize = 5, hidePagination, orgId }: MembersTableProps) => {
     const { data, isLoading } = useFetchEnterpriseUsers(1, orgId);
-    const members: Member[] =
-        data?.results.map((user) => ({
-            id: user.id.toString(),
-            name: `${user.user.first_name} ${user.user.last_name}`,
-            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.user.first_name + " " + user.user.last_name)}&background=cccccc&color=ffffff`,
-            role: user.is_admin ? "Admin" : user.user_type || "N/A",
-            lastLogin: new Date(user.created_at).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-            }),
-            creditsUsed: 0,
-        })) ?? [];
+
+    console.log("[MembersOverviewTable] Fetching data for orgId:", orgId);
+    console.log("[MembersOverviewTable] API response:", { data, isLoading });
+
+    const members: Member[] = data?.results
+        ? data.results.map((user) => {
+              console.log("[MembersOverviewTable] Processing user:", {
+                  id: user.id,
+                  name: `${user.user.first_name} ${user.user.last_name}`,
+                  is_admin: user.is_admin,
+                  user_role: user.user.role,
+                  user_type: user.user_type,
+                  credits_used: user.credits_used,
+                  progress: user.progress,
+                  last_session_date: user.progress?.last_session_date,
+              });
+
+              return {
+                  id: user.id.toString(),
+                  name: `${user.user.first_name} ${user.user.last_name}`,
+                  avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.user.first_name + " " + user.user.last_name)}&background=cccccc&color=ffffff`,
+                  role: user.is_admin ? "Admin" : user.user.role || user.user_type || "N/A",
+                  lastLogin: user.progress?.last_session_date
+                      ? new Date(user.progress.last_session_date).toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                        })
+                      : "N/A",
+                  creditsUsed: user.credits_used || 0,
+              };
+          })
+        : [];
 
     return (
         <BaseTable

@@ -139,7 +139,7 @@ function Pricing({ subtext, showPricing }: { subtext?: string; showPricing?: boo
                     src="/assets/product.png"
                     alt="EngageX® product image"
                 />
-                <img className="lg:hidden mt-12" src="/assets/productmb.png" alt="EngageX® product image" />
+                <img className="lg:hidden mt-12" src="/assets/product.png" alt="EngageX® product image" />
             </div>
         </section>
     );
