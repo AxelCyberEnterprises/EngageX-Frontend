@@ -24,10 +24,8 @@ const ManualEntryForm = () => {
     const enterpriseId = searchParams.get("id") ?? "";
     const queryClient = useQueryClient();
     const { mutate: createUser, isPending } = useCreateEnterpriseUser();
-    const { data: organization } = useFetchSingleOrganization(+enterpriseId);
 
     // Auto-determine user_type based on enterprise_type
-    const autoUserType = organization?.enterprise_type === "general" ? "general" : "rookie";
     const form = useForm<FormType>({
         resolver: zodResolver(ManualEntrySchema),
         defaultValues: {

@@ -243,9 +243,16 @@ const QuestionBank: React.FC = () => {
             "Media Training": "media_training",
             Coach: "coach",
             "General Manager": "gm",
+            Coaching: "coaching",
         };
         return tabToVerticalMap[tab];
     };
+
+    useEffect(() => {
+        if (organization?.enterprise_type) {
+            setActiveTab(organization?.enterprise_type === "general" ? "Coaching" : "Coach");
+        }
+    }, [organization]);
 
     const {
         data: questionsResponse,
@@ -275,14 +282,14 @@ const QuestionBank: React.FC = () => {
         setSelectedRowIds(new Set()); // Clear selections when switching tabs
     }, [activeTab]);
 
-    let tabs = ["Media Training", "Coach", "General Manager"];
+    let tabs = ["Media Training", "Coach", "General Manager", "Coaching"];
     if (organization?.enterprise_type === "general") {
-        tabs = ["Coach"];
+        tabs = ["Coaching"];
     }
     const showSelectionBar = selectedRowIds.size > 0;
 
     const handleNewQuestion = () => {
-        console.log(enterpriseUsers?.results[0]?.enterprise)
+        console.log(enterpriseUsers?.results[0]?.enterprise);
         setShowCreateModal(true);
     };
 
@@ -293,9 +300,12 @@ const QuestionBank: React.FC = () => {
                 "Media Training": "media_training",
                 Coach: "coach",
                 "General Manager": "gm",
+                Coaching: "coaching",
             };
             return tabToVerticalMap[tab];
         };
+
+        console.log("active_tab: ", getVerticalFromTab(activeTab));
 
         const newQuestionData: CreateEnterpriseQuestionData = {
             enterprise: enterpriseId,
