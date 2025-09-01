@@ -234,18 +234,25 @@ const QuestionBank: React.FC = () => {
     // API hooks
     const updateQuestionMutation = usePatchEnterpriseQuestion(enterpriseId);
     const deleteQuestionMutation = useDeleteEnterpriseQuestion(enterpriseId);
-    const { data: organization } = useFetchSingleOrganization(enterpriseId);    
-     const { data: enterpriseUsers } = useEnterpriseUsers();
-     const sportType = enterpriseUsers?.results[0]?.enterprise.sport_type
+    const { data: organization } = useFetchSingleOrganization(enterpriseId);
+    const { data: enterpriseUsers } = useEnterpriseUsers();
+    const sportType = enterpriseUsers?.results[0]?.enterprise.sport_type;
 
     const getVerticalFromTab = (tab: string) => {
         const tabToVerticalMap: Record<string, string> = {
             "Media Training": "media_training",
             Coach: "coach",
             "General Manager": "gm",
+            Coaching: "coaching",
         };
         return tabToVerticalMap[tab];
     };
+
+    useEffect(() => {
+        if (organization?.enterprise_type) {
+            setActiveTab(organization?.enterprise_type === "general" ? "Coaching" : "Coach");
+        }
+    }, [organization]);
 
     const {
         data: questionsResponse,
@@ -275,11 +282,14 @@ const QuestionBank: React.FC = () => {
         setSelectedRowIds(new Set()); // Clear selections when switching tabs
     }, [activeTab]);
 
-    const tabs = ["Media Training", "Coach", "General Manager"];
+    let tabs = ["Media Training", "Coach", "General Manager", "Coaching"];
+    if (organization?.enterprise_type === "general") {
+        tabs = ["Coaching"];
+    }
     const showSelectionBar = selectedRowIds.size > 0;
 
     const handleNewQuestion = () => {
-        console.log(enterpriseUsers?.results[0]?.enterprise)
+        console.log(enterpriseUsers?.results[0]?.enterprise);
         setShowCreateModal(true);
     };
 
@@ -290,15 +300,18 @@ const QuestionBank: React.FC = () => {
                 "Media Training": "media_training",
                 Coach: "coach",
                 "General Manager": "gm",
+                Coaching: "coaching",
             };
             return tabToVerticalMap[tab];
         };
+
+        console.log("active_tab: ", getVerticalFromTab(activeTab));
 
         const newQuestionData: CreateEnterpriseQuestionData = {
             enterprise: enterpriseId,
             vertical: getVerticalFromTab(activeTab),
             question_text: formData.questionText,
-            sport_type: formData.sportType || null,
+            sport_type: organization?.sport_type || null,
             is_active: true,
         };
 
@@ -361,7 +374,11 @@ const QuestionBank: React.FC = () => {
         try {
             await updateQuestionMutation.mutateAsync({
                 id: editingQuestion.id,
-                data: { question_text: questionText, sport_type: sportType || null , vertical: getVerticalFromTab(activeTab) },
+                data: {
+                    question_text: questionText,
+                    sport_type: sportType || null,
+                    vertical: getVerticalFromTab(activeTab),
+                },
             });
             setShowEditModal(false);
             setEditingQuestion(null);
