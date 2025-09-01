@@ -24,7 +24,15 @@ export const UploadExcelSchema = z.object({
 });
 
 export const SetTrainingGoalSchema = z.object({
-    select_rooms: z.enum(["presentation", "pitch", "public_speaking", "media_training", "coach", "general_manager"]),
+    select_rooms: z.enum([
+        "presentation",
+        "pitch",
+        "public_speaking",
+        "media_training",
+        "coach",
+        "general_manager",
+        "coaching",
+    ]),
     number_of_sessions: z.coerce.number().min(1, "Number of sessions is required"),
     deadline: z.date({
         required_error: "Please select a date",
