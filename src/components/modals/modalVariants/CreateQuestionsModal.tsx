@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,8 +6,7 @@ import { X } from "lucide-react";
 import Modal from "..";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useFetchSingleOrganization } from "@/hooks";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 
 const createQuestionSchema = z.object({
     questionText: z.string().min(1, "Question text is required"),
@@ -37,7 +36,7 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
     activeTab,
 }) => {
     // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownButtonRef = useRef<HTMLButtonElement>(null);
+    // const dropdownButtonRef = useRef<HTMLButtonElement>(null);
     // const dropdownRef = useRef<HTMLDivElement>(null);
     const form = useForm<CreateQuestionValues>({
         resolver: zodResolver(createQuestionSchema),
@@ -71,11 +70,6 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
     //     { id: "wnba", name: "WNBA" },
     //     { id: "mlb", name: "MLB" },
     // ];
-
-    const searchParams = new URLSearchParams(location.search);
-    const enterpriseId = Number(searchParams.get("id"));
-
-    const { data: organization } = useFetchSingleOrganization(enterpriseId);
 
     return (
         <Modal show={show} onClose={handleClose} className="sm:w-full w-[90%] max-w-lg p-6">
@@ -113,58 +107,6 @@ const CreateQuestionModal: React.FC<CreateQuestionModalProps> = ({
                                             {form.formState.errors.questionText.message}
                                         </p>
                                     )}
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="sportType"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-sm font-medium text-gray-700">Sport Type</FormLabel>
-                                    <FormControl>
-                                        <div className="" onMouseDown={(e) => e.stopPropagation()}>
-                                            <button
-                                                ref={dropdownButtonRef}
-                                                type="button"
-                                                // onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                                className="w-full px-4 py-[14px] text-left bg-white border border-[#D1D5DB] z-20 rounded-lg flex items-center justify-between text-sm"
-                                                disabled={isLoading}
-                                            >
-                                                <span
-                                                    className={
-                                                        field.value && field.value !== "none"
-                                                            ? "text-gray-900"
-                                                            : "text-[#6B7186]"
-                                                    }
-                                                >
-                                                    {organization ? organization.sport_type_display : "N/A"}
-                                                </span>
-                                                {/*<ChevronDown className="w-4 h-4 text-gray-400" />*/}
-                                            </button>
-                                            {/*<div className="relative">
-                                                {isDropdownOpen && (
-                                                    <div
-                                                        ref={dropdownRef}
-                                                        className="absolute z-20 w-full mt-1 bg-white border border-[#E5E7EB] rounded-lg shadow-lg h-max overflow-y-auto"
-                                                    >
-                                                        {sportOptions.map((sport) => (
-                                                            <button
-                                                                key={sport.id}
-                                                                type="button"
-                                                                onClick={() => handleMemberSelect(sport.id)}
-                                                                className="bg-[#fff] block w-full px-3 py-2 text-sm text-gray-700 text-left hover:bg-[#F3F4F6] first:rounded-t-lg last:rounded-b-lg transition-colors"
-                                                            >
-                                                                {sport.name}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>*/}
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             )}
                         />

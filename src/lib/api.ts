@@ -94,6 +94,7 @@ export const apiPostFileFetch = async <T>(
         console.log(`  ${key}:`, value);
     }
     console.log("Auth token present:", !!accessToken);
+    console.log("Token: ", accessToken);
 
     try {
         const response = await fetch(fullUrl, {

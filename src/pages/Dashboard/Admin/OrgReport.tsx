@@ -1,15 +1,14 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Search } from 'lucide-react';
-import { OrganizationReportTable } from '@/components/tables/org-report-table';
-import { EmailReportModal } from '@/components/modals/modalVariants/EmailReportModal';
-import { useLocation } from 'react-router-dom';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas-pro';
-import { useFetchSingleOrganization } from '@/hooks/organization';
-
+import { useCallback, useMemo, useRef, useState } from "react";
+import { Search } from "lucide-react";
+import { OrganizationReportTable } from "@/components/tables/org-report-table";
+import { EmailReportModal } from "@/components/modals/modalVariants/EmailReportModal";
+import { useLocation } from "react-router-dom";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas-pro";
+import { useFetchSingleOrganization } from "@/hooks/organization";
 
 const OrganizationReport = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState("");
     const [showEmailModal, setShowEmailModal] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
     const pdfRef = useRef<HTMLDivElement>(null);
@@ -21,20 +20,21 @@ const OrganizationReport = () => {
         const idsParam = params.get("ids");
         return idsParam
             ? idsParam
-                .split(",")
-                .map((id) => Number(id))
-                .filter((id) => !isNaN(id))
+                  .split(",")
+                  .map((id) => Number(id))
+                  .filter((id) => !isNaN(id))
             : [];
     }, [location.search]);
+
     const { data: organization } = useFetchSingleOrganization(orgId);
 
-    const handleDownloadReport = useCallback(async () => {
-        const element = pdfRef.current;
+    const createReportPdf = async (ref: React.RefObject<HTMLDivElement | null>) => {
+        const element = ref.current;
         if (!element) {
-            return;
+            throw new Error("PDF element not found");
         }
+
         try {
-            setIsGeneratingPDF(true);
             const canvas = await html2canvas(element, {
                 scale: 1.5,
                 useCORS: true,
@@ -54,6 +54,22 @@ const OrganizationReport = () => {
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
             pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+            return pdf;
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+            throw new Error("Failed to generate PDF");
+        }
+    };
+
+    const handleDownloadReport = useCallback(async () => {
+        const element = pdfRef.current;
+        if (!element) {
+            return;
+        }
+        try {
+            setIsGeneratingPDF(true);
+            const pdf = await createReportPdf(pdfRef);
             pdf.save(`Progress-Report-${selectedIds}.pdf`);
         } catch (error) {
             console.error("Error generating PDF:", error);
@@ -98,12 +114,18 @@ const OrganizationReport = () => {
 
             {/* Report Table */}
             <div className="mt-6">
-                <OrganizationReportTable orgId={orgId}
-                    userIds={selectedIds} 
-                    searchTerm={searchTerm}
-                />
+                <OrganizationReportTable orgId={orgId} userIds={selectedIds} searchTerm={searchTerm} />
             </div>
-            {showEmailModal && <EmailReportModal show={showEmailModal} onClose={() => setShowEmailModal(false)} orgID={orgId} organizationName={organization?.name ?? 'Acme Inc'} />}
+            {showEmailModal && (
+                <EmailReportModal
+                    show={showEmailModal}
+                    onClose={() => setShowEmailModal(false)}
+                    orgID={orgId}
+                    pdfReport={createReportPdf}
+                    pdfRef={pdfRef}
+                    organizationName={organization?.name ?? "Acme Inc"}
+                />
+            )}
         </div>
     );
 };

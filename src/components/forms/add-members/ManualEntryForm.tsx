@@ -15,6 +15,7 @@ import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useCreateEnterpriseUser } from "@/hooks/organization/useCreateEnterpriseUser";
 import { useQueryClient } from "@tanstack/react-query";
+import { useFetchSingleOrganization } from "@/hooks";
 
 type FormType = z.infer<typeof ManualEntrySchema>;
 
@@ -26,17 +27,22 @@ const ManualEntryForm = () => {
     const form = useForm<FormType>({
         resolver: zodResolver(ManualEntrySchema),
         defaultValues: {
-            members: [{ first_name: "", last_name: "", email: "", role: "admin", team: "team_a", user_type: "rookie" }],
+            members: [{ first_name: "", last_name: "", email: "", role: "admin", team: "team_a" }],
         },
     });
+
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "members",
     });
+    const { data: organization } = useFetchSingleOrganization(+enterpriseId);
 
     const handleSubmit = useCallback(
         (values: FormType) => {
             values.members.forEach((member) => {
+                // Auto-determine user_type based on enterprise_type
+                const autoUserType = organization?.enterprise_type === "general" ? "general" : "rookie";
+
                 createUser(
                     {
                         enterprise: +enterpriseId,
@@ -45,7 +51,7 @@ const ManualEntryForm = () => {
                         email: member.email,
                         first_name: member.first_name,
                         last_name: member.last_name,
-                        user_type: member.user_type,
+                        user_type: autoUserType,
                     },
                     {
                         onSuccess: () => {
@@ -79,9 +85,11 @@ const ManualEntryForm = () => {
                         },
                     },
                 );
+
+                form.reset();
             });
         },
-        [createUser],
+        [createUser, enterpriseId, organization, queryClient, form],
     );
 
     return (
@@ -161,7 +169,7 @@ const ManualEntryForm = () => {
                                                 />
                                             )}
                                         />
-                                        <ControlledFieldWrapper
+                                        {/*<ControlledFieldWrapper
                                             control={form.control}
                                             name={`members.${index}.user_type`}
                                             label="User Type"
@@ -175,7 +183,7 @@ const ManualEntryForm = () => {
                                                     <option value="general">General</option>
                                                 </select>
                                             )}
-                                        />
+                                        />*/}
                                     </div>
                                     {fields.length > 1 && (
                                         <Button
@@ -208,7 +216,6 @@ const ManualEntryForm = () => {
                                 email: "",
                                 role: "member",
                                 team: "team_a",
-                                user_type: "rookie",
                             })
                         }
                     >

@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { Search } from 'lucide-react';
-import { GenerateReportMember } from '@/components/tables/generate-report-table/data';
-import { GenerateReportTable } from '@/components/tables/generate-report-table';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Search } from "lucide-react";
+import { GenerateReportMember } from "@/components/tables/generate-report-table/data";
+import { GenerateReportTable } from "@/components/tables/generate-report-table";
+import { Link } from "react-router-dom";
 
 const GenerateReport = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState("");
     const [selectedRows, setSelectedRows] = useState<GenerateReportMember[]>([]);
     const searchParams = new URLSearchParams(location.search);
     const orgId = Number(searchParams.get("id"));
 
     const generateReportUrl = () => {
-        const ids = selectedRows.map(row => row.id).join(',');
+        const ids = selectedRows.map((row) => row.id).join(",");
         return `/dashboard/admin/organization/report?id=${orgId}&ids=${ids}`;
     };
 
@@ -31,13 +31,10 @@ const GenerateReport = () => {
                             Generate Report
                         </Link>
                     ) : (
-                        <div
-                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed font-medium text-sm"
-                        >
+                        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-300 text-gray-500 cursor-not-allowed font-medium text-sm">
                             Generate Report
                         </div>
                     )}
-
                 </div>
             </div>
 
@@ -54,11 +51,7 @@ const GenerateReport = () => {
                 </div>
             </div>
 
-            <GenerateReportTable
-                orgId={orgId}
-                setSelectedRows={setSelectedRows}
-                searchTerm={searchTerm}
-            />
+            <GenerateReportTable orgId={orgId} setSelectedRows={setSelectedRows} searchTerm={searchTerm} />
         </div>
     );
 };
