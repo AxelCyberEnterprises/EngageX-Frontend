@@ -12,13 +12,14 @@ import ControlledFieldWrapper from "../controlled-fields/field-wrapper";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { useCallback, useEffect } from "react";
+import { useCallback, useMemo } from "react";
 import { useSetTrainingGoal } from "@/hooks/organization/useSetTrainingGoal";
 import SuccessToast from "../ui/custom-toasts/success-toasts";
 import ErrorToast from "../ui/custom-toasts/error-toast";
 import { toast } from "sonner";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { useFetchSingleOrganization } from "@/hooks";
 
 export type FormType = z.infer<typeof SetTrainingGoalSchema>;
 
@@ -31,12 +32,25 @@ const roomOptions = [
     { label: "General Manager", value: "general_manager" },
 ];
 
+const roomOptionsGeneral = [
+    { label: "Presentation", value: "presentation" },
+    { label: "Pitch", value: "pitch" },
+    { label: "Public Speaking", value: "public_speaking" },
+    { label: "Coaching", value: "coaching" },
+];
+
 const SetTrainingGoalForm = () => {
     const [searchParams] = useSearchParams();
     const enterpriseId = searchParams.get("id") ?? "";
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    
+
+    const { data: organization } = useFetchSingleOrganization(+enterpriseId);
+
+    const activeRoomOptions = useMemo(() => {
+        return organization?.enterprise_type === "general" ? roomOptionsGeneral : roomOptions;
+    }, [organization]);
+
     const form = useForm<FormType>({
         resolver: zodResolver(SetTrainingGoalSchema),
         defaultValues: {
@@ -44,49 +58,44 @@ const SetTrainingGoalForm = () => {
         },
     });
 
-    useEffect(() => {
-        localStorage.setItem("enterprise", enterpriseId)
-    }, [enterpriseId])
-
-    const { mutate: setTrainingGoal, isPending } = useSetTrainingGoal({id: enterpriseId});
+    const { mutate: setTrainingGoal, isPending } = useSetTrainingGoal({ id: enterpriseId });
 
     const handleSubmit = useCallback(
-    (values: FormType) => {
-
-        setTrainingGoal(
-          {
-            room: values.select_rooms,
-            target_sessions: values.number_of_sessions,
-            due_date: values.deadline.toDateString(),
-            enterprise: +enterpriseId
-          },
-          {
-            onSuccess: () => {
-              queryClient.invalidateQueries({
-                queryKey: ["enterprise-users", enterpriseId],
-              });
-              toast(
-                <SuccessToast
-                  heading="Training goal set successfully"
-                  description="Enterprise training goal has been set."
-                />
-              );
-              navigate(`/dashboard/admin/organization/members?id=${enterpriseId}`)
-            },
-            onError: (error) => {
-              console.error("Error uploading Excel: ", error);
-              toast(
-                <ErrorToast
-                  heading="Training goal couldn't be set"
-                  description="There was an issue processing setting enterprise training goal."
-                />
-              );
-            },
-          }
-        );
-    },
-    [setTrainingGoal, enterpriseId, queryClient]
-  );
+        (values: FormType) => {
+            setTrainingGoal(
+                {
+                    room: values.select_rooms,
+                    target_sessions: values.number_of_sessions,
+                    due_date: values.deadline.toDateString(),
+                    enterprise: +enterpriseId,
+                },
+                {
+                    onSuccess: () => {
+                        queryClient.invalidateQueries({
+                            queryKey: ["enterprise-users", enterpriseId],
+                        });
+                        toast(
+                            <SuccessToast
+                                heading="Training goal set successfully"
+                                description="Enterprise training goal has been set."
+                            />,
+                        );
+                        navigate(`/dashboard/admin/organization/members?id=${enterpriseId}`);
+                    },
+                    onError: (error) => {
+                        console.error("Error uploading Excel: ", error);
+                        toast(
+                            <ErrorToast
+                                heading="Training goal couldn't be set"
+                                description="There was an issue processing setting enterprise training goal."
+                            />,
+                        );
+                    },
+                },
+            );
+        },
+        [setTrainingGoal, enterpriseId, queryClient],
+    );
 
     return (
         <Form {...form}>
@@ -103,7 +112,7 @@ const SetTrainingGoalForm = () => {
                                 defaultValue={field.value}
                                 className="flex flex-col gap-4"
                             >
-                                {roomOptions.map((option) => (
+                                {activeRoomOptions.map((option) => (
                                     <FormItem key={option.value} className="flex items-center gap-2">
                                         <FormControl>
                                             <RadioGroupItem
