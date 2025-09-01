@@ -297,7 +297,7 @@ const QuestionBank: React.FC = () => {
             enterprise: enterpriseId,
             vertical: getVerticalFromTab(activeTab),
             question_text: formData.questionText,
-            sport_type: formData.sportType || null,
+            sport_type: enterpriseUsers?.results[0]?.enterprise.sport_type || null,
             is_active: true,
         };
 
