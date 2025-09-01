@@ -282,6 +282,7 @@ const QuestionBank: React.FC = () => {
     const showSelectionBar = selectedRowIds.size > 0;
 
     const handleNewQuestion = () => {
+        console.log(enterpriseUsers?.results[0]?.enterprise)
         setShowCreateModal(true);
     };
 

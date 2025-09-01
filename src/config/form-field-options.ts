@@ -1,5 +1,6 @@
 import GMNBARoom from "@/assets/images/jpegs/gm-nba-room.jpg";
 import GMNFLRoom from "@/assets/images/jpegs/gm-nfl-room.jpg";
+import GMMLBRoom from "@/assets/images/jpegs/gm-mlb-room.jpg";
 import GMWNBARoom from "@/assets/images/jpegs/gm-wnba-room.jpg";
 import NBARoom from "@/assets/images/jpegs/nba-room.jpg";
 import NFLRoom from "@/assets/images/jpegs/nfl-room.jpg";
@@ -10,6 +11,7 @@ import ConferenceRoom from "@/assets/images/webps/conference-room.webp";
 import coachingImage from "@/assets/images/jpegs/coaching-image.jpg"
 import PitchStudio from "@/assets/images/webps/pitch-studio.webp";
 import RookieRoom from "@/assets/images/webps/rookie-room.webp";
+import MLBRoom from "@/assets/images/jpegs/rookie-img-room.jpg"
 
 export const publicSpeakingVEOptions = [{ name: "Conference Room", value: "conference_room", src: ConferenceRoom }];
 
@@ -28,14 +30,14 @@ export const rookieRoomCoachVEOptions = {
     nba: [{ name: "NBA Room", value: "nba_room", src: NBARoom }],
     wnba: [{ name: "WNBA Room", value: "wnba_room", src: WNBARoom }],
     nfl: [{ name: "NFL Room", value: "nfl_room", src: NFLRoom }],
-    mlb: [{ name: "MLB Room", value: "mlb_room", src: NFLRoom }],
+    mlb: [{ name: "MLB Room", value: "mlb_room", src: MLBRoom }],
 };
 
 export const rookieRoomGMVEOptions = {
     nba: [{ name: "GM NBA Room", value: "nba_room", src: GMNBARoom }],
     wnba: [{ name: "GM WNBA Room", value: "wnba_room", src: GMWNBARoom }],
     nfl: [{ name: "GM NFL Room", value: "nfl_room", src: GMNFLRoom }],
-    mlb: [{ name: "GM MLB Room", value: "mlb_room", src: GMNFLRoom }],
+    mlb: [{ name: "GM MLB Room", value: "mlb_room", src: GMMLBRoom }],
 };
 
 export const trainingTypeOptions = [

@@ -23,10 +23,10 @@ import { useLocation } from "react-router-dom";
 import { useGetSessionQuestions } from "@/hooks/sessions";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
-// import { useAudioPlayer } from "react-use-audio-player";
+import { useAudioPlayer } from "react-use-audio-player";
 
 const PublicSpeaking: React.FC = () => {
-    // const { load } = useAudioPlayer();
+    const { load } = useAudioPlayer();
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isDialogTwoOpen, setDialogTwoOpen] = useState(false);
@@ -74,6 +74,7 @@ const PublicSpeaking: React.FC = () => {
         setQuestionDialogOpen(false);
         setStopStreamer(true);
     };
+    console.log(question)
 
     const isSessionCompletedInTime = () => {
         if (!duration) return false;
@@ -114,14 +115,14 @@ const PublicSpeaking: React.FC = () => {
         }
     }, [sessionQuestions]);
 
-    // useEffect(() => {
-    //     if (isQuestionDialogOpen && question && question.audio_url) {
-    //         load(question.audio_url, {
-    //             initialVolume: 0.75,
-    //             autoplay: true,
-    //         });
-    //     }
-    // }, [isQuestionDialogOpen, question]);
+    useEffect(() => {
+        if (isQuestionDialogOpen && question && question.audio_url) {
+            load(question.audio_url, {
+                initialVolume: 0.75,
+                autoplay: true,
+            });
+        }
+    }, [isQuestionDialogOpen, question]);
 
     const answerQuestion = () => {
         showQuestionTagRef.current = true;
@@ -137,43 +138,55 @@ const PublicSpeaking: React.FC = () => {
         }
     };
 
-    const nextQuestion = () => {
-        if (stopTime) return;
-        showQuestionTagRef.current = false;
-        setQuestionDialogOpen(true);
-        // Use a functional update to get the new value
-        setActiveQuestion((prev: number) => {
-            const nQuestions = questionsRef.current.length;
-            setStartQuestionTimer(false);
 
-            if (prev < nQuestions - 1) {
-                // NOT last question, prepare the next one
-                setQuestionDialogOpen(false);
-                setQuestionImg(
-                    Math.random() > 0.5
-                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
-                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png",
-                );
-                setQuestionDialogOpen(true);
-                return prev + 1;
-            } else {
-                // Last question, finish up
-                stopTimer();
-                setQuestionDialogOpen(false);
-                setStopStreamer(true);
-                setAllowSwitch(false);
-                setDialogOneOpen(false);
-                setIsMuted(false);
-                setVideoUrl(
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
-                );
-                setTimeout(() => {
-                    setDialogTwoOpen(true);
-                }, 7000);
-                return prev; // no increment, or return to 0 if you want
-            }
-        });
-    };
+   const nextQuestion = () => {
+    if (stopTime) return;
+
+    showQuestionTagRef.current = false;
+    setQuestionDialogOpen(true);
+
+    setActiveQuestion((prev: number) => {
+        const nQuestions = questionsRef.current.length;
+        setStartQuestionTimer(false);
+
+        if (prev < nQuestions - 1) {
+            const nextIndex = prev + 1;
+            const nextQuestion = questionsRef.current[nextIndex];
+
+            console.log(nextQuestion.gender);
+
+            // Set image based on next question
+            setQuestionImg(
+                nextQuestion?.gender === "F"
+                    ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
+                    : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png"
+            );
+
+            // Keep dialog open for smooth transition
+            setQuestionDialogOpen(true);
+
+            return nextIndex;
+        } else {
+            // Last question logic
+            stopTimer();
+            setQuestionDialogOpen(false);
+            setStopStreamer(true);
+            setAllowSwitch(false);
+            setDialogOneOpen(false);
+            setIsMuted(false);
+            setVideoUrl(
+                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4"
+            );
+
+            setTimeout(() => {
+                setDialogTwoOpen(true);
+            }, 7000);
+
+            return prev; // Don't increment
+        }
+    });
+};
+
 
     useEffect(() => {
         const seshData = localStorage.getItem("sessionData");

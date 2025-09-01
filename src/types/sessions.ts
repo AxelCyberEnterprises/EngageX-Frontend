@@ -97,6 +97,7 @@ export interface IPreviewSlideUploadResponse {
 }
 
 export interface IQuestion {
+    gender: string;
     id: number;
     enterprise: number;
     enterprise_name: string;

@@ -67,7 +67,6 @@ const UserDashboardHome: React.FC = () => {
 
     const isProfileLoading = profile == null;
 
-
     const cardsData = [
         {
             image: speakingBg,
@@ -173,7 +172,7 @@ const UserDashboardHome: React.FC = () => {
 
     // --- JSX and rest of logic ---
     if (isDashboardDataLoading || isProfileLoading) {
-    return <UserDashboardSkeleton />;
+        return <UserDashboardSkeleton />;
     }
     return (
         <div className="user__dashboard__index p-4 md:px-8">
@@ -186,9 +185,12 @@ const UserDashboardHome: React.FC = () => {
                 {isEnterpriseUser && enterpriseUserType === "general" ? (
                     <DashboardCard bgImage={coachingImage} className="block">
                         <Link to="/dashboard/user/the-coaching-room">
-                            <button type="button"  className={cn("p-3 w-full rounded-md", {
+                            <button
+                                type="button"
+                                className={cn("p-3 w-full rounded-md", {
                                     "bg-branding-primary": primaryColor !== PRIMARY_COLOR,
-                                })}>
+                                })}
+                            >
                                 Start Coaching
                             </button>
                         </Link>
@@ -275,18 +277,18 @@ const UserDashboardHome: React.FC = () => {
             {/* improve past session  */}
             {!isProfileLoading && enterpriseUserType !== "rookie" && (
                 <div
-                className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
-                style={{ backgroundImage: 'url(' + improveBg + ')' }}
+                    className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
+                    style={{ backgroundImage: "url(" + improveBg + ")" }}
                 >
                     <h6 className="pb-3">Improve past session</h6>
                     <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
-                    Select any of your previous sessions to continue practicing with the same setup, allowing you to
-                    focus directly on enhancing your skills in specific areas.
+                        Select any of your previous sessions to continue practicing with the same setup, allowing you to
+                        focus directly on enhancing your skills in specific areas.
                     </p>
                     <Link to="performance-improvement">
-                    <Button type="button" className="bg-branding-secondary hover:bg-branding-secondary/90 py-3">
-                    Improve Session
-                    </Button>
+                        <Button type="button" className="bg-branding-secondary hover:bg-branding-secondary/90 py-3">
+                            Improve Session
+                        </Button>
                     </Link>
                 </div>
             )}

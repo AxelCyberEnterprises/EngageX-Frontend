@@ -24,6 +24,10 @@ const ManualEntryForm = () => {
     const enterpriseId = searchParams.get("id") ?? "";
     const queryClient = useQueryClient();
     const { mutate: createUser, isPending } = useCreateEnterpriseUser();
+    const { data: organization } = useFetchSingleOrganization(+enterpriseId);
+
+    // Auto-determine user_type based on enterprise_type
+    const autoUserType = organization?.enterprise_type === "general" ? "general" : "rookie";
     const form = useForm<FormType>({
         resolver: zodResolver(ManualEntrySchema),
         defaultValues: {
@@ -100,7 +104,7 @@ const ManualEntryForm = () => {
                         <div key={field.id} className="space-y-4">
                             <div className="bg-[#F8F9FC] rounded-[10px] border border-bright-gray p-4">
                                 <div className="flex items-end gap-4">
-                                    <div className="grid grid-cols-5 gap-4 w-full">
+                                    <div className="grid grid-cols-4 gap-4 w-full">
                                         <ControlledFieldWrapper
                                             control={form.control}
                                             name={`members.${index}.first_name`}
