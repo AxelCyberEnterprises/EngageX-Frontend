@@ -29,7 +29,7 @@ const ManualEntryForm = () => {
     const form = useForm<FormType>({
         resolver: zodResolver(ManualEntrySchema),
         defaultValues: {
-            members: [{ first_name: "", last_name: "", email: "", role: "admin", team: "team_a" }],
+            members: [{ first_name: "", last_name: "", email: "", role: "", team: "" }],
         },
     });
 
@@ -102,7 +102,7 @@ const ManualEntryForm = () => {
                         <div key={field.id} className="space-y-4">
                             <div className="bg-[#F8F9FC] rounded-[10px] border border-bright-gray p-4">
                                 <div className="flex items-end gap-4">
-                                    <div className="grid grid-cols-4 gap-4 w-full">
+                                    <div className="grid grid-cols-5 gap-4 w-full">
                                         <ControlledFieldWrapper
                                             control={form.control}
                                             name={`members.${index}.first_name`}
