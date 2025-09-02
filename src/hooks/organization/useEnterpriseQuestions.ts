@@ -62,7 +62,7 @@ export function usePatchEnterpriseQuestion(enterpriseId: number) {
 
     return useMutation({
         mutationFn: ({ id, data }: { id: number; data: Partial<EnterpriseQuestion> }) =>
-            apiPatch<EnterpriseQuestion>(`/enterprise/enterprise-questions/${id}/`, data, "default"),
+            apiPatch<EnterpriseQuestion>(`/enterprise/enterprise-questions/${id}`, data, "default"),
         onSuccess: (updatedQuestion) => {
             queryClient.setQueryData<EnterpriseQuestionsResponse>(["enterprise-questions", enterpriseId], (old) => {
                 if (!old) return old;
@@ -81,7 +81,7 @@ export function useDeleteEnterpriseQuestion(enterpriseId: number) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (id: number) => apiDelete(`/enterprise/enterprise-questions/${id}/`, "default"),
+        mutationFn: (id: number) => apiDelete(`/enterprise/enterprise-questions/${id}`, "default"),
         onSuccess: (_, id) => {
             queryClient.setQueryData<EnterpriseQuestionsResponse>(["enterprise-questions", enterpriseId], (old) => {
                 if (!old) return old;
