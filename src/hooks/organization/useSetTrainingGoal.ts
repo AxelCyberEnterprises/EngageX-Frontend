@@ -13,7 +13,7 @@ type TrainingGoalPayload = {
 export function useSetTrainingGoal({ id }: { id: string }) {
     return useMutation<any, Error, TrainingGoalPayload>({
         mutationFn: async (payload: TrainingGoalPayload) => {
-            const response = await apiPost<any>(`/enterprise/enterprises/${id}/training-goals`, payload, "default");
+            const response = await apiPost<any>(`/enterprise/enterprises/${id}/training-goals/`, payload, "default");
             console.log("response: ", response);
             console.log("payload: ", payload);
             return response;
