@@ -237,7 +237,7 @@ const QuestionBank: React.FC = () => {
     const deleteQuestionMutation = useDeleteEnterpriseQuestion(enterpriseId);
     const { data: organization } = useFetchSingleOrganization(enterpriseId);
     const { data: enterpriseUsers } = useEnterpriseUsers();
-    const sportType = enterpriseUsers?.results[0]?.enterprise.sport_type;
+    const sportType = organization?.sport_type;
 
     const getVerticalFromTab = (tab: string) => {
         const tabToVerticalMap: Record<string, string> = {
@@ -371,6 +371,7 @@ const QuestionBank: React.FC = () => {
 
     const handleSaveEditQuestion = async (questionText: string) => {
         if (!editingQuestion) return;
+        console.log("sport_type: ", sportType);
 
         try {
             await updateQuestionMutation.mutateAsync({
