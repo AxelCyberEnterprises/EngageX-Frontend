@@ -52,6 +52,8 @@ export function useFetchEnterpriseQuestions(
         },
         staleTime: 1000 * 60 * 5,
         retry: 1,
+        refetchOnWindowFocus: true,
+        enabled: !!enterpriseId,
     });
 }
 
