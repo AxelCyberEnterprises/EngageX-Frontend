@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { GenerateReportMember } from "@/components/tables/generate-report-table/data";
 import { GenerateReportTable } from "@/components/tables/generate-report-table";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const GenerateReport = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedRows, setSelectedRows] = useState<GenerateReportMember[]>([]);
-    const searchParams = new URLSearchParams(location.search);
+    const [searchParams] = useSearchParams();
     const orgId = Number(searchParams.get("id"));
 
     const generateReportUrl = () => {

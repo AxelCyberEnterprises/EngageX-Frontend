@@ -19,6 +19,7 @@ import { useCreateEnterpriseQuestion } from "@/hooks";
 import { CreateEnterpriseQuestionData } from "@/hooks/organization/useCreateEnterpriseQuestion";
 import { CreateQuestionFormData, CreateQuestionModal } from "@/components/modals/modalVariants/CreateQuestionsModal";
 import { useEnterpriseUsers } from "@/hooks/settings";
+import { useSearchParams } from "react-router-dom";
 
 const ItemTypes = {
     QUESTION_ITEM: "question_item",
@@ -219,7 +220,7 @@ const QuestionRowSkeleton: React.FC = () => (
 );
 
 const QuestionBank: React.FC = () => {
-    const searchParams = new URLSearchParams(location.search);
+    const [searchParams] = useSearchParams(); // Import useSearchParams from react-router-dom
     const enterpriseId = Number(searchParams.get("id"));
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [activeTab, setActiveTab] = useState<string>("Coach");
