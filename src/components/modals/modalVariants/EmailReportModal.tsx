@@ -2,7 +2,7 @@ import React, { useState, useRef, KeyboardEvent } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { X } from "lucide-react";
+import { LoaderCircle, X } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 //import { Input } from '@/components/ui/input';
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useEmailReport } from "@/hooks/organization/useEmailReport";
 import jsPDF from "jspdf";
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
+import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
 
 const emailReportSchema = z.object({
     emails: z.array(z.string().email("Invalid email address")).min(1, "At least one email is required"),
@@ -54,17 +56,24 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgI
             },
             {
                 onSuccess: () => {
-                    toast.success("Email sent successfully:");
+                    toast(
+                        <SuccessToast
+                            heading={"Email sent successfully"}
+                            description={`Email has been sent to the specified recipients: ${data?.emails.join(", ")} successfully`}
+                        />,
+                    );
+                    form.reset();
+                    setEmailTags([]);
+                    setCurrentEmail("");
+                    onClose();
                 },
                 onError: (error) => {
-                    toast.error(`Failed to send email: ${error}`);
+                    toast(
+                        <ErrorToast heading={"Failed to send email"} description={`Failed to send email: ${error}`} />,
+                    );
                 },
             },
         );
-        form.reset();
-        setEmailTags([]);
-        setCurrentEmail("");
-        onClose();
     };
 
     const isValidEmail = (email: string): boolean => {
@@ -185,12 +194,13 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgI
                             </Button>
                             <Button
                                 type="submit"
-                                disabled={!hasEmails}
+                                disabled={!hasEmails || emailReport.isPending}
                                 className={`py-3 text-white transition-colors ${
                                     hasEmails ? "bg-[#64BA9F] hover:bg-[#5aa88f]" : "bg-gray-400 cursor-not-allowed"
                                 }`}
                             >
-                                Send Email
+                                {!emailReport.isPending && "Send Email"}
+                                {emailReport.isPending && <LoaderCircle className="animate-spin" />}
                             </Button>
                         </div>
                     </form>

@@ -282,7 +282,7 @@ const QuestionBank: React.FC = () => {
         setSelectedRowIds(new Set()); // Clear selections when switching tabs
     }, [activeTab]);
 
-    let tabs = ["Media Training", "Coach", "General Manager", "Coaching"];
+    let tabs = ["Media Training", "Coach", "General Manager"];
     if (organization?.enterprise_type === "general") {
         tabs = ["Coaching"];
     }

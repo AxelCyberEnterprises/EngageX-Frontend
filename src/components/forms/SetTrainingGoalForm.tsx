@@ -66,7 +66,7 @@ const SetTrainingGoalForm = () => {
                 {
                     room: values.select_rooms,
                     target_sessions: values.number_of_sessions,
-                    due_date: values.deadline.toDateString(),
+                    due_date: format(values.deadline, "yyyy-MM-dd"),
                     enterprise: +enterpriseId,
                 },
                 {
