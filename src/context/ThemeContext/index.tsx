@@ -3,7 +3,7 @@ import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/
 import { useEffect, useState } from "react";
 import { defaultTheme, ThemeContext } from "./hook";
 import { Theme } from "./types";
-// import { useFetchSingleOrganization } from "@/hooks";
+import { useFetchSingleOrganization } from "@/hooks";
 import { useLocation, useSearchParams } from "react-router-dom";
 
 const LOCAL_KEY = "branding";
@@ -22,17 +22,17 @@ interface EnterpriseProfile {
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const [searchParams] = useSearchParams();
-    // const enterpriseId = Number(searchParams.get("id"));
+    const enterpriseId = Number(searchParams.get("id"));
     const location = useLocation(); // Retrieve the current location
     const path = location.pathname; // Access the pathname
     console.log("Current path: ", path, path.includes("admin"));
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
-    // const { data: organization } = useFetchSingleOrganization(enterpriseId);
+    const { data: organization } = useFetchSingleOrganization(enterpriseId);
     const { data: enterpriseUser, refetch } = useEnterpriseUsers();
     const [userEnterprise, setUserEnterprise] = useState<EnterpriseProfile | undefined>();
 
-    console.log("ent user: ", profile, enterpriseUser);
+    console.log("ent user: ",organization, profile, enterpriseUser);
 
     useEffect(() => {
         refetch(); // force fetch on mount
@@ -42,7 +42,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
         const user_enterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
         setUserEnterprise(user_enterprise);
-    }, [enterpriseUser, profile, refetch]);
+    }, [enterpriseUser, profile]);
 
     console.log("found enterprise: ", userEnterprise);
 
