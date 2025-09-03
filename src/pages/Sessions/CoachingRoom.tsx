@@ -24,6 +24,7 @@ import { useGetSessionQuestions } from "@/hooks/sessions";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
+import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 
 const CoachingRoom: React.FC = () => {
     const { load } = useAudioPlayer();
@@ -63,7 +64,17 @@ const CoachingRoom: React.FC = () => {
     const showQuestionTagRef = useRef(false);
     const question = questionsRef.current[activeQuestion];
     const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions("coaching");
+    const { data: enterpriseUser } = useEnterpriseUsers();
+    const { data: fullProfile } = useFullUserProfile();
+    const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
+
+    const enterprise_id = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise.id;
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions(
+        enterprise_id ?? 0,
+        "coaching",
+    );
+
+    console.log("ent_id: ", enterprise_id);
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -75,7 +86,7 @@ const CoachingRoom: React.FC = () => {
         setStopStreamer(true);
     };
 
-    console.log(setIsMuted)
+    console.log(setIsMuted);
     const isSessionCompletedInTime = () => {
         if (!duration) return false;
         const minutes = parseInt(duration.split(":")[0], 10);
@@ -138,45 +149,44 @@ const CoachingRoom: React.FC = () => {
         }
     };
 
-   const nextQuestion = () => {
-  if (stopTime) return;
-  showQuestionTagRef.current = false;
-  setQuestionDialogOpen(true);
+    const nextQuestion = () => {
+        if (stopTime) return;
+        showQuestionTagRef.current = false;
+        setQuestionDialogOpen(true);
 
-  setActiveQuestion((prev: number) => {
-    const nQuestions = questionsRef.current.length;
-    setStartQuestionTimer(false);
+        setActiveQuestion((prev: number) => {
+            const nQuestions = questionsRef.current.length;
+            setStartQuestionTimer(false);
 
-    if (prev < nQuestions - 1) {
-      // NOT last question
-      setQuestionDialogOpen(false);
-      setQuestionImg(
-        Math.random() > 0.5
-          ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
-          : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png"
-      );
-      setQuestionDialogOpen(true);
-      return prev + 1;
-    } else {
-      // Last question, finish up
-      stopTimer();
-      setQuestionDialogOpen(false);
-      setStopStreamer(true);
-      setAllowSwitch(false);
-      setDialogOneOpen(false);
+            if (prev < nQuestions - 1) {
+                // NOT last question
+                setQuestionDialogOpen(false);
+                setQuestionImg(
+                    Math.random() > 0.5
+                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
+                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png",
+                );
+                setQuestionDialogOpen(true);
+                return prev + 1;
+            } else {
+                // Last question, finish up
+                stopTimer();
+                setQuestionDialogOpen(false);
+                setStopStreamer(true);
+                setAllowSwitch(false);
+                setDialogOneOpen(false);
 
-      // 🚨 REMOVE CLAP VIDEO HERE
-      // setIsMuted(false);
-      // setVideoUrl("...PublicSpeakingRoomClap.mp4");
+                // 🚨 REMOVE CLAP VIDEO HERE
+                // setIsMuted(false);
+                // setVideoUrl("...PublicSpeakingRoomClap.mp4");
 
-      setTimeout(() => {
-        setDialogTwoOpen(true);
-      }, 7000);
-      return prev;
-    }
-  });
-};
-
+                setTimeout(() => {
+                    setDialogTwoOpen(true);
+                }, 7000);
+                return prev;
+            }
+        });
+    };
 
     useEffect(() => {
         const seshData = localStorage.getItem("sessionData");

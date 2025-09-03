@@ -24,6 +24,7 @@ import { useGetSessionQuestions } from "@/hooks/sessions";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
+import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 
 const PublicSpeaking: React.FC = () => {
     const { load } = useAudioPlayer();
@@ -63,7 +64,15 @@ const PublicSpeaking: React.FC = () => {
     const showQuestionTagRef = useRef(false);
     const question = questionsRef.current[activeQuestion];
     const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions("media_training");
+    const { data: enterpriseUser } = useEnterpriseUsers();
+    const { data: fullProfile } = useFullUserProfile();
+    const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
+
+    const enterprise_id = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise.id;
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions(
+        enterprise_id ?? 0,
+        "media_training",
+    );
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -74,7 +83,7 @@ const PublicSpeaking: React.FC = () => {
         setQuestionDialogOpen(false);
         setStopStreamer(true);
     };
-    console.log(question)
+    console.log(question);
 
     const isSessionCompletedInTime = () => {
         if (!duration) return false;
@@ -138,55 +147,53 @@ const PublicSpeaking: React.FC = () => {
         }
     };
 
+    const nextQuestion = () => {
+        if (stopTime) return;
 
-   const nextQuestion = () => {
-    if (stopTime) return;
+        showQuestionTagRef.current = false;
+        setQuestionDialogOpen(true);
 
-    showQuestionTagRef.current = false;
-    setQuestionDialogOpen(true);
+        setActiveQuestion((prev: number) => {
+            const nQuestions = questionsRef.current.length;
+            setStartQuestionTimer(false);
 
-    setActiveQuestion((prev: number) => {
-        const nQuestions = questionsRef.current.length;
-        setStartQuestionTimer(false);
+            if (prev < nQuestions - 1) {
+                const nextIndex = prev + 1;
+                const nextQuestion = questionsRef.current[nextIndex];
 
-        if (prev < nQuestions - 1) {
-            const nextIndex = prev + 1;
-            const nextQuestion = questionsRef.current[nextIndex];
+                console.log(nextQuestion.gender);
 
-            console.log(nextQuestion.gender);
+                // Set image based on next question
+                setQuestionImg(
+                    nextQuestion?.gender === "F"
+                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
+                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png",
+                );
 
-            // Set image based on next question
-            setQuestionImg(
-                nextQuestion?.gender === "F"
-                    ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
-                    : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png"
-            );
+                // Keep dialog open for smooth transition
+                setQuestionDialogOpen(true);
 
-            // Keep dialog open for smooth transition
-            setQuestionDialogOpen(true);
+                return nextIndex;
+            } else {
+                // Last question logic
+                stopTimer();
+                setQuestionDialogOpen(false);
+                setStopStreamer(true);
+                setAllowSwitch(false);
+                setDialogOneOpen(false);
+                setIsMuted(false);
+                setVideoUrl(
+                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4",
+                );
 
-            return nextIndex;
-        } else {
-            // Last question logic
-            stopTimer();
-            setQuestionDialogOpen(false);
-            setStopStreamer(true);
-            setAllowSwitch(false);
-            setDialogOneOpen(false);
-            setIsMuted(false);
-            setVideoUrl(
-                "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/PublicSpeakingRoomClap.mp4"
-            );
+                setTimeout(() => {
+                    setDialogTwoOpen(true);
+                }, 7000);
 
-            setTimeout(() => {
-                setDialogTwoOpen(true);
-            }, 7000);
-
-            return prev; // Don't increment
-        }
-    });
-};
-
+                return prev; // Don't increment
+            }
+        });
+    };
 
     useEffect(() => {
         const seshData = localStorage.getItem("sessionData");
