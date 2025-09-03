@@ -42,7 +42,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
         const user_enterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
         setUserEnterprise(user_enterprise);
-    }, [enterpriseUser, profile]);
+    }, [enterpriseUser, profile, refetch]);
 
     console.log("found enterprise: ", userEnterprise);
 

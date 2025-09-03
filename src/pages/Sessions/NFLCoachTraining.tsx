@@ -22,6 +22,7 @@ import { useGetSessionQuestions } from "@/hooks/sessions";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
+import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 
 const NFLMediaTraining: React.FC = () => {
     const { load } = useAudioPlayer();
@@ -60,7 +61,16 @@ const NFLMediaTraining: React.FC = () => {
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question: IQuestion | undefined = questionsRef.current[activeQuestion];
     const location = useLocation();
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions("coach", "nfl");
+    const { data: enterpriseUser } = useEnterpriseUsers();
+    const { data: fullProfile } = useFullUserProfile();
+    const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
+
+    const enterprise_id = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise.id;
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions(
+        enterprise_id ?? 0,
+        "coach",
+        "nfl",
+    );
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -152,7 +162,7 @@ const NFLMediaTraining: React.FC = () => {
                 setAllowSwitch(false);
                 setDialogOneOpen(false);
                 setDialogTwoOpen(true);
-                return prev;  // no increment, or return to 0 if you want
+                return prev; // no increment, or return to 0 if you want
             }
         });
     };

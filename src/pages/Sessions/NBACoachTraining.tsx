@@ -22,6 +22,7 @@ import { useGetSessionQuestions } from "@/hooks/sessions";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
+import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 
 const NBAMediaTraining: React.FC = () => {
     const { load } = useAudioPlayer();
@@ -60,7 +61,16 @@ const NBAMediaTraining: React.FC = () => {
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const question: IQuestion | undefined = questionsRef.current[activeQuestion];
     const location = useLocation();
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions("coach", "nba");
+    const { data: enterpriseUser } = useEnterpriseUsers();
+    const { data: fullProfile } = useFullUserProfile();
+    const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
+
+    const enterprise_id = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise.id;
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions(
+        enterprise_id ?? 0,
+        "coach",
+        "nba",
+    );
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
