@@ -21,16 +21,20 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     console.log("ent user: ", organization, profile, enterpriseUser);
 
-    const apiPrimaryColor = path.includes("admin")
-        ? profile?.primary_color
-        : enterpriseUser?.results[0].enterprise.primary_color;
-    const apiSecondaryColor = path.includes("admin")
-        ? profile?.secondary_color
-        : enterpriseUser?.results[0].enterprise.secondary_color;
-    const apiEnterpriseFavicon = path.includes("admin")
-        ? profile?.favicon
-        : enterpriseUser?.results[0].enterprise.favicon;
-    const apiEnterpriseLogo = path.includes("admin") ? profile?.logo : enterpriseUser?.results[0].enterprise.logo;
+    const userEnterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
+
+    console.log("found enterprise: ", userEnterprise);
+
+    const apiPrimaryColor =
+        path.includes("admin") || !profile?.is_enterprise_user ? profile?.primary_color : userEnterprise?.primary_color;
+    const apiSecondaryColor =
+        path.includes("admin") || !profile?.is_enterprise_user
+            ? profile?.secondary_color
+            : userEnterprise?.secondary_color;
+    const apiEnterpriseFavicon =
+        path.includes("admin") || !profile?.is_enterprise_user ? profile?.favicon : userEnterprise?.favicon;
+    const apiEnterpriseLogo =
+        path.includes("admin") || !profile?.is_enterprise_user ? profile?.logo : userEnterprise?.logo;
     // Initialize theme: prefer API data (if ready), otherwise fallback to localStorage, then default
     const [theme, setThemeState] = useState<Theme>(() => {
         if (apiPrimaryColor || apiSecondaryColor || profile) {
