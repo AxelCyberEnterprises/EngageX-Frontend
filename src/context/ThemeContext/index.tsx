@@ -35,6 +35,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("ent user: ", organization, profile, enterpriseUser);
 
     useEffect(() => {
+        if (!enterpriseUser) return;
         const user_enterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
         setUserEnterprise(user_enterprise);
     }, [enterpriseUser, profile]);
