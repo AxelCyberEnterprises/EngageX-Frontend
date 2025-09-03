@@ -29,13 +29,17 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const { data: organization } = useFetchSingleOrganization(enterpriseId);
-    const { data: enterpriseUser } = useEnterpriseUsers();
+    const { data: enterpriseUser, refetch } = useEnterpriseUsers();
     const [userEnterprise, setUserEnterprise] = useState<EnterpriseProfile | undefined>();
 
-    console.log("ent user: ", organization, profile, enterpriseUser);
+    console.log("ent user: ", profile, enterpriseUser);
 
     useEffect(() => {
+        refetch(); // force fetch on mount
         if (!enterpriseUser) return;
+        // Log all enterprise users
+        console.log("All enterprise users:", enterpriseUser.results);
+
         const user_enterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
         setUserEnterprise(user_enterprise);
     }, [enterpriseUser, profile]);
