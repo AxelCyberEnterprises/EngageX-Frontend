@@ -220,7 +220,7 @@ const QuestionRowSkeleton: React.FC = () => (
 );
 
 const QuestionBank: React.FC = () => {
-    const [searchParams] = useSearchParams(); // Import useSearchParams from react-router-dom
+    const [searchParams] = useSearchParams();
     const enterpriseId = Number(searchParams.get("id"));
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [activeTab, setActiveTab] = useState<string>("Coach");
