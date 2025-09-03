@@ -75,10 +75,16 @@ const SideNav: React.FC = () => {
     const isAccessiblePath = (path: string): boolean => {
         if (!isEnterpriseUser) return true;
         const pathSegments = path.split("/").filter(Boolean);
-        const lastSegment = pathSegments[pathSegments.length - 1];
+        let lastSegment = pathSegments[pathSegments.length - 1];
+        if (lastSegment === "the-coaching-room") {
+            lastSegment = "coaching"
+        }
         const matchedVertical = Object.entries(verticalToPathMap).find(([, slug]) => slug === lastSegment)?.[0];
 
         console.log("last seg; ", lastSegment);
+    
+
+        console.log("accessibleVerticals; ", accessibleVerticals);
 
         if (!matchedVertical) return true;
 
