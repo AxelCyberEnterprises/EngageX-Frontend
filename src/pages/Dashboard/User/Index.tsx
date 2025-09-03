@@ -65,7 +65,10 @@ const UserDashboardHome: React.FC = () => {
         theme: { primaryColor },
     } = useTheme();
 
-    const isProfileLoading = profile == null;
+    const isProfileLoading =
+    !profile ||
+    typeof profile.is_enterprise_user === "undefined" ||
+    (profile.is_enterprise_user === true && typeof profile.user_type === "undefined");
 
     const cardsData = [
         {
