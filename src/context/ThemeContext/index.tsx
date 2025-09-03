@@ -8,6 +8,18 @@ import { useLocation, useSearchParams } from "react-router-dom";
 
 const LOCAL_KEY = "branding";
 
+interface EnterpriseProfile {
+    id: number;
+    name: string;
+    domain: string;
+    enterprise_type: string;
+    sport_type: string;
+    favicon: string | null;
+    primary_color: string | null;
+    secondary_color: string | null;
+    logo: string | null;
+}
+
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const [searchParams] = useSearchParams();
     const enterpriseId = Number(searchParams.get("id"));
@@ -18,10 +30,14 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const { data: organization } = useFetchSingleOrganization(enterpriseId);
     const { data: enterpriseUser } = useEnterpriseUsers();
+    const [userEnterprise, setUserEnterprise] = useState<EnterpriseProfile | undefined>();
 
     console.log("ent user: ", organization, profile, enterpriseUser);
 
-    const userEnterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
+    useEffect(() => {
+        const user_enterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
+        setUserEnterprise(user_enterprise);
+    }, [enterpriseUser, profile]);
 
     console.log("found enterprise: ", userEnterprise);
 
