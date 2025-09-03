@@ -3,7 +3,7 @@ import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/
 import { useEffect, useState } from "react";
 import { defaultTheme, ThemeContext } from "./hook";
 import { Theme } from "./types";
-import { useFetchSingleOrganization } from "@/hooks";
+import { useFetchEnterpriseUsers, useFetchSingleOrganization } from "@/hooks";
 import { useLocation, useSearchParams } from "react-router-dom";
 
 const LOCAL_KEY = "branding";
@@ -29,16 +29,16 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const { data: organization } = useFetchSingleOrganization(enterpriseId);
-    const { data: enterpriseUser } = useEnterpriseUsers();
+    const { data: enterpriseUsers } = useEnterpriseUsers();
     const [userEnterprise, setUserEnterprise] = useState<EnterpriseProfile | undefined>();
 
-    console.log("ent user: ", organization, profile, enterpriseUser);
+    console.log("ent user: ", profile, enterpriseUsers);
 
     useEffect(() => {
-        if (!enterpriseUser) return;
-        const user_enterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
+        if (!enterpriseUsers) return;
+        const user_enterprise = enterpriseUsers?.results.find((user) => user.user.email == profile?.email)?.enterprise;
         setUserEnterprise(user_enterprise);
-    }, [enterpriseUser, profile]);
+    }, [enterpriseUsers, profile]);
 
     console.log("found enterprise: ", userEnterprise);
 
@@ -80,7 +80,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Keep theme updated whenever API data changes
     useEffect(() => {
-        if (profile && enterpriseUser) {
+        if (profile && enterpriseUsers) {
             setTheme({
                 primaryColor: apiPrimaryColor || defaultTheme.primaryColor,
                 secondaryColor: apiSecondaryColor || defaultTheme.secondaryColor,
@@ -88,7 +88,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
                 faviconUrl: apiEnterpriseFavicon || "/favicon.svg",
             });
         }
-    }, [enterpriseUser, profile, apiPrimaryColor, apiSecondaryColor]);
+    }, [enterpriseUsers, profile, apiPrimaryColor, apiSecondaryColor]);
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
