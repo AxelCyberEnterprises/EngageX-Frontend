@@ -10,8 +10,8 @@ import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { ChevronRight, Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
-import SidebarBackBtn from '../../assets/images/svgs/back-sidebar.svg';
-import CollapsedLogo from '../../assets/images/svgs/collapsed-logo.svg';
+import SidebarBackBtn from "../../assets/images/svgs/back-sidebar.svg";
+import CollapsedLogo from "../../assets/images/svgs/collapsed-logo.svg";
 
 import {
     Sidebar,
@@ -48,7 +48,7 @@ const SideNav: React.FC = () => {
     const [showAlternateSidebar, setShowAlternateSidebar] = useState(false);
     const sidebarRef = useRef<HTMLDivElement | null>(null);
     const [showModal, setShowModal] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState("");
     useClickOutside(sidebarRef, sidebarRef, () => setShowAlternateSidebar(false));
 
     const toggleSidebarView = () => {
@@ -73,12 +73,12 @@ const SideNav: React.FC = () => {
     };
 
     const isAccessiblePath = (path: string): boolean => {
-        if (!isEnterpriseUser) return true; 
+        if (!isEnterpriseUser) return true;
         const pathSegments = path.split("/").filter(Boolean);
         const lastSegment = pathSegments[pathSegments.length - 1];
-        const matchedVertical = Object.entries(verticalToPathMap).find(
-            ([, slug]) => slug === lastSegment
-        )?.[0];
+        const matchedVertical = Object.entries(verticalToPathMap).find(([, slug]) => slug === lastSegment)?.[0];
+
+        console.log("last seg; ", lastSegment);
 
         if (!matchedVertical) return true;
 
@@ -93,7 +93,9 @@ const SideNav: React.FC = () => {
     };
 
     useEffect(() => {
+        console.log("checking admin...");
         if (!isAccessiblePath(location.pathname)) {
+            console.log("is accessible");
             setShowModal(true);
         }
     }, [location.pathname, accessibleVerticals]);
@@ -589,7 +591,6 @@ const SideNav: React.FC = () => {
                         path: `/dashboard/admin/organization/generate-report?id=${org.id}`,
                     },
                 ],
-
             })),
         },
     ] as const;
@@ -861,7 +862,6 @@ const SideNav: React.FC = () => {
                         path: `/dashboard/admin/organization/generate-report?id=${org.id}`,
                     },
                 ],
-
             })),
         },
     ] as const;
@@ -1152,20 +1152,24 @@ const SideNav: React.FC = () => {
                         "px-4": sidebarState === "expanded",
                     })}
                 >
-                    {lastSegment === "admin" && <img
-                        src={SidebarBackBtn}
-                        alt="sidebar back button"
-                        className="absolute top-8 -right-4.5 cursor-pointer z-10 h-10"
-                        onClick={toggleSidebarView}
-                    />}
-                    <SidebarHeader className={cn("py-7 bg-branding-secondary lg:py-3", {
-                        "px-4": sidebarState === "expanded",
-                        "px-2": sidebarState === "collapsed",
-                    })}>
+                    {lastSegment === "admin" && (
+                        <img
+                            src={SidebarBackBtn}
+                            alt="sidebar back button"
+                            className="absolute top-8 -right-4.5 cursor-pointer z-10 h-10"
+                            onClick={toggleSidebarView}
+                        />
+                    )}
+                    <SidebarHeader
+                        className={cn("py-7 bg-branding-secondary lg:py-3", {
+                            "px-4": sidebarState === "expanded",
+                            "px-2": sidebarState === "collapsed",
+                        })}
+                    >
                         <Link to="/">
                             {sidebarState === "expanded" ? (
                                 <img
-                                    src={theme.logoUrl || logo}
+                                    src={lastSegment === "admin" ? logo : theme.logoUrl}
                                     alt="EngageX® Logo"
                                     className="w-8/12 max-h-10 object-contain object-left px-3 lg:px-0"
                                 />
@@ -1193,8 +1197,9 @@ const SideNav: React.FC = () => {
                                     to={link?.path ?? ""}
                                     key={index}
                                     onClick={(e) => handleNavClick(e, link?.path ?? "")}
-                                    className={`link flex items-center w-full py-2 px-3 mb-0.5 ${location.pathname === link?.path ? "active" : ""
-                                        }`}
+                                    className={`link flex items-center w-full py-2 px-3 mb-0.5 ${
+                                        location.pathname === link?.path ? "active" : ""
+                                    }`}
                                 >
                                     {link?.icon}
                                     <p>{link?.name}</p>
@@ -1209,14 +1214,16 @@ const SideNav: React.FC = () => {
                                 <Skeleton className="h-10 w-2/3 rounded-md" />
                             </div>
                         ) : (
+                            // admin sidebar
                             lastSegment === "admin" &&
                             adminLinks.map((link, index) => {
                                 return link.type === "default" ? (
                                     <Link
                                         to={link.path ?? ""}
                                         key={index}
-                                        className={`link flex mobile_links items-center w-full py-2 px-3 mb-0.5 ${location.pathname === link.path ? "active" : ""
-                                            }`}
+                                        className={`link flex mobile_links items-center w-full py-2 px-3 mb-0.5 ${
+                                            location.pathname === link.path ? "active" : ""
+                                        }`}
                                     >
                                         {link.icon}
                                         <p>{link.name}</p>
@@ -1277,6 +1284,7 @@ const SideNav: React.FC = () => {
                         )}
                     </SidebarContent>
 
+                    {/*user sidebar*/}
                     <SidebarFooter className="bottom__links bg-branding-secondary w-full p-0">
                         {lastSegment === "user" &&
                             userBottomLinks.map((link, index) => (
@@ -1284,8 +1292,9 @@ const SideNav: React.FC = () => {
                                     to={link.path!}
                                     onClick={link.function}
                                     key={index}
-                                    className={`link flex items-center mobile_links w-full  py-2 px-3 mb-0.5 ${location.pathname === link.path ? "active" : ""
-                                        }`}
+                                    className={`link flex items-center mobile_links w-full  py-2 px-3 mb-0.5 ${
+                                        location.pathname === link.path ? "active" : ""
+                                    }`}
                                 >
                                     {link.icon}
                                     <p>{link.name}</p>
@@ -1297,8 +1306,9 @@ const SideNav: React.FC = () => {
                                     to={link.path!}
                                     onClick={link.function}
                                     key={index}
-                                    className={`link flex items-center mobile_links w-full py-2 px-3 mb-0.5 ${location.pathname === link.path ? "active" : ""
-                                        }`}
+                                    className={`link flex items-center mobile_links w-full py-2 px-3 mb-0.5 ${
+                                        location.pathname === link.path ? "active" : ""
+                                    }`}
                                 >
                                     {link.icon}
                                     <p>{link.name}</p>
@@ -1308,15 +1318,18 @@ const SideNav: React.FC = () => {
                 </Sidebar>
             ) : (
                 <>
-                    <Sidebar ref={(el) => {
-                        if (el) {
-                            el.style.setProperty("border-right-width", "0px", "important");
-                            el.style.setProperty("border-right-style", "none", "important");
-                        }
-                    }} className={cn("no-border-right w-85 md:relative top-0 left-0 z-50 fixed flex h-full", {
-                        "w-0": sidebarState === "collapsed",
-                        "!flex-row": sidebarState === "expanded",
-                    })}>
+                    <Sidebar
+                        ref={(el) => {
+                            if (el) {
+                                el.style.setProperty("border-right-width", "0px", "important");
+                                el.style.setProperty("border-right-style", "none", "important");
+                            }
+                        }}
+                        className={cn("no-border-right w-85 md:relative top-0 left-0 z-50 fixed flex h-full", {
+                            "w-0": sidebarState === "collapsed",
+                            "!flex-row": sidebarState === "expanded",
+                        })}
+                    >
                         <div className="flex flex-row">
                             {/* Dark left strip with icons */}
                             <div className="w-20 bg-branding-secondary flex flex-col justify-between h-screen items-center py-4 space-y-4">
@@ -1347,8 +1360,11 @@ const SideNav: React.FC = () => {
                                                     <Link
                                                         to={link.path!}
                                                         key={index}
-                                                        className={`flex items-center justify-center w-12 h-12 rounded-full me-0 transition-colors duration-200 ${location.pathname === link.path ? "bg-branding-secondary" : ""
-                                                            }`}
+                                                        className={`flex items-center justify-center w-12 h-12 rounded-full me-0 transition-colors duration-200 ${
+                                                            location.pathname === link.path
+                                                                ? "bg-branding-secondary"
+                                                                : ""
+                                                        }`}
                                                     >
                                                         {React.isValidElement(link.icon) &&
                                                             React.cloneElement(
@@ -1365,16 +1381,21 @@ const SideNav: React.FC = () => {
                                                                             }>
                                                                         ).props.children,
                                                                         (child) => {
-                                                                            if (React.isValidElement(child) && child.type === "path") {
+                                                                            if (
+                                                                                React.isValidElement(child) &&
+                                                                                child.type === "path"
+                                                                            ) {
                                                                                 return React.cloneElement(
-                                                                                    child as React.ReactElement<{ strokeWidth?: number }>,
-                                                                                    { strokeWidth: 1 }
+                                                                                    child as React.ReactElement<{
+                                                                                        strokeWidth?: number;
+                                                                                    }>,
+                                                                                    { strokeWidth: 1 },
                                                                                 );
                                                                             }
                                                                             return child;
-                                                                        }
+                                                                        },
                                                                     ),
-                                                                }
+                                                                },
                                                             )}
                                                     </Link>
                                                 ))
@@ -1388,30 +1409,41 @@ const SideNav: React.FC = () => {
                                         <Link
                                             to={link.path!}
                                             key={index}
-                                            className={`flex items-center justify-center w-12 h-12 rounded-full me-0 transition-colors duration-200 ${location.pathname === link.path ? "bg-branding-secondary" : ""
-                                                }`}
+                                            className={`flex items-center justify-center w-12 h-12 rounded-full me-0 transition-colors duration-200 ${
+                                                location.pathname === link.path ? "bg-branding-secondary" : ""
+                                            }`}
                                         >
                                             {React.isValidElement(link.icon) &&
                                                 React.cloneElement(
-                                                    link.icon as React.ReactElement<{ className?: string; children?: React.ReactNode }>,
+                                                    link.icon as React.ReactElement<{
+                                                        className?: string;
+                                                        children?: React.ReactNode;
+                                                    }>,
                                                     {
                                                         className: "me-0 shrink-0 text-[#64BA9F]",
                                                         children: React.Children.map(
-                                                            (link.icon as React.ReactElement<{ children?: React.ReactNode }>).props.children,
+                                                            (
+                                                                link.icon as React.ReactElement<{
+                                                                    children?: React.ReactNode;
+                                                                }>
+                                                            ).props.children,
                                                             (child) => {
-                                                                if (React.isValidElement(child) && child.type === "path") {
+                                                                if (
+                                                                    React.isValidElement(child) &&
+                                                                    child.type === "path"
+                                                                ) {
                                                                     return React.cloneElement(
-                                                                        child as React.ReactElement<{ strokeWidth?: number }>,
-                                                                        { strokeWidth: 1 }
+                                                                        child as React.ReactElement<{
+                                                                            strokeWidth?: number;
+                                                                        }>,
+                                                                        { strokeWidth: 1 },
                                                                     );
                                                                 }
                                                                 return child;
-                                                            }
+                                                            },
                                                         ),
-                                                    }
+                                                    },
                                                 )}
-
-
                                         </Link>
                                     ))}
                                 </div>
@@ -1422,7 +1454,10 @@ const SideNav: React.FC = () => {
                                 {/* Search header */}
                                 <div className="py-3.5">
                                     <div className="relative mx-auto w-[86%]">
-                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#474D63] w-5" stroke-width={1} />
+                                        <Search
+                                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#474D63] w-5"
+                                            stroke-width={1}
+                                        />
                                         <input
                                             type="text"
                                             placeholder="Search organization..."
@@ -1436,7 +1471,10 @@ const SideNav: React.FC = () => {
                                 {/* Organizations content */}
                                 <div className="p-4">
                                     <Link to="/dashboard/admin/organization/dashboard">
-                                        <h3 className="text-gray-500 text-sm font-medium mb-3.5 tracking-wide">ALL ORGANIZATIONS</h3> </Link>
+                                        <h3 className="text-gray-500 text-sm font-medium mb-3.5 tracking-wide">
+                                            ALL ORGANIZATIONS
+                                        </h3>{" "}
+                                    </Link>
 
                                     {isLoading ? (
                                         // Skeleton state
@@ -1478,63 +1516,76 @@ const SideNav: React.FC = () => {
                           `}
                                                                                 >
                                                                                     <span className="">{name}</span>
-                                                                                    <ChevronRight
-                                                                                        className="size-4 ml-auto transition-transform duration-200 group-data-[state=open]/collapsible-collapsible:rotate-90"
-                                                                                    />
+                                                                                    <ChevronRight className="size-4 ml-auto transition-transform duration-200 group-data-[state=open]/collapsible-collapsible:rotate-90" />
                                                                                 </div>
                                                                             </CollapsibleTrigger>
 
                                                                             <CollapsibleContent className="">
                                                                                 <SidebarMenuSub className="border-[#474D63]">
-                                                                                    {navs.map(({ icon, name, path }) => (
-                                                                                        <SidebarMenuSubItem key={name}>
-                                                                                            <Link
-                                                                                                to={path}
-                                                                                                className={`
+                                                                                    {navs.map(
+                                                                                        ({ icon, name, path }) => (
+                                                                                            <SidebarMenuSubItem
+                                                                                                key={name}
+                                                                                            >
+                                                                                                <Link
+                                                                                                    to={path}
+                                                                                                    className={`
                                   link flex mobile_links items-center w-full py-2 px-2 mb-0.5
                                   text-[#474D63] hover:text-[#64BA9F] hover:bg-transparent cursor-pointer
-                                  ${location.pathname === path
-                                                                                                        ? "text-[#64BA9F]"
-                                                                                                        : "text-[#474D63]"
-                                                                                                    }
+                                  ${location.pathname === path ? "text-[#64BA9F]" : "text-[#474D63]"}
                                 `}
-                                                                                            >
-                                                                                                {React.isValidElement(icon) &&
-                                                                                                    React.cloneElement(
-                                                                                                        icon as React.ReactElement<{
-                                                                                                            className?: string;
-                                                                                                            children?: React.ReactNode;
-                                                                                                        }>,
-                                                                                                        {
-                                                                                                            className:
-                                                                                                                "me-0 shrink-0 mr-2 text-current",
-                                                                                                            children: React.Children.map(
-                                                                                                                (
-                                                                                                                    icon as React.ReactElement<{
-                                                                                                                        children?: React.ReactNode;
-                                                                                                                    }>
-                                                                                                                ).props.children,
-                                                                                                                (child) => {
-                                                                                                                    if (
-                                                                                                                        React.isValidElement(child) &&
-                                                                                                                        child.type === "path"
-                                                                                                                    ) {
-                                                                                                                        return React.cloneElement(
-                                                                                                                            child as React.ReactElement<{
-                                                                                                                                strokeWidth?: number;
-                                                                                                                            }>,
-                                                                                                                            { strokeWidth: 1.5 }
-                                                                                                                        );
-                                                                                                                    }
-                                                                                                                    return child;
-                                                                                                                }
-                                                                                                            ),
-                                                                                                        }
-                                                                                                    )}
-                                                                                                <p className="whitespace-nowrap">{name}</p>
-                                                                                            </Link>
-                                                                                        </SidebarMenuSubItem>
-                                                                                    ))}
+                                                                                                >
+                                                                                                    {React.isValidElement(
+                                                                                                        icon,
+                                                                                                    ) &&
+                                                                                                        React.cloneElement(
+                                                                                                            icon as React.ReactElement<{
+                                                                                                                className?: string;
+                                                                                                                children?: React.ReactNode;
+                                                                                                            }>,
+                                                                                                            {
+                                                                                                                className:
+                                                                                                                    "me-0 shrink-0 mr-2 text-current",
+                                                                                                                children:
+                                                                                                                    React.Children.map(
+                                                                                                                        (
+                                                                                                                            icon as React.ReactElement<{
+                                                                                                                                children?: React.ReactNode;
+                                                                                                                            }>
+                                                                                                                        )
+                                                                                                                            .props
+                                                                                                                            .children,
+                                                                                                                        (
+                                                                                                                            child,
+                                                                                                                        ) => {
+                                                                                                                            if (
+                                                                                                                                React.isValidElement(
+                                                                                                                                    child,
+                                                                                                                                ) &&
+                                                                                                                                child.type ===
+                                                                                                                                    "path"
+                                                                                                                            ) {
+                                                                                                                                return React.cloneElement(
+                                                                                                                                    child as React.ReactElement<{
+                                                                                                                                        strokeWidth?: number;
+                                                                                                                                    }>,
+                                                                                                                                    {
+                                                                                                                                        strokeWidth: 1.5,
+                                                                                                                                    },
+                                                                                                                                );
+                                                                                                                            }
+                                                                                                                            return child;
+                                                                                                                        },
+                                                                                                                    ),
+                                                                                                            },
+                                                                                                        )}
+                                                                                                    <p className="whitespace-nowrap">
+                                                                                                        {name}
+                                                                                                    </p>
+                                                                                                </Link>
+                                                                                            </SidebarMenuSubItem>
+                                                                                        ),
+                                                                                    )}
                                                                                 </SidebarMenuSub>
                                                                             </CollapsibleContent>
                                                                         </SidebarMenuItem>
@@ -1550,13 +1601,10 @@ const SideNav: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-
                     </Sidebar>
                 </>
-
             )}
         </>
-
     );
 };
 
