@@ -70,6 +70,7 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Toaster } from "./ui/sonner";
 import VideoPopup from "./VideoPopup";
+import MLBGMTraining from "@/pages/Sessions/MLBGMTraining";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -168,6 +169,7 @@ function SessionRoutes() {
             <Route path="NBA-coach-room/:id" element={<NBAMediaTraining />} />
             <Route path="WNBA-coach-room/:id" element={<WNBAMediaTraining />} />
             <Route path="NFL-GM-room/:id" element={<NFLGMTraining />} />
+            <Route path="MLB-GM-room/:id" element={<MLBGMTraining />} />
             <Route path="NBA-GM-room/:id" element={<NBAGMTraining />} />
             <Route path="WNBA-GM-room/:id" element={<WNBAGMTraining />} />
             <Route path="coaching-room/:id" element={<CoachingRoomSession />} />
