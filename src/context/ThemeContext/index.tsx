@@ -28,11 +28,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("Current path: ", path, path.includes("admin"));
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
-    const { data: organization } = useFetchSingleOrganization(enterpriseId);
+    // const { data: organization } = useFetchSingleOrganization(enterpriseId);
     const { data: enterpriseUser, refetch } = useEnterpriseUsers();
     const [userEnterprise, setUserEnterprise] = useState<EnterpriseProfile | undefined>();
 
-    console.log("ent user: ",organization, profile, enterpriseUser);
+    console.log("ent user: ",enterpriseId, profile, enterpriseUser);
 
     useEffect(() => {
         refetch(); // force fetch on mount

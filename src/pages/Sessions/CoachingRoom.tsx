@@ -1,32 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useRef, useState } from "react";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
-import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
-import VoiceAnalytics from "@/components/session/VoiceAnalytics";
-import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
-import VideoStreamer from "@/components/session/RecordView";
 import EngagementMetrics from "@/components/session/EngagementMetrics";
-import { useParams } from "react-router-dom";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import alert from "../../assets/images/svgs/alert.svg";
-import TimerComponent from "@/components/session/TimerComponent";
-import { useMediaQuery } from "react-responsive";
 import MobileEngagementMetrics from "@/components/session/MobileEngagementMetrics";
 import MobileVoiceAnalytics from "@/components/session/MobileVoiceAnalytics";
-import { useEffect } from "react";
-import { useEndSession } from "@/hooks/sessions";
+import VideoStreamer from "@/components/session/RecordView";
+import PublicSpeakingTimer from "@/components/session/SessionPageTimer";
+import TimerComponent from "@/components/session/TimerComponent";
 import VideoPlayer from "@/components/session/VideoPlayer";
-import { useLocation } from "react-router-dom";
+import VoiceAnalytics from "@/components/session/VoiceAnalytics";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useEndSession } from "@/hooks/sessions";
+import axios from "axios";
+import { MessageCircleMore, SquareArrowUpRight } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import { useLocation, useParams } from "react-router-dom";
+import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
+import alert from "../../assets/images/svgs/alert.svg";
 import { useGetSessionQuestions } from "@/hooks/sessions";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
 import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 
-const CoachingRoom: React.FC = () => {
+const NFLMediaTraining: React.FC = () => {
     const { load } = useAudioPlayer();
     const [startTimer, setStartTimer] = useState(false);
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
@@ -38,7 +36,7 @@ const CoachingRoom: React.FC = () => {
     const [feedback, setFeedback] = useState<any | undefined>(undefined);
     const [sessionId, setSessionId] = useState<string | undefined>();
     const [sessionData, setSessionData] = useState<any | undefined>(undefined);
-    const [isMuted, setIsMuted] = useState(true);
+    const [isMuted] = useState(true);
     const [duration, setDuration] = useState<string | undefined>();
     const socket = useRef<WebSocket | null>(null);
     const [isSocketConnected, setIsSocketConnected] = useState(false);
@@ -51,30 +49,24 @@ const CoachingRoom: React.FC = () => {
     const [allowSwitch, setAllowSwitch] = useState<boolean>(true);
     const pcRef = useRef<RTCPeerConnection | null>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
-    const [questionImg, setQuestionImg] = useState<string>(
+    const [questionImg] = useState<string>(
         "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/coaching+room/coaching+question+card.png",
     );
-    const location = useLocation();
+    const questionsRef = useRef<IQuestion[]>([]);
+    const showQuestionTagRef = useRef(false);
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
-    const questionsRef = useRef<IQuestion[]>([]);
-    const showQuestionTagRef = useRef(false);
-    const question = questionsRef.current[activeQuestion];
-    const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
+    const question: IQuestion | undefined = questionsRef.current[activeQuestion];
+    const location = useLocation();
     const { data: enterpriseUser } = useEnterpriseUsers();
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
 
     const enterprise_id = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise.id;
-    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions(
-        enterprise_id ?? 0,
-        "coaching",
-    );
-
-    console.log("ent_id: ", enterprise_id);
+    const { data: sessionQuestions, isPending: getQuestionsPending } = useGetSessionQuestions(enterprise_id ?? 0, "coaching");
 
     const stopTimer = (duration?: any) => {
         console.log(duration);
@@ -86,7 +78,6 @@ const CoachingRoom: React.FC = () => {
         setStopStreamer(true);
     };
 
-    console.log(setIsMuted);
     const isSessionCompletedInTime = () => {
         if (!duration) return false;
         const minutes = parseInt(duration.split(":")[0], 10);
@@ -101,10 +92,6 @@ const CoachingRoom: React.FC = () => {
         setStopStreamer(true);
         setAllowSwitch(false);
         setDialogOneOpen(false);
-        // setIsMuted(false);
-        // setVideoUrl(
-        //     "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/rookie-room-clapping.mp4",
-        // );
         setTimeout(() => {
             setDialogTwoOpen(true);
         }, 7000);
@@ -136,6 +123,7 @@ const CoachingRoom: React.FC = () => {
     }, [isQuestionDialogOpen, question]);
 
     const answerQuestion = () => {
+        if (stopTime) return;
         showQuestionTagRef.current = true;
         setStartQuestionTimer(true);
         setQuestionDialogOpen(false);
@@ -150,22 +138,16 @@ const CoachingRoom: React.FC = () => {
     };
 
     const nextQuestion = () => {
-        if (stopTime) return;
         showQuestionTagRef.current = false;
         setQuestionDialogOpen(true);
-
+        // Use a functional update to get the new value
         setActiveQuestion((prev: number) => {
             const nQuestions = questionsRef.current.length;
             setStartQuestionTimer(false);
 
             if (prev < nQuestions - 1) {
-                // NOT last question
+                // NOT last question, prepare the next one
                 setQuestionDialogOpen(false);
-                setQuestionImg(
-                    Math.random() > 0.5
-                        ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
-                        : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png",
-                );
                 setQuestionDialogOpen(true);
                 return prev + 1;
             } else {
@@ -175,15 +157,8 @@ const CoachingRoom: React.FC = () => {
                 setStopStreamer(true);
                 setAllowSwitch(false);
                 setDialogOneOpen(false);
-
-                // 🚨 REMOVE CLAP VIDEO HERE
-                // setIsMuted(false);
-                // setVideoUrl("...PublicSpeakingRoomClap.mp4");
-
-                setTimeout(() => {
-                    setDialogTwoOpen(true);
-                }, 7000);
-                return prev;
+                setDialogTwoOpen(true);
+                return prev; // no increment, or return to 0 if you want
             }
         });
     };
@@ -304,19 +279,6 @@ const CoachingRoom: React.FC = () => {
                         const parsed = JSON.parse(event.data);
                         if (parsed.text) {
                             console.log(parsed.text);
-                            const validEmotions = [
-                                "thinking",
-                                "sorrow",
-                                "excitement",
-                                "laughter",
-                                "surprise",
-                                "interested",
-                            ];
-                            if (validEmotions.includes(parsed.text) && allowSwitch) {
-                                const random = Math.floor(Math.random() * 10) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
-                                setVideoUrl(newUrl);
-                            }
                         }
                     } catch (err) {
                         console.warn("Invalid message:", event.data, err);
@@ -376,30 +338,6 @@ const CoachingRoom: React.FC = () => {
         };
     }, [setVideoUrl, allowSwitch, stopStreamer, stopTime, location.pathname]);
 
-    useEffect(() => {
-        if (!isMuted) return;
-        const getRandomInt1to5 = () => Math.floor(Math.random() * 10) + 1;
-
-        const replaceRandomSegment = (url: string): string => {
-            const match = url.match(/(.+\/)(\d+)\.mp4$/);
-            if (!match) {
-                console.warn("🔍 Couldn't parse URL for random segment:", url);
-                return url;
-            }
-            const oldNum = match[2];
-            let newNum = getRandomInt1to5().toString();
-            // Keep generating until newNum is different from oldNum
-            while (newNum === oldNum) {
-                newNum = getRandomInt1to5().toString();
-            }
-            const newUrl = `${match[1]}${newNum}.mp4`;
-            console.log(`🔄 Replaced random number in URL: ${url} -> ${newUrl} (old: ${oldNum}, new: ${newNum})`);
-            return newUrl;
-        };
-
-        setVideoUrl((prevUrl) => replaceRandomSegment(prevUrl));
-    }, [videoReplacementFlag, isMuted]);
-
     return (
         <div className="text-primary-blue">
             <section className="flex flex-wrap border-b-1 border-bright-gray px-8 py-4 justify-between items-center">
@@ -412,9 +350,6 @@ const CoachingRoom: React.FC = () => {
                             <SquareArrowUpRight className="me-1" /> End Session
                         </Button>
                     )}
-                    {/* <div className="flex justify-between items-center mb-4">
-                        <h4 className="mb-0 md:mb-4">Public Speaking Session</h4>
-                    </div> */}
                     <div className="inline-block py-2 px-4 md:hidden bg-ghost-white border border-bright-gray rounded-3xl w-auto mt-2">
                         <p>{sessionData?.session_name}</p>
                     </div>
@@ -572,7 +507,7 @@ const CoachingRoom: React.FC = () => {
                                 className="h-full w-full rounded-2xl"
                                 onEnded={() => {
                                     console.log("Video ended");
-                                    setVideoReplacementFlag((prev) => !prev);
+                                    // setVideoReplacementFlag((prev) => !prev);
                                 }}
                             />
                             {showQuestionTagRef.current && (
@@ -580,7 +515,7 @@ const CoachingRoom: React.FC = () => {
                                     className="rounded-md bg-white p-4 w-1/2 z-10 absolute top-5 -left-13"
                                     style={{ transform: "scale(0.70)" }}
                                 >
-                                    <p className="mb-3">{question.question_text}</p>
+                                    <p className="mb-3">{question?.question_text}</p>
                                     <TimerComponent
                                         minutes={questionTimerRef.current}
                                         start={startQuestionTimer}
@@ -706,4 +641,4 @@ const CoachingRoom: React.FC = () => {
     );
 };
 
-export default CoachingRoom;
+export default NFLMediaTraining;
