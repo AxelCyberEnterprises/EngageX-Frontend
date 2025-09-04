@@ -18,7 +18,7 @@ import { RookieRoomSchema } from "@/schemas/dashboard/user";
 import { useAppDispatch } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import GoalsSection from "../form-sections/GoalsSection";
@@ -33,134 +33,121 @@ export type FormType = z.infer<typeof RookieRoomSchema>;
 const RookieRoomForm = () => {
     const dispatch = useAppDispatch();
     const { data: enterpriseUsers } = useEnterpriseUsers();
-     const companyName = enterpriseUsers?.results?.[0]?.enterprise?.sport_type?.toUpperCase() || "";
-  const sportTypeValue =
-    companyName === "NBA"
-      ? "nba"
-      : companyName === "WNBA"
-      ? "wnba"
-      : companyName === "NFL"
-      ? "nfl"
-      : companyName === "MLB"
-      ? "mlb"
-      : "";
+    
+    const companyName = enterpriseUsers?.results?.[0]?.enterprise?.sport_type?.toUpperCase() || "";
+    
+    const sportTypeValue = useMemo(() => {
+        switch (companyName) {
+            case "NBA": return "nba";
+            case "WNBA": return "wnba";
+            case "NFL": return "nfl";
+            case "MLB": return "mlb";
+            default: return "";
+        }
+    }, [companyName]);
 
-  const form = useForm<FormType>({
-    resolver: zodResolver(RookieRoomSchema),
-    defaultValues: {
-      session_type: "enterprise",
-      virtual_environment: "conference_room",
-      allow_ai_questions: true,
-      goals: [{ id: 1, goal: "" }],
-      enterprise_settings: {
-        enterprice_type: "rookie",
-        rookie_type: "media_training",
-        sport_type: "",
-        speaker_notes: "",
-      },
-    },
-  });
-  useEffect(() => {
-    if (companyName) {
-      form.reset({
-        session_type: "enterprise",
-        virtual_environment: "conference_room",
-        allow_ai_questions: true,
-        goals: [{ id: 1, goal: "" }],
-        enterprise_settings: {
-          enterprice_type: "rookie",
-          rookie_type: "media_training",
-          sport_type: sportTypeValue,
-          speaker_notes: "",
+    const form = useForm<FormType>({
+        resolver: zodResolver(RookieRoomSchema),
+        defaultValues: {
+            session_type: "enterprise",
+            virtual_environment: "conference_room",
+            allow_ai_questions: true,
+            goals: [{ id: 1, goal: "" }],
+            enterprise_settings: {
+                enterprice_type: "rookie",
+                rookie_type: "media_training",
+                sport_type: sportTypeValue,
+                speaker_notes: "",
+            },
         },
-      });
-    }
-  }, [companyName, sportTypeValue, form]);
+    });
+
+    // Initialize form with sport type when company data is available
+    useEffect(() => {
+        if (companyName && sportTypeValue) {
+            form.setValue("enterprise_settings.sport_type", sportTypeValue);
+        }
+    }, [companyName, sportTypeValue, form]);
+
     const rookieType = useWatch({ control: form.control, name: "enterprise_settings.rookie_type" });
     const sportType = useWatch({ control: form.control, name: "enterprise_settings.sport_type" });
 
     console.log(rookieType);
     console.log("Rookie Room Form - Sport Type:", sportType);
 
-    useEffect(() => {
-        let newVE: FormType["virtual_environment"] = "conference_room";
-
-        if (rookieType === "coach" || rookieType === "gm") {
-            switch (sportType) {
-                case "nba":
-                    newVE = "nba_room";
-                    break;
-                case "wnba":
-                    newVE = "wnba_room";
-                    break;
-                case "nfl":
-                    newVE = "nfl_room";
-                    break;
-                case "mlb":
-                    newVE = "mlb_room";
-                    break;
-                default:
-                    newVE = "conference_room";
-                    break;
-            }
+    // Memoize virtual environment options to prevent unnecessary recalculations
+    const virtualEnvironmentOptions = useMemo(() => {
+        switch (rookieType) {
+            case "coach":
+                return rookieRoomCoachVEOptions[sportType as keyof typeof rookieRoomCoachVEOptions] || [];
+            case "gm":
+                return rookieRoomGMVEOptions[sportType as keyof typeof rookieRoomGMVEOptions] || [];
+            default:
+                return rookieRoomVEOptions;
         }
-
-        form.setValue("virtual_environment", newVE);
-    }, [form, rookieType, sportType]);
-
-    const virtualEnvironmentOptions =
-        rookieType === "coach"
-            ? rookieRoomCoachVEOptions[sportType as keyof typeof rookieRoomCoachVEOptions]
-            : rookieType === "gm"
-              ? rookieRoomGMVEOptions[sportType as keyof typeof rookieRoomGMVEOptions]
-              : rookieRoomVEOptions;
+    }, [rookieType, sportType]);
 
     console.log(virtualEnvironmentOptions);
 
-    let videoSrc: string | undefined;
+    // Update virtual environment with debouncing to prevent rapid changes
+    const updateVirtualEnvironment = useCallback(() => {
+        let newVE: FormType["virtual_environment"] = "conference_room";
 
-    if (rookieType === "coach") {
-        switch (sportType) {
-            case "nba":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+Intro.mp4";
-                break;
-            case "wnba":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+Intro+Video+.mp4";
-                break;
-            case "nfl":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+Football+Intro+.mp4";
-                break;
-            case "mlb":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/MLB/MLB+Intro+video.mp4";
-                break;
+        if ((rookieType === "coach" || rookieType === "gm") && sportType) {
+            const sportToRoom: Record<string, FormType["virtual_environment"]> = {
+                nba: "nba_room",
+                wnba: "wnba_room",
+                nfl: "nfl_room",
+                mlb: "mlb_room",
+            };
+            newVE = sportToRoom[sportType] || "conference_room";
         }
-    } else if (rookieType === "gm") {
-        switch (sportType) {
-            case "nba":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NBA/NBA+GM+Intro+.MP4";
-                break;
-            case "wnba":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+GM+Intro+.MP4";
-                break;
-            case "nfl":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+GM+intro.MP4";
-                break;
-            case "mlb":
-                videoSrc =
-                    "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/NFL/NFL+GM+intro.MP4";
-                break;
+
+        // Only update if the value actually changed
+        const currentVE = form.getValues("virtual_environment");
+        if (currentVE !== newVE) {
+            form.setValue("virtual_environment", newVE);
         }
-    } else if (rookieType === "media_training") {
-        videoSrc =
-            "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/intro-videos/Media+Intro.MP4";
-    }
+    }, [form, rookieType, sportType]);
+
+    useEffect(() => {
+        // Add a small delay to prevent rapid updates during form initialization
+        const timeoutId = setTimeout(updateVirtualEnvironment, 50);
+        return () => clearTimeout(timeoutId);
+    }, [updateVirtualEnvironment]);
+
+    // Memoize video source to prevent recalculation on every render
+    const videoSrc = useMemo((): string | undefined => {
+        const baseUrl = "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos";
+        
+        if (rookieType === "coach") {
+            const coachVideos: Record<string, string> = {
+                nba: `${baseUrl}/Rookie+Room/NBA/NBA+Intro.mp4`,
+                wnba: `${baseUrl}/Rookie+Room/WNBA/WNBA+Intro+Video+.mp4`,
+                nfl: `${baseUrl}/Rookie+Room/NFL/NFL+Football+Intro+.mp4`,
+                mlb: `${baseUrl}/Rookie+Room/MLB/MLB+Intro+video.mp4`,
+            };
+            return coachVideos[sportType as keyof typeof coachVideos];
+        }
+        
+        if (rookieType === "gm") {
+            const gmVideos: Record<string, string> = {
+                nba: `${baseUrl}/Rookie+Room/NBA/NBA+GM+Intro+.MP4`,
+                wnba: `${baseUrl}/Rookie+Room/WNBA/WNBA+GM+Intro+.MP4`,
+                nfl: `${baseUrl}/Rookie+Room/NFL/NFL+GM+intro.MP4`,
+                // Fixed: MLB should use MLB GM intro, not NFL
+                mlb: `${baseUrl}/Rookie+Room/MLB/MLB+GM+intro.mp4`,
+
+            };
+            return gmVideos[sportType as keyof typeof gmVideos];
+        }
+        
+        if (rookieType === "media_training") {
+            return `${baseUrl}/intro-videos/Media+Intro.MP4`;
+        }
+        
+        return undefined;
+    }, [rookieType, sportType]);
 
     return (
         <Form {...form}>
@@ -178,7 +165,7 @@ const RookieRoomForm = () => {
                                     <SelectValue placeholder={companyName} />
                                 </SelectTrigger>
                                 <SelectContent className="border-none z-[9999]" position="popper" sideOffset={4}>
-                                    {sportsOptions.map(({  value }, index) => (
+                                    {sportsOptions.map(({ value }, index) => (
                                         <SelectItem
                                             key={value + index}
                                             value={value}
@@ -195,6 +182,7 @@ const RookieRoomForm = () => {
                     <TimeAllocationSection />
                     <InputSpeakerNotesSection {...{ form }} />
                 </section>
+
                 {companyName && (
                     <section className="lg:space-y-6 space-y-12 lg:max-w-100">
                         <div className="border border-bright-gray p-4 rounded-2xl space-y-4">
@@ -246,12 +234,17 @@ const RookieRoomForm = () => {
                                 event.
                             </p>
                         </div>
-                        <VirtualEnvironmentSection
-                            {...{ form }}
-                            className="..."
-                            options={virtualEnvironmentOptions || []}
-                            overlay={!(["coach", "gm"] as Array<typeof rookieType>).includes(rookieType!)}
-                        />
+
+                        {/* Key change: Use a stable key to prevent unnecessary remounting */}
+                        <div key="virtual-environment-section">
+                            <VirtualEnvironmentSection
+                                {...{ form }}
+                                className="..."
+                                options={virtualEnvironmentOptions}
+                                overlay={!(["coach", "gm"] as Array<typeof rookieType>).includes(rookieType!)}
+                            />
+                        </div>
+
                         <QuickTips tips={rookieRoomQuickTips} />
                     </section>
                 )}
@@ -288,7 +281,6 @@ const RookieRoomForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            // disabled={sportType === "mlb"}
                             className="bg-branding-secondary hover:bg-branding-secondary/90 font-normal md:w-fit w-full md:h-9 h-11 transition"
                             onClick={() =>
                                 dispatch(
