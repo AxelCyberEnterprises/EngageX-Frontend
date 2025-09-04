@@ -116,6 +116,16 @@ const PublicSpeaking: React.FC = () => {
                 // Pick 6 random questions
                 const shuffled = results.sort(() => 0.5 - Math.random());
                 questionsRef.current = shuffled.slice(0, 6);
+                // ----- NEW CODE: set image for first question -----
+                if (questionsRef.current.length > 0) {
+                    const firstGender = questionsRef.current[0]?.gender;
+                    setQuestionImg(
+                        firstGender === "F"
+                            ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
+                            : "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/wm_handraise.png"
+                    );
+                }
+                // ---------------------------------------------------
             } else {
                 questionsRef.current = [];
             }
