@@ -3,7 +3,7 @@ import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/
 import { useEffect, useState } from "react";
 import { defaultTheme, ThemeContext } from "./hook";
 import { Theme } from "./types";
-import { useFetchSingleOrganization } from "@/hooks";
+// import { useFetchSingleOrganization } from "@/hooks";
 import { useLocation, useSearchParams } from "react-router-dom";
 
 const LOCAL_KEY = "branding";
