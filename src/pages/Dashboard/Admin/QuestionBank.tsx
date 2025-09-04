@@ -351,6 +351,8 @@ const QuestionBank: React.FC = () => {
         try {
             await Promise.all(deletePromises);
             setSelectedRowIds(new Set());
+            setShowDeleteModal(false);
+            refetch();
         } catch (error) {
             console.error("Error deleting questions:", error);
             // Handle error - show toast notification, etc.
@@ -515,10 +517,11 @@ const QuestionBank: React.FC = () => {
             />
             <DeleteModal
                 show={showDeleteModal}
+                isPending={deleteQuestionMutation.isPending}
                 onClose={() => setShowDeleteModal(false)}
                 onDelete={() => handleConfirmDelete(selectedQuestionId)}
-                title="Delete Goal"
-                message="Are you sure you want to delete this training goal? This action cannot be undone."
+                title={selectedRowIds.size > 1 ? "Delete Questions" : "Delete Question"}
+                message={`Are you sure you want to delete ${selectedRowIds.size > 1 ? "these questions" : "this question"}? This action cannot be undone.`}
             />
             <EditQuestionModal
                 show={showEditModal}
