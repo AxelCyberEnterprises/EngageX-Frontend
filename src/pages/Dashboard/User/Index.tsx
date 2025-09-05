@@ -174,7 +174,7 @@ const UserDashboardHome: React.FC = () => {
     }, [newChartData]);
 
     // --- JSX and rest of logic ---
-    if (isDashboardDataLoading || isProfileLoading) {
+    if (isDashboardDataLoading) {
         return <UserDashboardSkeleton />;
     }
     return (
