@@ -1,7 +1,7 @@
 import FullCircleProgress from "@/components/dashboard/FullCircleProgress";
 import SegmentedProgressBar from "@/components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "@/components/dashboard/SemiCircleProgress";
-import ShadLineChart from "@/components/dashboard/ShadLineChart";
+import ShadLineChart2 from "@/components/dashboard/ShadLineChart2";
 import SlideFeedbackChart from "@/components/dashboard/SlideFeedbackChart";
 import EmptyState from "@/components/empty-state";
 import { Button } from "@/components/ui/button";
@@ -303,9 +303,8 @@ const PitchSessionReport: React.FC = () => {
                                 <div className="flex flex-col justify-between h-full border-1 border-bright-gray rounded-xl p-4">
                                     <h6 className="mb-3">Audience Engagement</h6>
                                     <div className="chart__div">
-                                        <ShadLineChart
+                                        <ShadLineChart2
                                             data={chartData.filter(Boolean).map((item) => ({
-                                                label: "",
                                                 month: item.chunk_offset,
                                                 Impact: item.impact,
                                                 "Trigger Response": item.trigger,
