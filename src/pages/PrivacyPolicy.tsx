@@ -10,15 +10,17 @@ function PrivacyPolicy() {
                     <div className="space-y-6">
                         <h4 className="text-black font-montreal">Introduction</h4>
                         <p className="big">
-                            Welcome to EngageX®. Your privacy is important to us. This Privacy Policy explains how we
-                            collect, use, and protect your personal information when you use our AI-powered public
-                            speaking and presentation training platform.
+                            Welcome to EngageX<sup>®</sup>. Your privacy is important to us. This Privacy Policy
+                            explains how we collect, use, and protect your personal information when you use our
+                            AI-powered public speaking and presentation training platform.
                         </p>
                     </div>
                     <div className="space-y-6">
                         <h4 className="text-black font-montreal">Information we Collect</h4>
                         <div className="big space-y-2">
-                            <p className="big">When using EngageX®, we may collect:</p>
+                            <p className="big">
+                                When using EngageX<sup>®</sup>, we may collect:
+                            </p>
                             <p className="big mt-5 font-medium">Personal Information:</p>
                             <p className="big mt-1">Name, email address, and account details</p>
                             <p className="big font-medium mt-2">Session Data:</p>
@@ -34,7 +36,9 @@ function PrivacyPolicy() {
                     <div className="space-y-6">
                         <h4 className="text-black font-montreal">How We Use Your Information</h4>
                         <div className="big space-y-2">
-                            <p className="big">EngageX® processes collected data to:</p>
+                            <p className="big">
+                                EngageX<sup>®</sup> processes collected data to:
+                            </p>
                             <p className="mt-5 big">Provide AI-generated feedback on speech performance</p>
                             <p className="flex big items-center gap-x-3 pl-4 mt-3">
                                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
@@ -54,8 +58,8 @@ function PrivacyPolicy() {
                         <h4 className="text-black font-montreal">Data Storage & Security</h4>
                         <div className="big space-y-2">
                             <p className="big">
-                                At EngageX®, protecting your data is a top priority. We implement robust security
-                                measures, including:
+                                At EngageX<sup>®</sup>, protecting your data is a top priority. We implement robust
+                                security measures, including:
                             </p>
                             <p className="flex big items-center gap-x-3 pl-4 mt-3">
                                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
@@ -106,7 +110,7 @@ function PrivacyPolicy() {
                         <h4 className="text-black font-montreal">Sharing & Third-Party Access</h4>
                         <div className="big space-y-2">
                             <p className="big">
-                                EngageX® does not sell or share personal data with third parties except:
+                                EngageX<sup>®</sup> does not sell or share personal data with third parties except:
                             </p>
                             <p className="flex big items-center gap-x-3 pl-4 mt-3">
                                 <div className="h-2 w-2 rounded-full bg-gunmetal" />
@@ -125,15 +129,15 @@ function PrivacyPolicy() {
                             <p className="big">You can request access to your stored personal data or its deletion</p>
                             <p className="font-medium mt-2 big">Session Recordings:</p>
                             <p className="big">
-                                Once downloaded, EngageX® is not responsible for security breaches or misuse
+                                Once downloaded, EngageX<sup>®</sup> is not responsible for security breaches or misuse
                             </p>
                         </div>
                     </div>
                     <div className="space-y-6">
                         <h4 className="text-black font-montreal">Updates to Privacy Policy</h4>
                         <p className="big">
-                            We may update this Privacy Policy from time to time. Continued use of EngageX® signifies
-                            acceptance of any revisions
+                            We may update this Privacy Policy from time to time. Continued use of EngageX<sup>®</sup>{" "}
+                            signifies acceptance of any revisions
                         </p>
                     </div>
                     <div className="space-y-6">

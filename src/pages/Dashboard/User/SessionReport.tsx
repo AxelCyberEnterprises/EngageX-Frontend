@@ -286,43 +286,46 @@ const PitchSessionReport: React.FC = () => {
             newSessionNavigate = `../public-speaking`;
             break;
     }
-    const bookingEnterprise = enterpriseUsers?.results[0]?.enterprise
+    const bookingEnterprise = enterpriseUsers?.results[0]?.enterprise;
 
     const bookCoaching = useBookCoachingSession();
 
     const SpeakWithCoach = () => {
-        if(profile?.is_enterprise_user){
-        bookCoaching.mutate(
-          {
-            id: bookingEnterprise?.id ? String(bookingEnterprise.id) : "",
-            data: {
-              name: bookingEnterprise?.name ?? "",
-              enterprise_type: (bookingEnterprise?.enterprise_type === "general" || bookingEnterprise?.enterprise_type === "sport")
-                ? bookingEnterprise.enterprise_type
-                : "general",
-              sport_type: ["nfl", "nba", "wnba", "mlb"].includes(bookingEnterprise?.sport_type as "nfl" | "nba" | "wnba" | "mlb" | undefined ?? "")
-                ? bookingEnterprise?.sport_type as "nfl" | "nba" | "wnba" | "mlb" | null
-                : null,
-              primary_color: (bookingEnterprise as any)?.primary_color ?? "default-color", // Provide a default string value
-              secondary_color: (bookingEnterprise as any)?.secondary_color,
-              is_active: (bookingEnterprise as any)?.is_active,
-              one_on_one_coaching_link: (bookingEnterprise as any)?.one_on_one_coaching_link,
-              accessible_verticals: (bookingEnterprise as any)?.accessible_verticals,
-            },
-          },
-          {
-            onSuccess: (res) => {
-              console.log("Coaching session booked successfully", res);
-            },
-            onError: (err) => {
-              console.error("Booking failed", err);
-            },
-          }
-        );
-    }
-    setDialogOneOpen(false);
-
-}
+        if (profile?.is_enterprise_user) {
+            bookCoaching.mutate(
+                {
+                    id: bookingEnterprise?.id ? String(bookingEnterprise.id) : "",
+                    data: {
+                        name: bookingEnterprise?.name ?? "",
+                        enterprise_type:
+                            bookingEnterprise?.enterprise_type === "general" ||
+                            bookingEnterprise?.enterprise_type === "sport"
+                                ? bookingEnterprise.enterprise_type
+                                : "general",
+                        sport_type: ["nfl", "nba", "wnba", "mlb"].includes(
+                            (bookingEnterprise?.sport_type as "nfl" | "nba" | "wnba" | "mlb" | undefined) ?? "",
+                        )
+                            ? (bookingEnterprise?.sport_type as "nfl" | "nba" | "wnba" | "mlb" | null)
+                            : null,
+                        primary_color: (bookingEnterprise as any)?.primary_color ?? "default-color", // Provide a default string value
+                        secondary_color: (bookingEnterprise as any)?.secondary_color,
+                        is_active: (bookingEnterprise as any)?.is_active,
+                        one_on_one_coaching_link: (bookingEnterprise as any)?.one_on_one_coaching_link,
+                        accessible_verticals: (bookingEnterprise as any)?.accessible_verticals,
+                    },
+                },
+                {
+                    onSuccess: (res) => {
+                        console.log("Coaching session booked successfully", res);
+                    },
+                    onError: (err) => {
+                        console.error("Booking failed", err);
+                    },
+                },
+            );
+        }
+        setDialogOneOpen(false);
+    };
     const initials = `${profile?.first_name?.[0] ?? ""}${profile?.last_name?.[0] ?? ""}`.toUpperCase();
 
     return (
@@ -384,7 +387,11 @@ const PitchSessionReport: React.FC = () => {
                                             </DialogDescription>
                                         </DialogHeader>
                                         <Link
-                                            to={profile?.is_enterprise_user ? (bookingEnterprise as any)?.one_on_one_coaching_link : "https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching"}
+                                            to={
+                                                profile?.is_enterprise_user
+                                                    ? (bookingEnterprise as any)?.one_on_one_coaching_link
+                                                    : "https://calendly.com/jacqui-thecareerdoctor/engagex-live-speach-coaching"
+                                            }
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="bg-branding-primary hover:bg-branding-primary/90 h-10 px-4 py-2 rounded-md text-white flex items-center justify-center text-sm"
@@ -419,23 +426,25 @@ const PitchSessionReport: React.FC = () => {
 
                             <div className="flex lg:me-5 mt-6 lg:mt-0">
                                 <div className="flex pe-5 me-5 border-r-2 border-bright-gray">
-                                <div className="user__image">
-                    <div
-                        className={`size-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 ${
-                            !profile?.profile_picture && "border border-[#D0D5DD] bg-[#D0D5DD]"
-                        }`}
-                    >
-                        {profile?.profile_picture ? (
-                            <img
-                                src={profile?.profile_picture}
-                                alt={`user image`}
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <span className="font-medium text-sm leading-none text-[#10161e]">{initials}</span>
-                        )}
-                    </div>
-                </div>
+                                    <div className="user__image">
+                                        <div
+                                            className={`size-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 ${
+                                                !profile?.profile_picture && "border border-[#D0D5DD] bg-[#D0D5DD]"
+                                            }`}
+                                        >
+                                            {profile?.profile_picture ? (
+                                                <img
+                                                    src={profile?.profile_picture}
+                                                    alt={`user image`}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <span className="font-medium text-sm leading-none text-[#10161e]">
+                                                    {initials}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
                                     <div className="flex flex-col justify-between ps-2">
                                         <h6>{data.full_name}</h6>
                                         <p className="text-independence">{data.user_email}</p>
@@ -450,9 +459,9 @@ const PitchSessionReport: React.FC = () => {
 
                         <p className="text-independence mb-3">
                             This comprehensive report summarizes the session you just completed. The report covers the
-                            goals you set for yourself and the industry standards defined by EngageX®. Please click on
-                            the speak with a coach button at the top to book a live review session with a certified
-                            coach.
+                            goals you set for yourself and the industry standards defined by EngageX<sup>®</sup>.
+                            Please click on the speak with a coach button at the top to book a live review session with
+                            a certified coach.
                         </p>
                     </section>
 
@@ -502,6 +511,7 @@ const PitchSessionReport: React.FC = () => {
                                     <div className="chart__div">
                                         <ShadLineChart
                                             data={chartData.filter(Boolean).map((item) => ({
+                                                label: "",
                                                 month: item.chunk_offset,
                                                 Impact: item.impact,
                                                 "Trigger Response": item.trigger,

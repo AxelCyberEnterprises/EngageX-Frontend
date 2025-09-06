@@ -8,6 +8,7 @@ export type SortOption = "max-date" | "min-date" | "max-impact" | "min-impact" |
 interface ProgressTrackingParams {
     timeFrame?: TimeFrame;
     sort?: SortOption;
+    memberId?: string;
 }
 
 /**
@@ -37,8 +38,9 @@ const getDateRange = (timeFrame?: TimeFrame) => {
  * Hook for fetching progress tracking data with sorting and date range filtering
  */
 export function useProgressTracking(params: ProgressTrackingParams = {}) {
-    const { timeFrame, sort = "max-date" } = params;
+    const { timeFrame, sort = "max-date", memberId } = params;
     const { startDate, endDate } = getDateRange(timeFrame);
+    console.log("memberId", memberId, timeFrame);
 
     return useQuery<any>({
         queryKey: ["performance-analytics", sort, startDate, endDate],
@@ -47,6 +49,9 @@ export function useProgressTracking(params: ProgressTrackingParams = {}) {
             queryParams.append("sort", sort);
             queryParams.append("start_date", startDate);
             queryParams.append("end_date", endDate);
+            if (memberId) {
+                queryParams.append("user_id", memberId);
+            }
             const url = `/sessions/performance-analytics/?${queryParams.toString()}`;
             const response = await apiGet<any>(url, "default");
             return response;

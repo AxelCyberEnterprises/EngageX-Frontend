@@ -401,6 +401,7 @@ const UserDashboardHome: React.FC = () => {
                         <div className="chart__div">
                             <ShadLineChart
                                 data={chartData.filter(Boolean).map((item) => ({
+                                    label: "",
                                     month: item.chunk_offset,
                                     Impact: item.impact,
                                     "Trigger Response": item.trigger,

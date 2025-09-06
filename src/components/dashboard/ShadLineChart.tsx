@@ -5,7 +5,7 @@ import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from "recharts";
 import CustomLegend from "./CustomLegend";
 
 type ChartData = {
-    month: number; // in seconds
+    label: string; // date label like "Aug 1", "Sep 1"
     [key: string]: number | string;
 };
 
@@ -15,52 +15,130 @@ type Props = {
     isLoading?: boolean;
 };
 
-// Utility to format seconds to "Xs" or "Xm"
-const formatTimeLabel = (seconds: number) => {
-    if (seconds < 60) return `${seconds}s`;
-    const minutes = +(seconds / 60).toFixed(1);
-    return `${minutes}m`;
-};
-
 export default function ShadLineChart({ data, colors, isLoading = false }: Props) {
-    const chartConfig = Object.keys(colors).reduce((acc, key) => {
+    // Get all unique categories from the data, or use color keys as fallback
+    const allCategories = new Set<string>();
+
+    if (data && data.length > 0) {
+        data.forEach((item) => {
+            Object.keys(item).forEach((key) => {
+                if (key !== "label" && typeof item[key] === "number") {
+                    allCategories.add(key);
+                }
+            });
+        });
+    }
+
+    // If no data, use the color keys as categories for consistent chart structure
+    if (allCategories.size === 0) {
+        Object.keys(colors).forEach((key) => allCategories.add(key));
+    }
+
+    // Create chart config for all categories
+    const chartConfig = Array.from(allCategories).reduce((acc, key) => {
         acc[key] = {
-            label: key.charAt(0).toUpperCase() + key.slice(1),
-            color: colors[key],
+            label: key,
+            color: colors[key] || "#8884d8", // fallback color if not defined
         };
         return acc;
     }, {} as ChartConfig);
 
-    const rawValues = data.map((d) => d.month);
-    const maxRaw = Math.max(...rawValues);
+    // Function to generate 7 days of data ensuring we have at least 7 days
+    const generateSevenDaysData = () => {
+        const hasData = data && data.length > 0;
 
-    // Create an initial data point at x=0
-    const firstPoint = data[0] || {};
-    const initialPoint: ChartData = {
-        month: 0,
-        raw: 0,
-        xLabel: formatTimeLabel(0),
+        if (!hasData) {
+            // Generate 7 days from today backwards
+            const sevenDaysData: ChartData[] = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const label = date.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+
+                const dataPoint: ChartData = { label };
+                allCategories.forEach((category) => {
+                    dataPoint[category] = 0;
+                });
+                sevenDaysData.push(dataPoint);
+            }
+            return sevenDaysData;
+        }
+
+        // Create a map of existing data by label
+        const existingDataMap = new Map<string, ChartData>();
+        data.forEach((item) => {
+            existingDataMap.set(item.label, item);
+        });
+
+        // Determine date range - if we have data, use it to determine the range
+        let startDate: Date;
+        let endDate: Date;
+
+        if (data.length > 0) {
+            // Parse the existing dates to find the range
+            const dates = data
+                .map((item) => {
+                    // Parse "Aug 1", "Sep 1" etc.
+                    const [month, day] = item.label.split(" ");
+                    const currentYear = new Date().getFullYear();
+                    return new Date(`${month} ${day}, ${currentYear}`);
+                })
+                .sort((a, b) => a.getTime() - b.getTime());
+
+            startDate = dates[0];
+            endDate = dates[dates.length - 1];
+
+            // Ensure we have at least 7 days
+            const daysDiff = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+            if (daysDiff < 6) {
+                // Extend the range to cover 7 days
+                const totalExtension = 6 - daysDiff;
+                const extensionBefore = Math.floor(totalExtension / 2);
+                const extensionAfter = totalExtension - extensionBefore;
+
+                startDate.setDate(startDate.getDate() - extensionBefore);
+                endDate.setDate(endDate.getDate() + extensionAfter);
+            }
+        } else {
+            // Fallback to last 7 days
+            endDate = new Date();
+            startDate = new Date();
+            startDate.setDate(endDate.getDate() - 6);
+        }
+
+        // Generate complete 7+ days dataset
+        const completeData: ChartData[] = [];
+        const currentDate = new Date(startDate);
+
+        while (currentDate <= endDate) {
+            const label = currentDate.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+            const existingData = existingDataMap.get(label);
+
+            if (existingData) {
+                // Use existing data, but ensure all categories are present
+                const normalized = { ...existingData };
+                allCategories.forEach((category) => {
+                    if (!(category in normalized)) {
+                        normalized[category] = 0;
+                    }
+                });
+                completeData.push(normalized);
+            } else {
+                // Create empty data point for missing dates
+                const dataPoint: ChartData = { label };
+                allCategories.forEach((category) => {
+                    dataPoint[category] = 0;
+                });
+                completeData.push(dataPoint);
+            }
+
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        return completeData;
     };
 
-    Object.keys(colors).forEach((key) => {
-        initialPoint[key] = firstPoint[key] ?? 0;
-    });
-
-    const dataWithTime = [
-        initialPoint,
-        ...data.map((d) => ({
-            ...d,
-            raw: d.month,
-            xLabel: formatTimeLabel(d.month),
-        })),
-    ];
-
-    // Define custom ticks
-    const tickInterval = 10;
-    const customTicks: number[] = [];
-    for (let i = 0; i <= maxRaw; i += tickInterval) {
-        customTicks.push(i);
-    }
+    const normalizedData = generateSevenDaysData();
 
     if (isLoading) {
         return (
@@ -71,7 +149,7 @@ export default function ShadLineChart({ data, colors, isLoading = false }: Props
                         <div className="space-y-2">
                             <Skeleton className="h-[200px] w-full rounded-md" />
                             <div className="flex justify-center gap-4 pt-4">
-                                {Object.keys(colors).map((idx) => (
+                                {Array.from(allCategories).map((_category, idx) => (
                                     <div key={idx} className="flex items-center gap-2">
                                         <Skeleton className="w-1.5 h-4" />
                                         <Skeleton className="h-4 w-16" />
@@ -89,40 +167,22 @@ export default function ShadLineChart({ data, colors, isLoading = false }: Props
         <Card className="bg-transparent shadow-none border-0 pb-0">
             <CardContent className="px-0">
                 <ChartContainer config={chartConfig}>
-                    <LineChart data={dataWithTime} margin={{ left: 12, right: 12 }}>
+                    <LineChart data={normalizedData} margin={{ left: 12, right: 12 }}>
                         <CartesianGrid vertical={false} />
-                        <XAxis
-                            dataKey="raw"
-                            type="number"
-                            domain={[0, maxRaw]}
-                            ticks={customTicks}
-                            tickFormatter={(value) => (value === 0 ? "" : formatTimeLabel(value))}
-                            tickLine={false}
-                            axisLine={false}
-                            tickMargin={8}
-                        />
+                        <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} />
                         <YAxis width={25} tickLine={false} axisLine={false} tickMargin={8} />
                         <ChartTooltip
                             cursor={false}
-                            content={
-                                <ChartTooltipContent
-                                    indicator="line"
-                                    labelFormatter={(label) => {
-                                        const minutes = Math.floor(label / 60);
-                                        const seconds = label % 60;
-                                        return `${minutes}m ${seconds}s`;
-                                    }}
-                                />
-                            }
+                            content={<ChartTooltipContent indicator="line" labelFormatter={(label) => label} />}
                         />
 
                         <Legend content={<CustomLegend />} />
-                        {Object.keys(colors).map((key) => (
+                        {Array.from(allCategories).map((category) => (
                             <Line
-                                key={key}
-                                dataKey={key}
+                                key={category}
+                                dataKey={category}
                                 type="monotone"
-                                stroke={colors[key]}
+                                stroke={colors[category] || "#8884d8"}
                                 strokeWidth={2}
                                 dot={false}
                             />

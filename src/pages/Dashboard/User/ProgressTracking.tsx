@@ -8,7 +8,7 @@ import { RecentSessionsTable } from "@/components/tables/recent-sessions-table/u
 import { Session } from "@/components/tables/recent-sessions-table/user/data";
 import { SortOption, TimeFrame, useProgressTracking } from "@/hooks/progressTracking";
 import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import circleCheck from "../../../assets/images/svgs/circle-check.svg";
 import circleExclamation from "../../../assets/images/svgs/circle-exclamation.svg";
@@ -33,6 +33,9 @@ const ProgressTracking: React.FC = () => {
     const [showFailureModal, setShowFailureModal] = useState(false);
     const [timeFrame, setTimeFrame] = useState<TimeFrame>("weekly");
     const [sortOption, setSortOption] = useState<SortOption>("max-date");
+    const [searchParams] = useSearchParams();
+    const memberId = searchParams.get("memberId");
+    console.log("member: ", memberId);
     const {
         data: progressTracking,
         isLoading: progressTrackingLoading,
@@ -41,6 +44,7 @@ const ProgressTracking: React.FC = () => {
     } = useProgressTracking({
         timeFrame: timeFrame,
         sort: sortOption,
+        memberId: memberId || "0",
     });
     useEffect(() => {
         refetch();

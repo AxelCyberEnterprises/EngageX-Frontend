@@ -19,7 +19,7 @@ const LogoutConfirmation = () => {
                 <div className="space-y-2">
                     <h6 className="font-[Neue Montreal]">Logout</h6>
                     <p className="text-independence font-[montserrat] text-sm">
-                        You are about to log out of your EngageX® account. Are you sure you want to proceed?
+                        You are about to log out of your EngageX<sup>®</sup> account. Are you sure you want to proceed?
                     </p>
                 </div>
             </div>
@@ -31,7 +31,10 @@ const LogoutConfirmation = () => {
                 >
                     Cancel
                 </Button>
-                <Button className="bg-[#DD524D] hover:bg-[#DD524D]/90 font-normal w-full h-11 transition-colors" onClick={handleLogout}>
+                <Button
+                    className="bg-[#DD524D] hover:bg-[#DD524D]/90 font-normal w-full h-11 transition-colors"
+                    onClick={handleLogout}
+                >
                     Logout
                 </Button>
             </div>

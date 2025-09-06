@@ -157,8 +157,8 @@ const PersonalInfoForm: React.FC = () => {
         { label: "Sales Professionals", value: "sales" },
         { label: "C-suites", value: "c_suite" },
         { label: "Entrepreneurs", value: "entrepreneur" },
-        { label: "Major League Sports Athlete", value: "athlete" },
-        { label: "Major League Sports Executive", value: "executive" },
+        { label: "Major League Sports Athlete/Exec", value: "major_league_sports_athlete_executive" },
+        { label: "Professional Organization", value: "professional_organization" },
     ];
 
     useEffect(() => {
