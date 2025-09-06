@@ -18,7 +18,7 @@ import improveBg from "../../../assets/images/pngs/improve-bg.png";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
 import SemiCircleProgress from "../../../components/dashboard/SemiCircleProgress";
-import ShadLineChart from "../../../components/dashboard/ShadLineChart";
+import ShadLineChart2 from "../../../components/dashboard/ShadLineChart2";
 
 interface DashboardData {
     latest_session_dict: {
@@ -399,9 +399,8 @@ const UserDashboardHome: React.FC = () => {
                             />
                         )}
                         <div className="chart__div">
-                            <ShadLineChart
+                            <ShadLineChart2
                                 data={chartData.filter(Boolean).map((item) => ({
-                                    label: "",
                                     month: item.chunk_offset,
                                     Impact: item.impact,
                                     "Trigger Response": item.trigger,
