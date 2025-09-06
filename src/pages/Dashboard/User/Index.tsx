@@ -20,6 +20,7 @@ import improveBg from "../../../assets/images/pngs/improve-bg.png";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
 import coachingImage from "@/assets/images/jpegs/coaching-image.jpg";
+import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 
 interface DashboardData {
     latest_session_dict: {
@@ -47,9 +48,26 @@ interface DashboardData {
     // Add other properties of the `data` object here if needed
 }
 
+
+export const useCombinedProfile = () => {
+  const { data: fullProfile, isLoading: isFullProfileLoading } = useFullUserProfile();
+  
+  const userId = fullProfile?.results?.[0]?.id;
+  const {
+    data: profile,
+    isLoading: isProfileLoading,
+    error: profileError,
+  } = useUserProfile(userId);
+
+  const isLoading = isFullProfileLoading || isProfileLoading;
+
+  return { profile, isLoading, error: profileError };
+};
+
 const UserDashboardHome: React.FC = () => {
     // --- Selectors and State ---
-    const profile = useSelector((state: RootState) => state.profile.data);
+    const { profile, isLoading: isProfileLoading} = useCombinedProfile();
+    console.log("User Profile:", profile);
     const [showAgreementModal, setShowAgreementModal] = useState(false);
     const { data: dashboardData, isLoading: isDashboardDataLoading } = useDashboardData() as UseQueryResult<
         DashboardData,
@@ -65,10 +83,6 @@ const UserDashboardHome: React.FC = () => {
         theme: { primaryColor },
     } = useTheme();
 
-    const isProfileLoading =
-    !profile ||
-    typeof profile.is_enterprise_user === "undefined" ||
-    (profile.is_enterprise_user === true && typeof profile.user_type === "undefined");
 
     const cardsData = [
         {
@@ -173,10 +187,11 @@ const UserDashboardHome: React.FC = () => {
         console.log(setNewChartData);
     }, [newChartData]);
 
-    // --- JSX and rest of logic ---
-    if (isDashboardDataLoading || isProfileLoading) {
+   
+    if ( isDashboardDataLoading || isProfileLoading) {
         return <UserDashboardSkeleton />;
     }
+  
     return (
         <div className="user__dashboard__index p-4 md:px-8">
             {(score ?? 0) > 10 && (score ?? 0) <= 99 && (

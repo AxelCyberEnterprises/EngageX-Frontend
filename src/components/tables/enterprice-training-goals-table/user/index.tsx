@@ -1,40 +1,31 @@
 import { useMemo } from "react";
 import { BaseTable } from "../../base-table";
 import { columns, IEnterpriseTrainingGoals } from "../column";
-
-// Dummy data for enterprise training goals
-const dummyEnterpriseTrainingGoals: IEnterpriseTrainingGoals[] = [
-    {
-        id: 1,
-        goal: "Media Training",
-        organization: "NBA",
-        progress: 7,
-    },
-    {
-        id: 2,
-        goal: "Coach/GM Training",
-        organization: "NBA",
-        progress: 4,
-    },
-    {
-        id: 3,
-        goal: "Public Speaking Training",
-        organization: "NBA",
-        progress: 9,
-    },
-];
+import { useEnterpriseUsers } from "@/hooks/settings";
 
 const EnterpriseTrainingGoalsTable = () => {
-    const enterpriseTrainingGoalsData = useMemo(() => dummyEnterpriseTrainingGoals, []);
+  const { data: enterpriseUsers } = useEnterpriseUsers();
 
-    return (
-        <BaseTable
-            columns={columns}
-            data={enterpriseTrainingGoalsData}
-            count={enterpriseTrainingGoalsData.length}
-            hidePagination={true}
-        />
-    );
+  const enterpriseTrainingGoalsData = useMemo(() => {
+    const goals = enterpriseUsers?.results?.[0]?.enterprise?.goals ?? [];
+    const organization = enterpriseUsers?.results?.[0]?.enterprise?.name || "N/A";
+
+    return goals.map((goal: any) => ({
+      id: goal.id,
+      goal: goal.room_display,
+      organization: organization,
+      progress: (goal.completed_sessions / goal.target_sessions) ,
+    })) as IEnterpriseTrainingGoals[];
+  }, [enterpriseUsers]);
+
+  return (
+    <BaseTable
+      columns={columns}
+      data={enterpriseTrainingGoalsData}
+      count={enterpriseTrainingGoalsData.length}
+      hidePagination={true}
+    />
+  );
 };
 
 export default EnterpriseTrainingGoalsTable;

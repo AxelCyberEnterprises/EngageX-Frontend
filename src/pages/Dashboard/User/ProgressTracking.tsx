@@ -18,6 +18,7 @@ import micIcon from "../../../assets/images/svgs/mic.svg";
 import select from "../../../assets/images/svgs/select.svg";
 import speakerIcon from "../../../assets/images/svgs/speaker.svg";
 import tvIcon from "../../../assets/images/svgs/tv.svg";
+import { useEnterpriseUsers } from "@/hooks/settings";
 
 export interface Metric {
     metric: string;
@@ -46,6 +47,8 @@ const ProgressTracking: React.FC = () => {
         sort: sortOption,
         memberId: memberId || "0",
     });
+
+    console.log("Progress Tracking Data:", progressTracking);
     useEffect(() => {
         refetch();
     }, [timeFrame, sortOption]);
@@ -193,6 +196,9 @@ const ProgressTracking: React.FC = () => {
         setSortOption(value as SortOption);
     };
 
+    const { data: useEnterpriseUser } = useEnterpriseUsers();
+    console.log("Enterprise Users Data:", useEnterpriseUser?.results?.[0]?.enterprise.goals);
+    
     return (
         <>
             <ActionModal

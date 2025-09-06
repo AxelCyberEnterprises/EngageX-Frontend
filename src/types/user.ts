@@ -32,6 +32,7 @@ export interface IEnterpriseUser {
         primary_color: string | null;
         secondary_color: string | null;
         logo: string | null;
+        goals: [] | null;
     };
 
     progress: {

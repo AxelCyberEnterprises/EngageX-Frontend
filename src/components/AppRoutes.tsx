@@ -29,6 +29,7 @@ import Press from "@/pages/Press/Press";
 import CoachingRoomSession from "@/pages/Sessions/CoachingRoom";
 import NBAMediaTraining from "@/pages/Sessions/NBACoachTraining";
 import NBAGMTraining from "@/pages/Sessions/NBAGMTraining";
+import MLBGMTraining from "@/pages/Sessions/MLBGMTraining";
 import NFLMediaTraining from "@/pages/Sessions/NFLCoachTraining";
 import NFLGMTraining from "@/pages/Sessions/NFLGMTraining";
 import PresentationPracticeSession from "@/pages/Sessions/PresentationPractice";
@@ -70,7 +71,7 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Toaster } from "./ui/sonner";
 import VideoPopup from "./VideoPopup";
-import MLBGMTraining from "@/pages/Sessions/MLBGMTraining";
+import MLBMediaTraining from "@/pages/Sessions/MLBCoachTraining";
 
 function RequireAuth({ children }: { children: ReactNode }) {
     const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
@@ -167,6 +168,7 @@ function SessionRoutes() {
             <Route path="the-rookie-speaking/:id" element={<TheRookieSpeaking />} />
             <Route path="NFL-coach-room/:id" element={<NFLMediaTraining />} />
             <Route path="NBA-coach-room/:id" element={<NBAMediaTraining />} />
+            <Route path="MLB-coach-room/:id" element={<MLBMediaTraining />} />
             <Route path="WNBA-coach-room/:id" element={<WNBAMediaTraining />} />
             <Route path="NFL-GM-room/:id" element={<NFLGMTraining />} />
             <Route path="MLB-GM-room/:id" element={<MLBGMTraining />} />
