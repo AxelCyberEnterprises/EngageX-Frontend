@@ -72,7 +72,7 @@ const Help: React.FC = () => {
                         Still want to know more?
                     </p>
                     <p className="text-[#a5b8c3] sm:text-xl  text-center">
-                        Visit our FAQs page to know more about our services at EngageX®
+                        Visit our FAQs page to know more about our services at EngageX<sup>®</sup>
                     </p>
                     <a href="/contact#faq" target="_blank" className="mt-5 ">
                         <div className="bg-[#6f7c8e]  text-lg flex items-center gap-0 px-8 py-3  hover:bg-[#6f7c8e90] border-dotted  !important border-[#6f7c8e] rounded-md">

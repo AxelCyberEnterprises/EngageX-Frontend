@@ -58,7 +58,7 @@ function PressCard({ post }: Params) {
                         </Popover>
                     )}
                 </div>
-                <p className="text-[#667085] font-montserrat">{post.summary}</p>
+                <p dangerouslySetInnerHTML={{ __html: post.summary }} className="text-[#667085] font-montserrat" />
             </div>
         </div>
     );
