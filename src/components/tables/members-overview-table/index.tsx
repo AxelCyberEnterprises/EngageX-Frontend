@@ -28,10 +28,13 @@ export const MembersOverviewTable = ({ pageSize = 5, hidePagination, orgId }: Me
                   credits_used: user.credits_used,
                   progress: user.progress,
                   last_session_date: user.progress?.last_session_date,
+                  userId: user.user.id, // Add this!
+
               });
 
               return {
                   id: user.id.toString(),
+                  userId: user.user.id, 
                   name: `${user.user.first_name} ${user.user.last_name}`,
                   avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user.user.first_name + " " + user.user.last_name)}&background=cccccc&color=ffffff`,
                   role: user.is_admin ? "Admin" : user.user.role || user.user_type || "N/A",

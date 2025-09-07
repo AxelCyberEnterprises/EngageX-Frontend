@@ -51,6 +51,8 @@ export const columns: ColumnDef<OrganizationReportMember, any>[] = [
         ),
         cell: ({ row }) => {
             const member = row.original;
+            const roundedCompletion = Math.ceil((member.totalSessionsCompleted / member.totalSessionsGoal) * 100) || 0;
+
             return (
                 <div className="flex items-center gap-4 pr-6">
                     <div className="flex-1">
@@ -62,7 +64,7 @@ export const columns: ColumnDef<OrganizationReportMember, any>[] = [
                         />
                     </div>
                     <span className="text-[#667085] font-medium text-sm min-w-[3rem] text-right">
-                        {member.overallGoalCompletion}%
+                        {roundedCompletion}%
                     </span>
                 </div>
             );
