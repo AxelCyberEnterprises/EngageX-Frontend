@@ -69,7 +69,7 @@ function NewPerformanceImprovementDialog() {
   const userSessionHistoryData: Sessions[] = useMemo(
     () =>
       data?.results?.map((item) => ({
-        session_name: capitalizeWords(item.session_name || "Unknown Session"),
+        session_name: capitalizeWords(item.session_name || "Coaching"),
         impact: Number(item.impact) ?? 0,
         date: formatDate(item.date),
         duration: formatTime(item.duration?.toString()),
