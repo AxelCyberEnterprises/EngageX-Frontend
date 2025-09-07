@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { OrganizationReportTable } from "@/components/tables/org-report-table";
 import { EmailReportModal } from "@/components/modals/modalVariants/EmailReportModal";
@@ -6,6 +6,11 @@ import { useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas-pro";
 import { useFetchSingleOrganization } from "@/hooks/organization";
+import { useEmailReport } from "@/hooks/organization/useEmailReport";
+import { toast } from "sonner";
+import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
+import { EmailReportFormValues } from "@/components/modals/modalVariants/EmailReportModal";
 
 const OrganizationReport = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -27,6 +32,8 @@ const OrganizationReport = () => {
     }, [location.search]);
 
     const { data: organization } = useFetchSingleOrganization(orgId);
+    const [pendingEmailData, setPendingEmailData] = useState<EmailReportFormValues | null>(null);
+    const emailReport = useEmailReport();
 
     const createReportPdf = async (ref: React.RefObject<HTMLDivElement | null>) => {
         const element = ref.current;
@@ -78,6 +85,63 @@ const OrganizationReport = () => {
         }
     }, [selectedIds]);
 
+    const handleEmailReportSubmit = (data: EmailReportFormValues) => {
+        setShowEmailModal(false);
+        setPendingEmailData(data);
+        toast(
+            <SuccessToast
+                heading={"Email send pending..."}
+                description={`You will be notified when email is sent to recipients: ${data?.emails.join(", ")} successfully`}
+            />,
+        );
+    };
+
+    useEffect(() => {
+        if (!showEmailModal && pendingEmailData) {
+            (async () => {
+                try {
+                    const pdf = await createReportPdf(pdfRef);
+                    const pdfBlob = pdf.output("blob");
+                    const pdfFile = new File([pdfBlob], `Report-${orgId}.pdf`, { type: "application/pdf" });
+                    emailReport.mutate(
+                        {
+                            orgId: orgId,
+                            recipients: pendingEmailData.emails.join(","),
+                            pdf_file: pdfFile,
+                        },
+                        {
+                            onSuccess: () => {
+                                toast(
+                                    <SuccessToast
+                                        heading={"Email sent successfully"}
+                                        description={`Email has been sent to the specified recipients: ${pendingEmailData.emails.join(", ")} successfully`}
+                                    />,
+                                );
+                            },
+                            onError: (error) => {
+                                toast(
+                                    <ErrorToast
+                                        heading={"Failed to send email"}
+                                        description={`Failed to send email: ${error}`}
+                                    />,
+                                );
+                            },
+                        },
+                    );
+                } catch (error) {
+                    toast(
+                        <ErrorToast
+                            heading={"Failed to generate PDF"}
+                            description={`Failed to generate PDF: ${error}`}
+                        />,
+                    );
+                } finally {
+                    setPendingEmailData(null);
+                }
+            })();
+        }
+    }, [showEmailModal, pendingEmailData]);
+
     return (
         <div ref={pdfRef} className="p-6 bg-white min-h-screen">
             <div className="flex items-center justify-between pb-6 border-b border-[#EAECF0]">
@@ -121,9 +185,8 @@ const OrganizationReport = () => {
                     show={showEmailModal}
                     onClose={() => setShowEmailModal(false)}
                     orgID={orgId}
-                    pdfReport={createReportPdf}
-                    pdfRef={pdfRef}
                     organizationName={organization?.name ?? "Acme Inc"}
+                    onSubmit={handleEmailReportSubmit}
                 />
             )}
         </div>

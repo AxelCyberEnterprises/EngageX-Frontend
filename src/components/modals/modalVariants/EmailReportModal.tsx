@@ -2,36 +2,28 @@ import React, { useState, useRef, KeyboardEvent } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { LoaderCircle, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-//import { Input } from '@/components/ui/input';
 import { Button } from "@/components/ui/button";
 import Modal from "..";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { useEmailReport } from "@/hooks/organization/useEmailReport";
-import jsPDF from "jspdf";
-import ErrorToast from "@/components/ui/custom-toasts/error-toast";
-import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
 
 const emailReportSchema = z.object({
     emails: z.array(z.string().email("Invalid email address")).min(1, "At least one email is required"),
     currentEmail: z.string().optional(),
 });
 
-type EmailReportFormValues = z.infer<typeof emailReportSchema>;
+export type EmailReportFormValues = z.infer<typeof emailReportSchema>;
 
 interface EmailReportModalProps {
     show: boolean;
     onClose: () => void;
     orgID: number;
     organizationName: string;
-    pdfReport: (ref: React.RefObject<HTMLDivElement | null>) => Promise<jsPDF>;
-    pdfRef: React.RefObject<HTMLDivElement | null>;
+    onSubmit: (data: EmailReportFormValues) => void;
 }
 
-const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgID, pdfReport, pdfRef }) => {
-    const emailReport = useEmailReport();
+const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, onSubmit }) => {
     const [emailTags, setEmailTags] = useState<string[]>([]);
     const [currentEmail, setCurrentEmail] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
@@ -44,36 +36,8 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgI
         },
     });
 
-    const onSubmit: SubmitHandler<EmailReportFormValues> = async (data) => {
-        const pdf = await pdfReport(pdfRef);
-        const pdfBlob = pdf.output("blob");
-        const pdfFile = new File([pdfBlob], `Report-${orgID}.pdf`, { type: "application/pdf" });
-        emailReport.mutate(
-            {
-                orgId: orgID,
-                recipients: data?.emails.join(","),
-                pdf_file: pdfFile,
-            },
-            {
-                onSuccess: () => {
-                    toast(
-                        <SuccessToast
-                            heading={"Email sent successfully"}
-                            description={`Email has been sent to the specified recipients: ${data?.emails.join(", ")} successfully`}
-                        />,
-                    );
-                    form.reset();
-                    setEmailTags([]);
-                    setCurrentEmail("");
-                    onClose();
-                },
-                onError: (error) => {
-                    toast(
-                        <ErrorToast heading={"Failed to send email"} description={`Failed to send email: ${error}`} />,
-                    );
-                },
-            },
-        );
+    const onFormSubmit: SubmitHandler<EmailReportFormValues> = async (data) => {
+        onSubmit(data);
     };
 
     const isValidEmail = (email: string): boolean => {
@@ -139,7 +103,7 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgI
                 </div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form onSubmit={form.handleSubmit(onFormSubmit)} className="space-y-6">
                         <FormField
                             control={form.control}
                             name="emails"
@@ -194,13 +158,12 @@ const EmailReportModal: React.FC<EmailReportModalProps> = ({ show, onClose, orgI
                             </Button>
                             <Button
                                 type="submit"
-                                disabled={!hasEmails || emailReport.isPending}
+                                disabled={!hasEmails}
                                 className={`py-3 text-white transition-colors ${
                                     hasEmails ? "bg-[#64BA9F] hover:bg-[#5aa88f]" : "bg-gray-400 cursor-not-allowed"
                                 }`}
                             >
-                                {!emailReport.isPending && "Send Email"}
-                                {emailReport.isPending && <LoaderCircle className="animate-spin" />}
+                                Send Email
                             </Button>
                         </div>
                     </form>
