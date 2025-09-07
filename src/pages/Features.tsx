@@ -20,7 +20,7 @@ const newFeaturesDataTheRookie = {
         {
             title: "Communication Training For New Athletes",
             content:
-                "EngageX<sup>®</sup> equips every Rookie and Sophomore player to confidently navigate media communication challenges",
+                "EngageX equips every Rookie and Sophomore player to confidently navigate media communication challenges",
         },
         {
             title: "Experience Real-World Media Simulated Environments",
