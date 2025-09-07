@@ -115,7 +115,7 @@ function TermsOfService() {
 
                     <div className="space-y-6">
                         <h4 className="text-black font-montreal">9. Governing Law</h4>
-                        <p className="big">These Terms are governed by the law</p>
+                        <p className="big">These Terms are governed by the Law of the United States of America</p>
                     </div>
 
                     <div className="space-y-6">
