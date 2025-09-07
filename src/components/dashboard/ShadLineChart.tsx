@@ -43,102 +43,28 @@ export default function ShadLineChart({ data, colors, isLoading = false }: Props
         return acc;
     }, {} as ChartConfig);
 
-    // Function to generate 7 days of data ensuring we have at least 7 days
-    const generateSevenDaysData = () => {
-        const hasData = data && data.length > 0;
+    // Create empty data structure if no data exists
+    const hasData = data && data.length > 0;
+    const emptyDataPoint = Array.from(allCategories).reduce(
+        (acc, category) => {
+            acc[category] = 0;
+            return acc;
+        },
+        { label: "No Data" } as ChartData,
+    );
 
-        if (!hasData) {
-            // Generate 7 days from today backwards
-            const sevenDaysData: ChartData[] = [];
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                const label = date.toLocaleDateString(undefined, { day: "numeric", month: "short" });
-
-                const dataPoint: ChartData = { label };
-                allCategories.forEach((category) => {
-                    dataPoint[category] = 0;
-                });
-                sevenDaysData.push(dataPoint);
-            }
-            return sevenDaysData;
-        }
-
-        // Create a map of existing data by label
-        const existingDataMap = new Map<string, ChartData>();
-        data.forEach((item) => {
-            existingDataMap.set(item.label, item);
-        });
-
-        // Determine date range - if we have data, use it to determine the range
-        let startDate: Date;
-        let endDate: Date;
-
-        if (data.length > 0) {
-            // Parse the existing dates to find the range
-            const dates = data
-                .map((item) => {
-                    // Parse "Aug 1", "Sep 1" etc.
-                    const [month, day] = item.label.split(" ");
-                    const currentYear = new Date().getFullYear();
-                    return new Date(`${month} ${day}, ${currentYear}`);
-                })
-                .sort((a, b) => a.getTime() - b.getTime());
-
-            startDate = dates[0];
-            endDate = dates[dates.length - 1];
-
-            // Ensure we have at least 7 days
-            const daysDiff = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-            if (daysDiff < 6) {
-                // Extend the range to cover 7 days
-                const totalExtension = 6 - daysDiff;
-                const extensionBefore = Math.floor(totalExtension / 2);
-                const extensionAfter = totalExtension - extensionBefore;
-
-                startDate.setDate(startDate.getDate() - extensionBefore);
-                endDate.setDate(endDate.getDate() + extensionAfter);
-            }
-        } else {
-            // Fallback to last 7 days
-            endDate = new Date();
-            startDate = new Date();
-            startDate.setDate(endDate.getDate() - 6);
-        }
-
-        // Generate complete 7+ days dataset
-        const completeData: ChartData[] = [];
-        const currentDate = new Date(startDate);
-
-        while (currentDate <= endDate) {
-            const label = currentDate.toLocaleDateString(undefined, { day: "numeric", month: "short" });
-            const existingData = existingDataMap.get(label);
-
-            if (existingData) {
-                // Use existing data, but ensure all categories are present
-                const normalized = { ...existingData };
-                allCategories.forEach((category) => {
-                    if (!(category in normalized)) {
-                        normalized[category] = 0;
-                    }
-                });
-                completeData.push(normalized);
-            } else {
-                // Create empty data point for missing dates
-                const dataPoint: ChartData = { label };
-                allCategories.forEach((category) => {
-                    dataPoint[category] = 0;
-                });
-                completeData.push(dataPoint);
-            }
-
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-
-        return completeData;
-    };
-
-    const normalizedData = generateSevenDaysData();
+    // Ensure all data points have all categories (fill with 0 if missing)
+    const normalizedData = hasData
+        ? data.map((item) => {
+              const normalized = { ...item };
+              allCategories.forEach((category) => {
+                  if (!(category in normalized)) {
+                      normalized[category] = 0;
+                  }
+              });
+              return normalized;
+          })
+        : [emptyDataPoint]; // Show empty state with proper structure
 
     if (isLoading) {
         return (
@@ -149,7 +75,7 @@ export default function ShadLineChart({ data, colors, isLoading = false }: Props
                         <div className="space-y-2">
                             <Skeleton className="h-[200px] w-full rounded-md" />
                             <div className="flex justify-center gap-4 pt-4">
-                                {Array.from(allCategories).map((_category, idx) => (
+                                {Array.from(allCategories).map((_, idx) => (
                                     <div key={idx} className="flex items-center gap-2">
                                         <Skeleton className="w-1.5 h-4" />
                                         <Skeleton className="h-4 w-16" />
