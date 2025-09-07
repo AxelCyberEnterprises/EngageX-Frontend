@@ -60,7 +60,7 @@ const AdminDashboardHome: React.FC = () => {
 
         // Take top 5 most recent
         return sorted.slice(0, 5).map((item, idx) => {
-            let verticalName = "Unknown Session";
+            let verticalName = "Coaching";
 
             if (item.vertical && typeof item.vertical === "string") {
                 if (item.vertical.toLowerCase() === "gm") {
@@ -166,7 +166,7 @@ const AdminDashboardHome: React.FC = () => {
                 percent: 0, // static for now
             },
             ...analytics.sessions.by_vertical.map((item: any, index: number) => {
-                let key = "Unknown Session";
+                let key = "Coaching";
 
                 if (item.vertical && typeof item.vertical === "string") {
                     if (item.vertical.toLowerCase() === "gm") {
