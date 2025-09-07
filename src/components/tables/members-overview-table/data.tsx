@@ -5,4 +5,5 @@ export type Member = {
   role: string;
   lastLogin: string;
   creditsUsed: number;
+  userId: number;
 };

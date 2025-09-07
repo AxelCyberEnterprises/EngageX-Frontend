@@ -49,7 +49,7 @@ export const columns: ColumnDef<Member, any>[] = [
             useClickOutside(popupRef, buttonRef, () => {
                 setIsOpen(false);
             });
-            const memberId = row.original.id;
+            const memberId = row.original.userId;
             const handleMenuClick = (action: string) => {
                 if (action === "View Progress") {
                     navigate(`/dashboard/admin/progress-tracking?memberId=${memberId}`);
