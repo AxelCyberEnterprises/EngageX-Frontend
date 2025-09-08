@@ -61,7 +61,7 @@ export function formatTime(time?: string): string {
 const SessionHistoryTable = () => {
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
-        pageSize: 20,
+        pageSize: 10,
     });
     const { data, error, isLoading } = useSessionHistory(pagination.pageIndex + 1);
     const token = tokenManager.getToken();
