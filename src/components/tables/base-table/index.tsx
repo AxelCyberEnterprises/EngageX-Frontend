@@ -73,7 +73,7 @@ export function BaseTable<TData, TValue>({
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    const calculatedPageCount = Math.ceil(count ? count / (pagination?.pageSize || 20) : 0);
+    const calculatedPageCount = Math.ceil(count ? count / (pagination?.pageSize || 10) : 0);
 
     const table = useReactTable({
         data,
@@ -116,7 +116,7 @@ export function BaseTable<TData, TValue>({
     );
 
     const TableSkeleton = () => {
-        const rows = data.length > 0 ? data.length : pagination?.pageSize || pageSize || 20;
+        const rows = data.length > 0 ? data.length : pagination?.pageSize || pageSize || 10;
         return (
             <>
                 <SessionHistorySkeleton rows={rows} columns={columns} />
