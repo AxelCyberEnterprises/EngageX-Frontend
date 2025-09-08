@@ -71,7 +71,7 @@ function Hero() {
                     <div className="space-y-4 mt-10">
                         <div className="flex items-center gap-5">
                             <a
-                                href="https://www.linkedin.com/company/the-career-doctor-llc"
+                                href="https://www.linkedin.com/company/engagex%E2%84%A2/?viewAsMember=true"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >

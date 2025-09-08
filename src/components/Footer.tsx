@@ -52,7 +52,7 @@ function Footer() {
                     <img src="/assets/logoaltwhitev2.png" alt="brand logo" className="h-8" />
                     <p className="text-white">Start speaking with confidence</p>
                     <div className="flex gap-5 mt-20 items-center text-white">
-                        <a href="https://www.linkedin.com/company/the-career-doctor-llc" target="_blank">
+                        <a href="https://www.linkedin.com/company/engagex%E2%84%A2/?viewAsMember=true" target="_blank">
                             <svg
                                 width="20"
                                 height="20"
