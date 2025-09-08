@@ -54,7 +54,7 @@ const RookieRoomForm = () => {
             allow_ai_questions: true,
             goals: [{ id: 1, goal: "" }],
             enterprise_settings: {
-                enterprice_type: "rookie",
+                enterprise_type: "rookie",
                 rookie_type: "media_training",
                 sport_type: sportTypeValue,
                 speaker_notes: "",

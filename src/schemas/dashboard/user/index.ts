@@ -33,6 +33,12 @@ export const PublicSpeakingSchema = BaseSessionSetupSchema;
 
 export const CoachingSchema = BaseSessionSetupSchema.omit({
     allow_ai_questions: true,
+}).extend({
+    enterprise_settings: z
+        .object({
+            enterprise_type: z.enum(["coaching"]),
+        })
+        .optional(),
 });
 
 export const PitchPracticeSchema = BaseSessionSetupSchema.extend({
@@ -48,7 +54,7 @@ export const PresentationPracticeSchema = BaseSessionSetupSchema.extend({
 export const RookieRoomSchema = BaseSessionSetupSchema.extend({
     enterprise_settings: z
         .object({
-            enterprice_type: z.enum(["rookie"]),
+            enterprise_type: z.enum(["rookie"]),
             rookie_type: z.enum(["media_training", "speaking", "coach", "gm"]),
             sport_type: z.string(),
             speaker_notes: z.string(),

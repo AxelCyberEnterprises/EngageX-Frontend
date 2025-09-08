@@ -35,6 +35,9 @@ const CoachingForm = () => {
                 session_type: "enterprise",
                 virtual_environment: "conference_room",
                 goals: [{ id: 1, goal: "" }],
+                enterprise_settings: {
+                    enterprise_type: "coaching",
+            },
             }),
             [],
         ),

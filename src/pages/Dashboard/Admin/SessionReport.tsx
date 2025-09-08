@@ -385,7 +385,7 @@ const PitchSessionReport: React.FC = () => {
                             <h5 className="mb-6">Performance Analytics</h5>
                             <div className="hidden border-1 border-bright-gray rounded-xl p-4 mb-5">
                                 <h6 className="mb-3">Slide-Based Feedback</h6>
-                                {data.slides_file ? (
+                                {data.slide_preview ? (
                                     <SlideFeedbackChart />
                                 ) : (
                                     <EmptyState text="No data available" className="h-100" />
@@ -483,7 +483,7 @@ const PitchSessionReport: React.FC = () => {
                         </div>
                     </section>
 
-                    {data.slides_file && (
+                   {data.slide_preview && (
                         <section className="px-4 lg:px-8 pt-4">
                             <div className="performance border-1 border-bright-gray rounded-xl py-5 px-4">
                                 <h5 className="mb-6">Slide Analysis</h5>
