@@ -19,11 +19,12 @@ interface UseDataTableProps<TData>
             TableOptions<TData>,
             "state" | "pageCount" | "getCoreRowModel" | "manualFiltering" | "manualPagination" | "manualSorting"
         >,
-        Partial<Pick<TableOptions<TData>, "pageCount">> {
-    //! Change pageCount back to REQUIRED
+        Required<Pick<TableOptions<TData>, "pageCount">> {
     initialState?: Omit<Partial<TableState>, "sorting"> & {
         sorting?: ExtendedColumnSort<TData>[];
     };
+    pagination?: PaginationState;
+    setPagination?: React.Dispatch<React.SetStateAction<PaginationState>>;
     history?: "push" | "replace";
     debounceMs?: number;
     throttleMs?: number;
@@ -35,16 +36,12 @@ interface UseDataTableProps<TData>
 }
 
 export function useDataTable<TData>(props: UseDataTableProps<TData>) {
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: 15,
-    });
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
 
-    const { columns, ...tableProps } = props;
+    const { columns, pagination, setPagination, ...tableProps } = props;
 
     const table = useReactTable({
         ...tableProps,
@@ -65,6 +62,7 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
         onPaginationChange: setPagination,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
+        manualPagination: true,
     });
 
     return { table };
