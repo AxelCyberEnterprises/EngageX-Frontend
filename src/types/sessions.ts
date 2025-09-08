@@ -32,7 +32,14 @@ export interface ISession {
     date: string;
     duration: string | null;
     note: string | null;
-    slides_file: string | null;
+    slide_preview: {
+        id: number;
+        slides_file: string| null;
+        created_at?: string;
+        is_linked?: boolean;
+        user?: number;
+        // add other fields if needed
+    };
     slide_specific_timing: Record<string, unknown>;
     allow_ai_questions: boolean;
     virtual_environment: string;
