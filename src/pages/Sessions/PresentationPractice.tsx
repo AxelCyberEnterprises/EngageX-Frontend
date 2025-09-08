@@ -177,10 +177,11 @@ const PresentationPractice: React.FC = () => {
         if (data) {
             setSeshData(data);
         }
+        console.log("fetched sesh data: ",data)
     }, [data]);
 
     useEffect(() => {
-        const url = seshData?.slides_file;
+        const url = seshData?.slide_preview?.slides_file;
         const localSeshData = localStorage.getItem("sessionData");
         const parsedData = localSeshData ? JSON.parse(localSeshData) : null;
         console.log(parsedData.virtual_environment);
@@ -189,7 +190,8 @@ const PresentationPractice: React.FC = () => {
         setSessionData(parsedData);
         selectedRoom.current = parsedData?.virtual_environment;
         if (!url) return;
-
+        console.log("Slides file URL:", url);
+        console.log("Parsed session data:", parsedData);
         pdfToImages(url)
             .then((images) => {
                 setSlides(images);

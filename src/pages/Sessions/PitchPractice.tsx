@@ -172,7 +172,7 @@ const PresentationPractice: React.FC = () => {
     }, [data]);
 
     useEffect(() => {
-        const url = seshData?.slides_file;
+        const url = seshData?.slide_preview?.slides_file;
         const localSeshData = localStorage.getItem("sessionData");
         const parsedData = localSeshData ? JSON.parse(localSeshData) : null;
         setSessionData(parsedData);
