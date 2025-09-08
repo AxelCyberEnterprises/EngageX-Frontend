@@ -52,7 +52,7 @@ export function BaseTable<TData, TValue>({
     data,
     count,
     pagination,
-    // setPagination,
+    setPagination,
     showToolBar,
     tableHeaderClassName,
     tableHeaderItemClassName,
@@ -63,7 +63,7 @@ export function BaseTable<TData, TValue>({
     emptyState,
     pageSize,
     session = true,
-    onRowSelectionChange
+    onRowSelectionChange,
 }: BaseTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -73,13 +73,7 @@ export function BaseTable<TData, TValue>({
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    const [paginationState, setPaginationState] = useState<PaginationState>(
-        pagination ?? { pageIndex: 0, pageSize: pageSize || 20 },
-    );
-
-    const currentPageSize = paginationState.pageSize;
-    const totalItems = count ?? data.length;
-    const calculatedPageCount = Math.max(1, Math.ceil(totalItems / currentPageSize));
+    const calculatedPageCount = Math.ceil(count ? count / (pagination?.pageSize || 10) : 0);
 
     const table = useReactTable({
         data,
@@ -87,7 +81,7 @@ export function BaseTable<TData, TValue>({
         state: {
             columnFilters,
             columnVisibility,
-            pagination: paginationState,
+            pagination,
             rowSelection,
             sorting,
         },
@@ -97,16 +91,16 @@ export function BaseTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
-        onPaginationChange: setPaginationState,
+        onPaginationChange: setPagination,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
         manualPagination: true,
     });
 
     useEffect(() => {
-        const selected = table.getSelectedRowModel().rows.map(r => r.original as TData);
+        const selected = table.getSelectedRowModel().rows.map((r) => r.original as TData);
         onRowSelectionChange?.(selected);
-    }, [rowSelection, table]);
+    }, [onRowSelectionChange, rowSelection, table]);
 
     const defaultEmptyState = (
         <TableRow>
@@ -122,7 +116,7 @@ export function BaseTable<TData, TValue>({
     );
 
     const TableSkeleton = () => {
-        const rows = data.length > 0 ? data.length : pagination?.pageSize || pageSize || 20;
+        const rows = data.length > 0 ? data.length : pagination?.pageSize || pageSize || 10;
         return (
             <>
                 <SessionHistorySkeleton rows={rows} columns={columns} />
@@ -186,10 +180,16 @@ export function BaseTable<TData, TValue>({
                                         }
                                     }}
                                     data-state={row.getIsSelected() && "selected"}
-                                    className={cn("hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray", tableRowClassName)}
+                                    className={cn(
+                                        "hover:bg-bright-gray/50 data-[state=selected]:bg-bright-gray",
+                                        tableRowClassName,
+                                    )}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id} className={cn("text-dark-charcoal p-4 align-baseline", tableCellClassName)}>
+                                        <TableCell
+                                            key={cell.id}
+                                            className={cn("text-dark-charcoal p-4 align-baseline", tableCellClassName)}
+                                        >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
