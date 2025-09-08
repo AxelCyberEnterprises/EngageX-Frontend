@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { apiGet } from "@/lib/api";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export interface User {
     id: number;
@@ -58,5 +58,6 @@ export function useFetchEnterpriseUsers(page?: number, id?: number) {
         enabled: true, // always enabled
         staleTime: 1000 * 60 * 5,
         retry: 1,
+        placeholderData: keepPreviousData,
     });
 }

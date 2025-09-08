@@ -1,25 +1,31 @@
+import DeleteModal from "@/components/modals/modalVariants/DeleteModal";
 import { Button } from "@/components/ui/button";
+import ErrorToast from "@/components/ui/custom-toasts/error-toast";
+import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
 import { Separator } from "@/components/ui/separator";
-import { useDataTable } from "@/hooks/use-data-table";
-import { LoaderCircle, X } from "lucide-react";
-import { DataTable } from "../data-table";
-import { IMembers, membersColumns } from "./columns";
-import { useFetchEnterpriseUsers } from "@/hooks/organization/useFetchEnterpriseUsers";
-import { useLocation } from "react-router-dom";
-import { useMemo, useEffect, useState } from "react";
 import { useFetchSingleOrganization } from "@/hooks";
 import { useDeleteMultipleEnterpriseUsers } from "@/hooks/organization";
-import DeleteModal from "@/components/modals/modalVariants/DeleteModal";
+import { useFetchEnterpriseUsers } from "@/hooks/organization/useFetchEnterpriseUsers";
+import { useDataTable } from "@/hooks/use-data-table";
+import { PaginationState } from "@tanstack/react-table";
+import { LoaderCircle, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { toast } from "sonner";
-import SuccessToast from "@/components/ui/custom-toasts/success-toasts";
-import ErrorToast from "@/components/ui/custom-toasts/error-toast";
+import { DataTable } from "../data-table";
+import { IMembers, membersColumns } from "./columns";
 
 const MembersTable = () => {
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10,
+    });
+
     const routerLocation = useLocation();
     const searchParams = new URLSearchParams(routerLocation.search);
     const orgIdParam = searchParams.get("id");
     const orgId = orgIdParam ? Number(orgIdParam) : undefined;
-    const { data, isLoading } = useFetchEnterpriseUsers(1, orgId);
+    const { data, isLoading } = useFetchEnterpriseUsers(pagination.pageIndex + 1, orgId);
     const { data: organization } = useFetchSingleOrganization(orgId || 0);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const deleteUsers = useDeleteMultipleEnterpriseUsers();
@@ -35,6 +41,7 @@ const MembersTable = () => {
             }
         }
     }, [orgId, data, isLoading]);
+
     const members: IMembers[] = useMemo(() => {
         if (!data?.results) return [];
 
@@ -69,10 +76,9 @@ const MembersTable = () => {
     const { table } = useDataTable({
         data: members || [],
         columns: membersColumns,
-        // pageCount: 10,
-        // getRowId: (originalRow) => originalRow.id,
-        // shallow: false,
-        // clearOnDefault: true,
+        pageCount: Math.ceil(data?.count ? data?.count / (pagination.pageSize || 10) : 0),
+        pagination,
+        setPagination,
     });
     const selectedCount = table.getFilteredSelectedRowModel().rows.length;
     const selectedUserIds = table.getFilteredSelectedRowModel().rows.map((row) => Number(row.original.id));
