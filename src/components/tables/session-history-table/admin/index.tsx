@@ -68,15 +68,28 @@ const SessionHistoryTable = () => {
 
     const adminSessionHistoryData = useMemo(
         () =>
-            data?.results?.map((item) => ({
-                id: item.id || "N/A",
-                sessionName: capitalizeWords(item.session_name || "Coaching"),
-                sessionType: capitalizeWords(item.session_type_display || "Unknown Type"),
-                date: formatDate(item.date),
-                duration: formatTime(item.duration?.toString()),
-                userProfile: item.full_name || "Unknown User",
-            })) || [],
-        [data, token],
+            data?.results?.map((item) => {
+                let session_type_display = "Coaching";
+                if (item.session_type_display === "Enterprise") {                    
+                    if (item.enterprise_settings?.rookie_type) {
+                        session_type_display = capitalizeWords(item.enterprise_settings.rookie_type);
+                    } else {
+                        session_type_display = "Coaching";
+                    }
+                } else {
+                    session_type_display = capitalizeWords(item.session_type_display || "Coaching");
+                }
+
+                return {
+                    id: item.id || "N/A",
+                    sessionName: capitalizeWords(item.session_name || "Coaching"),
+                    sessionType: capitalizeWords(session_type_display || "Unknown Type"),
+                    date: formatDate(item.date),
+                    duration: formatTime(item.duration?.toString()),
+                    userProfile: item.full_name || "Unknown User",
+                };
+            }) || [],
+        [data?.results, token],
     );
 
     return (

@@ -15,6 +15,19 @@ import jsPDF from "jspdf";
 import { ArrowLeft, ArrowRight, Download, Info } from "lucide-react";
 import React, { useCallback, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { capitalizeWords} from "@/components/tables/session-history-table/admin";
+
+
+
+function getSessionTypeDisplay(item: any): string {
+    if (item.session_type_display === "Enterprise") {
+        if (item.enterprise_settings?.rookie_type) {
+            return capitalizeWords(item.enterprise_settings.rookie_type);
+        }
+        return "Coaching";
+    }
+    return capitalizeWords(item.session_type_display || "Coaching");
+}
 
 const PitchSessionReport: React.FC = () => {
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -220,6 +233,8 @@ const PitchSessionReport: React.FC = () => {
         },
     ] as const;
 
+    const sessionTypeDisplay = data ? getSessionTypeDisplay(data) : "";
+
     return (
         <div>
             {!data || isPending ? (
@@ -263,7 +278,7 @@ const PitchSessionReport: React.FC = () => {
                             <div>
                                 <h5 className="mb-3">{data.session_name}</h5>
                                 <div className="flex gap-3 text-primary-blue/70">
-                                    <p>{data.session_type_display}</p>
+                                    <p>{sessionTypeDisplay}</p>
                                     <div className="border-l-1"></div>
                                     <p>
                                         {new Date(data.date).toLocaleDateString("en-US", {

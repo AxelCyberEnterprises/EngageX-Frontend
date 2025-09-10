@@ -21,6 +21,19 @@ import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react
 import React, { useCallback, useRef, useState } from "react";
 import { Link, To, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
+import { capitalizeWords} from "@/components/tables/session-history-table/admin";
+
+
+
+function getSessionTypeDisplay(item: any): string {
+    if (item.session_type_display === "Enterprise") {
+        if (item.enterprise_settings?.rookie_type) {
+            return capitalizeWords(item.enterprise_settings.rookie_type);
+        }
+        return "Coaching";
+    }
+    return capitalizeWords(item.session_type_display || "Coaching");
+}
 
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
@@ -327,6 +340,7 @@ const PitchSessionReport: React.FC = () => {
         setDialogOneOpen(false);
     };
     const initials = `${profile?.first_name?.[0] ?? ""}${profile?.last_name?.[0] ?? ""}`.toUpperCase();
+    const sessionTypeDisplay = data ? getSessionTypeDisplay(data) : "";
 
     return (
         <div>
@@ -410,7 +424,7 @@ const PitchSessionReport: React.FC = () => {
                             <div>
                                 <h5 className="mb-3">{data.session_name}</h5>
                                 <div className="flex gap-3 text-primary-blue/70">
-                                    <p>{data.session_type_display}</p>
+                                    <p>{sessionTypeDisplay}</p>
                                     <div className="border-l-1"></div>
                                     <p>
                                         {new Date(data.date).toLocaleDateString("en-US", {
