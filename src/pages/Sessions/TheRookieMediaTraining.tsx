@@ -83,7 +83,7 @@ const PublicSpeaking: React.FC = () => {
         setQuestionDialogOpen(false);
         setStopStreamer(true);
     };
-    console.log(question);
+    // console.log(question);
 
     const isSessionCompletedInTime = () => {
         if (!duration) return false;

@@ -50,7 +50,7 @@ function Footer() {
             <div className="flex flex-col lg:flex-row justify-between gap-[83.48px] lg:px-[50px] text-[#626362]">
                 <div className="space-y-3 lg:w-1/4">
                     <img src="/assets/logoaltwhitev2.png" alt="brand logo" className="h-8" />
-                    <p className="text-white">Start speaking with confidence</p>
+                    <p className="text-white">Where Your Voice Is Your Value</p>
                     <div className="flex gap-5 mt-20 items-center text-white">
                         <a href="https://www.linkedin.com/company/engagex%E2%84%A2/?viewAsMember=true" target="_blank">
                             <svg
