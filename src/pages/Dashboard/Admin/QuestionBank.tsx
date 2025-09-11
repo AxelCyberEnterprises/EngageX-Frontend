@@ -1,24 +1,24 @@
 import { EditIcon } from "@/assets/images/svgs/edit-icon";
-import { Trash2, X } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import {
-    useFetchEnterpriseQuestions,
-    usePatchEnterpriseQuestion,
-    useDeleteEnterpriseQuestion,
-    EnterpriseQuestion,
-    useFetchSingleOrganization,
-} from "@/hooks"; // Adjust path as needed
-import { Skeleton } from "@/components/ui/skeleton";
 import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
-import { Button } from "@/components/ui/button";
+import { CreateQuestionFormData, CreateQuestionModal } from "@/components/modals/modalVariants/CreateQuestionsModal";
 import DeleteModal from "@/components/modals/modalVariants/DeleteModal";
 import { EditQuestionModal } from "@/components/modals/modalVariants/EditQuestionalModal";
-import { useCreateEnterpriseQuestion } from "@/hooks";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+    EnterpriseQuestion,
+    useCreateEnterpriseQuestion,
+    useDeleteEnterpriseQuestion,
+    useFetchEnterpriseQuestions,
+    useFetchSingleOrganization,
+    usePatchEnterpriseQuestion,
+} from "@/hooks"; // Adjust path as needed
 import { CreateEnterpriseQuestionData } from "@/hooks/organization/useCreateEnterpriseQuestion";
-import { CreateQuestionFormData, CreateQuestionModal } from "@/components/modals/modalVariants/CreateQuestionsModal";
 import { useEnterpriseUsers } from "@/hooks/settings";
+import { Circle, CircleOff, Trash2, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useSearchParams } from "react-router-dom";
 
 const ItemTypes = {
@@ -32,6 +32,7 @@ interface DraggableQuestionRowProps {
     onSelect: (id: number, selected: boolean) => void;
     onEdit: (id: number) => void;
     onDelete: (id: number) => void;
+    onToggleActive: (id: number, newState: boolean) => Promise<void> | void;
     moveItem: (fromIndex: number, toIndex: number) => void;
 }
 
@@ -42,6 +43,7 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
     onSelect,
     onEdit,
     onDelete,
+    onToggleActive,
     moveItem,
 }) => {
     const [{ isDragging }, drag] = useDrag({
@@ -68,12 +70,19 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
 
     const handleEdit = (e: React.MouseEvent) => {
         e.stopPropagation();
+        // Prevent editing if the question is inactive
+        if (!item.is_active) return;
         onEdit(item.id);
     };
 
     const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
         onDelete(item.id);
+    };
+
+    const handleToggle = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onToggleActive(item.id, !item.is_active);
     };
 
     const ref = useRef<HTMLDivElement>(null);
@@ -116,8 +125,10 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
                     <div className="flex items-center gap-2">
                         <button
                             onClick={handleEdit}
-                            className="bg-[#fff] hover:bg-gray-100 rounded-lg transition-colors"
-                            title="Edit question"
+                            className={`bg-[#fff] hover:bg-gray-100 rounded-lg transition-colors ${!item.is_active ? "opacity-50 cursor-not-allowed" : ""}`}
+                            title={item.is_active ? "Edit question" : "Cannot edit inactive question"}
+                            aria-disabled={!item.is_active}
+                            disabled={!item.is_active}
                         >
                             <EditIcon className="w-6 h-6 text-gray-500" />
                         </button>
@@ -163,10 +174,20 @@ const DraggableQuestionRow: React.FC<DraggableQuestionRowProps> = ({
 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-2 py-4 pr-4">
+                    <Button
+                        variant="ghost"
+                        className="bg-transparent text-gray-500 hover:text-gray-500"
+                        onClick={handleToggle}
+                        title={item.is_active ? "Deactivate question" : "Activate question"}
+                    >
+                        {item.is_active ? <Circle /> : <CircleOff />}
+                    </Button>
                     <button
                         onClick={handleEdit}
-                        className="bg-[#fff] p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        title="Edit question"
+                        className={`bg-[#fff] p-2 hover:bg-gray-100 rounded-lg transition-colors ${!item.is_active ? "opacity-50 cursor-not-allowed" : ""}`}
+                        title={item.is_active ? "Edit question" : "Cannot edit inactive question"}
+                        aria-disabled={!item.is_active}
+                        disabled={!item.is_active}
                     >
                         <EditIcon className="w-6 h-6 text-gray-500" />
                     </button>
@@ -368,6 +389,24 @@ const QuestionBank: React.FC = () => {
         if (questionToEdit) {
             setEditingQuestion(questionToEdit);
             setShowEditModal(true);
+        }
+    };
+
+    const handleToggleActive = async (id: number, newState: boolean) => {
+        // Keep a snapshot to revert on error
+        const previous = [...localQuestions];
+
+        // Optimistically update local state
+        const updated = localQuestions.map((q) => (q.id === id ? { ...q, is_active: newState } : q));
+        setLocalQuestions(updated);
+
+        try {
+            await updateQuestionMutation.mutateAsync({ id, data: { is_active: newState } });
+            // Optionally refetch or rely on mutation cache update
+        } catch (err) {
+            console.error("Error toggling question active state:", err);
+            // Revert to previous state
+            setLocalQuestions(previous);
         }
     };
 
@@ -625,6 +664,7 @@ const QuestionBank: React.FC = () => {
                                     onSelect={handleSelectRow}
                                     onEdit={handleEditQuestion}
                                     onDelete={() => handleOpenDeleteModal(question.id)}
+                                    onToggleActive={handleToggleActive}
                                     moveItem={moveItem}
                                 />
                             ))
