@@ -319,7 +319,7 @@ export function useGetSessionQuestions(enterprise_id: number, vertical: string, 
     return useQuery<PaginatedQuestions>({
         queryKey: ["getSessionQuestions", vertical, sport_type],
         queryFn: async () => {
-            let url = `/enterprise/enterprise-questions/?enterprise_id=${enterprise_id}&vertical=${vertical}`;
+            let url = `/enterprise/enterprise-questions/?enterprise_id=${enterprise_id}&vertical=${vertical}&is_active=true`;
             // You can leave this line for possible backend-side filtering
             if (sport_type) url += `&sport_type=${sport_type}`;
             // Make the API call and cast its response to the expected type
