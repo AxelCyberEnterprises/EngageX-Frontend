@@ -190,7 +190,13 @@
         @apply bg-background text-foreground;
     }
     sup {
-        @apply relative -top-1;
+        @apply text-[10px] relative -top-1;
+    }
+}
+
+@layer components {
+    .sup-bold {
+        @apply text-[15px] relative -top-1;
     }
 }
 

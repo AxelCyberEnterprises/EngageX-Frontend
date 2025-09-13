@@ -8,7 +8,7 @@ function AllPressPosts() {
             title: "New platform launch",
             download: true,
             summary:
-                "Join the creatives and web managers of Cd<sup>®</sup> Career Doctor, LLC as they discuss how they navigate all three platforms and market EngageX<sup>®</sup> along with with entire CDC, LLC brand.",
+                "Join the creatives and web managers of Career Doctor, LLC as they discuss how they navigate all three platforms and market EngageX<sup>®</sup> along with with entire CDC, LLC brand.",
         },
         {
             img: "/assets/pressvid1.mp4",

@@ -17,7 +17,8 @@ function Hero() {
                 </div>
                 <div className="space-y-6 py-6">
                     <h4 className="text-center">
-                        At EngageX<sup>®</sup> AI Innovation Meets Environmental Responsibility
+                        At EngageX<span className="sup-bold align-super font-thin">®</span> AI Innovation Meets
+                        Environmental Responsibility
                     </h4>
                     <p className="text-[#667085] font-montserrat">
                         At EngageX<sup>®</sup>, we believe the future of AI shouldn't come at the planet's expense.
