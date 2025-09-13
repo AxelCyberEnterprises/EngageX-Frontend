@@ -16,7 +16,7 @@ function AllPressPosts() {
             title: "Command the room",
             video: true,
             summary:
-                "Welcome to Command the Room, powered by EngageX<sup>®</sup>. I'm The Cd<sup>®</sup> Career Doctor and in each short, sharp episode, we dive into the minds of bold communicators, leaders, creators, athletes, and entrepreneurs who know how to move audiences, close deals, and own the moment. From storytelling to pitching, interviewing to presenting you'll learn the real strategies behind speaking with power and leading with presence. Let's go.",
+                "Welcome to Command the Room, powered by EngageX<sup>®</sup>. I'm the Career Doctor and in each short, sharp episode, we dive into the minds of bold communicators, leaders, creators, athletes, and entrepreneurs who know how to move audiences, close deals, and own the moment. From storytelling to pitching, interviewing to presenting you'll learn the real strategies behind speaking with power and leading with presence. Let's go.",
         },
         {
             img: "/assets/pressimg3.jpeg",
