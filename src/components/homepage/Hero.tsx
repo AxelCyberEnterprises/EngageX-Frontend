@@ -76,7 +76,7 @@ function Hero() {
           </div>
           <div className="w-1/2 rounded-2xl overflow-clip h-[12.5rem] lg:h-[24.5rem] relative">
             <img
-              src="/assets/hero2.png"
+              src="/assets/hero2.jpg"
               className="w-full object-cover h-full absolute"
             />
           </div>
