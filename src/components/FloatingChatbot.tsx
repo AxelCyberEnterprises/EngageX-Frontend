@@ -220,7 +220,7 @@ function FloatingChatbot() {
                             <div className="w-full md:w-1/2">
                                 <video className="size-full md:min-h-80 object-cover rounded-xl" controls>
                                     <source
-                                        src="https://EngageX<sup>®</sup>-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
+                                        src="https://EngageX-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Chatbot+greeting2.mp4"
                                         type="video/mp4"
                                     />
                                 </video>
