@@ -73,7 +73,14 @@ export function BaseTable<TData, TValue>({
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    const calculatedPageCount = Math.ceil(count ? count / (pagination?.pageSize || 10) : 0);
+    const [internalPagination, setInternalPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: pageSize || 10,
+    });
+
+    const tablePagination = pagination ?? internalPagination;
+    const onPaginationChange = setPagination ?? setInternalPagination;
+    const calculatedPageCount = Math.ceil(count ? count / (tablePagination.pageSize || 10) : 0);
 
     const table = useReactTable({
         data,
@@ -81,7 +88,7 @@ export function BaseTable<TData, TValue>({
         state: {
             columnFilters,
             columnVisibility,
-            pagination,
+            pagination: tablePagination,
             rowSelection,
             sorting,
         },
@@ -91,7 +98,7 @@ export function BaseTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
-        onPaginationChange: setPagination,
+        onPaginationChange: onPaginationChange,
         onRowSelectionChange: setRowSelection,
         onSortingChange: setSorting,
         manualPagination: true,
@@ -116,7 +123,7 @@ export function BaseTable<TData, TValue>({
     );
 
     const TableSkeleton = () => {
-        const rows = data.length > 0 ? data.length : pagination?.pageSize || pageSize || 10;
+        const rows = data.length > 0 ? data.length : tablePagination.pageSize || pageSize || 10;
         return (
             <>
                 <SessionHistorySkeleton rows={rows} columns={columns} />

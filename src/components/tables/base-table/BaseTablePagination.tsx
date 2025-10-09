@@ -8,15 +8,13 @@ interface IBaseTablePaginationProps<TData> {
 }
 
 const BaseTablePagination = <TData,>({ table, totalCount }: IBaseTablePaginationProps<TData>) => {
-    const currentPage = table.getState().pagination.pageIndex + 1;
+    const { pageIndex, pageSize } = table.getState().pagination;
+    const currentPage = pageIndex + 1;
     const pageCount = table.getPageCount();
 
     // Calculate the range of items being shown
-    const startItem = table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1;
-    const endItem = Math.min(
-        (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-        totalCount ?? table.getFilteredRowModel().rows.length,
-    );
+    const startItem = pageIndex * pageSize + 1;
+    const endItem = Math.min((pageIndex + 1) * pageSize, totalCount ?? table.getFilteredRowModel().rows.length);
 
     return (
         <div className="flex md:flex-row flex-col-reverse md:gap-y-0 gap-y-4 items-center justify-between w-full">
