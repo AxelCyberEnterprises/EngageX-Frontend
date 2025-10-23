@@ -447,7 +447,7 @@ const SideNav: React.FC = () => {
                 </svg>
             ),
             path: "/dashboard/admin/organization/dashboard",
-            items: data?.results?.map((org: any) => ({
+            items: data?.results?.map((org) => ({
                 name: org.name,
                 navs: [
                     {
@@ -718,7 +718,7 @@ const SideNav: React.FC = () => {
                 </svg>
             ),
             path: "/dashboard/admin/organization/dashboard",
-            items: data?.results?.map((org: any) => ({
+            items: data?.results?.map((org) => ({
                 name: org.name,
                 navs: [
                     {
