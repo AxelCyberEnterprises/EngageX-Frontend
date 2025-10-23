@@ -1,18 +1,21 @@
 // SideNav component refactored for best practices
 const logo = "/assets/logoaltwhitev2.png";
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
 import { ChevronRight, Search } from "lucide-react";
+import React, { MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SidebarBackBtn from "../../assets/images/svgs/back-sidebar.svg";
 import CollapsedLogo from "../../assets/images/svgs/collapsed-logo.svg";
+import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
 
+import { useFetchEnterpriseUsers, useOrganizationList } from "@/hooks/organization";
+import { useClickOutside } from "@/hooks/useClickoutside";
+import { AccessRestrictedModal } from "../modals/modalVariants/AccessRestrictedModal";
 import {
     Sidebar,
     SidebarContent,
@@ -24,10 +27,7 @@ import {
     SidebarMenuSubItem,
     useSidebar,
 } from "../ui/sidebar";
-import { useClickOutside } from "@/hooks/useClickoutside";
-import { useFetchEnterpriseUsers, useOrganizationList } from "@/hooks/organization";
 import { Skeleton } from "../ui/skeleton";
-import { AccessRestrictedModal } from "../modals/modalVariants/AccessRestrictedModal";
 
 type NavLink = {
     type: "default" | "collapsible";
@@ -63,33 +63,39 @@ const SideNav: React.FC = () => {
     const { data, isLoading } = useOrganizationList(searchTerm, lastSegment === "admin");
     const { data: enterpriseUsers } = useFetchEnterpriseUsers();
 
-    const accessibleVerticals = enterpriseUsers?.results?.[0]?.enterprise?.accessible_verticals ?? [];
+    const accessibleVerticals = useMemo(
+        () => enterpriseUsers?.results?.[0]?.enterprise?.accessible_verticals ?? [],
+        [enterpriseUsers],
+    );
 
-    const verticalToPathMap: Record<string, string> = {
-        coach: "the-coaching-room",
-        public_speaking: "public-speaking",
-        pitch: "pitch-practice",
-        presentation: "presentation-practice",
-    };
+    const verticalToPathMap = useMemo<Record<string, string>>(
+        () => ({
+            coach: "the-coaching-room",
+            public_speaking: "public-speaking",
+            pitch: "pitch-practice",
+            presentation: "presentation-practice",
+        }),
+        [],
+    );
 
-    const isAccessiblePath = (path: string): boolean => {
-        if (!isEnterpriseUser) return true;
-        const pathSegments = path.split("/").filter(Boolean);
-        let lastSegment = pathSegments[pathSegments.length - 1];
-        if (lastSegment === "the-coaching-room") {
-            lastSegment = "coaching"
-        }
-        const matchedVertical = Object.entries(verticalToPathMap).find(([, slug]) => slug === lastSegment)?.[0];
+    const isAccessiblePath = useCallback(
+        (path: string): boolean => {
+            if (!isEnterpriseUser) return true;
+            const pathSegments = path.split("/").filter(Boolean);
+            const lastSegment = pathSegments[pathSegments.length - 1];
 
-        console.log("last seg; ", lastSegment);
-    
+            const matchedVertical = Object.entries(verticalToPathMap).find(([, slug]) => slug === lastSegment)?.[0];
 
-        console.log("accessibleVerticals; ", accessibleVerticals);
+            console.log("last seg; ", lastSegment);
 
-        if (!matchedVertical) return true;
+            console.log("accessibleVerticals; ", accessibleVerticals);
 
-        return accessibleVerticals.includes(matchedVertical);
-    };
+            if (!matchedVertical) return true;
+
+            return accessibleVerticals.includes(matchedVertical);
+        },
+        [accessibleVerticals, isEnterpriseUser, verticalToPathMap],
+    );
 
     const handleNavClick = (e: MouseEvent, path: string) => {
         if (!isAccessiblePath(path)) {
@@ -104,7 +110,7 @@ const SideNav: React.FC = () => {
             console.log("is accessible");
             setShowModal(true);
         }
-    }, [location.pathname, accessibleVerticals]);
+    }, [location.pathname, accessibleVerticals, isAccessiblePath]);
 
     const CoachingIcon = (
         <svg
