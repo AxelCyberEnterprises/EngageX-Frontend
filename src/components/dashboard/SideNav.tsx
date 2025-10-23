@@ -86,10 +86,6 @@ const SideNav: React.FC = () => {
 
             const matchedVertical = Object.entries(verticalToPathMap).find(([, slug]) => slug === lastSegment)?.[0];
 
-            console.log("last seg; ", lastSegment);
-
-            console.log("accessibleVerticals; ", accessibleVerticals);
-
             if (!matchedVertical) return true;
 
             return accessibleVerticals.includes(matchedVertical);
@@ -105,9 +101,7 @@ const SideNav: React.FC = () => {
     };
 
     useEffect(() => {
-        console.log("checking admin...");
         if (!isAccessiblePath(location.pathname)) {
-            console.log("is accessible");
             setShowModal(true);
         }
     }, [location.pathname, accessibleVerticals, isAccessiblePath]);
