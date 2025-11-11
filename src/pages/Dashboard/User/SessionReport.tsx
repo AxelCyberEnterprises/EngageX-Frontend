@@ -21,9 +21,8 @@ import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react
 import React, { useCallback, useRef, useState } from "react";
 import { Link, To, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
-import { capitalizeWords} from "@/components/tables/session-history-table/admin";
-
-
+import { capitalizeWords } from "@/components/tables/session-history-table/admin";
+import NoAccessCoachingModal from "@/components/modals/modalVariants/NoAccessCoachingModal";
 
 function getSessionTypeDisplay(item: any): string {
     if (item.session_type_display === "Enterprise") {
@@ -38,6 +37,7 @@ function getSessionTypeDisplay(item: any): string {
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+    const [showNoAccessCoachingModal, setShowNoAccessCoachingModal] = useState(false);
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const navigate = useNavigate();
@@ -303,6 +303,10 @@ const PitchSessionReport: React.FC = () => {
 
     const bookCoaching = useBookCoachingSession();
 
+    const link = (bookingEnterprise as any)?.one_on_one_coaching_link.trim() || "";
+
+    const hasLink = link !== "" && link !== "https://noaccess.com";
+
     const SpeakWithCoach = () => {
         if (profile?.is_enterprise_user) {
             bookCoaching.mutate(
@@ -379,13 +383,28 @@ const PitchSessionReport: React.FC = () => {
                                     <Download className="stroke-2" />
                                     <span className="hidden lg:block font-normal">Download</span>
                                 </Button>
-                                <Button
-                                    onClick={() => setDialogOneOpen(true)}
-                                    className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
-                                >
-                                    <UserRound className="stroke-2" />
-                                    <span className="hidden lg:block font-normal">Speak With A Coach</span>
-                                </Button>
+                                {hasLink ? (
+                                    <Button
+                                        onClick={() => setDialogOneOpen(true)}
+                                        className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
+                                    >
+                                        <UserRound className="stroke-2" />
+                                        <span className="hidden lg:block font-normal">Speak With A Coach</span>
+                                    </Button>
+                                ) : (
+                                    // No coaching link provided  so no access
+                                    <Button
+                                        onClick={() => setShowNoAccessCoachingModal(true)}
+                                        className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
+                                    >
+                                        <UserRound className="stroke-2" />
+                                        <span className="hidden lg:block font-normal">Speak With A Coach</span>
+                                    </Button>
+                                )}
+                                <NoAccessCoachingModal
+                                    show={showNoAccessCoachingModal}
+                                    onClose={() => setShowNoAccessCoachingModal(false)}
+                                />
 
                                 <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
                                     <DialogContent>
@@ -399,6 +418,11 @@ const PitchSessionReport: React.FC = () => {
                                             <DialogDescription className="text-auro-metal-saurus">
                                                 Click the button below to schedule a session with any of our coaches
                                             </DialogDescription>
+
+                                            <p className="text-[16px] font-medium text-red-600 mb-2 mt-2">
+                                                Before booking a session you must complete a session comparison (2
+                                                sessions)
+                                            </p>
                                         </DialogHeader>
                                         <Link
                                             to={
