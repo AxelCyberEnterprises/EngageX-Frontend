@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { Search, Plus } from "lucide-react";
-import { OrganizationTableData } from "@/components/tables/organization-table/data";
-import { OrganizationsTable } from "@/components/tables/organization-table";
 import AddOrganizationModal from "@/components/modals/modalVariants/AddOrganizationModal";
+import { OrganizationsTable } from "@/components/tables/organization-table";
+import { OrganizationTableData } from "@/components/tables/organization-table/data";
 import { Button } from "@/components/ui/button";
 import { useOrganizationList, usePatchOrganization } from "@/hooks/organization";
 import { useQueryClient } from "@tanstack/react-query";
+import { PaginationState } from "@tanstack/react-table";
+import { Plus, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const OrganizationsDashboard = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -13,11 +14,15 @@ const OrganizationsDashboard = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const filterButtons = ["All", "Sport Organization", "Non-Sport Organization"];
     const [debouncedSearch, setDebouncedSearch] = useState(searchTerm);
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10,
+    });
     useEffect(() => {
         const handler = setTimeout(() => setDebouncedSearch(searchTerm), 500);
         return () => clearTimeout(handler);
     }, [searchTerm]);
-    const { data, isLoading } = useOrganizationList(debouncedSearch);
+    const { data, isLoading } = useOrganizationList(debouncedSearch, pagination.pageIndex + 1);
     const queryClient = useQueryClient();
     const patchOrg = usePatchOrganization();
     const [organizations, setOrganizations] = useState<OrganizationTableData[]>([]);
@@ -134,6 +139,9 @@ const OrganizationsDashboard = () => {
                     hidePagination={false}
                     loadingOrganizations={isLoading}
                     onStatusChange={handleStatusChange}
+                    count={data?.count}
+                    pagination={pagination}
+                    setPagination={setPagination}
                 />
             </div>
             <AddOrganizationModal

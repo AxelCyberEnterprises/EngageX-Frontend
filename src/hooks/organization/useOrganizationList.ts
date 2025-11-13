@@ -1,4 +1,4 @@
-import { apiGet, apiPatch, apiPost, apiDelete } from "@/lib/api";
+import { apiDelete, apiGet, apiPatch, apiPost } from "@/lib/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface Vertical {
@@ -34,13 +34,18 @@ export interface OrganizationListResponse {
     results: Organization[];
 }
 
-export function useOrganizationList(search?: string, shouldFetch: boolean = true) {
+export function useOrganizationList(search?: string, page: number = 1, shouldFetch: boolean = true) {
     return useQuery({
-        queryKey: ["organization-list", { search }],
+        queryKey: ["organization-list", { search, page }],
         queryFn: async () => {
-            const url = search
-                ? `/enterprise/enterprises/?search=${encodeURIComponent(search)}`
-                : "/enterprise/enterprises/";
+            const params = new URLSearchParams();
+            if (search) {
+                params.append("search", search);
+            }
+            if (page) {
+                params.append("page", page.toString());
+            }
+            const url = `/enterprise/enterprises/?${params.toString()}`;
             const response = await apiGet<OrganizationListResponse>(url, "default");
             return response;
         },
