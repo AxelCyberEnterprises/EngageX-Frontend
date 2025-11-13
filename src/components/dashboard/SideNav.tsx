@@ -70,7 +70,7 @@ const SideNav: React.FC = () => {
 
     const verticalToPathMap = useMemo<Record<string, string>>(
         () => ({
-            coach: "the-coaching-room",
+            coaching: "the-coaching-room",
             public_speaking: "public-speaking",
             pitch: "pitch-practice",
             presentation: "presentation-practice",
