@@ -60,7 +60,7 @@ const SideNav: React.FC = () => {
     const isEnterpriseUser = profile?.is_enterprise_user;
     const enterpriseUserType = profile?.user_type;
 
-    const { data, isLoading } = useOrganizationList(searchTerm, lastSegment === "admin");
+    const { data, isLoading } = useOrganizationList(searchTerm, undefined, lastSegment === "admin");
     const { data: enterpriseUsers } = useFetchEnterpriseUsers();
 
     const accessibleVerticals = useMemo(

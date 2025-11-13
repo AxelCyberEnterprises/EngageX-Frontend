@@ -1,7 +1,6 @@
 import emptyStateImage from "@/assets/images/svgs/empty-state.svg";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { PaginationState } from "@tanstack/react-table";
-import { useState } from "react";
 import { BaseTable } from "../base-table";
 import { createColumns } from "./columns";
 import { OrganizationTableData } from "./data";
@@ -12,6 +11,9 @@ interface OrganizationsTableProps {
     hidePagination?: boolean;
     loadingOrganizations?: boolean;
     onStatusChange?: (organizationId: string, newStatus: "Active" | "Blacklisted") => void;
+    count?: number;
+    pagination?: PaginationState;
+    setPagination?: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
 
 export const OrganizationsTable = ({
@@ -20,11 +22,10 @@ export const OrganizationsTable = ({
     hidePagination = false,
     loadingOrganizations = false,
     onStatusChange,
+    count,
+    pagination,
+    setPagination,
 }: OrganizationsTableProps) => {
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: 10,
-    });
     const columns = createColumns({ onStatusChange });
 
     return (
@@ -42,6 +43,7 @@ export const OrganizationsTable = ({
             hidePagination={hidePagination}
             isLoading={loadingOrganizations}
             session={false}
+            count={count}
             emptyState={
                 <TableRow>
                     <TableCell
