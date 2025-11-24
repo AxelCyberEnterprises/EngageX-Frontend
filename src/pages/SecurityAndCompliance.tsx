@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
+import SecurityTrust from "../assets/EngageX® Security Trust Overview .pdf";
 
 function SecurityAndCompliance() {
     return (
         <main className="">
             <div className="space-y-20 py-36 font-montserrat px-10 lg:px-20">
                 <h1 className="text-center font-montreal">EngageX Security & Compliance Overview</h1>
+
+                <a className="w-full" href={SecurityTrust} target="_blank" rel="noopener noreferrer">
+                    <button className="flex gap-4 mb-12 mx-auto py-3 px-8 items-center justify-center rounded-lg">
+                        EngageX® Security Trust Overview
+                    </button>
+                </a>
+
                 <div className="space-y-16 text-[#475467]">
                     <div className="space-y-5">
                         <p className="text-lg">
