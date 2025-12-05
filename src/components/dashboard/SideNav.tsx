@@ -5,7 +5,7 @@ import { useTheme } from "@/context/ThemeContext/hook";
 import { cn } from "@/lib/utils";
 import { RootState } from "@/store";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRight, Plus, Search } from "lucide-react";
 import React, { MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -13,9 +13,10 @@ import SidebarBackBtn from "../../assets/images/svgs/back-sidebar.svg";
 import CollapsedLogo from "../../assets/images/svgs/collapsed-logo.svg";
 import LogoutConfirmation from "../dialogs/dialog-contents/LogoutDialog";
 
-import { useFetchEnterpriseUsers, useOrganizationList } from "@/hooks/organization";
+import { useFetchEnterpriseUsers, useInfiniteOrganizationList } from "@/hooks/organization";
 import { useClickOutside } from "@/hooks/useClickoutside";
 import { AccessRestrictedModal } from "../modals/modalVariants/AccessRestrictedModal";
+import { Button } from "../ui/button";
 import {
     Sidebar,
     SidebarContent,
@@ -60,7 +61,12 @@ const SideNav: React.FC = () => {
     const isEnterpriseUser = profile?.is_enterprise_user;
     const enterpriseUserType = profile?.user_type;
 
-    const { data, isLoading } = useOrganizationList(searchTerm, undefined, lastSegment === "admin");
+    const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteOrganizationList(
+        searchTerm,
+        lastSegment === "admin",
+    );
+    const organizations = useMemo(() => data?.pages.flatMap((page) => page.results) || [], [data]);
+
     const { data: enterpriseUsers } = useFetchEnterpriseUsers();
 
     const accessibleVerticals = useMemo(
@@ -447,7 +453,7 @@ const SideNav: React.FC = () => {
                 </svg>
             ),
             path: "/dashboard/admin/organization/dashboard",
-            items: data?.results?.map((org) => ({
+            items: organizations.map((org) => ({
                 name: org.name,
                 navs: [
                     {
@@ -718,7 +724,7 @@ const SideNav: React.FC = () => {
                 </svg>
             ),
             path: "/dashboard/admin/organization/dashboard",
-            items: data?.results?.map((org) => ({
+            items: organizations.map((org) => ({
                 name: org.name,
                 navs: [
                     {
@@ -1279,6 +1285,19 @@ const SideNav: React.FC = () => {
                                                             </SidebarMenuItem>
                                                         </Collapsible>
                                                     ))}
+                                                    {link.name === "Organization" && hasNextPage && (
+                                                        <Button
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                fetchNextPage();
+                                                            }}
+                                                            isLoading={isFetchingNextPage}
+                                                            variant="ghost"
+                                                            className="size-10 rounded-full mx-auto"
+                                                        >
+                                                            <Plus />
+                                                        </Button>
+                                                    )}
                                                 </CollapsibleContent>
                                             </SidebarMenuItem>
                                         </Collapsible>
@@ -1597,6 +1616,18 @@ const SideNav: React.FC = () => {
                                                                         </SidebarMenuItem>
                                                                     </Collapsible>
                                                                 ))}
+                                                                {link.name === "Organization" && hasNextPage && (
+                                                                    <Button
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            fetchNextPage();
+                                                                        }}
+                                                                        isLoading={isFetchingNextPage}
+                                                                        className="size-10 rounded-full mx-auto"
+                                                                    >
+                                                                        <Plus />
+                                                                    </Button>
+                                                                )}
                                                             </CollapsibleContent>
                                                         </SidebarMenuItem>
                                                     </Collapsible>
