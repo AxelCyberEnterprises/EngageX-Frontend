@@ -1,5 +1,5 @@
 import { apiDelete, apiGet, apiPatch, apiPost } from "@/lib/api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface Vertical {
     value: string;
@@ -51,6 +51,32 @@ export function useOrganizationList(search?: string, page: number = 1, shouldFet
         },
         staleTime: 1000 * 60 * 5,
         retry: 1,
+        enabled: shouldFetch,
+    });
+}
+
+export function useInfiniteOrganizationList(search?: string, shouldFetch: boolean = true) {
+    return useInfiniteQuery({
+        queryKey: ["organization-list-infinite", { search }],
+        queryFn: async ({ pageParam = 1 }) => {
+            const params = new URLSearchParams();
+            if (search) {
+                params.append("search", search);
+            }
+            params.append("page", pageParam.toString());
+            const url = `/enterprise/enterprises/?${params.toString()}`;
+            const response = await apiGet<OrganizationListResponse>(url, "default");
+            return response;
+        },
+        getNextPageParam: (lastPage) => {
+            if (lastPage.next) {
+                const url = new URL(lastPage.next);
+                const page = url.searchParams.get("page");
+                return page ? parseInt(page) : undefined;
+            }
+            return undefined;
+        },
+        initialPageParam: 1,
         enabled: shouldFetch,
     });
 }
