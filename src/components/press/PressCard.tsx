@@ -9,6 +9,8 @@ interface Params {
         title: string;
         summary: string;
         video?: boolean;
+        link?: string;
+        buttonText?: string;
     };
 }
 
@@ -20,6 +22,8 @@ function PressCard({ post }: Params) {
                     <video className="absolute h-full w-full object-cover" controls>
                         <source src={post.img} type="video/mp4" />
                     </video>
+                ) : post.link ? (
+                    <img src={post.img} className="absolute h-full w-full object-contain" alt={post.title} />
                 ) : (
                     <img src={post.img} className="absolute h-full w-full object-cover" alt={post.title} />
                 )}
@@ -28,7 +32,15 @@ function PressCard({ post }: Params) {
                 <div>{/* <small className="text-green-sheen">{post.date}</small> */}</div>
                 <div className="flex justify-between items-center">
                     <h6>{post.title}</h6>
-                    {!post.download ? (
+                    {post.link ? (
+                        <a
+                            href={post.link}
+                            target="_blank"
+                            className="bg-black text-white py-2 px-4 text-sm  hover:bg-black/90 rounded-lg"
+                        >
+                            {post.buttonText ? post.buttonText : "Click"}
+                        </a>
+                    ) : !post.download ? (
                         <svg width="24" height="28" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M7 21L17 11M17 11H7M17 11V21"
