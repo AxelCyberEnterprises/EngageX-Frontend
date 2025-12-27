@@ -1262,9 +1262,12 @@ const SideNav: React.FC = () => {
                                                         >
                                                             <SidebarMenuItem className="flex flex-col gap-2">
                                                                 <CollapsibleTrigger asChild>
-                                                                    <div className="link flex mobile_links items-center w-full py-2 px-3 mb-0.5 cursor-pointer">
-                                                                        <span>{name}</span>
-                                                                        <ChevronRight className="size-4 ml-auto transition-transform duration-200 group-data-[state=open]/collapsible-collapsible:rotate-90" />
+                                                                    <div
+                                                                        title={name}
+                                                                        className="link flex mobile_links items-center w-full py-2 px-3 mb-0.5 cursor-pointer"
+                                                                    >
+                                                                        <span className="truncate">{name}</span>
+                                                                        <ChevronRight className="size-4 ml-auto shrink-0 transition-transform duration-200 group-data-[state=open]/collapsible-collapsible:rotate-90" />
                                                                     </div>
                                                                 </CollapsibleTrigger>
                                                                 <CollapsibleContent>
@@ -1533,6 +1536,7 @@ const SideNav: React.FC = () => {
                                                                         <SidebarMenuItem className="flex flex-col gap-2">
                                                                             <CollapsibleTrigger asChild>
                                                                                 <div
+                                                                                    title={name}
                                                                                     className={`
                             link flex mobile_links items-center w-full mb-0.5 cursor-pointer justify-between py-3.5 px-4 rounded-lg
                             group-data-[state=open]/collapsible-collapsible:bg-[#ECEEF4] group-data-[state=open]/collapsible-collapsible:text-[#64BA9F]
@@ -1540,8 +1544,10 @@ const SideNav: React.FC = () => {
                             hover:bg-[#ECEEF4] hover:text-[#64BA9F]
                           `}
                                                                                 >
-                                                                                    <span className="">{name}</span>
-                                                                                    <ChevronRight className="size-4 ml-auto transition-transform duration-200 group-data-[state=open]/collapsible-collapsible:rotate-90" />
+                                                                                    <span className="truncate">
+                                                                                        {name}
+                                                                                    </span>
+                                                                                    <ChevronRight className="size-4 ml-auto shrink-0 transition-transform duration-200 group-data-[state=open]/collapsible-collapsible:rotate-90" />
                                                                                 </div>
                                                                             </CollapsibleTrigger>
 

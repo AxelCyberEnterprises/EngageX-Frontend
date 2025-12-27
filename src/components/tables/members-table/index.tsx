@@ -58,6 +58,7 @@ const MembersTable = () => {
 
             return {
                 id: user.id.toString(),
+                userId: user.user.id,
                 name: `${user.user.first_name} ${user.user.last_name}`,
                 role: user.is_admin ? "Admin" : user.user.role || user.user_type || "Member",
                 last_login: user.progress?.last_session_date

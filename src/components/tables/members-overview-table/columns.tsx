@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { ColumnDef } from "@tanstack/react-table";
-import { Member } from "./data";
-import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickoutside";
+import { ColumnDef } from "@tanstack/react-table";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Member } from "./data";
 
 export const columns: ColumnDef<Member, any>[] = [
     {
@@ -59,6 +59,8 @@ export const columns: ColumnDef<Member, any>[] = [
             return (
                 <div className="flex justify-center relative">
                     <button
+                        type="button"
+                        title="Actions"
                         ref={buttonRef}
                         className="rounded-lg transition-colors bg-transparent rotate-90"
                         onClick={(e) => {

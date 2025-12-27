@@ -1,20 +1,21 @@
-import { useState } from "react";
-import coaching from "../../../assets/images/svgs/coaching.svg";
-import archive from "../../../assets/images/svgs/archive.svg";
-import { MembersOverviewTable } from "@/components/tables/members-overview-table";
-import { GoalsTable } from "@/components/tables/active-goals-table";
-import { PlusIcon, Search } from "lucide-react";
-import AccessibleVerticalsModal from "@/components/modals/modalVariants/AccessibleVerticalsModal";
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { openDialog } from "@/store/slices/dynamicDialogSlice";
-import { useDispatch } from "react-redux";
 import AddMembers from "@/components/dialogs/dialog-contents/AddMembers";
+import AccessibleVerticalsModal from "@/components/modals/modalVariants/AccessibleVerticalsModal";
+import AddBookingLinkModal from "@/components/modals/modalVariants/BookingLinkModal";
 import IssueCreditsModal from "@/components/modals/modalVariants/IssueCreditModal";
-import { useFetchSingleOrganization } from "@/hooks/organization/useFetchSingleOrganization";
+import { GoalsTable } from "@/components/tables/active-goals-table";
+import { MembersOverviewTable } from "@/components/tables/members-overview-table";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchOrganizationStats } from "@/hooks/organization/useFetchOrganizationStats";
-import AddBookingLinkModal from "@/components/modals/modalVariants/BookingLinkModal";
+import { useFetchSingleOrganization } from "@/hooks/organization/useFetchSingleOrganization";
+import { cn } from "@/lib/utils";
+import { openDialog } from "@/store/slices/dynamicDialogSlice";
+import { PlusIcon, Search } from "lucide-react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import archive from "../../../assets/images/svgs/archive.svg";
+import coaching from "../../../assets/images/svgs/coaching.svg";
 
 const Overview = () => {
     const dispatch = useDispatch();
@@ -138,7 +139,10 @@ const Overview = () => {
                     <h6 className="font-medium">Members</h6>
                     <Link
                         to={`/dashboard/admin/organization/members?id=${orgId}`}
-                        className="border border-[#E4E7EC] bg-transparent lg:py-3 py-1 px-4 text-lg rounded-md text-[#252A39] font-[300]"
+                        className={cn(
+                            buttonVariants({ variant: "outline", size: "lg" }),
+                            "border-[#E4E7EC] bg-transparent rounded-md text-[#252A39]",
+                        )}
                     >
                         View all
                     </Link>
