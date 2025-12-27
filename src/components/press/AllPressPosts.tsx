@@ -3,6 +3,15 @@ import PressCard from "./PressCard";
 function AllPressPosts() {
     const posts = [
         {
+            img: "/assets/the-clarity-code-nasdaq.webp",
+            title: "The Clarity Code NAsdaq",
+            date: "",
+            link: "https://pages.nasdaqcenter.org/community-class-the-clarity-code-with-jacqueleen-crittle",
+            buttonText: "Save your seat",
+            summary:
+                "I’m thrilled to lead The Clarity Code, a free community class in partnership with @𝗡𝗮𝘀𝗱𝗮𝗾 𝗘𝗻𝘁𝗿𝗲𝗽𝗿𝗲𝗻𝗲𝘂𝗿𝗶𝗮𝗹 𝗖𝗲𝗻𝘁𝗲𝗿, focused on helping entrepreneurs communicate their value with confidence and purpose.",
+        },
+        {
             img: "/assets/pressimg1.jpeg",
             date: "05 June 2025",
             title: "New platform launch",
