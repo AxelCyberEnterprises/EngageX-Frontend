@@ -242,6 +242,7 @@ const ProgressTracking: React.FC = () => {
                                         onChange={handleTimeFrameChange}
                                         placeholder="Yearly"
                                         defaultValue={timeFrame}
+                                        key={timeFrame}
                                         className="w-fit sm:rounded-[7px] rounded-[5px] shadow-none sm:py-3 py-1 sm:px-4 px-2 sm:h-9 h-7 text-[#333333] focus-visible:ring-0 active:shadow-none"
                                         showIcon={false}
                                     />
