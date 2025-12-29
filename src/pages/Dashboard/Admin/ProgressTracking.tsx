@@ -31,7 +31,7 @@ const ProgressTracking: React.FC = () => {
     console.log("ProgressTracking");
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showFailureModal, setShowFailureModal] = useState(false);
-    const [timeFrame, setTimeFrame] = useState<TimeFrame>("weekly");
+    const [timeFrame, setTimeFrame] = useState<TimeFrame>("yearly");
     const [sortOption, setSortOption] = useState<SortOption>("max-date");
     // Retrieve `memberId` from query parameters
     const [searchParams] = useSearchParams();
@@ -240,7 +240,7 @@ const ProgressTracking: React.FC = () => {
                                     <ShadSelect
                                         options={timeOptions}
                                         onChange={handleTimeFrameChange}
-                                        placeholder="Weekly"
+                                        placeholder="Yearly"
                                         defaultValue={timeFrame}
                                         className="w-fit sm:rounded-[7px] rounded-[5px] shadow-none sm:py-3 py-1 sm:px-4 px-2 sm:h-9 h-7 text-[#333333] focus-visible:ring-0 active:shadow-none"
                                         showIcon={false}

@@ -25,7 +25,7 @@ const getDateRange = (timeFrame?: TimeFrame) => {
     } else if (timeFrame === "yearly") {
         startDate.setDate(endDate.getDate() - 365);
     } else {
-        startDate.setDate(endDate.getDate() - 30);
+        startDate.setDate(endDate.getDate() - 365);
     }
 
     return {
