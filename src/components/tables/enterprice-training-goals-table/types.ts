@@ -3,5 +3,6 @@ export interface IEnterpriseTrainingGoals {
     goal: string;
     organization: string;
     progress: number;
-    target_sessions?: number; // Add this if API returns target_sessions
+    target_sessions?: number;
+    completed_sessions?: number;
 }

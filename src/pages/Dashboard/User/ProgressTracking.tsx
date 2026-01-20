@@ -237,7 +237,7 @@ const ProgressTracking: React.FC = () => {
                     <section className="px-4 py-6 rounded-[8px] border border-[#E4E7EC]">
                         <p className="big mb-6">Enterprise Training Goals</p>
 
-                        <EnterpriseTrainingGoalsTable />
+                        <EnterpriseTrainingGoalsTable data={progressTracking?.enterprise_data} />
                     </section>
 
                     <section className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-10">
