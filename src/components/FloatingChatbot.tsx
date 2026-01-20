@@ -17,15 +17,15 @@ interface FaqItem {
 const faqs: FaqItem[] = [
     {
         question: "My company's pilot program has ended. Can I keep using the application on my own?",
-        answer: "Yes. If you wish to continue as an individual subscriber: 1. Contact our support team to request an individual subscription. 2. Once your payment status is confirmed, we will update your profile. 3. You will immediately regain access to sessions, even if your company credit balance is zero.",
+        answer: "Yes. If you wish to continue as an individual subscriber: 1. Contact info@engageXai.io to request an individual subscription. 2. Once your payment status is confirmed, we will update your profile. 3. You will immediately regain access to sessions, even if your company credit balance is zero.",
     },
     {
         question: "I am unable to log in and my account seems to be deactivated. What should I do?",
-        answer: "Your account may have been temporarily paused by an administrator. To resolve this: 1. Reach out to your organization’s administrator or our support team. 2. Request an account reactivation. 3. They can instantly toggle your status back to 'Active' to restore your login access.",
+        answer: "Your account may have been temporarily paused by an administrator. To resolve this: 1. Reach out to your organization’s administrator or info@engageXai.io. 2. Request an account reactivation. 3. They can instantly toggle your status back to 'Active' to restore your login access.",
     },
     {
         question: "I have lost access to the email address registered to my account. How can I change it?",
-        answer: "For your security, this requires a manual verification process. Please follow these steps: 1. Contact our support team directly via phone or our helpdesk. 2. Be prepared to verify your identity (we may ask to speak with you briefly). 3. Once verified, an administrator will securely update your profile to your new email address so you can log in again.",
+        answer: "For your security, this requires a manual verification process. Please follow these steps: 1. Contact info@engageXai.io directly via phone or our helpdesk. 2. Be prepared to verify your identity (we may ask to speak with you briefly). 3. Once verified, an administrator will securely update your profile to your new email address so you can log in again.",
     },
     {
         question: "What is the Session Improvement area in EngageX<sup>®</sup>?",
