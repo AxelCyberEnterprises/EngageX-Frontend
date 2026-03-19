@@ -49,7 +49,7 @@ function SocialProof() {
           >
             <div className="flex justify-center relative z-10">
               {[...Array(5)].map((_, i) => (
-                <StarIcon key={i} fill="gray" strokeWidth={0} />
+                <StarIcon key={i} fill="#253141" strokeWidth={0} />
               ))}
             </div>
             <p className="text-base text-center px-4 text-pretty relative z-10">
