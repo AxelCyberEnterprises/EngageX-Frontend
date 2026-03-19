@@ -1,19 +1,21 @@
 import Hero from "../components/homepage/Hero";
-import SocialProof from "../components/homepage/SocialProof";
+import Intro from "../components/homepage/Intro";
+import Benefits from "../components/homepage/Benefits";
 import HowItWorks from "../components/homepage/HowItWorks";
-import WhyEngageX from "../components/homepage/WhyEngageX";
-import PricingPlansSection from "../components/homepage/PricingPlansSection";
+// import Faq from "../components/homepage/Faq";
+import Testimonial from "../components/homepage/Testimonial";
 import Pricing from "@/components/homepage/Pricing";
 
 const HomePage: React.FC = () => {
   return (
     <main className="font-montserrat">
       <Hero />
-      <SocialProof />
+      <Intro />
+      <Benefits />
       <HowItWorks />
-      <WhyEngageX />
-      <PricingPlansSection />
       <Pricing />
+      {/* <Faq /> */}
+      <Testimonial />
     </main>
   );
 };

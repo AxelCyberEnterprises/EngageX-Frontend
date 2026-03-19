@@ -70,7 +70,7 @@ import ScrollToTop from "./ScrollToTop";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Toaster } from "./ui/sonner";
-import VideoPopup from "./VideoPopup";
+// import VideoPopup from "./VideoPopup";
 import MLBMediaTraining from "@/pages/Sessions/MLBCoachTraining";
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -243,7 +243,7 @@ export default function AppRoutes() {
                         element={
                             <WebsiteLayout>
                                 <>
-                                    <VideoPopup />
+                                    {/* <VideoPopup /> */}
                                     <HomePage />
                                 </>
                             </WebsiteLayout>

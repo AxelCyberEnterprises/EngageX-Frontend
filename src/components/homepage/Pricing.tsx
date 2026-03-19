@@ -81,7 +81,7 @@ function Pricing({ subtext, showPricing }: { subtext?: string; showPricing?: boo
 
                 <div className="lg:w-[70%] text-center mx-auto space-y-4 flex flex-col items-center">
                     <h4 className="h-max font-montreal leading-snug">
-                        Share this dynamic corporate enterprise solutions platform with your team or organization
+                        Your team speaks to the world. Train them like it.
                     </h4>
                     <p className="text-dark-electric-blue leading-normal">{subtext ? subtext : ""}</p>
                 </div>
