@@ -8,17 +8,17 @@ function SocialProof() {
     {
       text: "\u201CThe coolest thing I\u2019ve seen in a while!\u201D",
       name: "Katherine Milliken",
-      title: "VP of Entertainment & Fan Experience",
+      title: "VP of Entertainment & Fan Experience, Miami Dolphins",
     },
     {
       text: "\u201CEngageX\u00AE offers leaders like myself a transformative approach to inspiring teams, driving innovation, and turning strategic communication into measurable results.\u201D",
       name: "Ben Tubou",
-      title: "Director, Small Business Owner",
+      title: "Director & Small Business Liaison Officer, McKesson",
     },
     {
       text: "\u201CThere\u2019s no downside to it, it makes you more presentable, helps you avoid embarrassment, and that\u2019s a great idea. Honestly, it should be mandatory.\u201D",
       name: "Aaron Williams",
-      title: "Former 14-season NBA veteran",
+      title: "14-Season NBA Veteran, National Basketball Association",
     },
   ];
 
@@ -45,7 +45,7 @@ function SocialProof() {
         {quotes.map((quote, idx) => (
           <div
             key={idx}
-            className="flex-shrink-0 w-full md:h-[15rem] h-auto flex flex-col justify-between py-10 items-center relative md:overflow-clip overflow-visible border bg-white"
+            className="flex-shrink-0 w-full md:h-[18rem] h-auto flex flex-col justify-between py-10 items-center relative md:overflow-clip overflow-visible border bg-white"
           >
             <div className="flex justify-center relative z-10">
               {[...Array(5)].map((_, i) => (
@@ -56,7 +56,7 @@ function SocialProof() {
               {quote.text}
             </p>
             <div className="flex gap-2 items-center self-stretch px-4 relative z-10">
-              <p className="text-xs text-center mt-4 -mb-4 min-w-0 break-words whitespace-normal w-full">
+              <p className="text-xs text-center mt-8 -mb-4 min-w-0 break-words whitespace-normal w-full">
                 <span className="font-bold">{quote.name}</span>
                 {" - "}
                 {quote.title}
