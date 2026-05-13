@@ -42,14 +42,14 @@ function Hero() {
                         </button>
                     </Link>
 
-                    <Link to="https://youtu.be/9wngYuqKK7Q?si=dyYU2qiEH9TXYM2R" target="_blank">
+                    {/* <Link to="https://youtu.be/9wngYuqKK7Q?si=dyYU2qiEH9TXYM2R" target="_blank">
                         <button className="flex gap-4 mt-6 w-full lg:w-max py-3 px-8 items-center justify-center rounded-lg bg-[#EDEDED] hover:bg-[#D4D4D4] text-[#253141] font-semibold">
                             <p>
                                 {" "}
                                 View EngageX<sup>®</sup> in Action{" "}
                             </p>
                         </button>
-                    </Link>
+                    </Link> */}
                 </div>
 
                 <p className="text-sm text-dark-electric-blue/60 mt-2">Free to start. No credit card required.</p>
