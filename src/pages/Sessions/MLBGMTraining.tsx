@@ -98,20 +98,20 @@ const MLBMediaTraining: React.FC = () => {
         }, 7000);
     };
 
-    // Update questionsRef.current whenever sessionQuestions changes
+    // Update questionsRef.current whenever sessionQuestions, enterprise_id, or id changes
     useEffect(() => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
             const results = (sessionQuestions as any).results;
             if (Array.isArray(results) && enterprise_id) {
                 // Cycle through all available questions across sessions before repeating
-                questionsRef.current = pickSessionQuestions(results, enterprise_id, "gm_mlb", 8);
+                questionsRef.current = pickSessionQuestions(results, enterprise_id, "gm_mlb", 8, id);
             } else {
                 questionsRef.current = [];
             }
         } else {
             questionsRef.current = [];
         }
-    }, [sessionQuestions]);
+    }, [sessionQuestions, enterprise_id, id]);
 
     useEffect(() => {
         if (isQuestionDialogOpen && question && question.audio_url) {
