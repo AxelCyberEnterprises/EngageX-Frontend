@@ -109,13 +109,13 @@ const PublicSpeaking: React.FC = () => {
         }, 7000);
     };
 
-    // Update questionsRef.current whenever sessionQuestions changes
+    // Update questionsRef.current whenever sessionQuestions, enterprise_id, or id changes
     useEffect(() => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
             const results = (sessionQuestions as any).results;
-            if (Array.isArray(results)) {
+            if (Array.isArray(results) && enterprise_id) {
                 // Cycle through all available questions across sessions before repeating
-                questionsRef.current = pickSessionQuestions(results, enterprise_id, "media_training", 8);
+                questionsRef.current = pickSessionQuestions(results, enterprise_id, "media_training", 8, id);
                 // ----- NEW CODE: set image for first question -----
                 if (questionsRef.current.length > 0) {
                     const firstGender = questionsRef.current[0]?.gender;
@@ -132,7 +132,7 @@ const PublicSpeaking: React.FC = () => {
         } else {
             questionsRef.current = [];
         }
-    }, [sessionQuestions]);
+    }, [sessionQuestions, enterprise_id, id]);
 
     useEffect(() => {
         if (isQuestionDialogOpen && question && question.audio_url) {

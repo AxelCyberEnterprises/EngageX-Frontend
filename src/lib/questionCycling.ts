@@ -64,8 +64,32 @@ export function pickSessionQuestions<T extends { id: number }>(
     enterpriseId: number,
     vertical: string,
     batchSize = 8,
+    sessionId?: string,
 ): T[] {
     if (!allQuestions.length) return [];
+
+    // Check if we have cached questions for this unique session to prevent
+    // premature cycling due to component remounts / refreshes / double effects.
+    if (sessionId) {
+        const sessionCacheKey = `engagex_session_q_${sessionId}`;
+        const cachedRaw = localStorage.getItem(sessionCacheKey);
+        if (cachedRaw) {
+            try {
+                const cachedIds = JSON.parse(cachedRaw) as number[];
+                if (Array.isArray(cachedIds) && cachedIds.length > 0) {
+                    // Find the questions matching cachedIds in the exact cached order
+                    const mapped = cachedIds
+                        .map((qId) => allQuestions.find((q) => q.id === qId))
+                        .filter((q): q is T => !!q);
+                    if (mapped.length > 0) {
+                        return mapped;
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to parse cached session questions:", e);
+            }
+        }
+    }
 
     const askedIds = new Set(getAskedIds(enterpriseId, vertical));
 
@@ -82,6 +106,16 @@ export function pickSessionQuestions<T extends { id: number }>(
         // Not enough fresh ones – use all remaining unanswered, then top up
         // from the answered pool (cycle resets for those topped-up questions)
         batch = [...unanswered, ...answered.slice(0, batchSize - unanswered.length)];
+    }
+
+    // Persist the selected questions for this specific session
+    if (sessionId) {
+        const sessionCacheKey = `engagex_session_q_${sessionId}`;
+        try {
+            localStorage.setItem(sessionCacheKey, JSON.stringify(batch.map((q) => q.id)));
+        } catch {
+            // localStorage quota exceeded or unavailable – silently continue
+        }
     }
 
     // Persist the updated set of asked IDs
