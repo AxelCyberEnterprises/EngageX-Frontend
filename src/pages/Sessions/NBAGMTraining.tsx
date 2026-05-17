@@ -19,6 +19,7 @@ import { useLocation, useParams } from "react-router-dom";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import { useGetSessionQuestions } from "@/hooks/sessions";
+import { pickSessionQuestions } from "@/lib/questionCycling";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
@@ -101,10 +102,9 @@ const NFLMediaTraining: React.FC = () => {
     useEffect(() => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
             const results = (sessionQuestions as any).results;
-            if (Array.isArray(results)) {
-                // Pick 8 random questions
-                const shuffled = results.sort(() => 0.5 - Math.random());
-                questionsRef.current = shuffled.slice(0, 8);
+            if (Array.isArray(results) && enterprise_id) {
+                // Cycle through all available questions across sessions before repeating
+                questionsRef.current = pickSessionQuestions(results, enterprise_id, "gm_nba", 8);
             } else {
                 questionsRef.current = [];
             }

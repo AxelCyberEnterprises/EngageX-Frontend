@@ -23,6 +23,7 @@ import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
 import { useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
+import { pickSessionQuestions } from "@/lib/questionCycling";
 
 const NFLMediaTraining: React.FC = () => {
     const { load } = useAudioPlayer();
@@ -101,10 +102,9 @@ const NFLMediaTraining: React.FC = () => {
     useEffect(() => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
             const results = (sessionQuestions as any).results;
-            if (Array.isArray(results)) {
-                // Pick 8 random questions
-                const shuffled = results.sort(() => 0.5 - Math.random());
-                questionsRef.current = shuffled.slice(0, 8);
+            if (Array.isArray(results) && enterprise_id) {
+                // Cycle through all available questions across sessions before repeating
+                questionsRef.current = pickSessionQuestions(results, enterprise_id, "coaching", 8);
             } else {
                 questionsRef.current = [];
             }
