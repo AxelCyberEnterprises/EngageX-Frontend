@@ -62,8 +62,9 @@ const PublicSpeaking: React.FC = () => {
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const questionsRef = useRef<IQuestion[]>([]);
+    const [questions, setQuestions] = useState<IQuestion[]>([]);
     const showQuestionTagRef = useRef(false);
-    const question = questionsRef.current[activeQuestion];
+    const question = questions[activeQuestion];
     const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
     const { data: enterpriseUser } = useEnterpriseUsers();
     const { data: fullProfile } = useFullUserProfile();
@@ -93,7 +94,7 @@ const PublicSpeaking: React.FC = () => {
     };
 
     const isLastQuestion = () => {
-        return activeQuestion >= questionsRef.current.length - 1;
+        return activeQuestion >= questions.length - 1;
     };
 
     const closeAndShowClapVideo = () => {
@@ -115,10 +116,12 @@ const PublicSpeaking: React.FC = () => {
             const results = (sessionQuestions as any).results;
             if (Array.isArray(results) && enterprise_id) {
                 // Cycle through all available questions across sessions before repeating
-                questionsRef.current = pickSessionQuestions(results, enterprise_id, "media_training", 8, id);
+                const picked = pickSessionQuestions(results, enterprise_id, "media_training", 8, id);
+                setQuestions(picked);
+                questionsRef.current = picked;
                 // ----- NEW CODE: set image for first question -----
-                if (questionsRef.current.length > 0) {
-                    const firstGender = questionsRef.current[0]?.gender;
+                if (picked.length > 0) {
+                    const firstGender = picked[0]?.gender;
                     setQuestionImg(
                         firstGender === "F"
                             ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
@@ -127,9 +130,11 @@ const PublicSpeaking: React.FC = () => {
                 }
                 // ---------------------------------------------------
             } else {
+                setQuestions([]);
                 questionsRef.current = [];
             }
         } else {
+            setQuestions([]);
             questionsRef.current = [];
         }
     }, [sessionQuestions, enterprise_id, id]);
@@ -164,12 +169,12 @@ const PublicSpeaking: React.FC = () => {
         setQuestionDialogOpen(true);
 
         setActiveQuestion((prev: number) => {
-            const nQuestions = questionsRef.current.length;
+            const nQuestions = questions.length;
             setStartQuestionTimer(false);
 
             if (prev < nQuestions - 1) {
                 const nextIndex = prev + 1;
-                const nextQuestion = questionsRef.current[nextIndex];
+                const nextQuestion = questions[nextIndex];
 
                 console.log(nextQuestion.gender);
 
@@ -454,7 +459,7 @@ const PublicSpeaking: React.FC = () => {
             <Dialog
                 open={isQuestionDialogOpen}
                 onOpenChange={
-                    activeQuestion > questionsRef.current.length - 1 && isSocketConnected
+                    activeQuestion > questions.length - 1 && isSocketConnected
                         ? setQuestionDialogOpen
                         : () => {}
                 }

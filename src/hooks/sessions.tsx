@@ -322,15 +322,38 @@ export function useGetSessionQuestions(enterprise_id: number, vertical: string, 
             let url = `/enterprise/enterprise-questions/?enterprise_id=${enterprise_id}&vertical=${vertical}&is_active=true`;
             // You can leave this line for possible backend-side filtering
             if (sport_type) url += `&sport_type=${sport_type}`;
-            // Make the API call and cast its response to the expected type
-            const data = (await apiGet(url, "default")) as PaginatedQuestions;
+            
+            let allResults: EnterpriseQuestion[] = [];
+            let currentUrl: string | null = url;
+            let firstPageData: PaginatedQuestions | null = null;
+
+            while (currentUrl) {
+                // Make the API call and cast its response to the expected type
+                const data = (await apiGet(currentUrl, "default")) as PaginatedQuestions;
+                if (!firstPageData) {
+                    firstPageData = data;
+                }
+                allResults = [...allResults, ...data.results];
+                currentUrl = data.next;
+            }
+
+            if (!firstPageData) {
+                throw new Error("No data returned");
+            }
+
+            const mergedData = {
+                ...firstPageData,
+                results: allResults,
+                next: null,
+            };
+
             // Filter results locally just in case the backend misbehaves
             const filtered = sport_type
                 ? {
-                      ...data,
-                      results: data.results.filter((q) => q.sport_type === sport_type),
+                      ...mergedData,
+                      results: mergedData.results.filter((q) => q.sport_type === sport_type),
                   }
-                : data;
+                : mergedData;
             console.log("Filtered questions:", filtered.results);
             return filtered;
         },
