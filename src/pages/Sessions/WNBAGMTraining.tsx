@@ -54,13 +54,14 @@ const NFLMediaTraining: React.FC = () => {
         "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+GM+Facecard.png",
     );
     const questionsRef = useRef<IQuestion[]>([]);
+    const [questions, setQuestions] = useState<IQuestion[]>([]);
     const showQuestionTagRef = useRef(false);
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
-    const question: IQuestion | undefined = questionsRef.current[activeQuestion];
+    const question: IQuestion | undefined = questions[activeQuestion];
     const location = useLocation();
     const { data: enterpriseUser } = useEnterpriseUsers();
     const { data: fullProfile } = useFullUserProfile();
@@ -86,7 +87,7 @@ const NFLMediaTraining: React.FC = () => {
     };
 
     const isLastQuestion = () => {
-        return activeQuestion >= questionsRef.current.length - 1;
+        return activeQuestion >= questions.length - 1;
     };
 
     const closeAndShowClapVideo = () => {
@@ -104,11 +105,15 @@ const NFLMediaTraining: React.FC = () => {
             const results = (sessionQuestions as any).results;
             if (Array.isArray(results) && enterprise_id) {
                 // Cycle through all available questions across sessions before repeating
-                questionsRef.current = pickSessionQuestions(results, enterprise_id, "gm_wnba", 8, id);
+                const picked = pickSessionQuestions(results, enterprise_id, "gm_wnba", 8, id);
+                setQuestions(picked);
+                questionsRef.current = picked;
             } else {
+                setQuestions([]);
                 questionsRef.current = [];
             }
         } else {
+            setQuestions([]);
             questionsRef.current = [];
         }
     }, [sessionQuestions, enterprise_id, id]);
@@ -142,7 +147,7 @@ const NFLMediaTraining: React.FC = () => {
         setQuestionDialogOpen(true);
         // Use a functional update to get the new value
         setActiveQuestion((prev: number) => {
-            const nQuestions = questionsRef.current.length;
+            const nQuestions = questions.length;
             setStartQuestionTimer(false);
 
             if (prev < nQuestions - 1) {
@@ -372,7 +377,7 @@ const NFLMediaTraining: React.FC = () => {
             <Dialog
                 open={isQuestionDialogOpen}
                 onOpenChange={
-                    activeQuestion > questionsRef.current.length - 1 && isSocketConnected
+                    activeQuestion > questions.length - 1 && isSocketConnected
                         ? setQuestionDialogOpen
                         : () => {}
                 }

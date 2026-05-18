@@ -68,6 +68,11 @@ export function pickSessionQuestions<T extends { id: number }>(
 ): T[] {
     if (!allQuestions.length) return [];
 
+    // Guard: Prevent running and mutating global state if parameters are not ready.
+    if (!enterpriseId || !sessionId) {
+        return [];
+    }
+
     // Check if we have cached questions for this unique session to prevent
     // premature cycling due to component remounts / refreshes / double effects.
     if (sessionId) {
