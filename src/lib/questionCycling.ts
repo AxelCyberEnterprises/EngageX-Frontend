@@ -126,9 +126,10 @@ export function pickSessionQuestions<T extends { id: number }>(
         }
     }
 
-    // If all questions have now been asked, reset the cycle
+    // If all questions have now been asked, reset the cycle but seed the next cycle
+    // with the current batch to prevent immediate repetition of just-asked questions.
     if (newAskedIds.length >= allQuestions.length) {
-        saveAskedIds(enterpriseId, vertical, []);
+        saveAskedIds(enterpriseId, vertical, batch.map((q) => q.id));
     } else {
         saveAskedIds(enterpriseId, vertical, newAskedIds);
     }
