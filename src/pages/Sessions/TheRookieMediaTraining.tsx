@@ -21,7 +21,6 @@ import { useEndSession } from "@/hooks/sessions";
 import VideoPlayer from "@/components/session/VideoPlayer";
 import { useLocation } from "react-router-dom";
 import { useGetSessionQuestions } from "@/hooks/sessions";
-import { pickSessionQuestions } from "@/lib/questionCycling";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
@@ -62,9 +61,8 @@ const PublicSpeaking: React.FC = () => {
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
     const questionsRef = useRef<IQuestion[]>([]);
-    const [questions, setQuestions] = useState<IQuestion[]>([]);
     const showQuestionTagRef = useRef(false);
-    const question = questions[activeQuestion];
+    const question = questionsRef.current[activeQuestion];
     const [videoReplacementFlag, setVideoReplacementFlag] = useState(false);
     const { data: enterpriseUser } = useEnterpriseUsers();
     const { data: fullProfile } = useFullUserProfile();
@@ -94,7 +92,7 @@ const PublicSpeaking: React.FC = () => {
     };
 
     const isLastQuestion = () => {
-        return activeQuestion >= questions.length - 1;
+        return activeQuestion >= questionsRef.current.length - 1;
     };
 
     const closeAndShowClapVideo = () => {
@@ -110,18 +108,17 @@ const PublicSpeaking: React.FC = () => {
         }, 7000);
     };
 
-    // Update questionsRef.current whenever sessionQuestions, enterprise_id, or id changes
+    // Update questionsRef.current whenever sessionQuestions changes
     useEffect(() => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
             const results = (sessionQuestions as any).results;
-            if (Array.isArray(results) && enterprise_id) {
-                // Cycle through all available questions across sessions before repeating
-                const picked = pickSessionQuestions(results, enterprise_id, "media_training", 8, id);
-                setQuestions(picked);
-                questionsRef.current = picked;
+            if (Array.isArray(results)) {
+                // Pick 8 random questions
+                const shuffled = results.sort(() => 0.5 - Math.random());
+                questionsRef.current = shuffled.slice(0, 8);
                 // ----- NEW CODE: set image for first question -----
-                if (picked.length > 0) {
-                    const firstGender = picked[0]?.gender;
+                if (questionsRef.current.length > 0) {
+                    const firstGender = questionsRef.current[0]?.gender;
                     setQuestionImg(
                         firstGender === "F"
                             ? "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/bw_handraise.png"
@@ -130,14 +127,12 @@ const PublicSpeaking: React.FC = () => {
                 }
                 // ---------------------------------------------------
             } else {
-                setQuestions([]);
                 questionsRef.current = [];
             }
         } else {
-            setQuestions([]);
             questionsRef.current = [];
         }
-    }, [sessionQuestions, enterprise_id, id]);
+    }, [sessionQuestions]);
 
     useEffect(() => {
         if (isQuestionDialogOpen && question && question.audio_url) {
@@ -169,12 +164,12 @@ const PublicSpeaking: React.FC = () => {
         setQuestionDialogOpen(true);
 
         setActiveQuestion((prev: number) => {
-            const nQuestions = questions.length;
+            const nQuestions = questionsRef.current.length;
             setStartQuestionTimer(false);
 
             if (prev < nQuestions - 1) {
                 const nextIndex = prev + 1;
-                const nextQuestion = questions[nextIndex];
+                const nextQuestion = questionsRef.current[nextIndex];
 
                 console.log(nextQuestion.gender);
 
@@ -459,7 +454,7 @@ const PublicSpeaking: React.FC = () => {
             <Dialog
                 open={isQuestionDialogOpen}
                 onOpenChange={
-                    activeQuestion > questions.length - 1 && isSocketConnected
+                    activeQuestion > questionsRef.current.length - 1 && isSocketConnected
                         ? setQuestionDialogOpen
                         : () => {}
                 }

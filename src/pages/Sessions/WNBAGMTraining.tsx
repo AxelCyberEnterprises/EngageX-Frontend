@@ -19,7 +19,6 @@ import { useLocation, useParams } from "react-router-dom";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import { useGetSessionQuestions } from "@/hooks/sessions";
-import { pickSessionQuestions } from "@/lib/questionCycling";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
@@ -54,14 +53,13 @@ const NFLMediaTraining: React.FC = () => {
         "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/Rookie+Room/WNBA/WNBA+GM+Facecard.png",
     );
     const questionsRef = useRef<IQuestion[]>([]);
-    const [questions, setQuestions] = useState<IQuestion[]>([]);
     const showQuestionTagRef = useRef(false);
     const [stopTime, setStopTime] = useState(false);
     const [stopStreamer, setStopStreamer] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState<any | undefined>(0);
     const questionTimerRef = useRef<number>(0.5);
     const [startQuestionTimer, setStartQuestionTimer] = useState(false);
-    const question: IQuestion | undefined = questions[activeQuestion];
+    const question: IQuestion | undefined = questionsRef.current[activeQuestion];
     const location = useLocation();
     const { data: enterpriseUser } = useEnterpriseUsers();
     const { data: fullProfile } = useFullUserProfile();
@@ -87,7 +85,7 @@ const NFLMediaTraining: React.FC = () => {
     };
 
     const isLastQuestion = () => {
-        return activeQuestion >= questions.length - 1;
+        return activeQuestion >= questionsRef.current.length - 1;
     };
 
     const closeAndShowClapVideo = () => {
@@ -99,24 +97,21 @@ const NFLMediaTraining: React.FC = () => {
         }, 7000);
     };
 
-    // Update questionsRef.current whenever sessionQuestions, enterprise_id, or id changes
+    // Update questionsRef.current whenever sessionQuestions changes
     useEffect(() => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
             const results = (sessionQuestions as any).results;
-            if (Array.isArray(results) && enterprise_id) {
-                // Cycle through all available questions across sessions before repeating
-                const picked = pickSessionQuestions(results, enterprise_id, "gm_wnba", 8, id);
-                setQuestions(picked);
-                questionsRef.current = picked;
+            if (Array.isArray(results)) {
+                // Pick 8 random questions
+                const shuffled = results.sort(() => 0.5 - Math.random());
+                questionsRef.current = shuffled.slice(0, 8);
             } else {
-                setQuestions([]);
                 questionsRef.current = [];
             }
         } else {
-            setQuestions([]);
             questionsRef.current = [];
         }
-    }, [sessionQuestions, enterprise_id, id]);
+    }, [sessionQuestions]);
 
     useEffect(() => {
         if (isQuestionDialogOpen && question && question.audio_url) {
@@ -147,7 +142,7 @@ const NFLMediaTraining: React.FC = () => {
         setQuestionDialogOpen(true);
         // Use a functional update to get the new value
         setActiveQuestion((prev: number) => {
-            const nQuestions = questions.length;
+            const nQuestions = questionsRef.current.length;
             setStartQuestionTimer(false);
 
             if (prev < nQuestions - 1) {
@@ -377,7 +372,7 @@ const NFLMediaTraining: React.FC = () => {
             <Dialog
                 open={isQuestionDialogOpen}
                 onOpenChange={
-                    activeQuestion > questions.length - 1 && isSocketConnected
+                    activeQuestion > questionsRef.current.length - 1 && isSocketConnected
                         ? setQuestionDialogOpen
                         : () => {}
                 }
