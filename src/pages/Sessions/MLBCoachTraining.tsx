@@ -19,6 +19,7 @@ import { useLocation, useParams } from "react-router-dom";
 import xpImg from "../../assets/images/pngs/speaking-xp-image.png";
 import alert from "../../assets/images/svgs/alert.svg";
 import { useGetSessionQuestions } from "@/hooks/sessions";
+import { getSessionQuestionsNoRepetition } from "@/lib/questions";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
@@ -106,9 +107,11 @@ const MLBCoachTraining: React.FC = () => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
             const results = (sessionQuestions as any).results;
             if (Array.isArray(results)) {
-                // Pick 8 random questions
-                const shuffled = results.sort(() => 0.5 - Math.random());
-                questionsRef.current = shuffled.slice(0, 8);
+                // Pick 8 random questions (no repetition until all have been asked)
+                questionsRef.current = getSessionQuestionsNoRepetition(
+                    results,
+                    `coach_mlb_${enterprise_id ?? 0}`
+                );
             } else {
                 questionsRef.current = [];
             }

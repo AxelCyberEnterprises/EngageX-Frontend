@@ -78,5 +78,85 @@ export const nflRookieQuestions = [
     "How do you plan to use your platform off the field, beyond football?",
     "How do you plan to lead as a rookie without stepping on any toes?",
     "In your eyes, what does it mean to be a professional—on and off the field?",
-    "If you noticed a teammate struggling mentally or emotionally, what would you do?",
 ];
+
+export function getSessionQuestionsNoRepetition(
+    results: any[],
+    configKey: string,
+    count: number = 8
+): any[] {
+    if (!Array.isArray(results) || results.length === 0) {
+        return [];
+    }
+
+    const localStorageKey = `engagex_asked_questions_${configKey}`;
+    
+    // Load asked question IDs from localStorage
+    let askedIds: number[] = [];
+    try {
+        const stored = localStorage.getItem(localStorageKey);
+        if (stored) {
+            askedIds = JSON.parse(stored);
+            if (!Array.isArray(askedIds)) {
+                askedIds = [];
+            }
+        }
+    } catch (e) {
+        console.error("Error parsing asked questions from localStorage", e);
+    }
+
+    // Filter results to find unasked questions
+    let unasked = results.filter(q => !askedIds.includes(q.id));
+
+    // If all questions have been asked
+    if (unasked.length === 0) {
+        askedIds = [];
+        unasked = [...results];
+    }
+
+    // Fisher-Yates Shuffle
+    const shuffle = (array: any[]) => {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    };
+
+    let selectedQuestions: any[] = [];
+    const shuffledUnasked = shuffle(unasked);
+
+    if (shuffledUnasked.length >= count) {
+        // We have enough unasked questions to satisfy the count
+        selectedQuestions = shuffledUnasked.slice(0, count);
+        askedIds.push(...selectedQuestions.map(q => q.id));
+    } else {
+        // We don't have enough unasked questions. Take all remaining unasked.
+        selectedQuestions = [...shuffledUnasked];
+        
+        // Reset the asked list so we can pull the remainder from the full list
+        askedIds = [];
+        
+        // Exclude the already selected ones from the full pool to avoid duplicates
+        const remainingPool = results.filter(q => !selectedQuestions.some(sq => sq.id === q.id));
+        const shuffledRemaining = shuffle(remainingPool);
+        
+        const needed = count - selectedQuestions.length;
+        const additionalSelected = shuffledRemaining.slice(0, needed);
+        
+        selectedQuestions.push(...additionalSelected);
+        
+        // The new askedIds will be those we just selected in this "fresh" round
+        askedIds.push(...additionalSelected.map(q => q.id));
+    }
+
+    // Save back to localStorage
+    try {
+        localStorage.setItem(localStorageKey, JSON.stringify(askedIds));
+    } catch (e) {
+        console.error("Error saving asked questions to localStorage", e);
+    }
+
+    return selectedQuestions;
+}

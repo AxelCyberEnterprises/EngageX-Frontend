@@ -21,6 +21,7 @@ import { useEndSession } from "@/hooks/sessions";
 import VideoPlayer from "@/components/session/VideoPlayer";
 import { useLocation } from "react-router-dom";
 import { useGetSessionQuestions } from "@/hooks/sessions";
+import { getSessionQuestionsNoRepetition } from "@/lib/questions";
 import { LoaderCircle } from "lucide-react";
 import type { IQuestion } from "@/types/sessions";
 import { useAudioPlayer } from "react-use-audio-player";
@@ -113,9 +114,11 @@ const PublicSpeaking: React.FC = () => {
         if (sessionQuestions && Array.isArray((sessionQuestions as any).results)) {
             const results = (sessionQuestions as any).results;
             if (Array.isArray(results)) {
-                // Pick 8 random questions
-                const shuffled = results.sort(() => 0.5 - Math.random());
-                questionsRef.current = shuffled.slice(0, 8);
+                // Pick 8 random questions (no repetition until all have been asked)
+                questionsRef.current = getSessionQuestionsNoRepetition(
+                    results,
+                    `media_training_${enterprise_id ?? 0}`
+                );
                 // ----- NEW CODE: set image for first question -----
                 if (questionsRef.current.length > 0) {
                     const firstGender = questionsRef.current[0]?.gender;
