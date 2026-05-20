@@ -317,13 +317,40 @@ type PaginatedQuestions = {
 // 2. Export the hook. Copy/paste this whole function:
 export function useGetSessionQuestions(enterprise_id: number, vertical: string, sport_type?: string) {
     return useQuery<PaginatedQuestions>({
-        queryKey: ["getSessionQuestions", vertical, sport_type],
+        queryKey: ["getSessionQuestions", vertical, sport_type, enterprise_id],
         queryFn: async () => {
-            let url = `/enterprise/enterprise-questions/?enterprise_id=${enterprise_id}&vertical=${vertical}&is_active=true`;
-            // You can leave this line for possible backend-side filtering
-            if (sport_type) url += `&sport_type=${sport_type}`;
-            // Make the API call and cast its response to the expected type
-            const data = (await apiGet(url, "default")) as PaginatedQuestions;
+            let baseUrl = `/enterprise/enterprise-questions/?enterprise_id=${enterprise_id}&vertical=${vertical}&is_active=true&page_size=1000`;
+            if (sport_type) baseUrl += `&sport_type=${sport_type}`;
+
+            // Make the first API call and cast its response to the expected type
+            const firstPage = (await apiGet(baseUrl, "default")) as PaginatedQuestions;
+            let allResults = [...(firstPage.results || [])];
+            const totalCount = firstPage.count || 0;
+            const pageSizeReturned = firstPage.results?.length || 0;
+
+            // If there are more questions remaining that we need to fetch
+            if (pageSizeReturned > 0 && pageSizeReturned < totalCount) {
+                const totalPages = Math.ceil(totalCount / pageSizeReturned);
+                for (let page = 2; page <= totalPages; page++) {
+                    const pageUrl = `${baseUrl}&page=${page}`;
+                    try {
+                        const pageData = (await apiGet(pageUrl, "default")) as PaginatedQuestions;
+                        if (pageData && Array.isArray(pageData.results)) {
+                            allResults.push(...pageData.results);
+                        }
+                    } catch (err) {
+                        console.error(`[EngageX] Error fetching page ${page} of questions:`, err);
+                        break;
+                    }
+                }
+            }
+
+            // Construct the final return object with all results combined
+            const data: PaginatedQuestions = {
+                ...firstPage,
+                results: allResults,
+            };
+
             // Filter results locally just in case the backend misbehaves
             const filtered = sport_type
                 ? {
@@ -331,6 +358,7 @@ export function useGetSessionQuestions(enterprise_id: number, vertical: string, 
                       results: data.results.filter((q) => q.sport_type === sport_type),
                   }
                 : data;
+
             console.log("Filtered questions:", filtered.results);
             return filtered;
         },
