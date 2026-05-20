@@ -36,11 +36,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         refetch(); // force fetch on mount
-        if (!enterpriseUser) return;
+        if (!enterpriseUser || !Array.isArray(enterpriseUser.results)) return;
         // Log all enterprise users
         console.log("All enterprise users:", enterpriseUser.results);
 
-        const user_enterprise = enterpriseUser?.results.find((user) => user.user.email == profile?.email)?.enterprise;
+        const user_enterprise = enterpriseUser.results.find((user) => user?.user?.email == profile?.email)?.enterprise;
         setUserEnterprise(user_enterprise);
     }, [enterpriseUser, profile]);
 
