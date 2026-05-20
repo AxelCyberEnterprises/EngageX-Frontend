@@ -324,6 +324,12 @@ export function useGetSessionQuestions(enterprise_id: number, vertical: string, 
 
             // Make the first API call and cast its response to the expected type
             const firstPage = (await apiGet(baseUrl, "default")) as PaginatedQuestions;
+            console.log("[EngageX Debug] API Response:", {
+                totalCountFromBackend: firstPage.count,
+                nextPageUrl: firstPage.next,
+                resultsReturnedOnPage1: firstPage.results?.length,
+                baseUrlUsed: baseUrl
+            });
             let allResults = [...(firstPage.results || [])];
             const totalCount = firstPage.count || 0;
             const pageSizeReturned = firstPage.results?.length || 0;
