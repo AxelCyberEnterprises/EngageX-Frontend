@@ -90,7 +90,7 @@ export function getSessionQuestionsNoRepetition(
     }
 
     const localStorageKey = `engagex_asked_questions_${configKey}`;
-    console.log("[EngageX] getSessionQuestionsNoRepetition triggered with key:", localStorageKey);
+    console.log(`[EngageX] getSessionQuestionsNoRepetition triggered with key: ${localStorageKey}. Total questions in bank: ${results.length}`);
     
     // Load asked question IDs from localStorage
     let askedIds: number[] = [];
