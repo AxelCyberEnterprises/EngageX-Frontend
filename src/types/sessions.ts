@@ -60,6 +60,7 @@ export interface ISession {
     gestures: boolean;
     gestures_score_for_body_language: number;
     transformative_potential: number;
+    full_summary: Record<string, string> | null;
     general_feedback_summary: string | null;
     strength: string | null;
     area_of_improvement: string | null;
