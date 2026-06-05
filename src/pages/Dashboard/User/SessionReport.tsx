@@ -18,8 +18,8 @@ import { cn } from "@/lib/utils";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react";
-import React, { useCallback, useRef, useState } from "react";
-import { Link, To, useNavigate, useParams } from "react-router-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Link, To, useLocation, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 import { capitalizeWords } from "@/components/tables/session-history-table/admin";
 import NoAccessCoachingModal from "@/components/modals/modalVariants/NoAccessCoachingModal";
@@ -38,9 +38,11 @@ const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
     const [showNoAccessCoachingModal, setShowNoAccessCoachingModal] = useState(false);
+    const [showEmptyReportModal, setShowEmptyReportModal] = useState(false);
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const navigate = useNavigate();
+    const location = useLocation();
     const {
         theme: { primaryColor },
     } = useTheme();
@@ -146,6 +148,17 @@ const PitchSessionReport: React.FC = () => {
             refetch();
         }
     }, [id, refetch]);
+
+    useEffect(() => {
+        if (!data || !location.state?.justCompleted) return;
+        const summary = data.full_summary as Record<string, string> | undefined;
+        const isEmpty =
+            !summary ||
+            Object.values(summary).every(
+                (v) => !v || v.toLowerCase().includes("no analysis data") || v === "N/A - No analysis data available for summary.",
+            );
+        if (isEmpty) setShowEmptyReportModal(true);
+    }, [data, location.state]);
 
     const parseStrengthsAndImprovements = useCallback((input: string): string[] => {
         try {
@@ -437,6 +450,37 @@ const PitchSessionReport: React.FC = () => {
                                         >
                                             Speak with A Coach
                                         </Link>
+                                    </DialogContent>
+                                </Dialog>
+
+                                <Dialog open={showEmptyReportModal} onOpenChange={setShowEmptyReportModal}>
+                                    <DialogContent className="max-w-md">
+                                        <DialogHeader>
+                                            <DialogTitle className="text-primary-blue">No Analysis Available</DialogTitle>
+                                            <DialogDescription className="text-auro-metal-saurus mt-2">
+                                                We weren't able to generate feedback for this session. This can happen if:
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <ul className="list-disc pl-5 text-sm text-primary-blue/80 space-y-1">
+                                            <li>You left the session too early</li>
+                                            <li>Your microphone wasn't properly connected</li>
+                                        </ul>
+                                        <p className="text-sm text-primary-blue/80 mt-2">
+                                            You can retry a new session, or reach out to us at{" "}
+                                            <a
+                                                href="mailto:info@engagexai.io"
+                                                className="text-branding-primary underline"
+                                            >
+                                                info@engagexai.io
+                                            </a>{" "}
+                                            for help.
+                                        </p>
+                                        <Button
+                                            className="mt-2 bg-branding-primary hover:bg-branding-primary/90 text-white"
+                                            onClick={() => setShowEmptyReportModal(false)}
+                                        >
+                                            Got it
+                                        </Button>
                                     </DialogContent>
                                 </Dialog>
                             </div>

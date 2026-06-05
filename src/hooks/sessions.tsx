@@ -224,7 +224,7 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
         },
         onSuccess: () => {
             console.log("Session ended and posted successfully.");
-            navigate(`/dashboard/user/session-history/${sessionId}`);
+            navigate(`/dashboard/user/session-history/${sessionId}`, { state: { justCompleted: true } });
         },
         onError: (error) => {
             console.error("End session failed:", error);
