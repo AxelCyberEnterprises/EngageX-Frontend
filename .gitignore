@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 *.local
+WORK_LOG.md
 
 # Editor directories and files
 .vscode/*
