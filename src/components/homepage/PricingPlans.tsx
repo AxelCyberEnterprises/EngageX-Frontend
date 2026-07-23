@@ -26,7 +26,7 @@ const PricingCards = () => {
   const [plans, setPlans] = useState<Plan[]>([
     {
       type: "STARTER PLAN",
-      price: 180,
+      price: 100,
       sessions: 4,
       contents: ["Great for testing.", "Ideal for trials."],
       buttonText: "Select Starter Plan",
@@ -37,7 +37,7 @@ const PricingCards = () => {
     },
     {
       type: "GROWTH PLAN",
-      price: 240,
+      price: 150,
       sessions: 6,
       contents: ["Perfect for specific goals.", "For mid-level professionals."],
       buttonText: "Choose Growth Plan",
@@ -48,7 +48,7 @@ const PricingCards = () => {
     },
     {
       type: "PRO PLAN",
-      price: 288,
+      price: 200,
       sessions: 8,
       contents: ["Best for steady progress.", "Great for preparation."],
       buttonText: "Go Pro",
@@ -59,8 +59,8 @@ const PricingCards = () => {
     },
     {
       type: "ULTIMATE PLAN",
-      price: 396,
-      sessions: 12,
+      price: 300,
+      sessions: 10,
       contents: [
         "Best for long-term growth",
         "Ideal for professionals.",

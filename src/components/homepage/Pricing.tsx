@@ -4,7 +4,7 @@ function Pricing({ subtext, showPricing }: { subtext?: string; showPricing?: boo
     let plans = [
         {
             type: "STARTER PLAN",
-            price: 180,
+            price: 100,
             sessions: 4,
             contents: [
                 "Ideal for individuals looking to gain support, build clarity, and take the first steps toward their personal or professional goals",
@@ -18,7 +18,7 @@ function Pricing({ subtext, showPricing }: { subtext?: string; showPricing?: boo
         },
         {
             type: "GROWTH PLAN",
-            price: 240,
+            price: 150,
             sessions: 6,
             contents: [
                 "Great for those seeking impactful meeting engagement and improvement in targeted communication goals",
@@ -31,7 +31,7 @@ function Pricing({ subtext, showPricing }: { subtext?: string; showPricing?: boo
         },
         {
             type: "PRO PLAN",
-            price: 288,
+            price: 200,
             sessions: 8,
             contents: [
                 "Fantastic for professionals looking to make measurable progress over time",
@@ -46,8 +46,8 @@ function Pricing({ subtext, showPricing }: { subtext?: string; showPricing?: boo
         },
         {
             type: "ULTIMATE PLAN",
-            price: 396,
-            sessions: 12,
+            price: 300,
+            sessions: 10,
             contents: [
                 "Best for long-term development and professionals with frequent public speaking responsibilities",
                 "Highly recommended for executives, thought leaders, and senior managers",
