@@ -51,7 +51,7 @@ const PitchSessionReport: React.FC = () => {
     const { data, isPending, refetch } = useGetSessionReport(id);
     const { mutate, isPending: requestingVideo, isSuccess: requestedSuccessfully } = useRequestSessionVideo(id);
     const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
-    const companyName = enterpriseUsers?.results[0].enterprise_name;
+    const companyName = enterpriseUsers?.results?.[0]?.enterprise_name;
     React.useEffect(() => {
         if (!id || !requestedSuccessfully) return;
         let interval: NodeJS.Timeout | undefined;
@@ -312,11 +312,11 @@ const PitchSessionReport: React.FC = () => {
             newSessionNavigate = `../public-speaking`;
             break;
     }
-    const bookingEnterprise = enterpriseUsers?.results[0]?.enterprise;
+    const bookingEnterprise = enterpriseUsers?.results?.[0]?.enterprise;
 
     const bookCoaching = useBookCoachingSession();
 
-    const link = (bookingEnterprise as any)?.one_on_one_coaching_link.trim() || "";
+    const link = (bookingEnterprise as any)?.one_on_one_coaching_link?.trim() || "";
 
     const hasLink = link !== "" && link !== "https://noaccess.com";
 
