@@ -11,7 +11,7 @@ function Hero() {
                     Yet it's the #1 career accelerator.
                 </h1>
 
-                <p className="text-xl lg:text-2xl text-dark-electric-blue font-medium leading-relaxed">
+                <p className="text-[#64BA9F] leading-relaxed max-w-xl font-medium">
                     Practice where it feels real, before it is real.
                 </p>
 

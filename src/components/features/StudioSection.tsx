@@ -32,10 +32,10 @@ function NewFeaturesSection({ data }: NewFeaturesSectionProps) {
                             fill="#4C5C75"
                         />
                     </svg>
-                    <p className="small text-dull-electric-blue">NEW FEATURES COMING SOON!</p>
+                    {/* <p className="small text-dull-electric-blue">NEW FEATURES COMING SOON!</p> */}
                 </div>
 
-                <div className="lg:w-[50%] text-center mx-auto space-y-4 flex flex-col items-center">
+                <div className="lg:w-[70%] text-center mx-auto space-y-4 flex flex-col items-center">
                     <h2 className="h-max font-montreal leading-snug">{data.title}</h2>
                     <p dangerouslySetInnerHTML={{ __html: data.content }} />
                 </div>

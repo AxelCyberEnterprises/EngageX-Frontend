@@ -6,16 +6,16 @@ import PricingPlansSection from "../components/homepage/PricingPlansSection";
 import Pricing from "@/components/homepage/Pricing";
 
 const HomePage: React.FC = () => {
-  return (
-    <main className="font-montserrat">
-      <Hero />
-      <SocialProof />
-      <HowItWorks />
-      <WhyEngageX />
-      <PricingPlansSection />
-      <Pricing />
-    </main>
-  );
+    return (
+        <main className="font-montserrat">
+            <Hero />
+            <SocialProof />
+            <HowItWorks />
+            <WhyEngageX />
+            <PricingPlansSection />
+            {/* <Pricing /> */}
+        </main>
+    );
 };
 
 export default HomePage;

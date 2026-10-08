@@ -52,7 +52,7 @@ function Footer() {
                     <img src="/assets/logoaltwhitev2.png" alt="brand logo" className="h-8" />
                     <p className="text-white">Where Your Voice Is Your Value</p>
                     <div className="flex gap-5 mt-20 items-center text-white">
-                        <a href="https://www.linkedin.com/company/engagex%E2%84%A2/?viewAsMember=true" target="_blank">
+                        {/* <a href="https://www.linkedin.com/company/engagex%E2%84%A2/?viewAsMember=true" target="_blank">
                             <svg
                                 width="20"
                                 height="20"
@@ -66,7 +66,7 @@ function Footer() {
                                     fill="white"
                                 />
                             </svg>
-                        </a>
+                        </a> */}
                         {/* <a
               href="https://www.youtube.com/@TheCareerDoctorLLC"
               target="_blank"
@@ -97,7 +97,7 @@ function Footer() {
                 </defs>
               </svg>
             </a> */}
-                        <a href="https://www.instagram.com/cd_engagex/" target="_blank">
+                        {/* <a href="https://www.instagram.com/cd_engagex/" target="_blank">
                             <svg
                                 width="20"
                                 height="20"
@@ -117,7 +117,7 @@ function Footer() {
                                     fill="white"
                                 />
                             </svg>
-                        </a>
+                        </a> */}
                     </div>
                 </div>
 
