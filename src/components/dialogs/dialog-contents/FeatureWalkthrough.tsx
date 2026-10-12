@@ -70,6 +70,9 @@ const FeatureWalkthrough = () => {
     return (
         <div className="flex flex-col gap-2">
             <p className="text-green-sheen text-center">Feature Walkthrough Video</p>
+            <p className="text-center text-sm font-bold text-black">
+                !Disclaimer: the user interface may vary slightly from the videos shown
+            </p>
             <VideoPlayer
                 src={getVideoUrl(activeVideo)}
                 showPauseOverlay={true}

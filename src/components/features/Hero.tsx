@@ -6,7 +6,7 @@ function Hero() {
         <section className="min-h-[100vh]">
             <div className="flex flex-col lg:flex-row pt-26 lg:pt-0 lg:pl-20 font-montserrat lg:gap-20 justify-between min-h-[calc(100vh-5rem)] items-center">
                 <div className="flex-1 relative z-20 space-y-2 px-10 text-center lg:text-left">
-                    <p className="text-dark-orange">Provide tailored pitch to users</p>
+                    <p className="text-[#64BA9F]">Provide tailored pitch to users</p>
                     <div className="space-y-8">
                         <h2 className="font-montreal leading-snug">
                             Transform your speaking skills with EngageX<sup>®</sup>
