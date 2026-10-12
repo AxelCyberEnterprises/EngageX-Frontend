@@ -3,7 +3,6 @@ import SocialProof from "../components/homepage/SocialProof";
 import HowItWorks from "../components/homepage/HowItWorks";
 import WhyEngageX from "../components/homepage/WhyEngageX";
 import PricingPlansSection from "../components/homepage/PricingPlansSection";
-import Pricing from "@/components/homepage/Pricing";
 
 const HomePage: React.FC = () => {
     return (

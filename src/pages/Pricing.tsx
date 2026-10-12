@@ -1,4 +1,4 @@
-import PricingComponent from "@/components/homepage/Pricing";
+// import PricingComponent from "@/components/homepage/Pricing";
 import PricingPlansSection from "@/components/homepage/PricingPlansSection";
 import Benefits from "@/components/pricing/Benefits";
 import FAQs from "@/components/pricing/FAQs";
