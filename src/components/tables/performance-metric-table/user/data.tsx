@@ -33,7 +33,7 @@ export const formatThreeSessionMetrics = (sessions: SimplifiedSessionData[]): Me
   const metricsMapping = [
     { field: "vocal_variety", metric: "Vocal Variety", category: "Delivery" },
     { field: "body_language", metric: "Body Language", category: "Delivery" },
-    { field: "audience_engagement", metric: "Audience Engagement", category: "Impact" },
+    { field: "audience_engagement", metric: "Avatar Audience Engagement", category: "Impact" },
     { field: "filler_words", metric: "Filler Words", category: "Clarity" },
     { field: "emotional_impact", metric: "Emotional Impact", category: "Impact" },
     { field: "transformative_communication", metric: "Transformative Communication", category: "Impact" },

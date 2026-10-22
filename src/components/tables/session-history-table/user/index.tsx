@@ -60,11 +60,10 @@ export function formatTime(time?: string): string {
 interface SessionHistoryTableProps {
     selectedIds: string[];
     onToggle: (row: IUserSessionHistory, checked: boolean) => void;
-    showImprove: boolean;
     onImprove: (row: IUserSessionHistory) => void;
 }
 
-const SessionHistoryTable = ({ selectedIds, onToggle, showImprove, onImprove }: SessionHistoryTableProps) => {
+const SessionHistoryTable = ({ selectedIds, onToggle, onImprove }: SessionHistoryTableProps) => {
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
@@ -104,10 +103,9 @@ const SessionHistoryTable = ({ selectedIds, onToggle, showImprove, onImprove }: 
                 selectedIds,
                 onToggle,
                 selectionFull: selectedIds.length >= 2,
-                showImprove,
                 onImprove,
             }),
-        [selectedIds, onToggle, showImprove, onImprove],
+        [selectedIds, onToggle, onImprove],
     );
 
     return (

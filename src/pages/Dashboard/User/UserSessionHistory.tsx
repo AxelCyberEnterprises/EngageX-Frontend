@@ -23,7 +23,6 @@ interface SelectedSession {
  */
 const UserSessionHistory = () => {
     const dispatch = useDispatch();
-    const profile = useSelector((state: RootState) => state.profile.data);
     const confirmationOpen = useSelector((state: RootState) => state.performance_improvement.dialog.session_confirmation);
 
     // Kept at page level so ticks survive paging through the history.
@@ -32,8 +31,6 @@ const UserSessionHistory = () => {
     const comparisonRef = useRef<HTMLDivElement>(null);
 
     const selectedIds = selected.map((s) => s.id);
-    // Sports ("rookie") users never had Improve on the dashboard, so they do not get the button either.
-    const showImprove = profile?.user_type !== "rookie";
 
     const handleToggle = useCallback((row: IUserSessionHistory, checked: boolean) => {
         const id = String(row.id);
@@ -84,7 +81,7 @@ const UserSessionHistory = () => {
     return (
         <section className="px-4 py-3 flex flex-col gap-y-6">
             <div>
-                <h6>Session History</h6>
+                <h6>Report History</h6>
                 <p className="text-sm text-[#6F7C8E] mt-1">Check the box beside a session to compare two sessions.</p>
             </div>
 
@@ -97,7 +94,6 @@ const UserSessionHistory = () => {
             <SessionHistoryTable
                 selectedIds={selectedIds}
                 onToggle={handleToggle}
-                showImprove={showImprove}
                 onImprove={handleImprove}
             />
 

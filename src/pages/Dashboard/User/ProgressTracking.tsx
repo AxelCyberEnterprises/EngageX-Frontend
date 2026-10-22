@@ -7,7 +7,9 @@ import EnterpriseTrainingGoalsTable from "@/components/tables/enterprice-trainin
 import { RecentSessionsTable } from "@/components/tables/recent-sessions-table/user";
 import { Session } from "@/components/tables/recent-sessions-table/user/data";
 import { SortOption, TimeFrame, useProgressTracking } from "@/hooks/progressTracking";
+import { RootState } from "@/store";
 import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import circleCheck from "../../../assets/images/svgs/circle-check.svg";
@@ -36,6 +38,13 @@ const ProgressTracking: React.FC = () => {
     const [searchParams] = useSearchParams();
     const memberId = searchParams.get("memberId");
     console.log("member: ", memberId);
+
+    // Organization users (Sports, BTB, McDonald's, Girls Inc, Javits, McKesson, Girl Scouts...) get a
+    // simplified page: only Total Sessions and Enterprise Training Goals. Everything else is HIDDEN ON
+    // PURPOSE (2026 simplification), not deleted. To bring a block back, remove its
+    // `!isOrganizationView &&` guard. An admin opening a member's page (?memberId=) still sees the full page.
+    const profile = useSelector((state: RootState) => state.profile.data);
+    const isOrganizationView = !!profile?.is_enterprise_user && !memberId;
     const {
         data: progressTracking,
         isLoading: progressTrackingLoading,
@@ -98,6 +107,10 @@ const ProgressTracking: React.FC = () => {
             subtext: "Delivery's transformative effect",
         },
     ];
+
+    const visibleCards = isOrganizationView
+        ? performanceCardsData.filter(({ title }) => title === "Total Sessions")
+        : performanceCardsData;
 
     const sessions: Session[] =
         progressTracking?.recent_session.map((session: any) => {
@@ -218,20 +231,32 @@ const ProgressTracking: React.FC = () => {
             <div className="scrollbar-hide md:px-8 px-4">
                 <section className="py-5 flex md:flex-row flex-col md:gap-2 gap-3 items-start justify-between">
                     <div>
-                        <h3 className="xl:text-2xl text-xl text-[#262B3A]">Progress Tracking</h3>
+                        <h3 className="xl:text-2xl text-xl text-[#262B3A]">
+                            {isOrganizationView ? "Training Goals" : "Progress Tracking"}
+                        </h3>
                     </div>
                 </section>
 
                 <div>
-                    <section>
-                        <div className="md:mt-5 mt-10 mb-6">
-                            <h3 className="text-xl font-medium text-#252A39">Performance Overview</h3>
-                            <p className="text-sm text-[#6F7C8E] mt-1">Here's a quick overview of your performance</p>
-                        </div>
-                    </section>
+                    {/* HIDDEN for organization users: the "Performance Overview" heading. */}
+                    {!isOrganizationView && (
+                        <section>
+                            <div className="md:mt-5 mt-10 mb-6">
+                                <h3 className="text-xl font-medium text-#252A39">Performance Overview</h3>
+                                <p className="text-sm text-[#6F7C8E] mt-1">Here's a quick overview of your performance</p>
+                            </div>
+                        </section>
+                    )}
 
-                    <section className="mt-10 mb-8">
-                        <StatsCardSection cards={performanceCardsData} loadingCards={progressTrackingLoading} />
+                    {/* Organization users see only the Total Sessions card, hiding Speaking Time, Average Impact
+                        and Average Transformative Communication (see isOrganizationView above). */}
+                    <section className={isOrganizationView ? "mt-6 mb-8" : "mt-10 mb-8"}>
+                        <StatsCardSection
+                            cards={visibleCards}
+                            loadingCards={progressTrackingLoading}
+                            skeletonCount={visibleCards.length}
+                            className={isOrganizationView ? "md:grid-cols-1 lg:grid-cols-1" : undefined}
+                        />
                     </section>
 
                     <section className="px-4 py-6 rounded-[8px] border border-[#E4E7EC]">
@@ -240,80 +265,83 @@ const ProgressTracking: React.FC = () => {
                         <EnterpriseTrainingGoalsTable data={progressTracking?.enterprise_data} />
                     </section>
 
-                    <section className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-10">
-                        <div className="analytics sm:px-5 px-4 sm:py-7 py-5 h-fit rounded-[8px] border border-[#E4E7EC] shadow-none">
-                            <div className="flex justify-between items-center mb-6">
-                                <p className="big chinese__black">Performance Analytics</p>
-                                <div className="flex items-center">
-                                    <ShadSelect
-                                        options={timeOptions}
-                                        onChange={handleTimeFrameChange}
-                                        placeholder="Weekly"
-                                        defaultValue={timeFrame}
-                                        className="w-fit sm:rounded-[7px] rounded-[5px] shadow-none sm:py-3 py-1 sm:px-4 px-2 sm:h-9 h-7 text-[#333333] focus-visible:ring-0 active:shadow-none"
-                                        showIcon={false}
+                    {/* HIDDEN for organization users: Performance Analytics and Recent Sessions. */}
+                    {!isOrganizationView && (
+                        <section className="grid lg:grid-cols-2 grid-cols-1 gap-6 mt-10">
+                            <div className="analytics sm:px-5 px-4 sm:py-7 py-5 h-fit rounded-[8px] border border-[#E4E7EC] shadow-none">
+                                <div className="flex justify-between items-center mb-6">
+                                    <p className="big chinese__black">Performance Analytics</p>
+                                    <div className="flex items-center">
+                                        <ShadSelect
+                                            options={timeOptions}
+                                            onChange={handleTimeFrameChange}
+                                            placeholder="Weekly"
+                                            defaultValue={timeFrame}
+                                            className="w-fit sm:rounded-[7px] rounded-[5px] shadow-none sm:py-3 py-1 sm:px-4 px-2 sm:h-9 h-7 text-[#333333] focus-visible:ring-0 active:shadow-none"
+                                            showIcon={false}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="chart__div">
+                                    <ShadBarChart
+                                        data={chartData}
+                                        colors={chartColors}
+                                        height={350}
+                                        barSize={40}
+                                        timeFrame={timeFrame}
                                     />
                                 </div>
                             </div>
+                            <div className="pl-6 pt-4 rounded-lg border border-gray-200 bg-white shadow-none">
+                                <div className="flex justify-between gap-4 items-center mb-6 mr-6 overflow-auto scrollbar-hide">
+                                    <h2 className="md:text-xl text-lg font-medium whitespace-nowrap">Recent Sessions</h2>
 
-                            <div className="chart__div">
-                                <ShadBarChart
-                                    data={chartData}
-                                    colors={chartColors}
-                                    height={350}
-                                    barSize={40}
-                                    timeFrame={timeFrame}
+                                    <div className="flex gap-2 items-center">
+                                        <div className="relative">
+                                            <ShadSelect
+                                                options={filterOptions}
+                                                onChange={handleFilterChange}
+                                                placeholder="Filter"
+                                                defaultValue={activeFilter}
+                                                className="rounded-lg border px-4 py-2 text-sm font-medium"
+                                                showIcon={true}
+                                                placeholderClassname="sm:flex hidden"
+                                                icon={filter}
+                                                hideChevron={true}
+                                            />
+                                        </div>
+
+                                        <div className="relative">
+                                            <ShadSelect
+                                                options={sortOptions}
+                                                onChange={handleSortChange}
+                                                placeholder="Sort"
+                                                defaultValue={sortOption}
+                                                className="rounded-lg border px-4 py-2 text-sm font-medium"
+                                                showIcon={true}
+                                                placeholderClassname="sm:flex hidden"
+                                                icon={select}
+                                                hideChevron={true}
+                                            />
+                                        </div>
+
+                                        <Link
+                                            to="../session-history"
+                                            className="text-sm underline cursor-pointer whitespace-nowrap"
+                                        >
+                                            View All
+                                        </Link>
+                                    </div>
+                                </div>
+                                <RecentSessionsTable
+                                    data={filteredSessions}
+                                    hidePagination={true}
+                                    loadingRecentSessions={progressTrackingLoading}
                                 />
                             </div>
-                        </div>
-                        <div className="pl-6 pt-4 rounded-lg border border-gray-200 bg-white shadow-none">
-                            <div className="flex justify-between gap-4 items-center mb-6 mr-6 overflow-auto scrollbar-hide">
-                                <h2 className="md:text-xl text-lg font-medium whitespace-nowrap">Recent Sessions</h2>
-
-                                <div className="flex gap-2 items-center">
-                                    <div className="relative">
-                                        <ShadSelect
-                                            options={filterOptions}
-                                            onChange={handleFilterChange}
-                                            placeholder="Filter"
-                                            defaultValue={activeFilter}
-                                            className="rounded-lg border px-4 py-2 text-sm font-medium"
-                                            showIcon={true}
-                                            placeholderClassname="sm:flex hidden"
-                                            icon={filter}
-                                            hideChevron={true}
-                                        />
-                                    </div>
-
-                                    <div className="relative">
-                                        <ShadSelect
-                                            options={sortOptions}
-                                            onChange={handleSortChange}
-                                            placeholder="Sort"
-                                            defaultValue={sortOption}
-                                            className="rounded-lg border px-4 py-2 text-sm font-medium"
-                                            showIcon={true}
-                                            placeholderClassname="sm:flex hidden"
-                                            icon={select}
-                                            hideChevron={true}
-                                        />
-                                    </div>
-
-                                    <Link
-                                        to="../session-history"
-                                        className="text-sm underline cursor-pointer whitespace-nowrap"
-                                    >
-                                        View All
-                                    </Link>
-                                </div>
-                            </div>
-                            <RecentSessionsTable
-                                data={filteredSessions}
-                                hidePagination={true}
-                                loadingRecentSessions={progressTrackingLoading}
-                            />
-                        </div>
-                    </section>
+                        </section>
+                    )}
                 </div>
             </div>
         </>

@@ -45,17 +45,20 @@ const StatCard: React.FC<StatCardProps> = ({
 interface StatsCardSectionProps {
   cards: StatCardProps[];
   className?: string;
-  loadingCards?: boolean
+  loadingCards?: boolean;
+  /** How many placeholder cards to show while loading. */
+  skeletonCount?: number;
 }
 const StatsCardSection: React.FC<StatsCardSectionProps> = ({
   cards,
   className,
-  loadingCards = false
+  loadingCards = false,
+  skeletonCount = 4
 }) => {
   return (
     <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4", className)}>
       {loadingCards
-        ? Array(4).fill(0).map((_, index) => (
+        ? Array(skeletonCount).fill(0).map((_, index) => (
           <div key={index} className="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
             <div className="flex items-center gap-3 mb-3">
               <Skeleton className="h-8 w-8 rounded-full" />

@@ -292,7 +292,7 @@ const SideNav: React.FC = () => {
         },
         {
             type: "default",
-            name: "Session History",
+            name: "Report History",
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -323,7 +323,7 @@ const SideNav: React.FC = () => {
         },
         {
             type: "default",
-            name: "Progress Tracking",
+            name: "Training Goals",
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1171,7 +1171,10 @@ const SideNav: React.FC = () => {
 
                     <SidebarContent className="top__links bg-branding-secondary lg:px-0 px-4 hide-scrollbar">
                         {lastSegment === "user" &&
-                            userLinks.filter(Boolean).map((link, index) => (
+                            userLinks
+                                // Training Goals (the simplified Progress Tracking page) is for organization users only.
+                                .filter((link) => link && (link.name !== "Training Goals" || isEnterpriseUser))
+                                .map((link, index) => (
                                 // <Link
                                 //     to={link?.path ?? ""}
                                 //     key={index}

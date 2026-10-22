@@ -54,9 +54,9 @@ export const formatSessionMetricsData = (sessionData: SessionComparisonData | un
   const session2 = sessionData.session2;
 
   const metricsMapping = [
-    { field: "impact", metric: "Impact", category: "Audience Engagement" },
-    { field: "trigger_response", metric: "Trigger Response", category: "Audience Engagement" },
-    { field: "conviction", metric: "Conviction", category: "Audience Engagement" },
+    { field: "impact", metric: "Impact", category: "Avatar Audience Engagement" },
+    { field: "trigger_response", metric: "Trigger Response", category: "Avatar Audience Engagement" },
+    { field: "conviction", metric: "Conviction", category: "Avatar Audience Engagement" },
     { field: "volume", metric: "Volume", category: "Vocal Variety" },
     { field: "pitch_variability", metric: "Pitch Variability", category: "Vocal Variety" },
     { field: "pace", metric: "Pace", category: "Vocal Variety" },

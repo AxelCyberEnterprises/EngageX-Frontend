@@ -316,7 +316,7 @@ const PitchSessionReport: React.FC = () => {
                         <div className="flex flex-col md:flex-row w-full gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                                 <div className="flex flex-col justify-between h-full border-1 border-bright-gray rounded-xl p-4">
-                                    <h6 className="mb-3">Audience Engagement</h6>
+                                    <h6 className="mb-3">Avatar Audience Engagement</h6>
                                     <div className="chart__div">
                                         <ShadLineChart2
                                             data={chartData.filter(Boolean).map((item) => ({

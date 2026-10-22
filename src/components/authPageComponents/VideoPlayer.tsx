@@ -26,6 +26,8 @@ interface VideoPlayerProps {
     requireFullPlay?: boolean;
     allowSwitch?: boolean;
     canDownload?: boolean;
+    /** Called when playback reaches the end. */
+    onEnded?: () => void;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -45,6 +47,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     requireFullPlay = false,
     allowSwitch = true,
     canDownload = false,
+    onEnded,
 }) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -62,6 +65,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     const params = useParams();
     const { mutate: deleteVideo } = useDeleteSessionVideo();
+    const onEndedRef = useRef(onEnded);
+    onEndedRef.current = onEnded;
 
     const togglePlay = (): void => {
         if (videoRef.current) {
@@ -223,6 +228,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             setIsPlaying(false);
             setProgress(100);
             setHasPlayedOnce(true);
+            onEndedRef.current?.();
 
             if (requireFullPlay && nextSrc && allowSwitch) {
                 // Swap in nextSrc after full play
@@ -324,6 +330,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 className={`block w-full h-full object-cover cursor-pointer ${border}`}
                 onClick={handleVideoClick}
                 controls={false}
+                {...(!canDownload && {
+                    controlsList: "nodownload noremoteplayback",
+                    disablePictureInPicture: true,
+                    onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
+                })}
                 playsInline
                 preload="auto"
                 loop={loop && (!requireFullPlay || !nextSrc)}

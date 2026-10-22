@@ -20,8 +20,6 @@ interface UserSessionColumnOptions {
     onToggle: (row: IUserSessionHistory, checked: boolean) => void;
     /** Two sessions are already ticked, so the remaining boxes switch off. */
     selectionFull: boolean;
-    /** Improve is hidden for "rookie" sports users, as the old dashboard card was. */
-    showImprove: boolean;
     onImprove: (row: IUserSessionHistory) => void;
 }
 
@@ -32,7 +30,6 @@ export const getUserSessionColumns = ({
     selectedIds,
     onToggle,
     selectionFull,
-    showImprove,
     onImprove,
 }: UserSessionColumnOptions): ColumnDef<IUserSessionHistory>[] => [
     {
@@ -72,29 +69,25 @@ export const getUserSessionColumns = ({
         accessorKey: "duration",
         header: ({ column }) => <BaseTableColumnHeader column={column} title="Duration" />,
     },
-    ...(showImprove
-        ? [
-              {
-                  id: "improve",
-                  header: () => <span className="block text-right">Action</span>,
-                  enableSorting: false,
-                  enableHiding: false,
-                  cell: ({ row }) => (
-                      <div className="flex justify-end" onClick={stopRowClick}>
-                          <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              className="gap-1.5 border-branding-secondary text-branding-secondary bg-white hover:bg-branding-secondary hover:text-white shadow-none"
-                              onClick={() => onImprove(row.original)}
-                              aria-label={`Improve ${row.original.sessionName}`}
-                          >
-                              <TrendingUp className="size-4" />
-                              Improve
-                          </Button>
-                      </div>
-                  ),
-              } as ColumnDef<IUserSessionHistory>,
-          ]
-        : []),
+    {
+        id: "improve",
+        header: () => <span className="block text-right">Action</span>,
+        enableSorting: false,
+        enableHiding: false,
+        cell: ({ row }) => (
+            <div className="flex justify-end" onClick={stopRowClick}>
+                <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5 border-branding-secondary text-branding-secondary bg-white hover:bg-branding-secondary hover:text-white shadow-none"
+                    onClick={() => onImprove(row.original)}
+                    aria-label={`Improve ${row.original.sessionName}`}
+                >
+                    <TrendingUp className="size-4" />
+                    Improve
+                </Button>
+            </div>
+        ),
+    },
 ];

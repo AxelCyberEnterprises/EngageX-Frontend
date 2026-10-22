@@ -44,6 +44,8 @@ export interface ISession {
     allow_ai_questions: boolean;
     virtual_environment: string;
     compiled_video_url: string | null;
+    // Set once the session's media has been deleted (after the video was watched).
+    scheduled_delete_at?: string | null;
     volume: number;
     pitch_variability: number;
     pace: number;

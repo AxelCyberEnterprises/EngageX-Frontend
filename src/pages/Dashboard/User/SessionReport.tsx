@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { useGetSessionReport, useRequestSessionVideo } from "@/hooks/sessions";
+import { deleteSessionMedia, useDeleteVideoOnLeave } from "@/hooks/useDeleteVideoOnLeave";
 import { useBookCoachingSession, useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
 import { PRIMARY_COLOR } from "@/lib/constants";
@@ -50,6 +51,11 @@ const PitchSessionReport: React.FC = () => {
     const { data: enterpriseUsers } = useEnterpriseUsers();
     const { data, isPending, refetch } = useGetSessionReport(id);
     const { mutate, isPending: requestingVideo, isSuccess: requestedSuccessfully } = useRequestSessionVideo(id);
+    // The recording can be watched once. After it ends, or when the user leaves this page, it is deleted.
+    const [videoWatched, setVideoWatched] = useState(false);
+    const videoAvailable = !!data?.compiled_video_url && !videoWatched;
+    const videoRemoved = videoWatched || (!data?.compiled_video_url && !!data?.scheduled_delete_at);
+    useDeleteVideoOnLeave(id, videoAvailable);
     const { chartColors, chartData } = usePerformanceChart({ performanceAnalytics: data?.performance_analytics });
     const companyName = enterpriseUsers?.results?.[0]?.enterprise_name;
     React.useEffect(() => {
@@ -549,15 +555,26 @@ const PitchSessionReport: React.FC = () => {
 
                     <section className="px-4 lg:px-8 py-4">
                         <div data-html2canvas-ignore className="w-full mb-5">
-                            {data.compiled_video_url ? (
+                            {videoRemoved ? (
+                                <div className="h-100 w-full rounded-3xl mb-2 grid place-content-center bg-black/90 px-6 text-center">
+                                    <p className="text-white font-medium">This recording has been deleted</p>
+                                    <p className="text-white/70 text-sm mt-1">
+                                        Recordings can be watched once and are then removed from our servers.
+                                    </p>
+                                </div>
+                            ) : data.compiled_video_url ? (
                                 <div className="relative rounded-3xl mb-2 overflow-hidden">
                                     <VideoPlayer
                                         height="h-100"
                                         width="w-full"
                                         src={data.compiled_video_url}
                                         border="rounded-3xl"
-                                        canDownload
+                                        autoPlay
                                         preload={true}
+                                        onEnded={() => {
+                                            setVideoWatched(true);
+                                            if (id) deleteSessionMedia(id);
+                                        }}
                                     />
                                 </div>
                             ) : (
@@ -576,20 +593,20 @@ const PitchSessionReport: React.FC = () => {
                                             onClick={() => mutate()}
                                             isLoading={requestingVideo}
                                         >
-                                            Request session recording
+                                            Play
                                         </Button>
                                     )}
                                 </div>
                             )}
                             <small className="border-l-2 border-l-maximum-yellow-red pl-3 py-1">
-                                Your recording may take 1-3 minutes to be ready for download
+                                Your recording may take 1 to 3 minutes to be visible
                             </small>
                         </div>
 
                         <div className="flex flex-col md:flex-row w-full gap-3">
                             <div className="w-full md:w-7/12 lg:pe-2 mb-4 md:mb-0">
                                 <div className="flex flex-col justify-between h-full border-1 border-bright-gray rounded-xl p-4">
-                                    <h6 className="mb-3">Audience Engagement</h6>
+                                    <h6 className="mb-3">Avatar Audience Engagement</h6>
                                     <div className="chart__div">
                                         <ShadLineChart2
                                             data={chartData.filter(Boolean).map((item) => ({
