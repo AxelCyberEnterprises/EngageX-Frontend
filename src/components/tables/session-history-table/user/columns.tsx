@@ -1,14 +1,8 @@
-// import { Button } from "@/components/ui/button";
-// import { Checkbox } from "@/components/ui/checkbox";
-// import {
-//     DropdownMenu,
-//     DropdownMenuContent,
-//     DropdownMenuItem,
-//     DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ISession } from "@/types/sessions";
 import { ColumnDef } from "@tanstack/react-table";
-// import { ChartLine, Download, MoreHorizontal } from "lucide-react";
-// import { Link } from "react-router-dom";
+import { TrendingUp } from "lucide-react";
 import BaseTableColumnHeader from "../../base-table/BaseTableColumnHeader";
 
 export type IUserSessionHistory = {
@@ -17,30 +11,51 @@ export type IUserSessionHistory = {
     sessionType: string;
     date: string;
     duration: string;
+    // The full session, for the Improve flow
+    raw: ISession;
 };
 
-export const columns: ColumnDef<IUserSessionHistory>[] = [
-    // {
-    //     id: "select",
-    //     header: ({ table }) => (
-    //         <Checkbox
-    //             checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-    //             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //             aria-label="Select all"
-    //             className="p-0 bg-white border-[1.5px]"
-    //         />
-    //     ),
-    //     cell: ({ row }) => (
-    //         <Checkbox
-    //             checked={row.getIsSelected()}
-    //             onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //             aria-label="Select row"
-    //             className="p-0 bg-white border-[1.5px]"
-    //         />
-    //     ),
-    //     enableSorting: false,
-    //     enableHiding: false,
-    // },
+interface UserSessionColumnOptions {
+    selectedIds: string[];
+    onToggle: (row: IUserSessionHistory, checked: boolean) => void;
+    /** Two sessions are already ticked, so the remaining boxes switch off. */
+    selectionFull: boolean;
+    /** Improve is hidden for "rookie" sports users, as the old dashboard card was. */
+    showImprove: boolean;
+    onImprove: (row: IUserSessionHistory) => void;
+}
+
+// Row clicks open the report, so clicks on the checkbox and Improve button must not reach the row.
+const stopRowClick = (e: React.SyntheticEvent) => e.stopPropagation();
+
+export const getUserSessionColumns = ({
+    selectedIds,
+    onToggle,
+    selectionFull,
+    showImprove,
+    onImprove,
+}: UserSessionColumnOptions): ColumnDef<IUserSessionHistory>[] => [
+    {
+        id: "select",
+        header: () => null,
+        cell: ({ row }) => {
+            const id = String(row.original.id);
+            const checked = selectedIds.includes(id);
+            return (
+                <div onClick={stopRowClick}>
+                    <Checkbox
+                        checked={checked}
+                        disabled={!checked && selectionFull}
+                        onCheckedChange={(value) => onToggle(row.original, !!value)}
+                        aria-label={`Select ${row.original.sessionName} to compare`}
+                        className="p-0 bg-white border-[1.5px]"
+                    />
+                </div>
+            );
+        },
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: "sessionName",
         header: ({ column }) => <BaseTableColumnHeader column={column} title="Session Name" />,
@@ -57,38 +72,29 @@ export const columns: ColumnDef<IUserSessionHistory>[] = [
         accessorKey: "duration",
         header: ({ column }) => <BaseTableColumnHeader column={column} title="Duration" />,
     },
-    // {
-    //     id: "actions",
-    //     header: () => <span className="text-primary-base">Action</span>,
-    //     enableHiding: false,
-    //     cell: (row) => {
-    //         return (
-    //             <DropdownMenu>
-    //                 <DropdownMenuTrigger asChild>
-    //                     <Button
-    //                         variant="ghost"
-    //                         className="bg-transparent hover:bg-transparent text-primary-base size-fit p-0 has-[>svg]:px-0 focus-visible:border-none focus-visible:ring-0"
-    //                     >
-    //                         <span className="sr-only">Open menu</span>
-    //                         <MoreHorizontal className="size-5" />
-    //                     </Button>
-    //                 </DropdownMenuTrigger>
-    //                 <DropdownMenuContent align="end" alignOffset={-10} className="p-0 border-bright-gray">
-    //                     <Link to={`/dashboard/user/session-history/${row.row.original.id}`}>
-    //                         <DropdownMenuItem className="px-4 py-2 cursor-pointer">
-    //                             <ChartLine className="text-primary-base" />
-    //                             <span className="text-primary-base text-sm">View Report</span>
-    //                         </DropdownMenuItem>
-    //                     </Link>
-    //                     <Link to="">
-    //                         <DropdownMenuItem className="px-4 py-2 cursor-pointer">
-    //                             <Download className="text-primary-base" />
-    //                             <span className="text-primary-base text-sm">Download</span>
-    //                         </DropdownMenuItem>
-    //                     </Link>
-    //                 </DropdownMenuContent>
-    //             </DropdownMenu>
-    //         );
-    //     },
-    // },
+    ...(showImprove
+        ? [
+              {
+                  id: "improve",
+                  header: () => <span className="block text-right">Action</span>,
+                  enableSorting: false,
+                  enableHiding: false,
+                  cell: ({ row }) => (
+                      <div className="flex justify-end" onClick={stopRowClick}>
+                          <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              className="gap-1.5 border-branding-secondary text-branding-secondary bg-white hover:bg-branding-secondary hover:text-white shadow-none"
+                              onClick={() => onImprove(row.original)}
+                              aria-label={`Improve ${row.original.sessionName}`}
+                          >
+                              <TrendingUp className="size-4" />
+                              Improve
+                          </Button>
+                      </div>
+                  ),
+              } as ColumnDef<IUserSessionHistory>,
+          ]
+        : []),
 ];

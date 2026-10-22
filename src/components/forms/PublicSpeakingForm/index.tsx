@@ -8,6 +8,7 @@ import { publicSpeakingVEOptions } from "@/config/form-field-options";
 import { publicSpeakingQuickTips } from "@/config/quick-tips";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { PRIMARY_COLOR } from "@/lib/constants";
+import { useImproveDefaults } from "@/lib/improve";
 import { cn } from "@/lib/utils";
 import { PublicSpeakingSchema } from "@/schemas/dashboard/user";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
@@ -29,17 +30,19 @@ const PublicSpeakingForm = () => {
         theme: { primaryColor },
     } = useTheme();
     const dispatch = useDispatch();
+    const improve = useImproveDefaults("public");
 
     const form = useForm<FormType>({
         resolver: zodResolver(PublicSpeakingSchema),
         defaultValues: useMemo(
             () => ({
-                session_type: "public",
-                virtual_environment: "conference_room",
+                session_type: "public" as const,
+                virtual_environment: "conference_room" as const,
                 allow_ai_questions: true,
                 goals: [{ id: 1, goal: "" }],
+                ...improve,
             }),
-            [],
+            [improve],
         ),
     });
 

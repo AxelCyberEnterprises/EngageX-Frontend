@@ -6,6 +6,7 @@ import { coachingVEOptions } from "@/config/form-field-options";
 import { coachingQuickTips } from "@/config/quick-tips";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { PRIMARY_COLOR } from "@/lib/constants";
+import { useImproveDefaults } from "@/lib/improve";
 import { cn } from "@/lib/utils";
 import { CoachingSchema } from "@/schemas/dashboard/user";
 import { openDialog } from "@/store/slices/dynamicDialogSlice";
@@ -27,19 +28,21 @@ const CoachingForm = () => {
         theme: { primaryColor },
     } = useTheme();
     const dispatch = useDispatch();
+    const improve = useImproveDefaults("enterprise");
 
     const form = useForm<FormType>({
         resolver: zodResolver(CoachingSchema),
         defaultValues: useMemo(
             () => ({
-                session_type: "enterprise",
-                virtual_environment: "conference_room",
+                session_type: "enterprise" as const,
+                virtual_environment: "conference_room" as const,
                 goals: [{ id: 1, goal: "" }],
+                ...improve,
                 enterprise_settings: {
-                    enterprise_type: "coaching",
-            },
+                    enterprise_type: "coaching" as const,
+                },
             }),
-            [],
+            [improve],
         ),
     });
 

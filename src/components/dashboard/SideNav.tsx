@@ -352,30 +352,6 @@ const SideNav: React.FC = () => {
             ),
             path: "/dashboard/user/progress-tracking",
         },
-        {
-            type: "default",
-            name: "Session Comparison",
-            icon: (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="me-5 shrink-0"
-                    width="24"
-                    height="24"
-                    color="#BDBDBD"
-                    fill="none"
-                >
-                    <path
-                        d="M20.5 5.5H9.5C5.787 5.5 3 8.185 3 12M3.5 18.5H14.5C18.213 18.5 21 15.815 21 12M18.5 3C18.5 3 21 4.841 21 5.5C21 6.159 18.5 8 18.5 8M5.5 16C5.5 16 3 17.841 3 18.5C3 19.159 5.5 21 5.5 21"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </svg>
-            ),
-            path: "/dashboard/user/session-comparison",
-        },
     ];
 
     const adminLinks: NavLink[] = [
@@ -1209,7 +1185,7 @@ const SideNav: React.FC = () => {
                                     to={link?.path ?? ""}
                                     key={index}
                                     onClick={(e) => handleNavClick(e, link?.path ?? "")}
-                                    className={`link flex items-center w-full py-2 px-3 mb-0.5 ${
+                                    className={`link flex mobile_links items-center w-full py-2 px-3 mb-0.5 ${
                                         location.pathname === link?.path ? "active" : ""
                                     }`}
                                 >

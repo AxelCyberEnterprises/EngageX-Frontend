@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { BaseTable } from "../../base-table";
-import { columns as userSessionColumns } from "./columns";
+import { getUserSessionColumns, IUserSessionHistory } from "./columns";
 
 import { useSessionHistory } from "@/hooks/auth";
 import { PaginationState } from "@tanstack/react-table";
@@ -57,7 +57,14 @@ export function formatTime(time?: string): string {
     }
 }
 
-const SessionHistoryTable = () => {
+interface SessionHistoryTableProps {
+    selectedIds: string[];
+    onToggle: (row: IUserSessionHistory, checked: boolean) => void;
+    showImprove: boolean;
+    onImprove: (row: IUserSessionHistory) => void;
+}
+
+const SessionHistoryTable = ({ selectedIds, onToggle, showImprove, onImprove }: SessionHistoryTableProps) => {
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
@@ -85,14 +92,27 @@ const SessionHistoryTable = () => {
                     sessionType: capitalizeWords(session_type_display || "Unknown Type"),
                     date: formatDate(item.date),
                     duration: formatTime(item.duration?.toString()),
+                    raw: item,
                 };
             }) || [],
         [data?.results],
     );
 
+    const columns = useMemo(
+        () =>
+            getUserSessionColumns({
+                selectedIds,
+                onToggle,
+                selectionFull: selectedIds.length >= 2,
+                showImprove,
+                onImprove,
+            }),
+        [selectedIds, onToggle, showImprove, onImprove],
+    );
+
     return (
         <BaseTable
-            columns={userSessionColumns}
+            columns={columns}
             data={userSessionHistoryData}
             count={data?.count}
             pagination={pagination}

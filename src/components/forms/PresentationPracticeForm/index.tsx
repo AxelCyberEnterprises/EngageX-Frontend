@@ -3,6 +3,7 @@ import PracticeSetupLayout from "@/components/forms/form-layouts/PracticeSetupLa
 import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 import { Form } from "@/components/ui/form";
 import { usePreviewUploadSlides } from "@/hooks/sessions";
+import { useImproveDefaults } from "@/lib/improve";
 import { pdfToImages } from "@/lib/utils";
 import { PresentationPracticeSchema } from "@/schemas/dashboard/user";
 import { RootState, useAppDispatch } from "@/store";
@@ -27,11 +28,18 @@ const PresentationPracticeForm = () => {
     const dispatch = useAppDispatch();
     const { mutate: uploadSlides } = usePreviewUploadSlides();
 
+    const improve = useImproveDefaults("presentation");
+
     const form = useForm<FormType>({
         resolver: zodResolver(PresentationPracticeSchema),
         defaultValues: useMemo(
-            () => ({ session_type: "presentation", allow_ai_questions: true, goals: [{ id: 1, goal: "" }] }),
-            [],
+            () => ({
+                session_type: "presentation" as const,
+                allow_ai_questions: true,
+                goals: [{ id: 1, goal: "" }],
+                ...improve,
+            }),
+            [improve],
         ),
     });
     const slides = useWatch({ control: form.control, name: "slides" });

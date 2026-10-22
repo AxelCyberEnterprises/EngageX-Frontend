@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { ImproveSetup } from "@/lib/improve";
 import { format } from "date-fns";
 
 export enum PIScreens {
@@ -126,6 +127,10 @@ interface PIData {
     session_type: string;
     virtual_enviroment: string;
     session_id: number | null;
+    // Only set when Improve starts from the Report History page.
+    // existing_sequence_id: the session is already in a series, so the new session joins it.
+    existing_sequence_id: string | null;
+    setup: ImproveSetup | null;
   };
   dialog: DialogState;
   selected_screen: PIScreens;
@@ -143,6 +148,8 @@ const initialState: PIData = {
     session_type: "",
     virtual_enviroment: "",
     session_id: null,
+    existing_sequence_id: null,
+    setup: null,
   },
   dialog: {
     new_pis_isopen: false,
@@ -183,6 +190,8 @@ const PerformanceImprovementSlice = createSlice({
         session_type: string;
         virtual_enviroment: string;
         session_id: number;
+        existing_sequence_id?: string | null;
+        setup?: ImproveSetup | null;
       }>
     ) => {
       state.new_pis = {
@@ -194,6 +203,8 @@ const PerformanceImprovementSlice = createSlice({
         new_sequence_name: action.payload.new_sequence_name,
         virtual_enviroment: action.payload.virtual_enviroment,
         session_id: action.payload.session_id,
+        existing_sequence_id: action.payload.existing_sequence_id ?? null,
+        setup: action.payload.setup ?? null,
       };
     },
     updateActiveExistingSession: (state, action: PayloadAction<number>) => {

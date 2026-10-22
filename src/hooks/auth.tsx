@@ -75,7 +75,7 @@ export function useNewImprovmentSequence() {
     return useMutation({
         mutationKey: ["addNewImprovmentSequence"],
         mutationFn: async ({ sequence_name, description, session_id }: NewImprovmentSequenceData) => {
-            return await apiPost(
+            return await apiPost<{ message: string; session: { sequence: string | null } }>(
                 `/sessions/improve-new-sequence/${session_id}/`,
                 {
                     sequence_name,

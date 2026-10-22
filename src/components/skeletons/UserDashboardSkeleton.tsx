@@ -48,13 +48,6 @@ export default function UserDashboardSkeleton() {
                 <Skeleton className="h-2.5 w-full rounded-full mb-6" />
                 <Skeleton className="h-4 w-1/2" />
             </div>
-
-            {/* Improve past session section */}
-            <div className="border-gray mt-4 p-5 border rounded-lg relative bg-no-repeat bg-right-bottom mb-4">
-                <Skeleton className="h-5 w-1/3 mb-3" />
-                <Skeleton className="h-4 w-full mb-3" />
-                <Skeleton className="h-10 w-1/2" />
-            </div>
         </div>
     );
 }

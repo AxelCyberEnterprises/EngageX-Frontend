@@ -13,6 +13,7 @@ import {
     trainingTypeOptions,
 } from "@/config/form-field-options";
 import { rookieRoomQuickTips } from "@/config/quick-tips";
+import { useImproveDefaults } from "@/lib/improve";
 import { cn } from "@/lib/utils";
 import { RookieRoomSchema } from "@/schemas/dashboard/user";
 import { useAppDispatch } from "@/store";
@@ -29,6 +30,7 @@ import VirtualEnvironmentSection from "../form-sections/VirtualEnvironmentSectio
 import { useEnterpriseUsers } from "@/hooks/settings";
 
 export type FormType = z.infer<typeof RookieRoomSchema>;
+type RookieType = "media_training" | "speaking" | "coach" | "gm";
 
 const RookieRoomForm = () => {
     const dispatch = useAppDispatch();
@@ -46,6 +48,8 @@ const RookieRoomForm = () => {
         }
     }, [companyName]);
 
+    const improve = useImproveDefaults("enterprise");
+
     const form = useForm<FormType>({
         resolver: zodResolver(RookieRoomSchema),
         defaultValues: {
@@ -53,10 +57,11 @@ const RookieRoomForm = () => {
             virtual_environment: "conference_room",
             allow_ai_questions: true,
             goals: [{ id: 1, goal: "" }],
+            ...improve,
             enterprise_settings: {
                 enterprise_type: "rookie",
-                rookie_type: "media_training",
-                sport_type: sportTypeValue,
+                rookie_type: (improve?.enterprise_settings?.rookie_type as RookieType | undefined) ?? "media_training",
+                sport_type: improve?.enterprise_settings?.sport_type ?? sportTypeValue,
                 speaker_notes: "",
             },
         },

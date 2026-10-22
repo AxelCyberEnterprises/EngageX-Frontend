@@ -3,7 +3,6 @@ import RookieBg from "@/assets/images/jpegs/rookie-bg.jpg";
 import MultiStepAgreement from "@/components/dashboard/agreementModal/modal";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import UserDashboardSkeleton from "@/components/skeletons/UserDashboardSkeleton";
-import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/ThemeContext/hook";
 import { useAddAuthQuestion, useDashboardData } from "@/hooks/auth";
 import { PRIMARY_COLOR } from "@/lib/constants";
@@ -16,7 +15,6 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import presentationBg from "../../../assets/images/jpegs/presentation-bg.jpeg";
 import speakingBg from "../../../assets/images/jpegs/speaking-bg.jpeg";
-import improveBg from "../../../assets/images/pngs/improve-bg.png";
 import cardFlower from "../../../assets/images/svgs/card-flower.svg";
 import SegmentedProgressBar from "../../../components/dashboard/SegmentedProgressBar";
 import coachingImage from "@/assets/images/jpegs/coaching-image.jpg";
@@ -291,25 +289,6 @@ const UserDashboardHome: React.FC = () => {
                     <p className="dark__charcoal mt-6">👏 Bravo! You've reached the finish line!</p>
                 )}
             </div>
-
-            {/* improve past session  */}
-            {!isProfileLoading && enterpriseUserType !== "rookie" && (
-                <div
-                    className="border-gray mt-4 p-5 border rounded-lg text-primary-blue relative bg-no-repeat bg-right-bottom"
-                    style={{ backgroundImage: "url(" + improveBg + ")" }}
-                >
-                    <h6 className="pb-3">Improve past session</h6>
-                    <p className="pb-3 text-auro-metal-saurus lg:w-10/12">
-                        Select any of your previous sessions to continue practicing with the same setup, allowing you to
-                        focus directly on enhancing your skills in specific areas.
-                    </p>
-                    <Link to="performance-improvement">
-                        <Button type="button" className="bg-branding-secondary hover:bg-branding-secondary/90 py-3">
-                            Improve Session
-                        </Button>
-                    </Link>
-                </div>
-            )}
 
             {(user?.first_login || user?.first_time_verification) && (
                 <MultiStepAgreement

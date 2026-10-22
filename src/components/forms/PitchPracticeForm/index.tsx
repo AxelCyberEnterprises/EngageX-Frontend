@@ -3,6 +3,7 @@ import PracticeSetupLayout from "@/components/forms/form-layouts/PracticeSetupLa
 import ErrorToast from "@/components/ui/custom-toasts/error-toast";
 import { Form } from "@/components/ui/form";
 import { usePreviewUploadSlides } from "@/hooks/sessions";
+import { useImproveDefaults } from "@/lib/improve";
 import { pdfToImages } from "@/lib/utils";
 import { PitchPracticeSchema } from "@/schemas/dashboard/user";
 import { RootState, useAppDispatch } from "@/store";
@@ -26,16 +27,19 @@ const PitchPracticeForm = () => {
     const dispatch = useAppDispatch();
     const { mutate: uploadSlides } = usePreviewUploadSlides();
 
+    const improve = useImproveDefaults("pitch");
+
     const form = useForm<FormType>({
         resolver: zodResolver(PitchPracticeSchema),
         defaultValues: useMemo(
             () => ({
-                session_type: "pitch",
-                virtual_environment: "pitch_studio",
+                session_type: "pitch" as const,
+                virtual_environment: "pitch_studio" as const,
                 allow_ai_questions: true,
                 goals: [{ id: 1, goal: "" }],
+                ...improve,
             }),
-            [],
+            [improve],
         ),
     });
 

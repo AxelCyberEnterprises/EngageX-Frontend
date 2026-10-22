@@ -27,6 +27,8 @@ export const BaseSessionSetupSchema = z.object({
     ),
     notes: z.string().optional(),
     allow_ai_questions: z.boolean().optional(),
+    // Set when a session is started from "Improve", so it joins that improvement sequence.
+    sequence: z.string().optional(),
 });
 
 export const PublicSpeakingSchema = BaseSessionSetupSchema;
