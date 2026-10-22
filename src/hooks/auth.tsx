@@ -84,8 +84,8 @@ export function useNewImprovmentSequence() {
                 "default",
             );
         },
-        onSuccess: (data: any) => {
-            toast.info("New improvement sequence created successfully:", data);
+        onSuccess: () => {
+            toast.info("Improvement sequence created.");
         },
         onError: (error: any) => {
             toast.info("Failed to create improvement sequence:", error);

@@ -13,6 +13,24 @@ import { getImproveRoute } from "@/lib/improve";
 import { useState } from "react";
 import { toast } from "sonner";
 
+const SESSION_TYPE_LABELS: Record<string, string> = {
+  public: "Public Speaking",
+  pitch: "Pitch Practice",
+  presentation: "Presentation Practice",
+  enterprise: "Coaching",
+};
+
+// "board_room_1" -> "Board Room 1", "nba_room" -> "NBA Room"
+const formatEnvironment = (value: string) =>
+  value
+    .split("_")
+    .map((word) =>
+      ["nba", "wnba", "nfl", "mlb"].includes(word)
+        ? word.toUpperCase()
+        : word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join(" ");
+
 function SessionConfirmationDialog() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -103,13 +121,17 @@ function SessionConfirmationDialog() {
               <div className="flex gap-x-4 items-center">
                 <div className="space-y-4 pb-2">
                   <small>Session Type</small>
-                  <p className="text-black">{pis_data.session_type}</p>
+                  <p className="text-black">
+                    {SESSION_TYPE_LABELS[pis_data.session_type] ?? pis_data.session_type}
+                  </p>
                 </div>
               </div>
               <div className="flex gap-x-4 items-center">
                 <div className="space-y-4 pb-2">
                   <small>Virtual Environment</small>
-                  <p className="text-black">{pis_data.virtual_enviroment}</p>
+                  <p className="text-black">
+                    {formatEnvironment(pis_data.virtual_enviroment)}
+                  </p>
                 </div>
               </div>
 

@@ -35,7 +35,17 @@ const TopNav: React.FC = () => {
 
     const initials = `${profile?.first_name?.[0] ?? ""}${profile?.last_name?.[0] ?? ""}`.toUpperCase();
 
+    // The user menu calls these pages "Report History" and "Training Goals", so the breadcrumb does too.
+    const isUserArea = location.pathname.startsWith("/dashboard/user");
+    const breadcrumbLabels: Record<string, string> = isUserArea
+        ? {
+              "session-history": "Report History",
+              ...(profile?.is_enterprise_user && { "progress-tracking": "Training Goals" }),
+          }
+        : {};
+
     const formatBreadcrumb = (segment: string) =>
+        breadcrumbLabels[segment] ??
         segment.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
     // Build breadcrumb objects

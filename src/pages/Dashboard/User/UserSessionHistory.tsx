@@ -118,7 +118,7 @@ const UserSessionHistory = () => {
                         </button>
                         <Button
                             type="button"
-                            className="bg-branding-secondary hover:bg-branding-secondary/90 text-white shadow-none"
+                            className="bg-green-sheen hover:bg-green-sheen/90 text-[#10161E] font-medium shadow-none"
                             onClick={handleCompare}
                         >
                             Compare

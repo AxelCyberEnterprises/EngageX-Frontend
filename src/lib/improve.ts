@@ -62,12 +62,13 @@ export const useImproveDefaults = (expectedType: ISession["session_type"]): Impr
     return useMemo(() => {
         if (!setup || setup.session_type !== expectedType) return undefined;
 
-        const goals = setup.goals.map((goal, index) => ({ id: index + 1, goal }));
+        // The goals form keeps one empty goal at the end for the next goal to be typed into.
+        const goals = [...setup.goals, ""].map((goal, index) => ({ id: index + 1, goal }));
 
         return {
             session_name: setup.session_name,
             virtual_environment: setup.virtual_environment as BaseValues["virtual_environment"],
-            ...(goals.length > 0 && { goals }),
+            ...(setup.goals.length > 0 && { goals }),
             ...(setup.notes && { notes: setup.notes }),
             ...(setup.sequence && { sequence: setup.sequence }),
             enterprise_settings: setup.enterprise_settings,

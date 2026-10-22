@@ -9,16 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DynamicTooltip } from "@/components/widgets/dynamic-tooltip";
-import { useTheme } from "@/context/ThemeContext/hook";
 import { useGetSessionReport, useRequestSessionVideo } from "@/hooks/sessions";
 import { deleteSessionMedia, useDeleteVideoOnLeave } from "@/hooks/useDeleteVideoOnLeave";
 import { useBookCoachingSession, useEnterpriseUsers, useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import usePerformanceChart from "@/hooks/usePerformanceChart";
-import { PRIMARY_COLOR } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
-import { ArrowLeft, Download, Info, LoaderCircle, UserRound } from "lucide-react";
+import { ArrowLeft, Download, Info, LoaderCircle, Play, UserRound } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, To, useLocation, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
@@ -44,9 +41,6 @@ const PitchSessionReport: React.FC = () => {
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
     const navigate = useNavigate();
     const location = useLocation();
-    const {
-        theme: { primaryColor },
-    } = useTheme();
     const { id } = useParams();
     const { data: enterpriseUsers } = useEnterpriseUsers();
     const { data, isPending, refetch } = useGetSessionReport(id);
@@ -582,19 +576,20 @@ const PitchSessionReport: React.FC = () => {
                                     {requestedSuccessfully ? (
                                         <LoaderCircle className="size-6 animate-spin stroke-white" />
                                     ) : (
-                                        <Button
-                                            className={cn(
-                                                "bg-medium-sea-green hover:bg-medium-sea-green/90 rounded-lg",
-                                                {
-                                                    "bg-branding-primary hover:bg-branding-primary/90":
-                                                        primaryColor !== PRIMARY_COLOR,
-                                                },
-                                            )}
+                                        <button
+                                            type="button"
+                                            aria-label="Play recording"
+                                            title="Play recording"
+                                            className="size-20 rounded-full bg-white text-black shadow-lg grid place-content-center cursor-pointer transition-transform hover:scale-105 disabled:cursor-wait disabled:hover:scale-100"
                                             onClick={() => mutate()}
-                                            isLoading={requestingVideo}
+                                            disabled={requestingVideo}
                                         >
-                                            Play
-                                        </Button>
+                                            {requestingVideo ? (
+                                                <LoaderCircle className="size-8 animate-spin" />
+                                            ) : (
+                                                <Play className="size-9 ml-1 fill-black" />
+                                            )}
+                                        </button>
                                     )}
                                 </div>
                             )}
