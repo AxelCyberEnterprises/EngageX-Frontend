@@ -242,7 +242,8 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
 
 export function useGetSessionReport(sessionId: string | undefined) {
     return useQuery({
-        queryKey: ["getSessionReport"],
+        // Keyed by session id so a previously viewed report is never shown as the new one.
+        queryKey: ["getSessionReport", sessionId],
         queryFn: async () => {
             return await apiGet<ISession>(`/sessions/sessions-report/${sessionId}/`, "default");
         },

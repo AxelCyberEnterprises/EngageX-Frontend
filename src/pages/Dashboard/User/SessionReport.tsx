@@ -151,13 +151,14 @@ const PitchSessionReport: React.FC = () => {
 
     useEffect(() => {
         if (!data || !location.state?.justCompleted) return;
-        const summary = data.full_summary as Record<string, string> | undefined;
-        const isEmpty =
-            !summary ||
-            Object.values(summary).every(
-                (v) => !v || v.toLowerCase().includes("no analysis data") || v === "N/A - No analysis data available for summary.",
-            );
-        if (isEmpty) setShowEmptyReportModal(true);
+        // The report response has no combined "full_summary" object. The written summary is in three text
+        // fields, and the per-chunk results are in performance_analytics, so those are what we check.
+        const hasText = (v?: string | null) =>
+            !!v?.trim() && !/^n\/a/i.test(v.trim()) && !v.toLowerCase().includes("no analysis data");
+        const hasAnalysis =
+            (data.performance_analytics?.length ?? 0) > 0 ||
+            [data.strength, data.area_of_improvement, data.general_feedback_summary].some(hasText);
+        if (!hasAnalysis) setShowEmptyReportModal(true);
     }, [data, location.state]);
 
     const parseStrengthsAndImprovements = useCallback((input: string): string[] => {
