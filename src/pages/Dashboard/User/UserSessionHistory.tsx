@@ -85,20 +85,8 @@ const UserSessionHistory = () => {
                 <p className="text-sm text-[#6F7C8E] mt-1">Check the box beside a session to compare two sessions.</p>
             </div>
 
-            {comparing && (
-                <div ref={comparisonRef}>
-                    <CompareSessionsPanel id1={comparing[0]} id2={comparing[1]} onClose={() => setComparing(null)} />
-                </div>
-            )}
-
-            <SessionHistoryTable
-                selectedIds={selectedIds}
-                onToggle={handleToggle}
-                onImprove={handleImprove}
-            />
-
             {selected.length === MAX_COMPARE && (
-                <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#10161E] px-5 py-3 text-white shadow-lg">
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#10161E] px-5 py-3 text-white shadow-lg">
                     <div>
                         <p className="font-medium">2 sessions selected: Compare</p>
                         <p className="text-xs text-white/70">
@@ -126,6 +114,18 @@ const UserSessionHistory = () => {
                     </div>
                 </div>
             )}
+
+            {comparing && (
+                <div ref={comparisonRef}>
+                    <CompareSessionsPanel id1={comparing[0]} id2={comparing[1]} onClose={() => setComparing(null)} />
+                </div>
+            )}
+
+            <SessionHistoryTable
+                selectedIds={selectedIds}
+                onToggle={handleToggle}
+                onImprove={handleImprove}
+            />
 
             <ImproveSessionNameDialog />
             {confirmationOpen && <SessionConfirmationDialog />}
