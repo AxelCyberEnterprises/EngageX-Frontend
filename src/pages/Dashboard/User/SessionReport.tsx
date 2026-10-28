@@ -20,7 +20,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, To, useLocation, useNavigate, useParams } from "react-router-dom";
 import speakWithCoach from "../../../assets/images/svgs/speak-with-coach.svg";
 import { capitalizeWords } from "@/components/tables/session-history-table/admin";
-import NoAccessCoachingModal from "@/components/modals/modalVariants/NoAccessCoachingModal";
 
 function getSessionTypeDisplay(item: any): string {
     if (item.session_type_display === "Enterprise") {
@@ -35,7 +34,6 @@ function getSessionTypeDisplay(item: any): string {
 const PitchSessionReport: React.FC = () => {
     const [isDialogOneOpen, setDialogOneOpen] = useState(false);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-    const [showNoAccessCoachingModal, setShowNoAccessCoachingModal] = useState(false);
     const [showEmptyReportModal, setShowEmptyReportModal] = useState(false);
     const { data: fullProfile } = useFullUserProfile();
     const { data: profile } = useUserProfile(fullProfile?.results?.[0]?.id);
@@ -397,7 +395,7 @@ const PitchSessionReport: React.FC = () => {
                                     <Download className="stroke-2" />
                                     <span className="hidden lg:block font-normal">Download</span>
                                 </Button>
-                                {hasLink ? (
+                                {hasLink && (
                                     <Button
                                         onClick={() => setDialogOneOpen(true)}
                                         className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
@@ -405,20 +403,7 @@ const PitchSessionReport: React.FC = () => {
                                         <UserRound className="stroke-2" />
                                         <span className="hidden lg:block font-normal">Speak With A Coach</span>
                                     </Button>
-                                ) : (
-                                    // No coaching link provided  so no access
-                                    <Button
-                                        onClick={() => setShowNoAccessCoachingModal(true)}
-                                        className="flex gap-1 p-5 text-primary-blue bg-transparent hover:bg-grey/10 border-1 border-bright-gray"
-                                    >
-                                        <UserRound className="stroke-2" />
-                                        <span className="hidden lg:block font-normal">Speak With A Coach</span>
-                                    </Button>
                                 )}
-                                <NoAccessCoachingModal
-                                    show={showNoAccessCoachingModal}
-                                    onClose={() => setShowNoAccessCoachingModal(false)}
-                                />
 
                                 <Dialog open={isDialogOneOpen} onOpenChange={setDialogOneOpen}>
                                     <DialogContent>
@@ -543,8 +528,8 @@ const PitchSessionReport: React.FC = () => {
                         <p className="text-independence mb-3">
                             This comprehensive report summarizes the session you just completed. The report covers the
                             goals you set for yourself and the industry standards defined by EngageX<sup>®</sup>.
-                            Please click on the speak with a coach button at the top to book a live review session with
-                            a certified coach.
+                            {hasLink &&
+                                " Please click on the speak with a coach button at the top to book a live review session with a certified coach."}
                         </p>
                     </section>
 
