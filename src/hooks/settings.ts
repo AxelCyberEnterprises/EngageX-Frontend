@@ -40,6 +40,12 @@ export function useUserProfile(id: any) {
             return response;
         },
         enabled: !!id,
+        // Enterprise membership (e.g. an admin assigning this user to an org, which is
+        // what gates the Training Goals nav item) can change while the user is already
+        // logged in. The app-wide default disables refetch-on-focus/mount, which left this
+        // stuck on the login-time snapshot until a hard reload. Override just this query.
+        refetchOnMount: "always",
+        refetchOnWindowFocus: true,
     });
 }
 
@@ -52,6 +58,8 @@ export function useFullUserProfile() {
             return response;
         },
         enabled: !!token,
+        refetchOnMount: "always",
+        refetchOnWindowFocus: true,
     });
 }
 

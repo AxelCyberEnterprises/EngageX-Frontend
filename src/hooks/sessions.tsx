@@ -5,7 +5,7 @@ import { apiDelete, apiGet, apiPost } from "@/lib/api";
 import { useAppDispatch } from "@/store";
 import { closeDialog } from "@/store/slices/dynamicDialogSlice";
 import { IPOSTSessionPayload, IPreviewSlideUploadResponse, ISession } from "@/types/sessions";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -203,6 +203,7 @@ export function useDeleteSessionVideo() {
 
 export function useEndSession(sessionId: string | undefined, duration: any, slidesDuration?: any[]) {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const convertDurationToSeconds = (duration: string): number => {
         const [minutes, seconds] = duration.split(":").map(Number);
         return minutes * 60 + seconds;
@@ -224,6 +225,14 @@ export function useEndSession(sessionId: string | undefined, duration: any, slid
         },
         onSuccess: () => {
             console.log("Session ended and posted successfully.");
+            // The session-count/history caches were populated before this session existed
+            // (e.g. the Start Session dialog reads session history on mount); without
+            // invalidating them here they'd keep serving stale data until a hard reload.
+            queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
+            queryClient.invalidateQueries({ queryKey: ["sessionHistory"] });
+            if (sessionId) {
+                queryClient.invalidateQueries({ queryKey: ["sessionHistoryById", sessionId] });
+            }
             navigate(`/dashboard/user/session-history/${sessionId}`, { state: { justCompleted: true } });
         },
         onError: (error) => {

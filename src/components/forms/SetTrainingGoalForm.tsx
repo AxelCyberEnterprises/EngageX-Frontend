@@ -74,6 +74,9 @@ const SetTrainingGoalForm = () => {
                         queryClient.invalidateQueries({
                             queryKey: ["enterprise-users", enterpriseId],
                         });
+                        queryClient.invalidateQueries({
+                            queryKey: ["training-goals", enterpriseId],
+                        });
                         toast(
                             <SuccessToast
                                 heading="Training goal set successfully"
