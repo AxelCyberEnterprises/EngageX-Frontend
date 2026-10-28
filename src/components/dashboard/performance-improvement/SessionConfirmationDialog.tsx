@@ -10,7 +10,7 @@ import { handleDialog } from "@/store/slices/performance_improvement_slice";
 import { useNavigate } from "react-router-dom";
 import { useNewImprovmentSequence } from "@/hooks/auth";
 import { getImproveRoute } from "@/lib/improve";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 const SESSION_TYPE_LABELS: Record<string, string> = {
@@ -44,6 +44,8 @@ function SessionConfirmationDialog() {
   const { mutate: addNewImprovmentSequence, mutateAsync: createSequence } =
     useNewImprovmentSequence();
   const [isStarting, setIsStarting] = useState(false);
+  // Set when the user cancels while the request is still running, so a late answer does not open the setup page.
+  const cancelledRef = useRef(false);
 
   const closeDialogs = () =>
     dispatch(
@@ -52,12 +54,18 @@ function SessionConfirmationDialog() {
       })
     );
 
+  const cancelStarting = () => {
+    cancelledRef.current = true;
+    setIsStarting(false);
+  };
+
   // From Report History: join (or create) the improvement sequence, then open the
   // setup page for the same type of room with the past session's setup filled in.
   const beginImprovement = async () => {
     const { setup } = pis_data;
     if (!setup) return;
 
+    cancelledRef.current = false;
     setIsStarting(true);
     try {
       let sequenceId = pis_data.existing_sequence_id;
@@ -70,6 +78,7 @@ function SessionConfirmationDialog() {
         sequenceId = res?.session?.sequence ?? null;
       }
       if (!sequenceId) throw new Error("No sequence returned");
+      if (cancelledRef.current) return;
 
       closeDialogs();
       navigate(getImproveRoute(setup), {
@@ -83,7 +92,7 @@ function SessionConfirmationDialog() {
       });
     } catch (error) {
       console.error("Error starting improvement session: ", error);
-      toast.error("Could not start the improvement session. Please try again.");
+      if (!cancelledRef.current) toast.error("Could not start the improvement session. Please try again.");
     } finally {
       setIsStarting(false);
     }
@@ -91,7 +100,8 @@ function SessionConfirmationDialog() {
   return (
     <AlertDialog
       open={dialog.session_confirmation}
-      onOpenChange={() =>
+      onOpenChange={() => {
+        cancelStarting();
         dispatch(
           handleDialog({
             dialog: {
@@ -99,8 +109,8 @@ function SessionConfirmationDialog() {
               session_confirmation: false,
             },
           })
-        )
-      }
+        );
+      }}
     >
       <AlertDialogContent className="p-0 overflow-clip border-0">
         <AlertDialogHeader>
@@ -150,8 +160,8 @@ function SessionConfirmationDialog() {
             <div className="flex items-center justify-end py-8 gap-4">
               <button
                 className="rounded-2xl bg-transparent px-10 py-2 h-12 text-gunmetal border border-gray"
-                disabled={isStarting}
                 onClick={() => {
+                  cancelStarting();
                   // Without a name step to go back to (session already in a series), Back closes.
                   if (pis_data.setup && pis_data.existing_sequence_id) {
                     closeDialogs();
@@ -193,7 +203,7 @@ function SessionConfirmationDialog() {
                 }}
                 className="rounded-2xl px-10 py-2 h-12"
               >
-                Begin Session
+                {isStarting ? "Starting..." : "Begin Session"}
               </button>
             </div>
           </AlertDialogDescription>

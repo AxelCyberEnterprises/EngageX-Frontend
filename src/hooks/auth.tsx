@@ -82,6 +82,8 @@ export function useNewImprovmentSequence() {
                     description,
                 },
                 "default",
+                // Without a limit, a stalled server leaves the Improve dialog waiting forever.
+                { timeout: 30000 },
             );
         },
         onSuccess: () => {
@@ -372,7 +374,7 @@ export function useSessionHistoryById(id: string) {
 export function useSessionComparison(id1: string | undefined, id2: string | undefined) {
     return useQuery({
         queryKey: ["sessionComparison", id1, id2],
-        queryFn: () => apiGet<any>(`/sessions/compare-sessions/${id1}/${id2}`, "default"),
+        queryFn: () => apiGet<any>(`/sessions/compare-sessions/${id1}/${id2}/`, "default"),
         enabled: Boolean(id1 && id2),
     });
 }
