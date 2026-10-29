@@ -263,7 +263,7 @@ const WNBAMediaTraining: React.FC = () => {
             try {
                 // Get ephemeral token
                 const tokenRes = await axios.get("https://api.engagexai.io/sessions/api/openai/realtime-token/");
-                const EPHEMERAL_KEY = tokenRes.data.client_secret.value;
+                const EPHEMERAL_KEY = tokenRes.data.value;
 
                 if (!isMounted) return;
 
@@ -296,13 +296,19 @@ const WNBAMediaTraining: React.FC = () => {
                 const offer = await pc.createOffer();
                 await pc.setLocalDescription(offer);
 
+                const realtimeFormData = new FormData();
+                realtimeFormData.append("sdp", offer.sdp ?? "");
+                realtimeFormData.append(
+                    "session",
+                    JSON.stringify({ type: "realtime", model: "gpt-realtime-2.1" }),
+                );
+
                 const sdpRes = await axios.post(
-                    "https://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview",
-                    offer.sdp,
+                    "https://api.openai.com/v1/realtime/calls",
+                    realtimeFormData,
                     {
                         headers: {
                             Authorization: `Bearer ${EPHEMERAL_KEY}`,
-                            "Content-Type": "application/sdp",
                         },
                     },
                 );
