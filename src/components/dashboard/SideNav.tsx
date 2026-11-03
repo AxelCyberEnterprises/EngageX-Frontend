@@ -60,6 +60,9 @@ const SideNav: React.FC = () => {
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
     const isEnterpriseUser = profile?.is_enterprise_user;
     const enterpriseUserType = profile?.user_type;
+    // profile is null until the initial fetch resolves, so this is "do we actually
+    // know this user's type yet", not just "is it loaded or loading".
+    const profileLoaded = profile !== null;
 
     const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteOrganizationList(
         searchTerm,
@@ -1170,7 +1173,19 @@ const SideNav: React.FC = () => {
                     </SidebarHeader>
 
                     <SidebarContent className="top__links bg-branding-secondary lg:px-0 px-4 hide-scrollbar">
+                        {lastSegment === "user" && !profileLoaded && (
+                            // Hold off on the user nav until we know the real user type —
+                            // otherwise it renders as a regular user first, then flips to
+                            // enterprise once the profile fetch resolves.
+                            <div className="space-y-2">
+                                <Skeleton className="h-10 w-full rounded-md" />
+                                <Skeleton className="h-10 w-5/6 rounded-md" />
+                                <Skeleton className="h-10 w-3/4 rounded-md" />
+                                <Skeleton className="h-10 w-2/3 rounded-md" />
+                            </div>
+                        )}
                         {lastSegment === "user" &&
+                            profileLoaded &&
                             userLinks
                                 // Training Goals (the simplified Progress Tracking page) is for organization users only.
                                 .filter((link) => link && (link.name !== "Training Goals" || isEnterpriseUser))
