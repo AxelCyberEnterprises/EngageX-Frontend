@@ -44,6 +44,7 @@ const SideNav: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const profile = useSelector((state: RootState) => state.profile.data);
+    const hasLoadedProfileOnce = useSelector((state: RootState) => state.profile.hasLoadedOnce);
     const dispatch = useDispatch();
     const { state: sidebarState } = useSidebar();
     const [showAlternateSidebar, setShowAlternateSidebar] = useState(false);
@@ -60,9 +61,11 @@ const SideNav: React.FC = () => {
     const lastSegment = pathSegments.length >= 2 ? pathSegments[1] : "";
     const isEnterpriseUser = profile?.is_enterprise_user;
     const enterpriseUserType = profile?.user_type;
-    // profile is null until the initial fetch resolves, so this is "do we actually
-    // know this user's type yet", not just "is it loaded or loading".
-    const profileLoaded = profile !== null;
+    // Wait for the fetch to SETTLE (success or failure/empty) before deciding
+    // what to render — profile is null both "still loading" and "we asked and
+    // there's nothing", and those need different treatment (skeleton vs. the
+    // best-effort default nav) or the sidebar can get stuck loading forever.
+    const profileLoaded = hasLoadedProfileOnce;
 
     const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteOrganizationList(
         searchTerm,

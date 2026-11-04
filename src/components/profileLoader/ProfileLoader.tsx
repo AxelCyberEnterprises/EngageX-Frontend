@@ -18,13 +18,17 @@ const ProfileLoader: React.FC = () => {
     isLoading: isFullProfileLoading,
   } = useFullUserProfile();
 
+  const profileId = fullProfile?.results?.[0]?.id;
+
   const {
     data: profile,
     isLoading: isProfileLoading,
-    error: profileError,
-  } = useUserProfile(fullProfile?.results?.[0]?.id);
+  } = useUserProfile(profileId);
 
-  const isFetching = isFullProfileLoading || isProfileLoading;
+  // isProfileLoading only means something once this query is actually
+  // enabled (i.e. we have a profileId) — otherwise it's a disabled query
+  // that was never going to fetch anything.
+  const isFetching = isFullProfileLoading || (!!profileId && isProfileLoading);
 
   // 🔥 Sync loading state with query states
   useEffect(() => {
@@ -34,10 +38,14 @@ const ProfileLoader: React.FC = () => {
       dispatch(startLoading());
     } else if (profile) {
       dispatch(setProfile(profile));
-    } else if (profileError) {
+    } else {
+      // Settled with nothing to show — either a fetch failed, or the user
+      // genuinely has no profile row (fullProfile resolved with an empty
+      // results array, so profileId never existed and the detail query
+      // never ran). Either way, stop waiting instead of hanging forever.
       dispatch(clearProfile());
     }
-  }, [token, isFetching, profile, profileError, dispatch]);
+  }, [token, isFetching, profile, dispatch]);
 
   return null;
 };
