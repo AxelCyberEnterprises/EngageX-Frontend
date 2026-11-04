@@ -33,9 +33,12 @@ const profileSlice = createSlice({
       state.isLoading = false;
       state.hasLoadedOnce = true;
     },
+    // Logged out: back to "haven't asked yet", so the next login waits for
+    // its own profile instead of showing the previous user's nav.
+    resetProfile: () => initialState,
   },
 });
 
-export const { startLoading, setProfile, clearProfile } = profileSlice.actions;
+export const { startLoading, setProfile, clearProfile, resetProfile } = profileSlice.actions;
 
 export default profileSlice.reducer;

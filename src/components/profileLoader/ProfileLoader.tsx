@@ -1,16 +1,21 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFullUserProfile, useUserProfile } from "@/hooks/settings";
 import { tokenManager } from "@/lib/utils";
 import {
   setProfile,
   startLoading,
   clearProfile,
+  resetProfile,
 } from "@/store/slices/profileSlice";
-import type { AppDispatch } from "@/store";
+import type { AppDispatch, RootState } from "@/store";
 
 const ProfileLoader: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  // This component mounts once at the app root, before login, and the token
+  // lives in a cookie that React can't observe. Subscribing to the auth user
+  // makes it re-render on login/logout so the token below is re-read.
+  useSelector((state: RootState) => state.auth.user);
   const token = tokenManager.getToken();
 
   const {
@@ -32,7 +37,10 @@ const ProfileLoader: React.FC = () => {
 
   // 🔥 Sync loading state with query states
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      dispatch(resetProfile());
+      return;
+    }
 
     if (isFetching) {
       dispatch(startLoading());

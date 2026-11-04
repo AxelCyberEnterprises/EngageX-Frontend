@@ -11,11 +11,41 @@ import {
     setSuccessMessage,
     setUserIdAfterSignup,
 } from "@/store/slices/authSlice";
+import { tokenManager } from "@/lib/utils";
+import type { UserProfile } from "@/hooks/settings";
+import type { AppDispatch } from "@/store";
+import { setProfile } from "@/store/slices/profileSlice";
 import { IGETSessionsResponse } from "@/types/sessions";
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+
+// Load the profile before entering the dashboard so it opens with the right
+// nav for the user's type. Uses the same query keys as ProfileLoader so its
+// queries find this data cached. One retry; if both attempts fail we navigate
+// anyway and ProfileLoader's placeholder/fallback takes over.
+async function preloadProfile(queryClient: QueryClient, dispatch: AppDispatch) {
+    const token = tokenManager.getToken();
+    for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+            const fullProfile = await queryClient.fetchQuery({
+                queryKey: ["full-profile", token],
+                queryFn: () => apiGet<any>("/users/userprofiles/"),
+            });
+            const id = fullProfile?.results?.[0]?.id;
+            if (!id) return;
+            const profile = await queryClient.fetchQuery({
+                queryKey: ["user-profile", token],
+                queryFn: () => apiGet<UserProfile>(`/users/userprofiles/${id}/`),
+            });
+            dispatch(setProfile(profile));
+            return;
+        } catch (error) {
+            console.error(`Profile preload attempt ${attempt} failed:`, error);
+        }
+    }
+}
 
 export function useSignup() {
     const dispatch = useDispatch();
@@ -135,7 +165,7 @@ export function useVerifyOTP() {
         mutationFn: async (data: { email: string; otp_code: string }) => {
             return await apiPost<LoginResponse>("/users/auth/verify-otp/", data);
         },
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             const admin = data.data.is_admin;
 
             dispatch(login(data));
@@ -143,6 +173,7 @@ export function useVerifyOTP() {
             queryClient.invalidateQueries({ queryKey: ["full-profile"] });
             queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
 
+            await preloadProfile(queryClient, dispatch);
             navigate(admin ? "/dashboard/admin" : "/dashboard/user");
         },
         onError: (error) => {
@@ -173,6 +204,7 @@ export function useRequestLogin() {
 }
 
 export function useVerifyLogin() {
+    const queryClient = useQueryClient();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -181,8 +213,9 @@ export function useVerifyLogin() {
         mutationFn: async (data: { email: string; code: string }) => {
             return await apiPost<LoginResponse>("/enterprise/sso/verify-login/", data);
         },
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             dispatch(login(data));
+            await preloadProfile(queryClient, dispatch);
             navigate("/dashboard/user");
         },
         onError: (error) => {
@@ -194,6 +227,7 @@ export function useVerifyLogin() {
 }
 
 export function useGoogleLogin() {
+    const queryClient = useQueryClient();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -207,6 +241,7 @@ export function useGoogleLogin() {
             console.log("Google login success:", admin);
 
             dispatch(login(data));
+            await preloadProfile(queryClient, dispatch);
             navigate(admin ? "/dashboard/admin" : "/dashboard/user");
         },
         onError: (error) => {
