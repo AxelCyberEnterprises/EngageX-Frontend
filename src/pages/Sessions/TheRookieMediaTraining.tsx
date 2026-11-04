@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { reactionVideoUrl, toReactionEmotion } from "@/lib/reactionEmotion";
 import React, { useRef, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
@@ -324,18 +325,9 @@ const PublicSpeaking: React.FC = () => {
                         const parsed = JSON.parse(event.data);
                         if (parsed.text) {
                             console.log(parsed.text);
-                            const validEmotions = [
-                                "thinking",
-                                "sorrow",
-                                "excitement",
-                                "laughter",
-                                "surprise",
-                                "interested",
-                            ];
-                            if (validEmotions.includes(parsed.text) && allowSwitch) {
-                                const random = Math.floor(Math.random() * 10) + 1;
-                                const newUrl = `https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos/conference_room/${parsed.text}/${random}.mp4`;
-                                setVideoUrl(newUrl);
+                            const emotion = toReactionEmotion(parsed.text);
+                            if (emotion && allowSwitch) {
+                                setVideoUrl(reactionVideoUrl("conference_room", emotion));
                             }
                         }
                     } catch (err) {
