@@ -35,16 +35,21 @@ type RookieType = "media_training" | "speaking" | "coach" | "gm";
 const RookieRoomForm = () => {
     const dispatch = useAppDispatch();
     const { data: enterpriseUsers } = useEnterpriseUsers();
-    
+
     const companyName = enterpriseUsers?.results?.[0]?.enterprise?.sport_type?.toUpperCase() || "";
-    
+
     const sportTypeValue = useMemo(() => {
         switch (companyName) {
-            case "NBA": return "nba";
-            case "WNBA": return "wnba";
-            case "NFL": return "nfl";
-            case "MLB": return "mlb";
-            default: return "";
+            case "NBA":
+                return "nba";
+            case "WNBA":
+                return "wnba";
+            case "NFL":
+                return "nfl";
+            case "MLB":
+                return "mlb";
+            default:
+                return "";
         }
     }, [companyName]);
 
@@ -124,7 +129,7 @@ const RookieRoomForm = () => {
     // Memoize video source to prevent recalculation on every render
     const videoSrc = useMemo((): string | undefined => {
         const baseUrl = "https://engagex-user-content-1234.s3.us-west-1.amazonaws.com/static-videos";
-        
+
         if (rookieType === "coach") {
             const coachVideos: Record<string, string> = {
                 nba: `${baseUrl}/Rookie+Room/NBA/NBA+Intro.mp4`,
@@ -134,7 +139,7 @@ const RookieRoomForm = () => {
             };
             return coachVideos[sportType as keyof typeof coachVideos];
         }
-        
+
         if (rookieType === "gm") {
             const gmVideos: Record<string, string> = {
                 nba: `${baseUrl}/Rookie+Room/NBA/NBA+GM+Intro+.MP4`,
@@ -142,15 +147,14 @@ const RookieRoomForm = () => {
                 nfl: `${baseUrl}/Rookie+Room/NFL/NFL+GM+intro.MP4`,
                 // Fixed: MLB should use MLB GM intro, not NFL
                 mlb: `${baseUrl}/Rookie+Room/MLB/MLB+GM+intro.mp4`,
-
             };
             return gmVideos[sportType as keyof typeof gmVideos];
         }
-        
+
         if (rookieType === "media_training") {
             return `${baseUrl}/intro-videos/Media+Intro.MP4`;
         }
-        
+
         return undefined;
     }, [rookieType, sportType]);
 
@@ -167,7 +171,8 @@ const RookieRoomForm = () => {
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} disabled defaultValue={field.value}>
                                 <SelectTrigger className="h-11 md:w-1/2 rounded-lg focus-visible:ring-0 shadow-none text-foreground data-[placeholder]:text-auro-metal-saurus [&_svg:not([class*='text-'])]:text-[#667085]">
-                                    <SelectValue placeholder={companyName} />
+                                    {/* <SelectValue placeholder={companyName} /> */}
+                                    <SelectValue placeholder="All Sports" />
                                 </SelectTrigger>
                                 <SelectContent className="border-none z-[9999]" position="popper" sideOffset={4}>
                                     {sportsOptions.map(({ value }, index) => (

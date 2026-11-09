@@ -43,7 +43,7 @@ const VirtualEnvironmentSection = ({
                                     defaultValue={field.value}
                                     className="flex lg:flex-col md:flex-row flex-col"
                                 >
-                                    {options.map(({ name, value, src }, index) => (
+                                    {options.map(({ value, src }, index) => (
                                         <FormItem key={value + index}>
                                             <FormControl className="hidden">
                                                 <RadioGroupItem value={value} />
@@ -61,7 +61,8 @@ const VirtualEnvironmentSection = ({
                                                         className={"object-cover size-full rounded-lg"}
                                                     />
                                                     <p className="absolute bottom-2 left-3 text-white font-semibold z-10">
-                                                        {name}
+                                                        {/* {name} */}
+                                                        All Sports Room
                                                     </p>
                                                     <div
                                                         className={cn(
